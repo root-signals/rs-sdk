@@ -101,7 +101,7 @@ class Configuration:
         ssl_ca_cert=None,
     ) -> None:
         """Constructor"""
-        self._base_path = "http://localhost" if host is None else host
+        self._base_path = "https://api.app.rootsignals.ai" if host is None else host
         """Default Base url
         """
         self.server_index = 0 if server_index is None and host is None else server_index
@@ -389,6 +389,15 @@ class Configuration:
         :return: The Auth Settings information dict.
         """
         auth = {}
+        if "publicApiKey" in self.api_key:
+            auth["publicApiKey"] = {
+                "type": "api_key",
+                "in": "header",
+                "key": "Authorization",
+                "value": self.get_api_key_with_prefix(
+                    "publicApiKey",
+                ),
+            }
         if "tokenAuth" in self.api_key:
             auth["tokenAuth"] = {
                 "type": "api_key",
@@ -420,7 +429,7 @@ class Configuration:
         """
         return [
             {
-                "url": "",
+                "url": "https://api.app.rootsignals.ai",
                 "description": "No description provided",
             }
         ]
