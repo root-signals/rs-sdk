@@ -2670,7 +2670,6 @@ components:
             id:
               type: string
               format: uuid
-          required: []
           example:
             pii_filter: false
             version_id: '1234'
@@ -2729,7 +2728,6 @@ components:
             id:
               type: string
               format: uuid
-          required: []
           example:
             pii_filter: false
             version_id: '1234'
