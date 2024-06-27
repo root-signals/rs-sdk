@@ -316,7 +316,7 @@ class ExecutionLogsApi:
         _header_params["Accept"] = self.api_client.select_header_accept(["application/json"])
 
         # authentication setting
-        _auth_settings: List[str] = ["tokenAuth"]
+        _auth_settings: List[str] = ["tokenAuth", "publicApiKey"]
 
         return self.api_client.param_serialize(
             method="GET",
@@ -540,7 +540,7 @@ class ExecutionLogsApi:
         _header_params["Accept"] = self.api_client.select_header_accept(["application/json"])
 
         # authentication setting
-        _auth_settings: List[str] = ["tokenAuth"]
+        _auth_settings: List[str] = ["tokenAuth", "publicApiKey"]
 
         return self.api_client.param_serialize(
             method="GET",

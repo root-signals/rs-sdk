@@ -78,7 +78,7 @@ class RootSignals:
             return self._api_client_arg
 
         api_client_configuration = _Configuration(host=self.base_url)
-        api_client_configuration.api_key["tokenAuth"] = f"Api-Key {self.api_key}"
+        api_client_configuration.api_key["publicApiKey"] = f"Api-Key {self.api_key}"
         return openapi_client.ApiClient(
             api_client_configuration, header_name="x-root-python-version", header_value=__version__
         )

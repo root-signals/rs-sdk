@@ -33,10 +33,10 @@ import root.generated.openapi_client
 from root.generated.openapi_client.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to http://localhost
+# Defining the host is optional and defaults to https://api.app.rootsignals.ai
 # See configuration.py for a list of all supported configuration parameters.
 configuration = root.generated.openapi_client.Configuration(
-    host = "http://localhost"
+    host = "https://api.app.rootsignals.ai"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -49,6 +49,12 @@ configuration.api_key['tokenAuth'] = os.environ["API_KEY"]
 
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['tokenAuth'] = 'Bearer'
+
+# Configure API key authorization: publicApiKey
+configuration.api_key['publicApiKey'] = os.environ["API_KEY"]
+
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['publicApiKey'] = 'Bearer'
 
 
 # Enter a context with an instance of the API client
@@ -69,7 +75,7 @@ with root.generated.openapi_client.ApiClient(configuration) as api_client:
 
 ## Documentation for API Endpoints
 
-All URIs are relative to *http://localhost*
+All URIs are relative to *https://api.app.rootsignals.ai*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
@@ -200,6 +206,13 @@ Class | Method | HTTP request | Description
 
 
 Authentication schemes defined for the API:
+<a id="publicApiKey"></a>
+### publicApiKey
+
+- **Type**: API key
+- **API key parameter name**: Authorization
+- **Location**: HTTP header
+
 <a id="tokenAuth"></a>
 ### tokenAuth
 
