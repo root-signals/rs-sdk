@@ -1,0 +1,3812 @@
+openapi: 3.0.3
+info:
+  title: Root Signals API
+  version: 1.0.0 (latest)
+  description: Root Signals JSON API provides a way to access Root Signals using provisioned
+    API token
+paths:
+  /v1/chats/:
+    get:
+      operationId: chats_list
+      parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - chats
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedChatList'
+          description: ''
+  /v1/chats/{chat_id}/:
+    get:
+      operationId: chats_retrieve
+      parameters:
+      - in: path
+        name: chat_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - chats
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatDetail'
+          description: ''
+  /v1/chats/{chat_id}/execute/:
+    post:
+      operationId: chats_execute_create
+      description: Execute a chat.
+      parameters:
+      - in: path
+        name: chat_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - chats
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatExecutionRequestRequest'
+            examples:
+              ChatExample:
+                value:
+                  variables:
+                    job_title: software developer
+                    question: please write some basic python code
+                summary: Chat example
+                description: A simple chat message with variables.
+              ChatExampleWithStatusTracking:
+                value:
+                  variables:
+                    job_title: software developer
+                    question: please write some basic python code
+                  correlation_id: my-id-to-track-message-status
+                summary: Chat example with status tracking
+                description: Correlation id can be used to track the status of the
+                  message.
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ChatExecutionRequestRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ChatExecutionRequestRequest'
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatExecutionResult'
+          description: ''
+  /v1/chats/{chat_id}/initiate/:
+    post:
+      operationId: chats_initiate_create_2
+      parameters:
+      - in: path
+        name: chat_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - chats
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatCreateRequest'
+            examples:
+              CreateAChat:
+                value:
+                  name: Optional name for chat
+                  assistant_welcome_messages:
+                  - Hello! I am a chatbot. You can ask me about subject X.
+                  skill_id: example-id
+                summary: Create a skill chat.
+                description: The chat_id is optional in URL and will be generated
+                  if not provided.
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ChatCreateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ChatCreateRequest'
+        required: true
+      security:
+      - publicApiKey: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatDetail'
+          description: ''
+  /v1/chats/{chat_id}/messages/{correlation_id}/status/:
+    get:
+      operationId: chats_messages_status_retrieve
+      description: 'Get status of a given chat message. Returns a dictionary with
+        a single key ''status''. Status can be one of: ''initial'', ''processing'',
+        ''completed'', ''error''.'
+      parameters:
+      - in: path
+        name: chat_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: correlation_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - chats
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          description: No response body
+  /v1/chats/initiate/:
+    post:
+      operationId: chats_initiate_create
+      tags:
+      - chats
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatCreateRequest'
+            examples:
+              CreateAChat:
+                value:
+                  name: Optional name for chat
+                  assistant_welcome_messages:
+                  - Hello! I am a chatbot. You can ask me about subject X.
+                  skill_id: example-id
+                summary: Create a skill chat.
+                description: The chat_id is optional in URL and will be generated
+                  if not provided.
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ChatCreateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ChatCreateRequest'
+        required: true
+      security:
+      - publicApiKey: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatDetail'
+          description: ''
+  /v1/datasets/:
+    get:
+      operationId: datasets_list
+      description: List datasets.
+      parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: search
+        schema:
+          type: string
+          default: ''
+        description: Search for dataset by name
+      - in: query
+        name: type
+        schema:
+          type: string
+          default: ''
+        description: 'Filter by type. Possible values: reference, test'
+      tags:
+      - datasets
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDataSetListList'
+          description: ''
+    post:
+      operationId: datasets_create
+      description: Create a new dataset.
+      tags:
+      - datasets
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataSetCreateRequest'
+            examples:
+              CreateADataSetFromURL:
+                value:
+                  name: My data set
+                  url: https://example.com
+                summary: Create a data set from URL
+              CreateADataSetFromAFile:
+                value: !!set
+                  ? "\n                        const formData = new FormData();\n\
+                    \                        formData.append(\"file\", file);\n  \
+                    \                      formData.append(\"type\", \"reference\"\
+                    );\n                        const response = await fetch(`base_url/dataset/upload/`,\
+                    \ {\n                        method: \"POST\",\n             \
+                    \           body: formData,\n                        headers:\
+                    \ {\n                            Authorization: `Api-Key ${api_key}`,\n\
+                    \                        },\n                        });\n   \
+                    \                 "
+                  : null
+                summary: Create a data set from a file
+                description: Use a form post to upload a file.
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DataSetCreateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DataSetCreateRequest'
+      security:
+      - publicApiKey: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataSetCreate'
+          description: ''
+  /v1/datasets/{id}/:
+    get:
+      operationId: datasets_retrieve
+      description: Get dataset details or download the dataset file.
+      parameters:
+      - in: query
+        name: download
+        schema:
+          type: boolean
+          default: false
+        description: Download the dataset.
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - datasets
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataSetList'
+          description: ''
+    delete:
+      operationId: datasets_destroy
+      description: Delete a dataset.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - datasets
+      security:
+      - publicApiKey: []
+      responses:
+        '204':
+          description: No response body
+  /v1/datasets/status/{id}/:
+    put:
+      operationId: datasets_status_update
+      description: Change the status of a dataset
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - datasets
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatusChangeRequest'
+            examples:
+              ChangeDatasetStatus:
+                value:
+                  status: unlisted | listed
+                summary: Change dataset status
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StatusChangeRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StatusChangeRequest'
+        required: true
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusChange'
+              examples:
+                ChangeDatasetStatus:
+                  value:
+                    status: unlisted | listed
+                  summary: Change dataset status
+          description: ''
+  /v1/document-parsing/:
+    post:
+      operationId: document_parsing_create
+      description: Parse document contents encoded as base64 strings
+      tags:
+      - document-parsing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocumentParseRequestRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DocumentParseRequestRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DocumentParseRequestRequest'
+        required: true
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentParseResponse'
+          description: ''
+  /v1/execution-logs/:
+    get:
+      operationId: execution_logs_list
+      description: Get a list of execution logs. An execution log is created every
+        time a skill or an evaluator is executed.
+      parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: search
+        schema:
+          type: string
+          default: ''
+        description: Filter with skill name or id
+      - in: query
+        name: unique_skills
+        schema:
+          type: boolean
+          default: false
+        description: Return only unique skills
+      tags:
+      - execution-logs
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedExecutionLogListList'
+          description: ''
+  /v1/execution-logs/{log_id}/:
+    get:
+      operationId: execution_logs_retrieve
+      description: Get the full details of a single execution log.
+      parameters:
+      - in: path
+        name: log_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - execution-logs
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExecutionLogDetails'
+          description: ''
+  /v1/models/:
+    get:
+      operationId: models_list
+      description: Get all available LLM models.
+      parameters:
+      - in: query
+        name: capable_of
+        schema:
+          type: array
+          items:
+            type: string
+        description: Search for models by capabilities.
+        explode: false
+        style: form
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - models
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedModelListList'
+          description: ''
+    post:
+      operationId: models_create
+      description: Create a custom LLM model.
+      tags:
+      - models
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModelRequest'
+            examples:
+              CreateACustomLLMExecutionModel(SaaS):
+                value:
+                  default_key: something secret
+                  model: gpt-4-turbo
+                  name: my-custom-gpt
+                summary: Create a custom LLM execution model (SaaS)
+                description: An example showing model with name my-custom-gpt, but
+                  using SaaS service.
+              CreateACustomLLMExecutionModel(non-SaaS):
+                value:
+                  default_key: something secret
+                  model: azure/gpt-4-turbo
+                  name: azure/gpt-4-turbo
+                  url: https://azure-openai-somewhere.openai.azure.com
+                summary: Create a custom LLM execution model (non-SaaS)
+                description: An example with non-SaaS LLM model.
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ModelRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ModelRequest'
+        required: true
+      security:
+      - publicApiKey: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Model'
+          description: ''
+  /v1/models/{id}/:
+    get:
+      operationId: models_retrieve
+      description: Get model details.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - models
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Model'
+          description: ''
+    put:
+      operationId: models_update
+      description: Update a custom LLM model.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - models
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModelRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ModelRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ModelRequest'
+        required: true
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Model'
+          description: ''
+    patch:
+      operationId: models_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - models
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedModelRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedModelRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedModelRequest'
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Model'
+          description: ''
+    delete:
+      operationId: models_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - models
+      security:
+      - publicApiKey: []
+      responses:
+        '204':
+          description: No response body
+  /v1/objectives/:
+    get:
+      operationId: objectives_list
+      description: List Objective definitions.
+      parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
+      - in: query
+        name: has_validators
+        schema:
+          type: boolean
+        description: Filter objectives by whether they have validators.
+      - in: query
+        name: intent
+        schema:
+          type: string
+          default: ''
+        description: Search for objectives by intent (exact match).
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: search
+        schema:
+          type: string
+          default: ''
+        description: Search for objectives by intent.
+      tags:
+      - objectives
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedObjectiveListList'
+          description: ''
+    post:
+      operationId: objectives_create
+      description: Create an Objective definition.
+      tags:
+      - objectives
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ObjectiveRequest'
+            examples:
+              CreateAnObjectiveDefinition:
+                value:
+                  intent: Answer a question based on job title
+                  validators:
+                  - threshold: '0.9'
+                    evaluator_name: Clarity
+                  - evaluator_name: Precision
+                summary: Create an Objective definition
+                description: Create an Objective, which defines the intent of the
+                  skills which match it, as well as the requirement that the answers
+                  should be of high clarity (0.9 is required threshold), and the results
+                  will be also evaluated for precision but that information is just
+                  gathered for informational purposes
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ObjectiveRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ObjectiveRequest'
+      security:
+      - publicApiKey: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ID'
+          description: ''
+  /v1/objectives/{id}/:
+    get:
+      operationId: objectives_retrieve
+      description: Get an Objective definition details.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - objectives
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Objective'
+          description: ''
+    put:
+      operationId: objectives_update
+      description: Update an Objective definition.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - objectives
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ObjectiveRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ObjectiveRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ObjectiveRequest'
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Objective'
+          description: ''
+    patch:
+      operationId: objectives_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - objectives
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedObjectiveRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedObjectiveRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedObjectiveRequest'
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Objective'
+          description: ''
+    delete:
+      operationId: objectives_destroy
+      description: Delete an Objective definition.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - objectives
+      security:
+      - publicApiKey: []
+      responses:
+        '204':
+          description: No response body
+  /v1/objectives/objectives/{objective_id}/execute/:
+    post:
+      operationId: objectives_objectives_execute_create
+      description: Execute all objective validators.
+      parameters:
+      - in: path
+        name: objective_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - objectives
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ObjectiveExecutionRequest'
+            examples:
+              ExecuteTheObjectiveValidatorsWithRequest(prompt)AndResponse(llmOutput):
+                value:
+                  request: Tell me a random fact
+                  response: The reason the sky is blue is because of Rayleigh scattering.
+                summary: Execute the objective validators with request (prompt) and
+                  response (llm output)
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ObjectiveExecutionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ObjectiveExecutionRequest'
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidatorExecutionResult'
+          description: ''
+  /v1/objectives/versions/{id}/:
+    get:
+      operationId: Get a list of all versions of an objective
+      parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - objectives
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedObjectiveList'
+          description: ''
+  /v1/skills/:
+    get:
+      operationId: skills_list
+      description: List skills.
+      parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
+      - in: query
+        name: is_evaluator
+        schema:
+          type: boolean
+          default: false
+        description: Return only evaluator skills.
+      - in: query
+        name: is_root_evaluator
+        schema:
+          type: boolean
+          default: false
+        description: Return only Root Signals defined evaluator skills.
+      - in: query
+        name: name
+        schema:
+          type: string
+          default: ''
+        description: Search for skills by name (exact match).
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: search
+        schema:
+          type: string
+          default: ''
+        description: Search for skills by name, prompt or description.
+      - in: query
+        name: skill_type
+        schema:
+          type: string
+          default: false
+        description: Return only skills that are of the specified type. Options are
+          'native' or 'managed'
+      tags:
+      - skills
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSkillListOutputList'
+          description: ''
+    post:
+      operationId: skills_create
+      description: Create a skill or an evaluator.
+      tags:
+      - skills
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SkillRequest'
+            examples:
+              CreateASimpleSkill:
+                value:
+                  prompt: 'As a {{job_title}}, please answer this {{question}}. Your
+                    answer here:'
+                  name: Job title question answering skill
+                  pii_filter: false
+                  objective:
+                    intent: Answer a question based on job title
+                  input_variables:
+                  - name: job_title
+                  - name: question
+                  models:
+                  - gpt-4-turbo
+                summary: Create a simple skill
+              CreateAnEvaluator:
+                value:
+                  prompt: Does the {{output}} contain ambiguous language?
+                  name: Direct language
+                  pii_filter: false
+                  objective:
+                    intent: Does the output contain ambiguous language?
+                  is_evaluator: true
+                  models:
+                  - gpt-4-turbo
+                summary: Create an Evaluator
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SkillRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SkillRequest'
+      security:
+      - publicApiKey: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Skill'
+          description: ''
+  /v1/skills/{id}/:
+    get:
+      operationId: skills_retrieve
+      description: Get skill details.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: include_last_n_validator_results
+        schema:
+          type: integer
+          default: 0
+        description: Include the last N validator results for each validator in the
+          response.
+      - in: query
+        name: version_id
+        schema:
+          type: string
+          default: ''
+        description: Get a specific version of the skill
+      tags:
+      - skills
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Skill'
+          description: ''
+    put:
+      operationId: skills_update
+      description: Update a skill.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - skills
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SkillRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SkillRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SkillRequest'
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Skill'
+          description: ''
+    patch:
+      operationId: skills_partial_update
+      description: Update a skill. All fields are optional.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - skills
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSkillRequest'
+            examples:
+              UpdateASkillPrompt:
+                value:
+                  prompt: 'Please answer this {{question}}. Your answer here:'
+                  input_variables:
+                  - name: question
+                summary: Update a skill prompt
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSkillRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSkillRequest'
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Skill'
+          description: ''
+    delete:
+      operationId: skills_destroy
+      description: Delete a skill.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - skills
+      security:
+      - publicApiKey: []
+      responses:
+        '204':
+          description: No response body
+  /v1/skills/calibrate/:
+    post:
+      operationId: skills_calibrate_create
+      description: Test an evaluator definition using calibration data
+      tags:
+      - skills
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SkillTestInputRequest'
+            examples:
+              TestWithCalibrationData.:
+                value:
+                  test_data:
+                  - - '1.0'
+                    - '2'
+                    - What is 1+1. Respond with a single digit number.
+                  - - '0.34'
+                    - The primary colors are red, blue, and green.
+                    - What are the primary colors?
+                  objective:
+                    intent: 'Is the output relevant to the prompt? Evaluate for the
+                      following criteria: accuracy, completeness, adherence to the
+                      prompt, and logical consistency.'
+                  prompt: Evaluate how well the {{output}} adheres to instructions
+                    given in {{input}}.
+                  name: Relevancy
+                  models:
+                  - gpt-4-turbo
+                  is_evaluator: true
+                summary: Test with calibration data.
+                description: 'Calibration test_data must have columns in this order:
+                  ''expected score'', ''text to evaluate (output)'', ''input''. Input
+                  is optional.'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SkillTestInputRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SkillTestInputRequest'
+        required: true
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EvaluatorCalibrationOutput'
+          description: ''
+  /v1/skills/calibrate/{id}:
+    post:
+      operationId: skills_calibrate_create_2
+      description: Test an existing evaluator using calibration data
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - skills
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SkillTestDataRequest'
+            examples:
+              TestWithCalibrationData.:
+                value:
+                  test_data:
+                  - - '1.0'
+                    - '2'
+                    - What is 1+1. Respond with a single digit number.
+                  - - '0.34'
+                    - The primary colors are red, blue, and green.
+                    - What are the primary colors?
+                summary: Test with calibration data.
+                description: 'Calibration test_data must have columns in this order:
+                  ''expected score'', ''text to evaluate (output)'', ''input''. Input
+                  is optional.'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SkillTestDataRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SkillTestDataRequest'
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EvaluatorCalibrationOutput'
+          description: ''
+  /v1/skills/duplicate/{id}/:
+    post:
+      operationId: skills_duplicate_create
+      description: Duplicate a skill
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - skills
+      security:
+      - publicApiKey: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Skill'
+          description: ''
+  /v1/skills/evaluator/execute/{skill_id}/:
+    post:
+      operationId: skills_evaluator_execute_create
+      description: Execute an evaluator
+      parameters:
+      - in: path
+        name: skill_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - skills
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EvaluatorExecutionRequest'
+            examples:
+              ExecuteASimpleEvaluator(forExample,Precision):
+                value:
+                  request: Tell me a random fact
+                  response: The reason the sky is blue is because of Rayleigh scattering.
+                summary: Execute a simple evaluator (for example, Precision)
+              ExecuteARAGEvaluator(forExample,AnswerCorrectness):
+                value:
+                  request: What was the revenue in Q1?
+                  response: The revenue in Q1 was $1,000,000.
+                  contexts:
+                  - List of documents
+                  - containing the company's financial reports
+                summary: Execute a RAG evaluator (for example, Answer Correctness)
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EvaluatorExecutionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EvaluatorExecutionRequest'
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EvaluatorExecutionResult'
+          description: ''
+  /v1/skills/execute-validators/{id}/:
+    post:
+      operationId: skills_execute_validators_create
+      description: Execute all skill validators.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - skills
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SkillValidatorExecutionRequest'
+            examples:
+              ExecuteTheSkillValidatorsWithRequest(prompt)AndResponse(llmOutput):
+                value:
+                  request: Tell me a random fact
+                  response: The reason the sky is blue is because of Rayleigh scattering.
+                summary: Execute the skill validators with request (prompt) and response
+                  (llm output)
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SkillValidatorExecutionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SkillValidatorExecutionRequest'
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidatorExecutionResult'
+          description: ''
+  /v1/skills/execute/{id}/:
+    post:
+      operationId: skills_execute_create
+      description: Execute a skill.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - skills
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SkillExecutionRequest'
+            examples:
+              ExecuteASkillWithTwoVariables:
+                value:
+                  variables:
+                    job_title: software developer
+                    question: please write some basic python code
+                summary: Execute a skill with two variables
+              ExecuteSkillWithSpecifiedModelParameters:
+                value:
+                  variables:
+                    job_title: software developer
+                    question: please write some basic python code
+                  model_params:
+                    temperature: 0.7
+                summary: Execute skill with specified model parameters
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SkillExecutionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SkillExecutionRequest'
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SkillExecutionResult'
+              examples:
+                ExampleExecutionOutput:
+                  value:
+                    llm_output: Python is a high-level programming language. It is
+                      used for web development, data analysis, artificial intelligence,
+                      and scientific computing.
+                    validation: null
+                    model: gpt-4-turbo
+                    execution_log_id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                    rendered_prompt: Describe the Python programming language.
+                    cost: 0.0001
+                  summary: Example execution output
+          description: ''
+  /v1/skills/openai/{skill_id}/chat/completions:
+    post:
+      operationId: skills_openai_chat_completions_create
+      description: Execute a skill with OpenAI's chat completion compatible endpoint.
+      parameters:
+      - in: path
+        name: skill_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - skills
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpenAIChatCompletionRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OpenAIChatCompletionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OpenAIChatCompletionRequest'
+        required: true
+      responses:
+        '200':
+          description: No response body
+  /v1/skills/status/{id}/:
+    post:
+      operationId: skills_status_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - skills
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatusChangeRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StatusChangeRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StatusChangeRequest'
+        required: true
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusChange'
+          description: ''
+    put:
+      operationId: skills_status_update
+      description: Change the status of a skill
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - skills
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatusChangeRequest'
+            examples:
+              ChangeSkillStatus:
+                value:
+                  status: unlisted | listed
+                summary: Change skill status
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StatusChangeRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StatusChangeRequest'
+        required: true
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusChange'
+              examples:
+                ChangeSkillStatus:
+                  value:
+                    status: unlisted | listed
+                  summary: Change skill status
+          description: ''
+  /v1/skills/test/:
+    post:
+      operationId: skills_test_create
+      description: Test a skill definition using a dataset
+      tags:
+      - skills
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SkillTestInputRequest'
+            examples:
+              TestASkillDefinitionWithAnExistigTestDataset:
+                value:
+                  test_dataset_id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                  prompt: 'As a {{job_title}}, please answer this: {{question}}. Your
+                    answer here:'
+                  name: Test skill
+                  models:
+                  - gpt-4-turbo
+                summary: Test a skill definition with an existig test dataset
+              TestASkillDefinitionWithOne-offTestData:
+                value:
+                  test_data:
+                  - - Software developer
+                    - What is the best programming language?
+                  - - Product owner
+                    - What is the ideal team velocity?
+                  prompt: 'As a {{job_title}}, please answer this: {{question}}. Your
+                    answer here:'
+                  name: Test skill
+                  models:
+                  - gpt-4-turbo
+                summary: Test a skill definition with one-off test data
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SkillTestInputRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SkillTestInputRequest'
+        required: true
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SkillTestOutput'
+          description: ''
+  /v1/skills/test/{id}:
+    post:
+      operationId: skills_test_create_2
+      description: Test an existing skill using a dataset. The dataset can be predefined
+        or provided in the request.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - skills
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SkillTestDataRequest'
+            examples:
+              TestWithAPredefinedDataset:
+                value:
+                  test_dataset_id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                summary: Test with a predefined dataset
+              TestWithOne-offTestData:
+                value:
+                  test_data:
+                  - - Software developer
+                    - What is the best programming language?
+                  - - Product owner
+                    - What is the ideal team velocity?
+                summary: Test with one-off test data
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SkillTestDataRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SkillTestDataRequest'
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SkillTestOutput'
+          description: ''
+  /v1/skills/versions/{id}/:
+    get:
+      operationId: Get a list of all versions of a skill
+      parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - skills
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSkillList'
+          description: ''
+components:
+  schemas:
+    Chat:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatMessage'
+          readOnly: true
+        chat_id:
+          type: string
+          maxLength: 255
+      required:
+      - created_at
+      - messages
+      - updated_at
+    ChatCreateRequest:
+      type: object
+      properties:
+        chat_id:
+          type: string
+          minLength: 1
+          maxLength: 255
+        skill_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        assistant_welcome_messages:
+          type: array
+          items: {}
+          nullable: true
+        history_from_chat_id:
+          type: string
+          writeOnly: true
+          nullable: true
+          minLength: 1
+          description: Chat to copy the message history from.
+      required:
+      - skill_id
+    ChatDetail:
+      type: object
+      properties:
+        chat_id:
+          type: string
+        skill_id:
+          type: string
+          format: uuid
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatMessage'
+      required:
+      - chat_id
+      - created_at
+      - skill_id
+    ChatExecutionRequestRequest:
+      type: object
+      properties:
+        skill_version_id:
+          type: string
+          nullable: true
+          minLength: 1
+        variables:
+          type: object
+          additionalProperties:
+            type: string
+            minLength: 1
+          default: {}
+        model_params:
+          allOf:
+          - $ref: '#/components/schemas/ModelParamsRequest'
+          default:
+            temperature: null
+        dynamic_datasets:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReferenceVariableDynamicDatasetsRequest'
+          nullable: true
+          description: Specify the dataset for a reference variable.
+        language:
+          type: string
+          nullable: true
+          minLength: 1
+          default: en
+          maxLength: 255
+        correlation_id:
+          type: string
+          nullable: true
+          minLength: 1
+          description: Unique ID to track message status. If not provided, status
+            tracking will not be available.
+    ChatExecutionResult:
+      type: object
+      properties:
+        llm_output:
+          type: string
+        model:
+          type: string
+          readOnly: true
+        execution_log_id:
+          type: string
+        rendered_prompt:
+          type: string
+          readOnly: true
+        cost:
+          type: number
+          format: double
+          nullable: true
+        model_call_duration:
+          type: number
+          format: double
+        validation:
+          $ref: '#/components/schemas/Validation'
+        chat_id:
+          type: string
+      required:
+      - chat_id
+      - cost
+      - execution_log_id
+      - llm_output
+      - model
+      - rendered_prompt
+      - validation
+    ChatMessage:
+      type: object
+      properties:
+        text:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+      required:
+      - created_at
+      - role
+      - text
+    DataLoader:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        type:
+          $ref: '#/components/schemas/DataLoaderTypeEnum'
+        parameters: {}
+      required:
+      - id
+      - name
+      - parameters
+    DataLoaderRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+        type:
+          $ref: '#/components/schemas/DataLoaderTypeEnum'
+        parameters: {}
+      required:
+      - name
+      - parameters
+    DataLoaderTypeEnum:
+      enum:
+      - webpage
+      - sql
+      - websearch
+      - api_call
+      type: string
+      description: |-
+        * `webpage` - Webpage
+        * `sql` - Sql
+        * `websearch` - Websearch
+        * `api_call` - Api Call
+    DataSetCreate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          nullable: true
+        file:
+          type: string
+          format: uri
+        type:
+          $ref: '#/components/schemas/DataSetType'
+        url:
+          type: string
+          format: uri
+        tags:
+          type: array
+          items:
+            type: string
+            format: uuid
+        owner:
+          allOf:
+          - $ref: '#/components/schemas/NestedUserDetails'
+          readOnly: true
+        has_header:
+          type: boolean
+          default: false
+      required:
+      - id
+      - owner
+    DataSetCreateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+          minLength: 1
+        file:
+          type: string
+          format: binary
+        draft_id:
+          type: string
+          format: uuid
+          writeOnly: true
+        type:
+          $ref: '#/components/schemas/DataSetType'
+        url:
+          type: string
+          format: uri
+          minLength: 1
+        tags:
+          type: array
+          items:
+            type: string
+            format: uuid
+        has_header:
+          type: boolean
+          default: false
+    DataSetList:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          nullable: true
+        type:
+          $ref: '#/components/schemas/DataSetType'
+        tags:
+          type: array
+          items:
+            type: string
+            format: uuid
+        owner:
+          allOf:
+          - $ref: '#/components/schemas/NestedUserDetails'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        _meta:
+          readOnly: true
+          title: ' meta'
+      required:
+      - _meta
+      - created_at
+      - id
+      - owner
+    DataSetType:
+      enum:
+      - reference
+      - test
+      type: string
+      description: |-
+        * `reference` - REFERENCE
+        * `test` - TEST
+    DatasetRangeRequest:
+      type: object
+      properties:
+        start:
+          type: integer
+          minimum: 0
+          nullable: true
+        end:
+          type: integer
+          minimum: 0
+          nullable: true
+      required:
+      - end
+      - start
+    DocumentParseRequestRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          minLength: 32
+          description: An arbitrary string between 32 and 36 characters for version
+            tracking. Will be auto generated if not provided.
+          maxLength: 36
+        document_content:
+          type: string
+          minLength: 1
+          description: The content of the document to parse, encoded as base64 string
+        document_type:
+          allOf:
+          - $ref: '#/components/schemas/DocumentTypeEnum'
+          description: |-
+            The type of the document to parse
+
+            * `csv` - CSV
+            * `pdf` - PDF
+            * `html` - HTML
+            * `docx` - DOCX
+            * `doc` - DOC
+            * `txt` - TXT
+            * `md` - MD
+            * `pptx` - PPTX
+            * `ppt` - PPT
+            * `xlsx` - XLSX
+            * `xls` - XLS
+            * `odt` - ODT
+            * `rtf` - RTF
+            * `xml` - XML
+            * `eml` - EML
+            * `epub` - EPUB
+        document_language:
+          type: string
+          minLength: 1
+          description: The language of the document to parse, using ISO 639-2 three-letter
+            language code
+        response_format:
+          allOf:
+          - $ref: '#/components/schemas/ResponseFormatEnum'
+          description: |-
+            'plain' returns concatenated text and is fast. 'structured' will return a json object with chunks and metadata that needs post-processing
+
+            * `plain` - plain
+            * `structured` - structured
+      required:
+      - document_content
+      - document_language
+      - document_type
+      - id
+      - response_format
+    DocumentParseResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: An arbitrary string between 32 and 36 characters for version
+            tracking. Will be auto generated if not provided.
+          maxLength: 36
+          minLength: 32
+        request_id:
+          type: string
+          description: The ID of the corresponding DocumentParseRequest
+          maxLength: 36
+          minLength: 32
+        content_plain:
+          type: string
+          description: The content of the document as plain text
+        content_elements:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+          nullable: true
+          description: The content of the document as a list of elements with metadata.
+            Returned only if response format was 'structured' in the request
+      required:
+      - content_elements
+      - content_plain
+      - id
+      - request_id
+    DocumentTypeEnum:
+      enum:
+      - csv
+      - pdf
+      - html
+      - docx
+      - doc
+      - txt
+      - md
+      - pptx
+      - ppt
+      - xlsx
+      - xls
+      - odt
+      - rtf
+      - xml
+      - eml
+      - epub
+      type: string
+      description: |-
+        * `csv` - CSV
+        * `pdf` - PDF
+        * `html` - HTML
+        * `docx` - DOCX
+        * `doc` - DOC
+        * `txt` - TXT
+        * `md` - MD
+        * `pptx` - PPTX
+        * `ppt` - PPT
+        * `xlsx` - XLSX
+        * `xls` - XLS
+        * `odt` - ODT
+        * `rtf` - RTF
+        * `xml` - XML
+        * `eml` - EML
+        * `epub` - EPUB
+    EvaluatorCalibrationOutput:
+      type: object
+      properties:
+        variables:
+          type: object
+          additionalProperties: {}
+        model_call_duration:
+          type: number
+          format: double
+          description: Deprecated, use result.model_call_duration instead.
+        row_number:
+          type: integer
+        result:
+          $ref: '#/components/schemas/EvaluatorCalibrationResult'
+      required:
+      - result
+      - row_number
+      - variables
+    EvaluatorCalibrationResult:
+      type: object
+      properties:
+        llm_output:
+          type: string
+        model:
+          type: string
+          readOnly: true
+        execution_log_id:
+          type: string
+        rendered_prompt:
+          type: string
+          readOnly: true
+        cost:
+          type: number
+          format: double
+          nullable: true
+        model_call_duration:
+          type: number
+          format: double
+        expected_score:
+          type: number
+          format: double
+        score:
+          type: number
+          format: double
+          nullable: true
+        justification:
+          type: string
+          nullable: true
+      required:
+      - cost
+      - execution_log_id
+      - expected_score
+      - llm_output
+      - model
+      - rendered_prompt
+      - score
+    EvaluatorDemonstrations:
+      type: object
+      properties:
+        prompt:
+          type: string
+          nullable: true
+        output:
+          type: string
+        score:
+          type: number
+          format: double
+          maximum: 1
+          minimum: 0
+        justification:
+          type: string
+          nullable: true
+      required:
+      - output
+      - score
+    EvaluatorDemonstrationsRequest:
+      type: object
+      properties:
+        prompt:
+          type: string
+          nullable: true
+        output:
+          type: string
+          minLength: 1
+        score:
+          type: number
+          format: double
+          maximum: 1
+          minimum: 0
+        justification:
+          type: string
+          nullable: true
+      required:
+      - output
+      - score
+    EvaluatorExecutionFunctionParameterPropertyRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          minLength: 1
+        description:
+          type: string
+          minLength: 1
+        items:
+          type: object
+          additionalProperties: {}
+      required:
+      - type
+    EvaluatorExecutionFunctionParameterRequest:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/EvaluatorExecutionFunctionParameterTypeEnum'
+        properties:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/EvaluatorExecutionFunctionParameterPropertyRequest'
+        required:
+          type: array
+          items:
+            type: string
+            minLength: 1
+      required:
+      - type
+    EvaluatorExecutionFunctionParameterTypeEnum:
+      enum:
+      - object
+      type: string
+      description: '* `object` - Object'
+    EvaluatorExecutionFunctionRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+        parameters:
+          $ref: '#/components/schemas/EvaluatorExecutionFunctionParameterRequest'
+        description:
+          type: string
+          minLength: 1
+      required:
+      - name
+      - parameters
+    EvaluatorExecutionFunctionsRequest:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/EvaluatorExecutionFunctionsTypeEnum'
+        function:
+          $ref: '#/components/schemas/EvaluatorExecutionFunctionRequest'
+      required:
+      - function
+      - type
+    EvaluatorExecutionFunctionsTypeEnum:
+      enum:
+      - function
+      type: string
+      description: '* `function` - Function'
+    EvaluatorExecutionRequest:
+      type: object
+      properties:
+        skill_version_id:
+          type: string
+          nullable: true
+          minLength: 1
+        request:
+          type: string
+          default: ''
+          maxLength: 1000000
+        response:
+          type: string
+          default: ''
+          maxLength: 1000000
+        contexts:
+          type: array
+          items:
+            type: string
+            minLength: 1
+        functions:
+          type: array
+          items:
+            $ref: '#/components/schemas/EvaluatorExecutionFunctionsRequest'
+        expected_output:
+          type: string
+          nullable: true
+          maxLength: 1000000
+        variables:
+          type: object
+          additionalProperties:
+            type: string
+            minLength: 1
+          default: {}
+          description: Extra variables to be used in the execution of the evaluator.
+            Optional.
+    EvaluatorExecutionResult:
+      type: object
+      properties:
+        evaluator_name:
+          type: string
+          nullable: true
+        score:
+          type: number
+          format: double
+          nullable: true
+        cost:
+          type: number
+          format: double
+          nullable: true
+        execution_log_id:
+          type: string
+        justification:
+          type: string
+          nullable: true
+      required:
+      - cost
+      - evaluator_name
+      - execution_log_id
+      - justification
+      - score
+    ExecutionLogDetails:
+      type: object
+      properties:
+        chat_id:
+          type: string
+          readOnly: true
+          nullable: true
+        cost:
+          type: number
+          format: double
+          readOnly: true
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        justification:
+          type: string
+          readOnly: true
+        llm_output:
+          type: string
+          readOnly: true
+        model:
+          type: string
+          readOnly: true
+        model_call_duration:
+          type: number
+          format: double
+        model_params:
+          allOf:
+          - $ref: '#/components/schemas/ModelParams'
+          nullable: true
+        objective:
+          type: object
+          properties:
+            intent:
+              type: string
+            id:
+              type: string
+              format: uuid
+          readOnly: true
+        owner:
+          allOf:
+          - $ref: '#/components/schemas/NestedUserDetails'
+          readOnly: true
+        rendered_prompt:
+          type: string
+          readOnly: true
+        skill:
+          type: object
+          properties:
+            prompt:
+              type: string
+            pii_filter:
+              type: boolean
+            version_id:
+              type: string
+            name:
+              type: string
+            type:
+              type: string
+            id:
+              type: string
+              format: uuid
+          example:
+            prompt: 'Provide a clear answer to the question: {{question}}'
+            pii_filter: false
+            version_id: '1234'
+            name: Skill name
+            type: skill
+            id: dfd76dd3-1415-4339-9b20-3bc2bbe3e8ce
+          readOnly: true
+        validation_results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SkillExecutionValidatorResult'
+          readOnly: true
+        variables:
+          readOnly: true
+      required:
+      - chat_id
+      - cost
+      - created_at
+      - id
+      - justification
+      - llm_output
+      - model
+      - model_call_duration
+      - objective
+      - owner
+      - rendered_prompt
+      - skill
+      - validation_results
+      - variables
+    ExecutionLogList:
+      type: object
+      properties:
+        cost:
+          type: number
+          format: double
+          readOnly: true
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        owner:
+          allOf:
+          - $ref: '#/components/schemas/NestedUserDetails'
+          readOnly: true
+        skill:
+          type: object
+          properties:
+            name:
+              type: string
+            type:
+              type: string
+            id:
+              type: string
+              format: uuid
+          example:
+            name: Skill name
+            type: skill
+            id: dfd76dd3-1415-4339-9b20-3bc2bbe3e8ce
+          readOnly: true
+        validation_result_average:
+          type: number
+          format: double
+          readOnly: true
+          nullable: true
+      required:
+      - cost
+      - created_at
+      - id
+      - owner
+      - skill
+      - validation_result_average
+    ID:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+      required:
+      - id
+    InputVariable:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        name:
+          type: string
+          maxLength: 1000
+        skill:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+      required:
+      - created_at
+      - id
+      - name
+      - skill
+      - updated_at
+    InputVariableRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 1000
+      required:
+      - name
+    Model:
+      type: object
+      properties:
+        default_key:
+          type: string
+          nullable: true
+          maxLength: 4000
+        id:
+          type: string
+          readOnly: true
+        max_output_token_count:
+          type: integer
+          minimum: 800
+        max_token_count:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          nullable: true
+        model:
+          type: string
+        name:
+          type: string
+          maxLength: 100
+        url:
+          type: string
+          nullable: true
+          maxLength: 1024
+      required:
+      - id
+      - name
+    ModelList:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        owner:
+          allOf:
+          - $ref: '#/components/schemas/NestedUserDetails'
+          readOnly: true
+        provider:
+          allOf:
+          - $ref: '#/components/schemas/Provider'
+          readOnly: true
+          nullable: true
+      required:
+      - id
+      - name
+      - owner
+      - provider
+    ModelParams:
+      type: object
+      properties:
+        temperature:
+          type: number
+          format: double
+          maximum: 1
+          minimum: 0
+          nullable: true
+    ModelParamsRequest:
+      type: object
+      properties:
+        temperature:
+          type: number
+          format: double
+          nullable: true
+    ModelRequest:
+      type: object
+      properties:
+        default_key:
+          type: string
+          nullable: true
+          maxLength: 4000
+        max_output_token_count:
+          type: integer
+          minimum: 800
+        max_token_count:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          nullable: true
+        model:
+          type: string
+          minLength: 1
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        url:
+          type: string
+          nullable: true
+          maxLength: 1024
+      required:
+      - name
+    NestedObjectiveEvaluator:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 1000
+        evaluator_only_offline:
+          type: boolean
+      required:
+      - id
+    NestedObjectiveEvaluatorRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 1000
+        evaluator_only_offline:
+          type: boolean
+    NestedObjectiveList:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        intent:
+          type: string
+          maxLength: 10000
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        validators:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectiveValidator'
+          readOnly: true
+      required:
+      - id
+      - validators
+    NestedUserDetails:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          readOnly: true
+          title: Email address
+        full_name:
+          type: string
+          readOnly: true
+      required:
+      - email
+      - full_name
+    Objective:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        intent:
+          type: string
+          maxLength: 10000
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        test_set:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+          readOnly: true
+          nullable: true
+          description: 'Deprecated: Use test_dataset_id instead.'
+        validators:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectiveValidator'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        owner:
+          allOf:
+          - $ref: '#/components/schemas/NestedUserDetails'
+          readOnly: true
+        version_id:
+          type: string
+          format: uuid
+          readOnly: true
+        test_dataset_id:
+          type: string
+          format: uuid
+          nullable: true
+        _meta:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+          title: ' meta'
+      required:
+      - _meta
+      - created_at
+      - id
+      - owner
+      - test_set
+      - version_id
+    ObjectiveExecutionRequest:
+      type: object
+      properties:
+        request:
+          type: string
+          default: ''
+          maxLength: 1000000
+        response:
+          type: string
+          default: ''
+          maxLength: 1000000
+        contexts:
+          type: array
+          items:
+            type: string
+            minLength: 1
+        functions:
+          type: array
+          items:
+            $ref: '#/components/schemas/EvaluatorExecutionFunctionsRequest'
+        expected_output:
+          type: string
+          nullable: true
+          maxLength: 1000000
+    ObjectiveList:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        intent:
+          type: string
+          maxLength: 10000
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        owner:
+          allOf:
+          - $ref: '#/components/schemas/NestedUserDetails'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        validators:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectiveValidator'
+          readOnly: true
+        _meta:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+          title: ' meta'
+      required:
+      - _meta
+      - created_at
+      - id
+      - owner
+      - validators
+    ObjectiveRequest:
+      type: object
+      properties:
+        intent:
+          type: string
+          minLength: 1
+          maxLength: 10000
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        validators:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectiveValidatorRequest'
+        force_create:
+          type: boolean
+          writeOnly: true
+          description: Force creation of a new objective. Applies only to PUT requests.
+        test_dataset_id:
+          type: string
+          format: uuid
+          nullable: true
+    ObjectiveValidator:
+      type: object
+      properties:
+        evaluator:
+          allOf:
+          - $ref: '#/components/schemas/NestedObjectiveEvaluator'
+          readOnly: true
+        threshold:
+          type: number
+          format: double
+      required:
+      - evaluator
+    ObjectiveValidatorRequest:
+      type: object
+      properties:
+        evaluator_id:
+          type: string
+          format: uuid
+          writeOnly: true
+        evaluator_name:
+          type: string
+          writeOnly: true
+          minLength: 1
+        threshold:
+          type: number
+          format: double
+    OpenAIChatCompletionRequest:
+      type: object
+      properties:
+        model:
+          type: string
+          minLength: 1
+          maxLength: 200
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/OpenAIMessageRequest'
+        stream:
+          type: boolean
+          default: false
+      required:
+      - messages
+      - model
+    OpenAIMessageRequest:
+      type: object
+      properties:
+        role:
+          type: string
+          minLength: 1
+          maxLength: 100
+        content:
+          type: string
+          maxLength: 50000
+      required:
+      - content
+      - role
+    PaginatedChatList:
+      type: object
+      required:
+      - results
+      properties:
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Chat'
+    PaginatedDataSetListList:
+      type: object
+      required:
+      - results
+      properties:
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataSetList'
+    PaginatedExecutionLogListList:
+      type: object
+      required:
+      - results
+      properties:
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExecutionLogList'
+    PaginatedModelListList:
+      type: object
+      required:
+      - results
+      properties:
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModelList'
+    PaginatedObjectiveList:
+      type: object
+      required:
+      - results
+      properties:
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Objective'
+    PaginatedObjectiveListList:
+      type: object
+      required:
+      - results
+      properties:
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectiveList'
+    PaginatedSkillList:
+      type: object
+      required:
+      - results
+      properties:
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Skill'
+    PaginatedSkillListOutputList:
+      type: object
+      required:
+      - results
+      properties:
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SkillListOutput'
+    PatchedModelRequest:
+      type: object
+      properties:
+        default_key:
+          type: string
+          nullable: true
+          maxLength: 4000
+        max_output_token_count:
+          type: integer
+          minimum: 800
+        max_token_count:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          nullable: true
+        model:
+          type: string
+          minLength: 1
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        url:
+          type: string
+          nullable: true
+          maxLength: 1024
+    PatchedObjectiveRequest:
+      type: object
+      properties:
+        intent:
+          type: string
+          minLength: 1
+          maxLength: 10000
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        validators:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectiveValidatorRequest'
+        force_create:
+          type: boolean
+          writeOnly: true
+          description: Force creation of a new objective. Applies only to PUT requests.
+        test_dataset_id:
+          type: string
+          format: uuid
+          nullable: true
+    PatchedSkillRequest:
+      type: object
+      properties:
+        change_note:
+          type: string
+          nullable: true
+        data_loaders:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataLoaderRequest'
+        evaluator_demonstrations:
+          type: array
+          items:
+            $ref: '#/components/schemas/EvaluatorDemonstrationsRequest'
+          nullable: true
+        evaluator_only_offline:
+          type: boolean
+          description: Do not run the evaluator if used as an Objective validator.
+        evaluator_require_reference_variables:
+          type: boolean
+        input_variables:
+          type: array
+          items:
+            $ref: '#/components/schemas/InputVariableRequest'
+        is_evaluator:
+          type: boolean
+        model_params:
+          allOf:
+          - $ref: '#/components/schemas/ModelParamsRequest'
+          nullable: true
+        models:
+          type: array
+          items:
+            type: string
+            minLength: 1
+        name:
+          type: string
+          minLength: 1
+          maxLength: 1000
+        objective:
+          allOf:
+          - $ref: '#/components/schemas/ObjectiveRequest'
+          nullable: true
+        objective_id:
+          type: string
+          format: uuid
+          writeOnly: true
+          nullable: true
+        objective_version_id:
+          type: string
+          format: uuid
+          writeOnly: true
+          nullable: true
+          description: Optionally pin the Skill to a specific version of an Objective.
+            If not provided, the latest version of the objective will be used and
+            followed.
+        overwrite:
+          type: boolean
+          writeOnly: true
+          default: false
+          description: Overwrite existing skill with the same name. Only for POST
+            requests.
+        pii_filter:
+          type: boolean
+          description: Filter out personally identifiable information before sending
+            a prompt to a LLM
+        prompt:
+          type: string
+        reference_variables:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReferenceVariableRequest'
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        system_message:
+          type: string
+    Provider:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        name:
+          type: string
+        logo_light:
+          type: string
+          format: uri
+        logo_dark:
+          type: string
+          format: uri
+        is_gdpr_compliant:
+          type: boolean
+      required:
+      - id
+      - name
+    ReferenceVariable:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        dataset:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        name:
+          type: string
+          maxLength: 1000
+        skill:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+      required:
+      - created_at
+      - dataset
+      - id
+      - name
+      - skill
+      - updated_at
+    ReferenceVariableDynamicDatasetsRequest:
+      type: object
+      properties:
+        reference_variable_name:
+          type: string
+          minLength: 1
+        dataset_id:
+          type: string
+          format: uuid
+      required:
+      - dataset_id
+      - reference_variable_name
+    ReferenceVariableRequest:
+      type: object
+      properties:
+        dataset:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+          maxLength: 1000
+      required:
+      - dataset
+      - name
+    ResponseFormatEnum:
+      enum:
+      - plain
+      - structured
+      type: string
+      description: |-
+        * `plain` - plain
+        * `structured` - structured
+    RoleEnum:
+      enum:
+      - system
+      - user
+      - assistant
+      type: string
+      description: |-
+        * `system` - System
+        * `user` - User
+        * `assistant` - Assistant
+    Skill:
+      type: object
+      properties:
+        change_note:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        data_loaders:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataLoader'
+        evaluator_demonstrations:
+          type: array
+          items:
+            $ref: '#/components/schemas/EvaluatorDemonstrations'
+          nullable: true
+        evaluator_only_offline:
+          type: boolean
+          description: Do not run the evaluator if used as an Objective validator.
+        evaluator_require_reference_variables:
+          type: boolean
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        input_variables:
+          type: array
+          items:
+            $ref: '#/components/schemas/InputVariable'
+        is_evaluator:
+          type: boolean
+        model_params:
+          allOf:
+          - $ref: '#/components/schemas/ModelParams'
+          nullable: true
+        models:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
+          maxLength: 1000
+        objective:
+          allOf:
+          - $ref: '#/components/schemas/Objective'
+          nullable: true
+        owner:
+          allOf:
+          - $ref: '#/components/schemas/NestedUserDetails'
+          readOnly: true
+        pii_filter:
+          type: boolean
+          description: Filter out personally identifiable information before sending
+            a prompt to a LLM
+        prompt:
+          type: string
+        reference_variables:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReferenceVariable'
+        skill_type:
+          allOf:
+          - $ref: '#/components/schemas/SkillTypeEnum'
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        system_message:
+          type: string
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        updated_by:
+          allOf:
+          - $ref: '#/components/schemas/NestedUserDetails'
+          readOnly: true
+          nullable: true
+        version_id:
+          type: string
+          format: uuid
+          readOnly: true
+        _meta:
+          readOnly: true
+          title: ' meta'
+      required:
+      - _meta
+      - created_at
+      - id
+      - owner
+      - skill_type
+      - updated_at
+      - updated_by
+      - version_id
+    SkillExecutionRequest:
+      type: object
+      properties:
+        skill_version_id:
+          type: string
+          nullable: true
+          minLength: 1
+        variables:
+          type: object
+          additionalProperties:
+            type: string
+            minLength: 1
+          default: {}
+        model_params:
+          allOf:
+          - $ref: '#/components/schemas/ModelParamsRequest'
+          default:
+            temperature: null
+        dynamic_datasets:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReferenceVariableDynamicDatasetsRequest'
+          nullable: true
+          description: Specify the dataset for a reference variable.
+        language:
+          type: string
+          nullable: true
+          minLength: 1
+          default: en
+          maxLength: 255
+    SkillExecutionResult:
+      type: object
+      properties:
+        llm_output:
+          type: string
+        model:
+          type: string
+          readOnly: true
+        execution_log_id:
+          type: string
+        rendered_prompt:
+          type: string
+          readOnly: true
+        cost:
+          type: number
+          format: double
+          nullable: true
+        model_call_duration:
+          type: number
+          format: double
+        validation:
+          $ref: '#/components/schemas/Validation'
+      required:
+      - cost
+      - execution_log_id
+      - llm_output
+      - model
+      - rendered_prompt
+      - validation
+    SkillExecutionValidatorResult:
+      type: object
+      properties:
+        evaluator_id:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+        evaluator_name:
+          type: string
+          readOnly: true
+        result:
+          type: number
+          format: double
+          readOnly: true
+          nullable: true
+        threshold:
+          type: number
+          format: double
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/ValidationResultStatus'
+          readOnly: true
+        justification:
+          type: string
+          readOnly: true
+      required:
+      - evaluator_id
+      - evaluator_name
+      - justification
+      - result
+      - status
+      - threshold
+    SkillListOutput:
+      type: object
+      properties:
+        _meta:
+          readOnly: true
+          title: ' meta'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        models:
+          type: array
+          items:
+            type: string
+          readOnly: true
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        objective:
+          allOf:
+          - $ref: '#/components/schemas/NestedObjectiveList'
+          readOnly: true
+        owner:
+          allOf:
+          - $ref: '#/components/schemas/NestedUserDetails'
+          readOnly: true
+        prompt:
+          type: string
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusEnum'
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        updated_by:
+          allOf:
+          - $ref: '#/components/schemas/NestedUserDetails'
+          readOnly: true
+          nullable: true
+        version_id:
+          type: string
+          readOnly: true
+        last_executed_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+      required:
+      - _meta
+      - created_at
+      - id
+      - last_executed_at
+      - models
+      - name
+      - objective
+      - owner
+      - prompt
+      - status
+      - updated_at
+      - updated_by
+      - version_id
+    SkillRequest:
+      type: object
+      properties:
+        change_note:
+          type: string
+          nullable: true
+        data_loaders:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataLoaderRequest'
+        evaluator_demonstrations:
+          type: array
+          items:
+            $ref: '#/components/schemas/EvaluatorDemonstrationsRequest'
+          nullable: true
+        evaluator_only_offline:
+          type: boolean
+          description: Do not run the evaluator if used as an Objective validator.
+        evaluator_require_reference_variables:
+          type: boolean
+        input_variables:
+          type: array
+          items:
+            $ref: '#/components/schemas/InputVariableRequest'
+        is_evaluator:
+          type: boolean
+        model_params:
+          allOf:
+          - $ref: '#/components/schemas/ModelParamsRequest'
+          nullable: true
+        models:
+          type: array
+          items:
+            type: string
+            minLength: 1
+        name:
+          type: string
+          minLength: 1
+          maxLength: 1000
+        objective:
+          allOf:
+          - $ref: '#/components/schemas/ObjectiveRequest'
+          nullable: true
+        objective_id:
+          type: string
+          format: uuid
+          writeOnly: true
+          nullable: true
+        objective_version_id:
+          type: string
+          format: uuid
+          writeOnly: true
+          nullable: true
+          description: Optionally pin the Skill to a specific version of an Objective.
+            If not provided, the latest version of the objective will be used and
+            followed.
+        overwrite:
+          type: boolean
+          writeOnly: true
+          default: false
+          description: Overwrite existing skill with the same name. Only for POST
+            requests.
+        pii_filter:
+          type: boolean
+          description: Filter out personally identifiable information before sending
+            a prompt to a LLM
+        prompt:
+          type: string
+        reference_variables:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReferenceVariableRequest'
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        system_message:
+          type: string
+    SkillTestDataRequest:
+      type: object
+      properties:
+        test_data:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+              minLength: 1
+          writeOnly: true
+          nullable: true
+        test_dataset_id:
+          type: string
+          writeOnly: true
+          minLength: 1
+        dataset_range:
+          allOf:
+          - $ref: '#/components/schemas/DatasetRangeRequest'
+          nullable: true
+          description: Specifies the range of dataset rows to use
+    SkillTestInputRequest:
+      type: object
+      properties:
+        test_data:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+              minLength: 1
+          writeOnly: true
+          nullable: true
+        test_dataset_id:
+          type: string
+          writeOnly: true
+          minLength: 1
+        dataset_range:
+          allOf:
+          - $ref: '#/components/schemas/DatasetRangeRequest'
+          nullable: true
+          description: Specifies the range of dataset rows to use
+        prompt:
+          type: string
+          minLength: 1
+        reference_variables:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReferenceVariableRequest'
+          default: []
+        data_loaders:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataLoaderRequest'
+          default: []
+        input_variables:
+          type: array
+          items:
+            $ref: '#/components/schemas/InputVariableRequest'
+          default: []
+        models:
+          type: array
+          items:
+            type: string
+            minLength: 1
+        name:
+          type: string
+          nullable: true
+          minLength: 1
+        pii_filter:
+          type: boolean
+          default: false
+        objective:
+          allOf:
+          - $ref: '#/components/schemas/ObjectiveRequest'
+          nullable: true
+        is_evaluator:
+          type: boolean
+          default: false
+      required:
+      - prompt
+    SkillTestOutput:
+      type: object
+      properties:
+        variables:
+          type: object
+          additionalProperties: {}
+        model_call_duration:
+          type: number
+          format: double
+          description: Deprecated, use result.model_call_duration instead.
+        row_number:
+          type: integer
+        result:
+          $ref: '#/components/schemas/SkillExecutionResult'
+      required:
+      - result
+      - row_number
+      - variables
+    SkillTypeEnum:
+      enum:
+      - managed
+      - native
+      type: string
+      description: |-
+        * `managed` - managed
+        * `native` - native
+    SkillValidatorExecutionRequest:
+      type: object
+      properties:
+        skill_version_id:
+          type: string
+          nullable: true
+          minLength: 1
+        request:
+          type: string
+          default: ''
+          maxLength: 1000000
+        response:
+          type: string
+          default: ''
+          maxLength: 1000000
+        contexts:
+          type: array
+          items:
+            type: string
+            minLength: 1
+        functions:
+          type: array
+          items:
+            $ref: '#/components/schemas/EvaluatorExecutionFunctionsRequest'
+        expected_output:
+          type: string
+          nullable: true
+          maxLength: 1000000
+        variables:
+          type: object
+          additionalProperties:
+            type: string
+            minLength: 1
+          default: {}
+          description: Extra variables to be used in the execution of the evaluator.
+            Optional.
+    StatusChange:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/StatusChangeStatusEnum'
+      required:
+      - status
+    StatusChangeRequest:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/StatusChangeStatusEnum'
+      required:
+      - status
+    StatusChangeStatusEnum:
+      enum:
+      - unlisted
+      - listed
+      type: string
+      description: |-
+        * `unlisted` - unlisted
+        * `listed` - listed
+    StatusEnum:
+      enum:
+      - unlisted
+      - listed
+      - public
+      type: string
+      description: |-
+        * `unlisted` - unlisted
+        * `listed` - listed
+        * `public` - public
+    Validation:
+      type: object
+      properties:
+        is_valid:
+          type: boolean
+        validator_results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidatorResult'
+          nullable: true
+      required:
+      - validator_results
+    ValidationResultStatus:
+      enum:
+      - pending
+      - finished
+      type: string
+      description: |-
+        * `pending` - Pending
+        * `finished` - Finished
+    ValidatorExecutionResult:
+      type: object
+      properties:
+        validation:
+          $ref: '#/components/schemas/Validation'
+        execution_log_id:
+          type: string
+      required:
+      - execution_log_id
+      - validation
+    ValidatorResult:
+      type: object
+      properties:
+        evaluator_name:
+          type: string
+          nullable: true
+        evaluator_id:
+          type: string
+        result:
+          type: number
+          format: double
+          nullable: true
+        threshold:
+          type: number
+          format: double
+          nullable: true
+        cost:
+          type: number
+          format: double
+          nullable: true
+        is_valid:
+          type: boolean
+        status:
+          $ref: '#/components/schemas/ValidationResultStatus'
+        justification:
+          type: string
+          nullable: true
+      required:
+      - evaluator_id
+  securitySchemes:
+    publicApiKey:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Api-Key"
+      x-default: Api-Key <your-api-key>
+servers:
+- url: https://api.app.rootsignals.ai
