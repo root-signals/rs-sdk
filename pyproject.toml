@@ -1,0 +1,118 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "root-signals"
+description = 'The Python SDK for API of Root Signals'
+maintainers = [
+  {name = "Markus Stenberg", email="markus.stenberg@rootsignals.ai"}
+]
+license = {file = "LICENSE"}
+readme = "README.md"
+requires-python = ">=3.8"
+dynamic = ["version"]
+dependencies = [
+  "pydantic>=2.6.2, <3",
+  "python-dateutil",
+  "requests",
+  "typing-extensions",
+  "validators",
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: MacOS",
+  "Operating System :: Microsoft :: Windows",
+  "Operating System :: OS Independent",
+  "Operating System :: POSIX :: Linux",
+  "Operating System :: POSIX",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "Typing :: Typed",
+]
+
+[project.optional-dependencies]
+# These are essentially development dependencies (hatch installs ^ + these)
+dev = [
+  "furo", # sphinx theme
+  "hatch",
+  "mypy==1.9.0",
+  "myst_parser",
+  "pre-commit",
+  "pytest",
+  "ruff",
+  "sphinx",
+  "sphinx-autoapi",
+  "sphinx-markdown-builder",
+  "twine", # for pypi uploads ( it has more convenient test/nontest handling than hatch)
+  "types-requests",
+  "validators",
+]
+
+
+[project.urls]
+Homepage = "https://rootsignals.ai/"
+Repository = "https://github.com/root-signals/root-sdk.git"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/root"]
+
+[tool.hatch.version]
+path = "src/root/__about__.py"
+
+[tool.mypy]
+# Default target
+files = "src/root/*.py"
+
+exclude = ["tests", "src/root/generated"]
+# ^ This doesn't seem to quite work, as when it is following the ^^
+# imports it will give errors anyway. In Makefile we force it to
+# ignore errors from not-explicitly-specified files.
+
+# This enables bunch of checks
+#
+# Ideally we should use this someday. Especially with Python 3.8 base
+# it is somewhat painful.
+#
+# strict = true
+
+# and also this (not included in strict)
+warn_unreachable = true
+
+# Subset of strict options
+
+# casting is bad, unnecessary casting worse
+warn_redundant_casts = true
+
+# unused type disables are confusing
+warn_unused_ignores = true
+
+# the code should be typed
+disallow_incomplete_defs = true
+disallow_untyped_defs = true
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["A", "B", "C", "E", "F", "G", "I", "N", "Q", "S", "T", "W", "T20"]
+ignore = ["A002"]
+
+[tool.ruff.lint.per-file-ignores]
+
+# openapi generator doesn't produce particularly good output
+"src/root/generated/**/*.py" = ["B904", "C", "E", "F", "N", "S101", "S110"]
+
+"**/tests/**/*.py" = ["S101"]
+# S101 = asserts, they're fine in tests
+
+# T201 = print statement, we use it intentionally
+"examples/*.py" =  ["T201"]
+"examples.py" =  ["T201"]
