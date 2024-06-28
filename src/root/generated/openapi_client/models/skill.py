@@ -42,7 +42,9 @@ class Skill(BaseModel):
     created_at: Optional[datetime]
     data_loaders: Optional[List[DataLoader]] = None
     evaluator_demonstrations: Optional[List[EvaluatorDemonstrations]] = None
-    evaluator_only_offline: Optional[StrictBool] = None
+    evaluator_only_offline: Optional[StrictBool] = Field(
+        default=None, description="Do not run the evaluator if used as an Objective validator."
+    )
     evaluator_require_reference_variables: Optional[StrictBool] = None
     id: StrictStr
     input_variables: Optional[List[InputVariable]] = None
@@ -57,7 +59,7 @@ class Skill(BaseModel):
     )
     prompt: Optional[StrictStr] = None
     reference_variables: Optional[List[ReferenceVariable]] = None
-    skill_type: Optional[SkillTypeEnum] = None
+    skill_type: SkillTypeEnum
     status: Optional[StatusEnum] = None
     system_message: Optional[StrictStr] = None
     updated_at: Optional[datetime]
@@ -127,12 +129,14 @@ class Skill(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
                 "created_at",
                 "id",
                 "owner",
+                "skill_type",
                 "updated_at",
                 "updated_by",
                 "version_id",

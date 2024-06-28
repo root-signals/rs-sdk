@@ -27,7 +27,6 @@ from root.generated.openapi_client.models.input_variable_request import InputVar
 from root.generated.openapi_client.models.model_params_request import ModelParamsRequest
 from root.generated.openapi_client.models.objective_request import ObjectiveRequest
 from root.generated.openapi_client.models.reference_variable_request import ReferenceVariableRequest
-from root.generated.openapi_client.models.skill_type_enum import SkillTypeEnum
 from root.generated.openapi_client.models.status_enum import StatusEnum
 
 
@@ -39,7 +38,9 @@ class SkillRequest(BaseModel):
     change_note: Optional[StrictStr] = None
     data_loaders: Optional[List[DataLoaderRequest]] = None
     evaluator_demonstrations: Optional[List[EvaluatorDemonstrationsRequest]] = None
-    evaluator_only_offline: Optional[StrictBool] = None
+    evaluator_only_offline: Optional[StrictBool] = Field(
+        default=None, description="Do not run the evaluator if used as an Objective validator."
+    )
     evaluator_require_reference_variables: Optional[StrictBool] = None
     input_variables: Optional[List[InputVariableRequest]] = None
     is_evaluator: Optional[StrictBool] = None
@@ -53,7 +54,6 @@ class SkillRequest(BaseModel):
     )
     prompt: Optional[StrictStr] = None
     reference_variables: Optional[List[ReferenceVariableRequest]] = None
-    skill_type: Optional[SkillTypeEnum] = None
     status: Optional[StatusEnum] = None
     system_message: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = [
@@ -72,7 +72,6 @@ class SkillRequest(BaseModel):
         "pii_filter",
         "prompt",
         "reference_variables",
-        "skill_type",
         "status",
         "system_message",
     ]
@@ -215,7 +214,6 @@ class SkillRequest(BaseModel):
                 ]
                 if obj.get("reference_variables") is not None
                 else None,
-                "skill_type": obj.get("skill_type"),
                 "status": obj.get("status"),
                 "system_message": obj.get("system_message"),
             }
