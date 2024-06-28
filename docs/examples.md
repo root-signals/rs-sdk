@@ -83,6 +83,14 @@ We can group and track any LLM pipeline results using a skill.
 ```{literalinclude} ../examples/pipeline.py
 ```
 
+## Add a model
+
+Adding a model is as simple as specifying the model name and an endpoint. The model can be a local model or a model hosted on a cloud service.
+
+```{literalinclude} ../examples/model.py
+```
+
+
 ## Skill with a data loader
 
 In this example, we add a data loader which loads the contents of a reference variable called kimchi_ingredients from Wikipedia, and then uses that to populate the prompt.
