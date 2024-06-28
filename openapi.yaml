@@ -2392,6 +2392,7 @@ components:
           nullable: true
         evaluator_only_offline:
           type: boolean
+          description: Do not run the evaluator if used as an Objective validator.
         evaluator_require_reference_variables:
           type: boolean
         input_variables:
@@ -2432,8 +2433,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ReferenceVariableRequest'
-        skill_type:
-          $ref: '#/components/schemas/SkillTypeEnum'
         status:
           $ref: '#/components/schemas/StatusEnum'
         system_message:
@@ -2547,6 +2546,7 @@ components:
           nullable: true
         evaluator_only_offline:
           type: boolean
+          description: Do not run the evaluator if used as an Objective validator.
         evaluator_require_reference_variables:
           type: boolean
         id:
@@ -2589,7 +2589,9 @@ components:
           items:
             $ref: '#/components/schemas/ReferenceVariable'
         skill_type:
-          $ref: '#/components/schemas/SkillTypeEnum'
+          allOf:
+          - $ref: '#/components/schemas/SkillTypeEnum'
+          readOnly: true
         status:
           $ref: '#/components/schemas/StatusEnum'
         system_message:
@@ -2615,6 +2617,7 @@ components:
       - created_at
       - id
       - owner
+      - skill_type
       - updated_at
       - updated_by
       - version_id
@@ -2920,6 +2923,7 @@ components:
           nullable: true
         evaluator_only_offline:
           type: boolean
+          description: Do not run the evaluator if used as an Objective validator.
         evaluator_require_reference_variables:
           type: boolean
         input_variables:
@@ -2960,8 +2964,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ReferenceVariableRequest'
-        skill_type:
-          $ref: '#/components/schemas/SkillTypeEnum'
         status:
           $ref: '#/components/schemas/StatusEnum'
         system_message:
