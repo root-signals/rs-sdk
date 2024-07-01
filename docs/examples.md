@@ -11,7 +11,7 @@ Just like the quickstart example, but broken into multiple lines for readability
 
 ## Simple skill
 
-The simple skill example adds some more metadata to the skill and an evaluator. It specifies explicitly the model to use, the descriptive intent, and the input variables that are referred to in the prompt.
+The simple skill example adds some more metadata to the skill. It specifies explicitly the model to use, the descriptive intent, and the input variables that are referred to in the prompt.
 
 ```{literalinclude} ../examples/simple.py
 ```
