@@ -68,21 +68,28 @@ client = RootSignals()
 
 # Create a skill
 skill = client.skills.create(
-    "Find me good recipes for {{food_type}} food that are {{cuisine}}."
+    """
+    Classify this text into one of the following: {{categories}}
+    Text: {{text}}
+    """
 )
 
-# Run it
-response = skill.run({"food_type": "spicy", "cuisine": "Korean"})
+# Execute it
+response = skill.run(
+    {
+        "text": "The expectation for rate cuts has been steadily declining.",
+        "categories": "Finance, Sports, Politics",
+    }
+)
 
 print(response)
 
-# llm_output="1. Kimchi Jjigae (Kimchi Stew): This spicy and flavorful
-# stew is made with fermented kimchi, pork, tofu, and vegetables. ..."
-# validation={'validator_results': [], 'is_valid': True}
-# model='gpt-3.5-turbo' engine='gpt-3.5-turbo'
-# execution_log_id='181eb95b-b972-4e96-8e30-ca7d3447d4fe'
-# rendered_prompt='Find me good recipes for spicy food that are
-# Korean.'
+# "llm_output": "Finance",
+# "validation": Validation(is_valid=True, validator_results=[]),
+# "model": "gpt-3.5-turbo",
+# "execution_log_id": "9b3c713d-7bdc-4f7d-a85c-ed7d92ff4a56",
+# "rendered_prompt": "Classify this text into ...",
+# "cost": 5.6e-05,
 
 ```
 

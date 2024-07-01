@@ -17,8 +17,8 @@ skill = client.skills.create(
 # Execute
 response = skill.run(
     {
-    "text": "The expectation for rate cuts has been steadily declining.",
-    "categories": "Finance, Sports, Politics"
+        "text": "The expectation for rate cuts has been steadily declining.",
+        "categories": "Finance, Sports, Politics",
     }
 )
 print(response)
@@ -26,18 +26,15 @@ print(response)
 # "validation": Validation(is_valid=True, validator_results=[]),
 # "model": "gpt-4",
 # "execution_log_id": "1181e790-7b87-457f-a2cb-6b1dfc1eddf4",
-# "rendered_prompt": (
-#     "Classify this text into one of the following: Finance, Sports, Politics\n"
-#     "Text: The expectation for rate cuts has been steadily declining."
-# ),
+# "rendered_prompt": "Classify this text into ...",
 # "cost": 0.00093,
 
 # We can retrieve the skill by id
 skill_2 = client.skills.get(skill_id=skill.id)
 response = skill_2.run(
     {
-    "text": "The expectation for rate cuts has been steadily declining.",
-    "categories": "Finance, Sports, Politics"
+        "text": "The expectation for rate cuts has been steadily declining.",
+        "categories": "Finance, Sports, Politics",
     }
 )
 
@@ -51,7 +48,7 @@ skill_3 = next(client.skills.list(name="My text classifier"))
 response = client.skills.run(
     skill_3.id,
     {
-    "text": "The expectation for rate cuts has been steadily declining.",
-    "categories": "Finance, Sports, Politics"
-    }
+        "text": "The expectation for rate cuts has been steadily declining.",
+        "categories": "Finance, Sports, Politics",
+    },
 )
