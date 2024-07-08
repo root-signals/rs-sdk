@@ -2662,6 +2662,8 @@ components:
         skill:
           type: object
           properties:
+            prompt:
+              type: string
             pii_filter:
               type: boolean
             version_id:
@@ -2674,6 +2676,7 @@ components:
               type: string
               format: uuid
           example:
+            prompt: 'Provide a clear answer to the question: {{question}}'
             pii_filter: false
             version_id: '1234'
             name: Skill name
@@ -2684,6 +2687,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SkillExecutionValidatorResult'
+          readOnly: true
+        variables:
           readOnly: true
       required:
       - chat_id
@@ -2696,6 +2701,7 @@ components:
       - rendered_prompt
       - skill
       - validation_results
+      - variables
     SkillExecutionLogList:
       type: object
       properties:
@@ -2720,6 +2726,8 @@ components:
         skill:
           type: object
           properties:
+            prompt:
+              type: string
             pii_filter:
               type: boolean
             version_id:
@@ -2732,6 +2740,7 @@ components:
               type: string
               format: uuid
           example:
+            prompt: 'Provide a clear answer to the question: {{question}}'
             pii_filter: false
             version_id: '1234'
             name: Skill name

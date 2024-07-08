@@ -44,6 +44,7 @@ class SkillExecutionLogDetails(BaseModel):
     rendered_prompt: StrictStr
     skill: SkillExecutionLogDetailsSkill
     validation_results: List[SkillExecutionValidatorResult]
+    variables: Optional[Any]
     __properties: ClassVar[List[str]] = [
         "chat_id",
         "cost",
@@ -56,6 +57,7 @@ class SkillExecutionLogDetails(BaseModel):
         "rendered_prompt",
         "skill",
         "validation_results",
+        "variables",
     ]
 
     model_config = ConfigDict(
@@ -96,6 +98,7 @@ class SkillExecutionLogDetails(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
@@ -108,6 +111,7 @@ class SkillExecutionLogDetails(BaseModel):
                 "owner",
                 "rendered_prompt",
                 "validation_results",
+                "variables",
             ]
         )
 
@@ -152,6 +156,11 @@ class SkillExecutionLogDetails(BaseModel):
         if self.model_params is None and "model_params" in self.model_fields_set:
             _dict["model_params"] = None
 
+        # set to None if variables (nullable) is None
+        # and model_fields_set contains the field
+        if self.variables is None and "variables" in self.model_fields_set:
+            _dict["variables"] = None
+
         return _dict
 
     @classmethod
@@ -184,6 +193,7 @@ class SkillExecutionLogDetails(BaseModel):
                 ]
                 if obj.get("validation_results") is not None
                 else None,
+                "variables": obj.get("variables"),
             }
         )
         return _obj
