@@ -27,12 +27,13 @@ class SkillExecutionLogDetailsSkill(BaseModel):
     SkillExecutionLogDetailsSkill
     """  # noqa: E501
 
+    prompt: Optional[StrictStr] = None
     pii_filter: Optional[StrictBool] = None
     version_id: Optional[StrictStr] = None
     name: Optional[StrictStr] = None
     type: Optional[StrictStr] = None
     id: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["pii_filter", "version_id", "name", "type", "id"]
+    __properties: ClassVar[List[str]] = ["prompt", "pii_filter", "version_id", "name", "type", "id"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -84,6 +85,7 @@ class SkillExecutionLogDetailsSkill(BaseModel):
 
         _obj = cls.model_validate(
             {
+                "prompt": obj.get("prompt"),
                 "pii_filter": obj.get("pii_filter"),
                 "version_id": obj.get("version_id"),
                 "name": obj.get("name"),
