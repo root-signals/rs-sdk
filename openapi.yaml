@@ -400,7 +400,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedSkillExecutionLogListList'
+                $ref: '#/components/schemas/PaginatedExecutionLogListList'
           description: ''
   /v1/execution-logs/{log_id}/:
     get:
@@ -422,7 +422,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SkillExecutionLogDetails'
+                $ref: '#/components/schemas/ExecutionLogDetails'
           description: ''
   /v1/models/:
     get:
@@ -1893,6 +1893,144 @@ components:
       - cost
       - execution_log_id
       - score
+    ExecutionLogDetails:
+      type: object
+      properties:
+        chat_id:
+          type: string
+          readOnly: true
+          nullable: true
+        cost:
+          type: number
+          format: double
+          readOnly: true
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        llm_output:
+          type: string
+          readOnly: true
+        model:
+          type: string
+          readOnly: true
+        model_params:
+          allOf:
+          - $ref: '#/components/schemas/ModelParams'
+          nullable: true
+        owner:
+          allOf:
+          - $ref: '#/components/schemas/NestedUserDetails'
+          readOnly: true
+        rendered_prompt:
+          type: string
+          readOnly: true
+        skill:
+          type: object
+          properties:
+            prompt:
+              type: string
+            pii_filter:
+              type: boolean
+            version_id:
+              type: string
+            name:
+              type: string
+            type:
+              type: string
+            id:
+              type: string
+              format: uuid
+          example:
+            prompt: 'Provide a clear answer to the question: {{question}}'
+            pii_filter: false
+            version_id: '1234'
+            name: Skill name
+            type: skill
+            id: dfd76dd3-1415-4339-9b20-3bc2bbe3e8ce
+          readOnly: true
+        validation_results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SkillExecutionValidatorResult'
+          readOnly: true
+        variables:
+          readOnly: true
+      required:
+      - chat_id
+      - cost
+      - created_at
+      - id
+      - llm_output
+      - model
+      - owner
+      - rendered_prompt
+      - skill
+      - validation_results
+      - variables
+    ExecutionLogList:
+      type: object
+      properties:
+        cost:
+          type: number
+          format: double
+          readOnly: true
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        owner:
+          allOf:
+          - $ref: '#/components/schemas/NestedUserDetails'
+          readOnly: true
+        skill:
+          type: object
+          properties:
+            prompt:
+              type: string
+            pii_filter:
+              type: boolean
+            version_id:
+              type: string
+            name:
+              type: string
+            type:
+              type: string
+            id:
+              type: string
+              format: uuid
+          example:
+            prompt: 'Provide a clear answer to the question: {{question}}'
+            pii_filter: false
+            version_id: '1234'
+            name: Skill name
+            type: skill
+            id: dfd76dd3-1415-4339-9b20-3bc2bbe3e8ce
+          readOnly: true
+        validation_result_average:
+          type: number
+          format: double
+          readOnly: true
+          nullable: true
+      required:
+      - cost
+      - created_at
+      - id
+      - owner
+      - skill
+      - validation_result_average
     ID:
       type: object
       properties:
@@ -2255,6 +2393,25 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DataSetList'
+    PaginatedExecutionLogListList:
+      type: object
+      required:
+      - results
+      properties:
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExecutionLogList'
     PaginatedModelList:
       type: object
       required:
@@ -2293,25 +2450,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ObjectiveList'
-    PaginatedSkillExecutionLogListList:
-      type: object
-      required:
-      - results
-      properties:
-        next:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
-        previous:
-          type: string
-          nullable: true
-          format: uri
-          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/SkillExecutionLogList'
     PaginatedSkillList:
       type: object
       required:
@@ -2621,144 +2759,6 @@ components:
       - updated_at
       - updated_by
       - version_id
-    SkillExecutionLogDetails:
-      type: object
-      properties:
-        chat_id:
-          type: string
-          readOnly: true
-          nullable: true
-        cost:
-          type: number
-          format: double
-          readOnly: true
-          nullable: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-          nullable: true
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        llm_output:
-          type: string
-          readOnly: true
-        model:
-          type: string
-          readOnly: true
-        model_params:
-          allOf:
-          - $ref: '#/components/schemas/ModelParams'
-          nullable: true
-        owner:
-          allOf:
-          - $ref: '#/components/schemas/NestedUserDetails'
-          readOnly: true
-        rendered_prompt:
-          type: string
-          readOnly: true
-        skill:
-          type: object
-          properties:
-            prompt:
-              type: string
-            pii_filter:
-              type: boolean
-            version_id:
-              type: string
-            name:
-              type: string
-            type:
-              type: string
-            id:
-              type: string
-              format: uuid
-          example:
-            prompt: 'Provide a clear answer to the question: {{question}}'
-            pii_filter: false
-            version_id: '1234'
-            name: Skill name
-            type: skill
-            id: dfd76dd3-1415-4339-9b20-3bc2bbe3e8ce
-          readOnly: true
-        validation_results:
-          type: array
-          items:
-            $ref: '#/components/schemas/SkillExecutionValidatorResult'
-          readOnly: true
-        variables:
-          readOnly: true
-      required:
-      - chat_id
-      - cost
-      - created_at
-      - id
-      - llm_output
-      - model
-      - owner
-      - rendered_prompt
-      - skill
-      - validation_results
-      - variables
-    SkillExecutionLogList:
-      type: object
-      properties:
-        cost:
-          type: number
-          format: double
-          readOnly: true
-          nullable: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-          nullable: true
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        owner:
-          allOf:
-          - $ref: '#/components/schemas/NestedUserDetails'
-          readOnly: true
-        skill:
-          type: object
-          properties:
-            prompt:
-              type: string
-            pii_filter:
-              type: boolean
-            version_id:
-              type: string
-            name:
-              type: string
-            type:
-              type: string
-            id:
-              type: string
-              format: uuid
-          example:
-            prompt: 'Provide a clear answer to the question: {{question}}'
-            pii_filter: false
-            version_id: '1234'
-            name: Skill name
-            type: skill
-            id: dfd76dd3-1415-4339-9b20-3bc2bbe3e8ce
-          readOnly: true
-        validation_result_average:
-          type: number
-          format: double
-          readOnly: true
-          nullable: true
-      required:
-      - cost
-      - created_at
-      - id
-      - owner
-      - skill
-      - validation_result_average
     SkillExecutionRequest:
       type: object
       properties:

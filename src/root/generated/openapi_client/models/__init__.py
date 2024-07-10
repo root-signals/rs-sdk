@@ -46,6 +46,9 @@ from root.generated.openapi_client.models.evaluator_execution_functions_type_enu
 )
 from root.generated.openapi_client.models.evaluator_execution_request import EvaluatorExecutionRequest
 from root.generated.openapi_client.models.evaluator_execution_result import EvaluatorExecutionResult
+from root.generated.openapi_client.models.execution_log_details import ExecutionLogDetails
+from root.generated.openapi_client.models.execution_log_details_skill import ExecutionLogDetailsSkill
+from root.generated.openapi_client.models.execution_log_list import ExecutionLogList
 from root.generated.openapi_client.models.id import ID
 from root.generated.openapi_client.models.input_variable import InputVariable
 from root.generated.openapi_client.models.input_variable_request import InputVariableRequest
@@ -65,11 +68,9 @@ from root.generated.openapi_client.models.open_ai_chat_completion_request import
 from root.generated.openapi_client.models.open_ai_message_request import OpenAIMessageRequest
 from root.generated.openapi_client.models.paginated_chat_list import PaginatedChatList
 from root.generated.openapi_client.models.paginated_data_set_list_list import PaginatedDataSetListList
+from root.generated.openapi_client.models.paginated_execution_log_list_list import PaginatedExecutionLogListList
 from root.generated.openapi_client.models.paginated_model_list import PaginatedModelList
 from root.generated.openapi_client.models.paginated_objective_list_list import PaginatedObjectiveListList
-from root.generated.openapi_client.models.paginated_skill_execution_log_list_list import (
-    PaginatedSkillExecutionLogListList,
-)
 from root.generated.openapi_client.models.paginated_skill_list import PaginatedSkillList
 from root.generated.openapi_client.models.paginated_skill_list_output_list import PaginatedSkillListOutputList
 from root.generated.openapi_client.models.patched_objective_request import PatchedObjectiveRequest
@@ -82,9 +83,6 @@ from root.generated.openapi_client.models.reference_variable_dynamic_datasets_re
 from root.generated.openapi_client.models.reference_variable_request import ReferenceVariableRequest
 from root.generated.openapi_client.models.role_enum import RoleEnum
 from root.generated.openapi_client.models.skill import Skill
-from root.generated.openapi_client.models.skill_execution_log_details import SkillExecutionLogDetails
-from root.generated.openapi_client.models.skill_execution_log_details_skill import SkillExecutionLogDetailsSkill
-from root.generated.openapi_client.models.skill_execution_log_list import SkillExecutionLogList
 from root.generated.openapi_client.models.skill_execution_request import SkillExecutionRequest
 from root.generated.openapi_client.models.skill_execution_result import SkillExecutionResult
 from root.generated.openapi_client.models.skill_execution_validator_result import SkillExecutionValidatorResult
