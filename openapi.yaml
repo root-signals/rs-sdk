@@ -741,6 +741,47 @@ paths:
       responses:
         '204':
           description: No response body
+  /v1/objectives/objectives/{objective_id}/execute/:
+    post:
+      operationId: objectives_objectives_execute_create
+      description: Execute all objective validators.
+      parameters:
+      - in: path
+        name: objective_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - objectives
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ObjectiveExecutionRequest'
+            examples:
+              ExecuteTheObjectiveValidatorsWithRequest(prompt)AndResponse(llmOutput):
+                value:
+                  request: Tell me a random fact
+                  response: The reason the sky is blue is because of Rayleigh scattering.
+                summary: Execute the objective validators with request (prompt) and
+                  response (llm output)
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ObjectiveExecutionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ObjectiveExecutionRequest'
+        required: true
+      security:
+      - tokenAuth: []
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidatorExecutionResult'
+          description: ''
   /v1/skills/:
     get:
       operationId: skills_list
@@ -1189,7 +1230,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SkillValidatorExecutionResult'
+                $ref: '#/components/schemas/ValidatorExecutionResult'
           description: ''
   /v1/skills/execute/{id}/:
     post:
@@ -2285,6 +2326,32 @@ components:
       - created_at
       - id
       - owner
+    ObjectiveExecutionRequest:
+      type: object
+      properties:
+        request:
+          type: string
+          default: ''
+          maxLength: 1000000
+        response:
+          type: string
+          minLength: 1
+          maxLength: 1000000
+        contexts:
+          type: array
+          items:
+            type: string
+            minLength: 1
+        functions:
+          type: array
+          items:
+            $ref: '#/components/schemas/EvaluatorExecutionFunctionsRequest'
+        expected_output:
+          type: string
+          nullable: true
+          maxLength: 1000000
+      required:
+      - response
     ObjectiveList:
       type: object
       properties:
@@ -3134,16 +3201,6 @@ components:
           maxLength: 1000000
       required:
       - response
-    SkillValidatorExecutionResult:
-      type: object
-      properties:
-        validation:
-          $ref: '#/components/schemas/Validation'
-        execution_log_id:
-          type: string
-      required:
-      - execution_log_id
-      - validation
     SkillValidatorRequest:
       type: object
       properties:
@@ -3188,6 +3245,16 @@ components:
       description: |-
         * `pending` - Pending
         * `finished` - Finished
+    ValidatorExecutionResult:
+      type: object
+      properties:
+        validation:
+          $ref: '#/components/schemas/Validation'
+        execution_log_id:
+          type: string
+      required:
+      - execution_log_id
+      - validation
     ValidatorResult:
       type: object
       properties:

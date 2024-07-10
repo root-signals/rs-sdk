@@ -98,6 +98,7 @@ Class | Method | HTTP request | Description
 *ObjectivesApi* | [**objectives_create**](root/generated/openapi_client/docs/ObjectivesApi.md#objectives_create) | **POST** /v1/objectives/ | 
 *ObjectivesApi* | [**objectives_destroy**](root/generated/openapi_client/docs/ObjectivesApi.md#objectives_destroy) | **DELETE** /v1/objectives/{id}/ | 
 *ObjectivesApi* | [**objectives_list**](root/generated/openapi_client/docs/ObjectivesApi.md#objectives_list) | **GET** /v1/objectives/ | 
+*ObjectivesApi* | [**objectives_objectives_execute_create**](root/generated/openapi_client/docs/ObjectivesApi.md#objectives_objectives_execute_create) | **POST** /v1/objectives/objectives/{objective_id}/execute/ | 
 *ObjectivesApi* | [**objectives_partial_update**](root/generated/openapi_client/docs/ObjectivesApi.md#objectives_partial_update) | **PATCH** /v1/objectives/{id}/ | 
 *ObjectivesApi* | [**objectives_retrieve**](root/generated/openapi_client/docs/ObjectivesApi.md#objectives_retrieve) | **GET** /v1/objectives/{id}/ | 
 *ObjectivesApi* | [**objectives_update**](root/generated/openapi_client/docs/ObjectivesApi.md#objectives_update) | **PUT** /v1/objectives/{id}/ | 
@@ -162,6 +163,7 @@ Class | Method | HTTP request | Description
  - [NestedSkillEvaluatorRequest](root/generated/openapi_client/docs/NestedSkillEvaluatorRequest.md)
  - [NestedUserDetails](root/generated/openapi_client/docs/NestedUserDetails.md)
  - [Objective](root/generated/openapi_client/docs/Objective.md)
+ - [ObjectiveExecutionRequest](root/generated/openapi_client/docs/ObjectiveExecutionRequest.md)
  - [ObjectiveList](root/generated/openapi_client/docs/ObjectiveList.md)
  - [ObjectiveRequest](root/generated/openapi_client/docs/ObjectiveRequest.md)
  - [OpenAIChatCompletionRequest](root/generated/openapi_client/docs/OpenAIChatCompletionRequest.md)
@@ -194,11 +196,11 @@ Class | Method | HTTP request | Description
  - [SkillTypeEnum](root/generated/openapi_client/docs/SkillTypeEnum.md)
  - [SkillValidator](root/generated/openapi_client/docs/SkillValidator.md)
  - [SkillValidatorExecutionRequest](root/generated/openapi_client/docs/SkillValidatorExecutionRequest.md)
- - [SkillValidatorExecutionResult](root/generated/openapi_client/docs/SkillValidatorExecutionResult.md)
  - [SkillValidatorRequest](root/generated/openapi_client/docs/SkillValidatorRequest.md)
  - [StatusEnum](root/generated/openapi_client/docs/StatusEnum.md)
  - [Validation](root/generated/openapi_client/docs/Validation.md)
  - [ValidationResultStatus](root/generated/openapi_client/docs/ValidationResultStatus.md)
+ - [ValidatorExecutionResult](root/generated/openapi_client/docs/ValidatorExecutionResult.md)
  - [ValidatorResult](root/generated/openapi_client/docs/ValidatorResult.md)
 
 

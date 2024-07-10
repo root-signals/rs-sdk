@@ -25,8 +25,8 @@ from root.generated.openapi_client.models.skill_test_output import SkillTestOutp
 from root.generated.openapi_client.models.skill_validator_execution_request import (
     SkillValidatorExecutionRequest,
 )
-from root.generated.openapi_client.models.skill_validator_execution_result import (
-    SkillValidatorExecutionResult,
+from root.generated.openapi_client.models.validator_execution_result import (
+    ValidatorExecutionResult,
 )
 
 from .data_loader import DataLoader
@@ -159,7 +159,7 @@ class Skill(OpenAPISkill):
         request: Optional[str] = None,
         contexts: Optional[List[str]] = None,
         functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
-    ) -> SkillValidatorExecutionResult:
+    ) -> ValidatorExecutionResult:
         """
         Run all validators attached to a skill.
 
@@ -573,7 +573,7 @@ class Skills:
         contexts: Optional[List[str]] = None,
         functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
         skill_version_id: Optional[str] = None,
-    ) -> SkillValidatorExecutionResult:
+    ) -> ValidatorExecutionResult:
         """
         Run all validators attached to a skill.
 
