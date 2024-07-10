@@ -63,6 +63,7 @@ from root.generated.openapi_client.models.nested_skill_evaluator import NestedSk
 from root.generated.openapi_client.models.nested_skill_evaluator_request import NestedSkillEvaluatorRequest
 from root.generated.openapi_client.models.nested_user_details import NestedUserDetails
 from root.generated.openapi_client.models.objective import Objective
+from root.generated.openapi_client.models.objective_execution_request import ObjectiveExecutionRequest
 from root.generated.openapi_client.models.objective_list import ObjectiveList
 from root.generated.openapi_client.models.objective_request import ObjectiveRequest
 from root.generated.openapi_client.models.open_ai_chat_completion_request import OpenAIChatCompletionRequest
@@ -97,9 +98,9 @@ from root.generated.openapi_client.models.skill_test_output import SkillTestOutp
 from root.generated.openapi_client.models.skill_type_enum import SkillTypeEnum
 from root.generated.openapi_client.models.skill_validator import SkillValidator
 from root.generated.openapi_client.models.skill_validator_execution_request import SkillValidatorExecutionRequest
-from root.generated.openapi_client.models.skill_validator_execution_result import SkillValidatorExecutionResult
 from root.generated.openapi_client.models.skill_validator_request import SkillValidatorRequest
 from root.generated.openapi_client.models.status_enum import StatusEnum
 from root.generated.openapi_client.models.validation import Validation
 from root.generated.openapi_client.models.validation_result_status import ValidationResultStatus
+from root.generated.openapi_client.models.validator_execution_result import ValidatorExecutionResult
 from root.generated.openapi_client.models.validator_result import ValidatorResult

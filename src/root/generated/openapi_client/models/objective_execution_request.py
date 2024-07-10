@@ -18,20 +18,25 @@ import pprint
 import re  # noqa: F401
 from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, ConfigDict, StrictStr
-from typing_extensions import Self
+from pydantic import BaseModel, ConfigDict, Field
+from typing_extensions import Annotated, Self
 
-from root.generated.openapi_client.models.validation import Validation
+from root.generated.openapi_client.models.evaluator_execution_functions_request import (
+    EvaluatorExecutionFunctionsRequest,
+)
 
 
-class SkillValidatorExecutionResult(BaseModel):
+class ObjectiveExecutionRequest(BaseModel):
     """
-    SkillValidatorExecutionResult
+    ObjectiveExecutionRequest
     """  # noqa: E501
 
-    validation: Validation
-    execution_log_id: StrictStr
-    __properties: ClassVar[List[str]] = ["validation", "execution_log_id"]
+    request: Optional[Annotated[str, Field(strict=True, max_length=1000000)]] = ""
+    response: Annotated[str, Field(min_length=1, strict=True, max_length=1000000)]
+    contexts: Optional[List[Annotated[str, Field(min_length=1, strict=True)]]] = None
+    functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None
+    expected_output: Optional[Annotated[str, Field(strict=True, max_length=1000000)]] = None
+    __properties: ClassVar[List[str]] = ["request", "response", "contexts", "functions", "expected_output"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -50,7 +55,7 @@ class SkillValidatorExecutionResult(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of SkillValidatorExecutionResult from a JSON string"""
+        """Create an instance of ObjectiveExecutionRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -70,14 +75,23 @@ class SkillValidatorExecutionResult(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of validation
-        if self.validation:
-            _dict["validation"] = self.validation.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in functions (list)
+        _items = []
+        if self.functions:
+            for _item in self.functions:
+                if _item:
+                    _items.append(_item.to_dict())
+            _dict["functions"] = _items
+        # set to None if expected_output (nullable) is None
+        # and model_fields_set contains the field
+        if self.expected_output is None and "expected_output" in self.model_fields_set:
+            _dict["expected_output"] = None
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of SkillValidatorExecutionResult from a dict"""
+        """Create an instance of ObjectiveExecutionRequest from a dict"""
         if obj is None:
             return None
 
@@ -86,8 +100,13 @@ class SkillValidatorExecutionResult(BaseModel):
 
         _obj = cls.model_validate(
             {
-                "validation": Validation.from_dict(obj["validation"]) if obj.get("validation") is not None else None,
-                "execution_log_id": obj.get("execution_log_id"),
+                "request": obj.get("request") if obj.get("request") is not None else "",
+                "response": obj.get("response"),
+                "contexts": obj.get("contexts"),
+                "functions": [EvaluatorExecutionFunctionsRequest.from_dict(_item) for _item in obj["functions"]]
+                if obj.get("functions") is not None
+                else None,
+                "expected_output": obj.get("expected_output"),
             }
         )
         return _obj

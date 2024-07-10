@@ -35,7 +35,7 @@ from root.generated.openapi_client.models.skill_test_data_request import SkillTe
 from root.generated.openapi_client.models.skill_test_input_request import SkillTestInputRequest
 from root.generated.openapi_client.models.skill_test_output import SkillTestOutput
 from root.generated.openapi_client.models.skill_validator_execution_request import SkillValidatorExecutionRequest
-from root.generated.openapi_client.models.skill_validator_execution_result import SkillValidatorExecutionResult
+from root.generated.openapi_client.models.validator_execution_result import ValidatorExecutionResult
 from root.generated.openapi_client.rest import RESTResponseType
 
 
@@ -1954,7 +1954,7 @@ class SkillsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> SkillValidatorExecutionResult:
+    ) -> ValidatorExecutionResult:
         """skills_execute_validators_create
 
         Execute all skill validators.
@@ -1995,7 +1995,7 @@ class SkillsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "SkillValidatorExecutionResult",
+            "200": "ValidatorExecutionResult",
         }
         response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
         response_data.read()
@@ -2018,7 +2018,7 @@ class SkillsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[SkillValidatorExecutionResult]:
+    ) -> ApiResponse[ValidatorExecutionResult]:
         """skills_execute_validators_create
 
         Execute all skill validators.
@@ -2059,7 +2059,7 @@ class SkillsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "SkillValidatorExecutionResult",
+            "200": "ValidatorExecutionResult",
         }
         response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
         response_data.read()
@@ -2123,7 +2123,7 @@ class SkillsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "SkillValidatorExecutionResult",
+            "200": "ValidatorExecutionResult",
         }
         response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
         return response_data.response
