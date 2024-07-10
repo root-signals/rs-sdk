@@ -4,8 +4,8 @@ from functools import partial
 from typing import TYPE_CHECKING, Iterator, Optional, Protocol
 
 from root.generated.openapi_client.api.execution_logs_api import ExecutionLogsApi
-from root.generated.openapi_client.models.skill_execution_log_details import SkillExecutionLogDetails
-from root.generated.openapi_client.models.skill_execution_log_list import SkillExecutionLogList
+from root.generated.openapi_client.models.execution_log_details import ExecutionLogDetails
+from root.generated.openapi_client.models.execution_log_list import ExecutionLogList
 
 from .generated.openapi_client import ApiClient
 from .utils import iterate_cursor_list
@@ -27,7 +27,7 @@ class ExecutionLogs:
         *,
         limit: int = 100,
         search_term: Optional[str] = None,
-    ) -> Iterator[SkillExecutionLogList]:
+    ) -> Iterator[ExecutionLogList]:
         """List execution logs
 
         Args:
@@ -49,8 +49,8 @@ class ExecutionLogs:
         *,
         log_id: Optional[str] = None,
         execution_result: Optional[ExecutionResult] = None,
-    ) -> SkillExecutionLogDetails:
-        """Get a specific skill execution log details
+    ) -> ExecutionLogDetails:
+        """Get a specific execution log details
 
         Args:
           log_id: The log to be fetched

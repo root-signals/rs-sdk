@@ -19,10 +19,8 @@ from typing_extensions import Annotated
 
 from root.generated.openapi_client.api_client import ApiClient, RequestSerialized
 from root.generated.openapi_client.api_response import ApiResponse
-from root.generated.openapi_client.models.paginated_skill_execution_log_list_list import (
-    PaginatedSkillExecutionLogListList,
-)
-from root.generated.openapi_client.models.skill_execution_log_details import SkillExecutionLogDetails
+from root.generated.openapi_client.models.execution_log_details import ExecutionLogDetails
+from root.generated.openapi_client.models.paginated_execution_log_list_list import PaginatedExecutionLogListList
 from root.generated.openapi_client.rest import RESTResponseType
 
 
@@ -57,7 +55,7 @@ class ExecutionLogsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> PaginatedSkillExecutionLogListList:
+    ) -> PaginatedExecutionLogListList:
         """execution_logs_list
 
         Get a list of execution logs. An execution log is created every time a skill or an evaluator is executed.
@@ -107,7 +105,7 @@ class ExecutionLogsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "PaginatedSkillExecutionLogListList",
+            "200": "PaginatedExecutionLogListList",
         }
         response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
         response_data.read()
@@ -135,7 +133,7 @@ class ExecutionLogsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[PaginatedSkillExecutionLogListList]:
+    ) -> ApiResponse[PaginatedExecutionLogListList]:
         """execution_logs_list
 
         Get a list of execution logs. An execution log is created every time a skill or an evaluator is executed.
@@ -185,7 +183,7 @@ class ExecutionLogsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "PaginatedSkillExecutionLogListList",
+            "200": "PaginatedExecutionLogListList",
         }
         response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
         response_data.read()
@@ -263,7 +261,7 @@ class ExecutionLogsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "PaginatedSkillExecutionLogListList",
+            "200": "PaginatedExecutionLogListList",
         }
         response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
         return response_data.response
@@ -346,7 +344,7 @@ class ExecutionLogsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> SkillExecutionLogDetails:
+    ) -> ExecutionLogDetails:
         """execution_logs_retrieve
 
         Get the full details of a single execution log.
@@ -384,7 +382,7 @@ class ExecutionLogsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "SkillExecutionLogDetails",
+            "200": "ExecutionLogDetails",
         }
         response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
         response_data.read()
@@ -406,7 +404,7 @@ class ExecutionLogsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[SkillExecutionLogDetails]:
+    ) -> ApiResponse[ExecutionLogDetails]:
         """execution_logs_retrieve
 
         Get the full details of a single execution log.
@@ -444,7 +442,7 @@ class ExecutionLogsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "SkillExecutionLogDetails",
+            "200": "ExecutionLogDetails",
         }
         response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
         response_data.read()
@@ -504,7 +502,7 @@ class ExecutionLogsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "SkillExecutionLogDetails",
+            "200": "ExecutionLogDetails",
         }
         response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
         return response_data.response

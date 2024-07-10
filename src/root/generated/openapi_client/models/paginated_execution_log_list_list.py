@@ -21,17 +21,17 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict, StrictStr
 from typing_extensions import Self
 
-from root.generated.openapi_client.models.skill_execution_log_list import SkillExecutionLogList
+from root.generated.openapi_client.models.execution_log_list import ExecutionLogList
 
 
-class PaginatedSkillExecutionLogListList(BaseModel):
+class PaginatedExecutionLogListList(BaseModel):
     """
-    PaginatedSkillExecutionLogListList
+    PaginatedExecutionLogListList
     """  # noqa: E501
 
     next: Optional[StrictStr] = None
     previous: Optional[StrictStr] = None
-    results: List[SkillExecutionLogList]
+    results: List[ExecutionLogList]
     __properties: ClassVar[List[str]] = ["next", "previous", "results"]
 
     model_config = ConfigDict(
@@ -51,7 +51,7 @@ class PaginatedSkillExecutionLogListList(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of PaginatedSkillExecutionLogListList from a JSON string"""
+        """Create an instance of PaginatedExecutionLogListList from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -92,7 +92,7 @@ class PaginatedSkillExecutionLogListList(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of PaginatedSkillExecutionLogListList from a dict"""
+        """Create an instance of PaginatedExecutionLogListList from a dict"""
         if obj is None:
             return None
 
@@ -103,7 +103,7 @@ class PaginatedSkillExecutionLogListList(BaseModel):
             {
                 "next": obj.get("next"),
                 "previous": obj.get("previous"),
-                "results": [SkillExecutionLogList.from_dict(_item) for _item in obj["results"]]
+                "results": [ExecutionLogList.from_dict(_item) for _item in obj["results"]]
                 if obj.get("results") is not None
                 else None,
             }

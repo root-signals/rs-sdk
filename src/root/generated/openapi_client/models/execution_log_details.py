@@ -22,22 +22,43 @@ from typing import Any, ClassVar, Dict, List, Optional, Set, Union
 from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
 from typing_extensions import Self
 
+from root.generated.openapi_client.models.execution_log_details_skill import ExecutionLogDetailsSkill
+from root.generated.openapi_client.models.model_params import ModelParams
 from root.generated.openapi_client.models.nested_user_details import NestedUserDetails
-from root.generated.openapi_client.models.skill_execution_log_details_skill import SkillExecutionLogDetailsSkill
+from root.generated.openapi_client.models.skill_execution_validator_result import SkillExecutionValidatorResult
 
 
-class SkillExecutionLogList(BaseModel):
+class ExecutionLogDetails(BaseModel):
     """
-    SkillExecutionLogList
+    ExecutionLogDetails
     """  # noqa: E501
 
+    chat_id: Optional[StrictStr]
     cost: Optional[Union[StrictFloat, StrictInt]]
     created_at: Optional[datetime]
     id: StrictStr
+    llm_output: StrictStr
+    model: StrictStr
+    model_params: Optional[ModelParams] = None
     owner: NestedUserDetails
-    skill: SkillExecutionLogDetailsSkill
-    validation_result_average: Optional[Union[StrictFloat, StrictInt]]
-    __properties: ClassVar[List[str]] = ["cost", "created_at", "id", "owner", "skill", "validation_result_average"]
+    rendered_prompt: StrictStr
+    skill: ExecutionLogDetailsSkill
+    validation_results: List[SkillExecutionValidatorResult]
+    variables: Optional[Any]
+    __properties: ClassVar[List[str]] = [
+        "chat_id",
+        "cost",
+        "created_at",
+        "id",
+        "llm_output",
+        "model",
+        "model_params",
+        "owner",
+        "rendered_prompt",
+        "skill",
+        "validation_results",
+        "variables",
+    ]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -56,7 +77,7 @@ class SkillExecutionLogList(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of SkillExecutionLogList from a JSON string"""
+        """Create an instance of ExecutionLogDetails from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -73,14 +94,24 @@ class SkillExecutionLogList(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
+                "chat_id",
                 "cost",
                 "created_at",
                 "id",
+                "llm_output",
+                "model",
                 "owner",
-                "validation_result_average",
+                "rendered_prompt",
+                "validation_results",
+                "variables",
             ]
         )
 
@@ -89,12 +120,27 @@ class SkillExecutionLogList(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of model_params
+        if self.model_params:
+            _dict["model_params"] = self.model_params.to_dict()
         # override the default output from pydantic by calling `to_dict()` of owner
         if self.owner:
             _dict["owner"] = self.owner.to_dict()
         # override the default output from pydantic by calling `to_dict()` of skill
         if self.skill:
             _dict["skill"] = self.skill.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in validation_results (list)
+        _items = []
+        if self.validation_results:
+            for _item in self.validation_results:
+                if _item:
+                    _items.append(_item.to_dict())
+            _dict["validation_results"] = _items
+        # set to None if chat_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.chat_id is None and "chat_id" in self.model_fields_set:
+            _dict["chat_id"] = None
+
         # set to None if cost (nullable) is None
         # and model_fields_set contains the field
         if self.cost is None and "cost" in self.model_fields_set:
@@ -105,16 +151,21 @@ class SkillExecutionLogList(BaseModel):
         if self.created_at is None and "created_at" in self.model_fields_set:
             _dict["created_at"] = None
 
-        # set to None if validation_result_average (nullable) is None
+        # set to None if model_params (nullable) is None
         # and model_fields_set contains the field
-        if self.validation_result_average is None and "validation_result_average" in self.model_fields_set:
-            _dict["validation_result_average"] = None
+        if self.model_params is None and "model_params" in self.model_fields_set:
+            _dict["model_params"] = None
+
+        # set to None if variables (nullable) is None
+        # and model_fields_set contains the field
+        if self.variables is None and "variables" in self.model_fields_set:
+            _dict["variables"] = None
 
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of SkillExecutionLogList from a dict"""
+        """Create an instance of ExecutionLogDetails from a dict"""
         if obj is None:
             return None
 
@@ -123,14 +174,24 @@ class SkillExecutionLogList(BaseModel):
 
         _obj = cls.model_validate(
             {
+                "chat_id": obj.get("chat_id"),
                 "cost": obj.get("cost"),
                 "created_at": obj.get("created_at"),
                 "id": obj.get("id"),
-                "owner": NestedUserDetails.from_dict(obj["owner"]) if obj.get("owner") is not None else None,
-                "skill": SkillExecutionLogDetailsSkill.from_dict(obj["skill"])
-                if obj.get("skill") is not None
+                "llm_output": obj.get("llm_output"),
+                "model": obj.get("model"),
+                "model_params": ModelParams.from_dict(obj["model_params"])
+                if obj.get("model_params") is not None
                 else None,
-                "validation_result_average": obj.get("validation_result_average"),
+                "owner": NestedUserDetails.from_dict(obj["owner"]) if obj.get("owner") is not None else None,
+                "rendered_prompt": obj.get("rendered_prompt"),
+                "skill": ExecutionLogDetailsSkill.from_dict(obj["skill"]) if obj.get("skill") is not None else None,
+                "validation_results": [
+                    SkillExecutionValidatorResult.from_dict(_item) for _item in obj["validation_results"]
+                ]
+                if obj.get("validation_results") is not None
+                else None,
+                "variables": obj.get("variables"),
             }
         )
         return _obj
