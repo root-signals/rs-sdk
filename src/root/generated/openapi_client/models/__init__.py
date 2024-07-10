@@ -47,6 +47,7 @@ from root.generated.openapi_client.models.evaluator_execution_functions_type_enu
 from root.generated.openapi_client.models.evaluator_execution_request import EvaluatorExecutionRequest
 from root.generated.openapi_client.models.evaluator_execution_result import EvaluatorExecutionResult
 from root.generated.openapi_client.models.execution_log_details import ExecutionLogDetails
+from root.generated.openapi_client.models.execution_log_details_objective import ExecutionLogDetailsObjective
 from root.generated.openapi_client.models.execution_log_details_skill import ExecutionLogDetailsSkill
 from root.generated.openapi_client.models.execution_log_list import ExecutionLogList
 from root.generated.openapi_client.models.id import ID

@@ -146,6 +146,7 @@ Class | Method | HTTP request | Description
  - [EvaluatorExecutionRequest](root/generated/openapi_client/docs/EvaluatorExecutionRequest.md)
  - [EvaluatorExecutionResult](root/generated/openapi_client/docs/EvaluatorExecutionResult.md)
  - [ExecutionLogDetails](root/generated/openapi_client/docs/ExecutionLogDetails.md)
+ - [ExecutionLogDetailsObjective](root/generated/openapi_client/docs/ExecutionLogDetailsObjective.md)
  - [ExecutionLogDetailsSkill](root/generated/openapi_client/docs/ExecutionLogDetailsSkill.md)
  - [ExecutionLogList](root/generated/openapi_client/docs/ExecutionLogList.md)
  - [ID](root/generated/openapi_client/docs/ID.md)
