@@ -1955,6 +1955,15 @@ components:
             type: skill
             id: dfd76dd3-1415-4339-9b20-3bc2bbe3e8ce
           readOnly: true
+        objective:
+          type: object
+          properties:
+            intent:
+              type: string
+            id:
+              type: string
+              format: uuid
+          readOnly: true
         validation_results:
           type: array
           items:
@@ -1969,6 +1978,7 @@ components:
       - id
       - llm_output
       - model
+      - objective
       - owner
       - rendered_prompt
       - skill
