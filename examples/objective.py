@@ -13,15 +13,9 @@ objective = client.objectives.create(
     ],
 )
 
-# Create a skill which identifies only this particular LLM pipeline
-skill = client.skills.create(name="My pipeline", objective_id=objective.id)
 
-# Run your LLM pipeline and use the skill to evaluate the LLM output...
-# llm_response = run_my_pipeline()
-
-# Evaluate the result
 llm_response = "Some LLM response I got from my custom LLM pipeline."
-response = skill.evaluate(response=llm_response)
+response = objective.run(response=llm_response)
 
 print(response)
 # validation:
