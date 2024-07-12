@@ -83,6 +83,12 @@ We can group and track any LLM pipeline results using a skill.
 ```{literalinclude} ../examples/pipeline.py
 ```
 
+Alternatively, we can just execute the objective.
+
+```{literalinclude} ../examples/objective.py
+```
+
+
 ## Add a model
 
 Adding a model is as simple as specifying the model name and an endpoint. The model can be a local model or a model hosted on a cloud service.
