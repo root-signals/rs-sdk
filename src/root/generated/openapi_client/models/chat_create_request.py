@@ -28,7 +28,7 @@ class ChatCreateRequest(BaseModel):
     """  # noqa: E501
 
     chat_id: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=255)]] = None
-    skill_id: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
+    skill_id: StrictStr
     name: Optional[StrictStr] = None
     assistant_welcome_messages: Optional[List[Any]] = None
     __properties: ClassVar[List[str]] = ["chat_id", "skill_id", "name", "assistant_welcome_messages"]
@@ -70,11 +70,6 @@ class ChatCreateRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if skill_id (nullable) is None
-        # and model_fields_set contains the field
-        if self.skill_id is None and "skill_id" in self.model_fields_set:
-            _dict["skill_id"] = None
-
         # set to None if assistant_welcome_messages (nullable) is None
         # and model_fields_set contains the field
         if self.assistant_welcome_messages is None and "assistant_welcome_messages" in self.model_fields_set:

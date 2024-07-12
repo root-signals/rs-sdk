@@ -39,7 +39,6 @@ class SkillChat(ChatDetail):
         chat_execution_request = ChatExecutionRequestRequest(
             variables=variables,
             skill_version_id=skill_version_id,
-            skill_id=self.skill_id,
         )
         return api_instance.chats_execute_create(
             chat_id=self.chat_id, chat_execution_request_request=chat_execution_request

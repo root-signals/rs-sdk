@@ -291,7 +291,7 @@ class ChatsApi:
     @validate_call
     def chats_initiate_create(
         self,
-        chat_create_request: Optional[ChatCreateRequest] = None,
+        chat_create_request: ChatCreateRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -305,7 +305,7 @@ class ChatsApi:
         """chats_initiate_create
 
 
-        :param chat_create_request:
+        :param chat_create_request: (required)
         :type chat_create_request: ChatCreateRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -350,7 +350,7 @@ class ChatsApi:
     @validate_call
     def chats_initiate_create_with_http_info(
         self,
-        chat_create_request: Optional[ChatCreateRequest] = None,
+        chat_create_request: ChatCreateRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -364,7 +364,7 @@ class ChatsApi:
         """chats_initiate_create
 
 
-        :param chat_create_request:
+        :param chat_create_request: (required)
         :type chat_create_request: ChatCreateRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -409,7 +409,7 @@ class ChatsApi:
     @validate_call
     def chats_initiate_create_without_preload_content(
         self,
-        chat_create_request: Optional[ChatCreateRequest] = None,
+        chat_create_request: ChatCreateRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -423,7 +423,7 @@ class ChatsApi:
         """chats_initiate_create
 
 
-        :param chat_create_request:
+        :param chat_create_request: (required)
         :type chat_create_request: ChatCreateRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -523,7 +523,7 @@ class ChatsApi:
     def chats_initiate_create2(
         self,
         chat_id: StrictStr,
-        chat_create_request: Optional[ChatCreateRequest] = None,
+        chat_create_request: ChatCreateRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -539,7 +539,7 @@ class ChatsApi:
 
         :param chat_id: (required)
         :type chat_id: str
-        :param chat_create_request:
+        :param chat_create_request: (required)
         :type chat_create_request: ChatCreateRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -586,7 +586,7 @@ class ChatsApi:
     def chats_initiate_create2_with_http_info(
         self,
         chat_id: StrictStr,
-        chat_create_request: Optional[ChatCreateRequest] = None,
+        chat_create_request: ChatCreateRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -602,7 +602,7 @@ class ChatsApi:
 
         :param chat_id: (required)
         :type chat_id: str
-        :param chat_create_request:
+        :param chat_create_request: (required)
         :type chat_create_request: ChatCreateRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -649,7 +649,7 @@ class ChatsApi:
     def chats_initiate_create2_without_preload_content(
         self,
         chat_id: StrictStr,
-        chat_create_request: Optional[ChatCreateRequest] = None,
+        chat_create_request: ChatCreateRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -665,7 +665,7 @@ class ChatsApi:
 
         :param chat_id: (required)
         :type chat_id: str
-        :param chat_create_request:
+        :param chat_create_request: (required)
         :type chat_create_request: ChatCreateRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
