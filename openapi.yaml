@@ -88,15 +88,6 @@ paths:
                 summary: Chat example with status tracking
                 description: Correlation id can be used to track the status of the
                   message.
-              ExecuteSkillWithASpecifiedVersionExample:
-                value:
-                  variables:
-                    job_title: software developer
-                    question: please write some basic python code
-                  skill_id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
-                  skill_version_id: '2'
-                summary: Execute skill with a specified version example
-                description: Chat using a specific version of a skill.
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/ChatExecutionRequestRequest'
@@ -145,6 +136,7 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/ChatCreateRequest'
+        required: true
       security:
       - tokenAuth: []
       - publicApiKey: []
@@ -206,6 +198,7 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/ChatCreateRequest'
+        required: true
       security:
       - tokenAuth: []
       - publicApiKey: []
@@ -1535,14 +1528,15 @@ components:
           maxLength: 255
         skill_id:
           type: string
-          nullable: true
-          minLength: 1
+          format: uuid
         name:
           type: string
         assistant_welcome_messages:
           type: array
           items: {}
           nullable: true
+      required:
+      - skill_id
     ChatDetail:
       type: object
       properties:
@@ -1602,10 +1596,6 @@ components:
           minLength: 1
           description: Unique ID to track message status. If not provided, status
             tracking will not be available.
-        skill_id:
-          type: string
-          nullable: true
-          minLength: 1
     ChatExecutionResult:
       type: object
       properties:

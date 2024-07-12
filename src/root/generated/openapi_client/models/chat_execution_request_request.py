@@ -43,7 +43,6 @@ class ChatExecutionRequestRequest(BaseModel):
         default=None,
         description="Unique ID to track message status. If not provided, status tracking will not be available.",
     )
-    skill_id: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
     __properties: ClassVar[List[str]] = [
         "skill_version_id",
         "variables",
@@ -51,7 +50,6 @@ class ChatExecutionRequestRequest(BaseModel):
         "dynamic_datasets",
         "language",
         "correlation_id",
-        "skill_id",
     ]
 
     model_config = ConfigDict(
@@ -121,11 +119,6 @@ class ChatExecutionRequestRequest(BaseModel):
         if self.correlation_id is None and "correlation_id" in self.model_fields_set:
             _dict["correlation_id"] = None
 
-        # set to None if skill_id (nullable) is None
-        # and model_fields_set contains the field
-        if self.skill_id is None and "skill_id" in self.model_fields_set:
-            _dict["skill_id"] = None
-
         return _dict
 
     @classmethod
@@ -151,7 +144,6 @@ class ChatExecutionRequestRequest(BaseModel):
                 else None,
                 "language": obj.get("language") if obj.get("language") is not None else "en",
                 "correlation_id": obj.get("correlation_id"),
-                "skill_id": obj.get("skill_id"),
             }
         )
         return _obj
