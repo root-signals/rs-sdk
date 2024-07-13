@@ -104,3 +104,4 @@ from root.generated.openapi_client.models.validation import Validation
 from root.generated.openapi_client.models.validation_result_status import ValidationResultStatus
 from root.generated.openapi_client.models.validator_execution_result import ValidatorExecutionResult
 from root.generated.openapi_client.models.validator_result import ValidatorResult
+from root.generated.openapi_client.models.variables_request import VariablesRequest
