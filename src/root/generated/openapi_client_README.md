@@ -101,6 +101,7 @@ Class | Method | HTTP request | Description
 *ObjectivesApi* | [**objectives_objectives_execute_create**](root/generated/openapi_client/docs/ObjectivesApi.md#objectives_objectives_execute_create) | **POST** /v1/objectives/objectives/{objective_id}/execute/ | 
 *ObjectivesApi* | [**objectives_partial_update**](root/generated/openapi_client/docs/ObjectivesApi.md#objectives_partial_update) | **PATCH** /v1/objectives/{id}/ | 
 *ObjectivesApi* | [**objectives_retrieve**](root/generated/openapi_client/docs/ObjectivesApi.md#objectives_retrieve) | **GET** /v1/objectives/{id}/ | 
+*ObjectivesApi* | [**objectives_test_set_append_create**](root/generated/openapi_client/docs/ObjectivesApi.md#objectives_test_set_append_create) | **POST** /v1/objectives/{objective_id}/test-set/append | 
 *ObjectivesApi* | [**objectives_update**](root/generated/openapi_client/docs/ObjectivesApi.md#objectives_update) | **PUT** /v1/objectives/{id}/ | 
 *SkillsApi* | [**get_a_list_of_all_versions_of_a_skill**](root/generated/openapi_client/docs/SkillsApi.md#get_a_list_of_all_versions_of_a_skill) | **GET** /v1/skills/versions/{id}/ | 
 *SkillsApi* | [**skills_calibrate_create**](root/generated/openapi_client/docs/SkillsApi.md#skills_calibrate_create) | **POST** /v1/skills/calibrate/ | 
@@ -202,6 +203,7 @@ Class | Method | HTTP request | Description
  - [ValidationResultStatus](root/generated/openapi_client/docs/ValidationResultStatus.md)
  - [ValidatorExecutionResult](root/generated/openapi_client/docs/ValidatorExecutionResult.md)
  - [ValidatorResult](root/generated/openapi_client/docs/ValidatorResult.md)
+ - [VariablesRequest](root/generated/openapi_client/docs/VariablesRequest.md)
 
 
 <a id="documentation-for-authorization"></a>

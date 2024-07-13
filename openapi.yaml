@@ -624,6 +624,43 @@ paths:
               schema:
                 $ref: '#/components/schemas/ID'
           description: ''
+  /v1/objectives/{objective_id}/test-set/append:
+    post:
+      operationId: objectives_test_set_append_create
+      description: Append a test set to an Objective.
+      parameters:
+      - in: path
+        name: objective_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - objectives
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VariablesRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VariablesRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VariablesRequest'
+        required: true
+      security:
+      - tokenAuth: []
+      - publicApiKey: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+                description: Unspecified response body
+          description: ''
   /v1/objectives/{id}/:
     get:
       operationId: objectives_retrieve
@@ -3271,6 +3308,15 @@ components:
           $ref: '#/components/schemas/ValidationResultStatus'
       required:
       - evaluator_id
+    VariablesRequest:
+      type: object
+      properties:
+        variables:
+          type: array
+          items:
+            type: string
+      required:
+      - variables
   securitySchemes:
     publicApiKey:
       type: apiKey
