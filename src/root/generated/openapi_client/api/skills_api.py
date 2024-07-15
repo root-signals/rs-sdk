@@ -29,12 +29,12 @@ from root.generated.openapi_client.models.skill import Skill
 from root.generated.openapi_client.models.skill_execution_request import SkillExecutionRequest
 from root.generated.openapi_client.models.skill_execution_result import SkillExecutionResult
 from root.generated.openapi_client.models.skill_request import SkillRequest
-from root.generated.openapi_client.models.skill_status import SkillStatus
-from root.generated.openapi_client.models.skill_status_request import SkillStatusRequest
 from root.generated.openapi_client.models.skill_test_data_request import SkillTestDataRequest
 from root.generated.openapi_client.models.skill_test_input_request import SkillTestInputRequest
 from root.generated.openapi_client.models.skill_test_output import SkillTestOutput
 from root.generated.openapi_client.models.skill_validator_execution_request import SkillValidatorExecutionRequest
+from root.generated.openapi_client.models.status_change import StatusChange
+from root.generated.openapi_client.models.status_change_request import StatusChangeRequest
 from root.generated.openapi_client.models.validator_execution_result import ValidatorExecutionResult
 from root.generated.openapi_client.rest import RESTResponseType
 
@@ -3295,7 +3295,7 @@ class SkillsApi:
     def skills_status_create(
         self,
         id: StrictStr,
-        skill_status_request: SkillStatusRequest,
+        status_change_request: StatusChangeRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3305,15 +3305,14 @@ class SkillsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> SkillStatus:
+    ) -> StatusChange:
         """skills_status_create
 
-        Change the status of a skill
 
         :param id: (required)
         :type id: str
-        :param skill_status_request: (required)
-        :type skill_status_request: SkillStatusRequest
+        :param status_change_request: (required)
+        :type status_change_request: StatusChangeRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3338,7 +3337,7 @@ class SkillsApi:
 
         _param = self._skills_status_create_serialize(
             id=id,
-            skill_status_request=skill_status_request,
+            status_change_request=status_change_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3346,7 +3345,7 @@ class SkillsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "201": "SkillStatus",
+            "200": "StatusChange",
         }
         response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
         response_data.read()
@@ -3359,7 +3358,7 @@ class SkillsApi:
     def skills_status_create_with_http_info(
         self,
         id: StrictStr,
-        skill_status_request: SkillStatusRequest,
+        status_change_request: StatusChangeRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3369,15 +3368,14 @@ class SkillsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[SkillStatus]:
+    ) -> ApiResponse[StatusChange]:
         """skills_status_create
 
-        Change the status of a skill
 
         :param id: (required)
         :type id: str
-        :param skill_status_request: (required)
-        :type skill_status_request: SkillStatusRequest
+        :param status_change_request: (required)
+        :type status_change_request: StatusChangeRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3402,7 +3400,7 @@ class SkillsApi:
 
         _param = self._skills_status_create_serialize(
             id=id,
-            skill_status_request=skill_status_request,
+            status_change_request=status_change_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3410,7 +3408,7 @@ class SkillsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "201": "SkillStatus",
+            "200": "StatusChange",
         }
         response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
         response_data.read()
@@ -3423,7 +3421,7 @@ class SkillsApi:
     def skills_status_create_without_preload_content(
         self,
         id: StrictStr,
-        skill_status_request: SkillStatusRequest,
+        status_change_request: StatusChangeRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -3436,12 +3434,11 @@ class SkillsApi:
     ) -> RESTResponseType:
         """skills_status_create
 
-        Change the status of a skill
 
         :param id: (required)
         :type id: str
-        :param skill_status_request: (required)
-        :type skill_status_request: SkillStatusRequest
+        :param status_change_request: (required)
+        :type status_change_request: StatusChangeRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -3466,7 +3463,7 @@ class SkillsApi:
 
         _param = self._skills_status_create_serialize(
             id=id,
-            skill_status_request=skill_status_request,
+            status_change_request=status_change_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -3474,7 +3471,7 @@ class SkillsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "201": "SkillStatus",
+            "200": "StatusChange",
         }
         response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
         return response_data.response
@@ -3482,7 +3479,7 @@ class SkillsApi:
     def _skills_status_create_serialize(
         self,
         id,
-        skill_status_request,
+        status_change_request,
         _request_auth,
         _content_type,
         _headers,
@@ -3506,8 +3503,8 @@ class SkillsApi:
         # process the header parameters
         # process the form parameters
         # process the body parameter
-        if skill_status_request is not None:
-            _body_params = skill_status_request
+        if status_change_request is not None:
+            _body_params = status_change_request
 
         # set the HTTP header `Accept`
         _header_params["Accept"] = self.api_client.select_header_accept(["application/json"])
@@ -3527,6 +3524,255 @@ class SkillsApi:
 
         return self.api_client.param_serialize(
             method="POST",
+            resource_path="/v1/skills/status/{id}/",
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth,
+        )
+
+    @validate_call
+    def skills_status_update(
+        self,
+        id: StrictStr,
+        status_change_request: StatusChangeRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> StatusChange:
+        """skills_status_update
+
+        Change the status of a skill
+
+        :param id: (required)
+        :type id: str
+        :param status_change_request: (required)
+        :type status_change_request: StatusChangeRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """  # noqa: E501
+
+        _param = self._skills_status_update_serialize(
+            id=id,
+            status_change_request=status_change_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            "200": "StatusChange",
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+    @validate_call
+    def skills_status_update_with_http_info(
+        self,
+        id: StrictStr,
+        status_change_request: StatusChangeRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[StatusChange]:
+        """skills_status_update
+
+        Change the status of a skill
+
+        :param id: (required)
+        :type id: str
+        :param status_change_request: (required)
+        :type status_change_request: StatusChangeRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """  # noqa: E501
+
+        _param = self._skills_status_update_serialize(
+            id=id,
+            status_change_request=status_change_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            "200": "StatusChange",
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+    @validate_call
+    def skills_status_update_without_preload_content(
+        self,
+        id: StrictStr,
+        status_change_request: StatusChangeRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """skills_status_update
+
+        Change the status of a skill
+
+        :param id: (required)
+        :type id: str
+        :param status_change_request: (required)
+        :type status_change_request: StatusChangeRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """  # noqa: E501
+
+        _param = self._skills_status_update_serialize(
+            id=id,
+            status_change_request=status_change_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            "200": "StatusChange",
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        return response_data.response
+
+    def _skills_status_update_serialize(
+        self,
+        id,
+        status_change_request,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+        _host = None
+
+        _collection_formats: Dict[str, str] = {}
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, str] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if id is not None:
+            _path_params["id"] = id
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if status_change_request is not None:
+            _body_params = status_change_request
+
+        # set the HTTP header `Accept`
+        _header_params["Accept"] = self.api_client.select_header_accept(["application/json"])
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params["Content-Type"] = _content_type
+        else:
+            _default_content_type = self.api_client.select_header_content_type(
+                ["application/json", "application/x-www-form-urlencoded", "multipart/form-data"]
+            )
+            if _default_content_type is not None:
+                _header_params["Content-Type"] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = ["tokenAuth", "publicApiKey"]
+
+        return self.api_client.param_serialize(
+            method="PUT",
             resource_path="/v1/skills/status/{id}/",
             path_params=_path_params,
             query_params=_query_params,

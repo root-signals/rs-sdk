@@ -347,6 +347,50 @@ paths:
       responses:
         '204':
           description: No response body
+  /v1/datasets/status/{id}/:
+    put:
+      operationId: datasets_status_update
+      description: Change the status of a dataset
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - datasets
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatusChangeRequest'
+            examples:
+              ChangeDatasetStatus:
+                value:
+                  status: unlisted | listed
+                summary: Change dataset status
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StatusChangeRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StatusChangeRequest'
+        required: true
+      security:
+      - tokenAuth: []
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusChange'
+              examples:
+                ChangeDatasetStatus:
+                  value:
+                    status: unlisted | listed
+                  summary: Change dataset status
+          description: ''
   /v1/execution-logs/:
     get:
       operationId: execution_logs_list
@@ -1353,6 +1397,38 @@ paths:
   /v1/skills/status/{id}/:
     post:
       operationId: skills_status_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - skills
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatusChangeRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StatusChangeRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StatusChangeRequest'
+        required: true
+      security:
+      - tokenAuth: []
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusChange'
+          description: ''
+    put:
+      operationId: skills_status_update
       description: Change the status of a skill
       parameters:
       - in: path
@@ -1366,32 +1442,32 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SkillStatusRequest'
+              $ref: '#/components/schemas/StatusChangeRequest'
             examples:
               ChangeSkillStatus:
                 value:
-                  status: unlisted | listed | public
+                  status: unlisted | listed
                 summary: Change skill status
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/SkillStatusRequest'
+              $ref: '#/components/schemas/StatusChangeRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/SkillStatusRequest'
+              $ref: '#/components/schemas/StatusChangeRequest'
         required: true
       security:
       - tokenAuth: []
       - publicApiKey: []
       responses:
-        '201':
+        '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SkillStatus'
+                $ref: '#/components/schemas/StatusChange'
               examples:
                 ChangeSkillStatus:
                   value:
-                    status: unlisted | listed | public
+                    status: unlisted | listed
                   summary: Change skill status
           description: ''
   /v1/skills/test/:
@@ -1802,7 +1878,11 @@ components:
           readOnly: true
         status:
           $ref: '#/components/schemas/StatusEnum'
+        _meta:
+          readOnly: true
+          title: ' meta'
       required:
+      - _meta
       - created_at
       - id
       - owner
@@ -3081,20 +3161,6 @@ components:
           $ref: '#/components/schemas/StatusEnum'
         system_message:
           type: string
-    SkillStatus:
-      type: object
-      properties:
-        status:
-          $ref: '#/components/schemas/StatusEnum'
-      required:
-      - status
-    SkillStatusRequest:
-      type: object
-      properties:
-        status:
-          $ref: '#/components/schemas/StatusEnum'
-      required:
-      - status
     SkillTestDataRequest:
       type: object
       properties:
@@ -3242,6 +3308,28 @@ components:
         threshold:
           type: number
           format: double
+    StatusChange:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/StatusChangeStatusEnum'
+      required:
+      - status
+    StatusChangeRequest:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/StatusChangeStatusEnum'
+      required:
+      - status
+    StatusChangeStatusEnum:
+      enum:
+      - unlisted
+      - listed
+      type: string
+      description: |-
+        * `unlisted` - unlisted
+        * `listed` - listed
     StatusEnum:
       enum:
       - unlisted

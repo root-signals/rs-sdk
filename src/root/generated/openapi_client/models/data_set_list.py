@@ -19,7 +19,7 @@ import re  # noqa: F401
 from datetime import datetime
 from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing_extensions import Self
 
 from root.generated.openapi_client.models.data_set_type import DataSetType
@@ -39,7 +39,8 @@ class DataSetList(BaseModel):
     owner: NestedUserDetails
     created_at: datetime
     status: Optional[StatusEnum] = None
-    __properties: ClassVar[List[str]] = ["id", "name", "type", "tags", "owner", "created_at", "status"]
+    meta: Optional[Any] = Field(alias="_meta")
+    __properties: ClassVar[List[str]] = ["id", "name", "type", "tags", "owner", "created_at", "status", "_meta"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -73,12 +74,14 @@ class DataSetList(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
                 "id",
                 "owner",
                 "created_at",
+                "meta",
             ]
         )
 
@@ -94,6 +97,11 @@ class DataSetList(BaseModel):
         # and model_fields_set contains the field
         if self.name is None and "name" in self.model_fields_set:
             _dict["name"] = None
+
+        # set to None if meta (nullable) is None
+        # and model_fields_set contains the field
+        if self.meta is None and "meta" in self.model_fields_set:
+            _dict["_meta"] = None
 
         return _dict
 
@@ -115,6 +123,7 @@ class DataSetList(BaseModel):
                 "owner": NestedUserDetails.from_dict(obj["owner"]) if obj.get("owner") is not None else None,
                 "created_at": obj.get("created_at"),
                 "status": obj.get("status"),
+                "_meta": obj.get("_meta"),
             }
         )
         return _obj

@@ -90,8 +90,6 @@ from root.generated.openapi_client.models.skill_execution_result import SkillExe
 from root.generated.openapi_client.models.skill_execution_validator_result import SkillExecutionValidatorResult
 from root.generated.openapi_client.models.skill_list_output import SkillListOutput
 from root.generated.openapi_client.models.skill_request import SkillRequest
-from root.generated.openapi_client.models.skill_status import SkillStatus
-from root.generated.openapi_client.models.skill_status_request import SkillStatusRequest
 from root.generated.openapi_client.models.skill_test_data_request import SkillTestDataRequest
 from root.generated.openapi_client.models.skill_test_input_request import SkillTestInputRequest
 from root.generated.openapi_client.models.skill_test_output import SkillTestOutput
@@ -99,6 +97,9 @@ from root.generated.openapi_client.models.skill_type_enum import SkillTypeEnum
 from root.generated.openapi_client.models.skill_validator import SkillValidator
 from root.generated.openapi_client.models.skill_validator_execution_request import SkillValidatorExecutionRequest
 from root.generated.openapi_client.models.skill_validator_request import SkillValidatorRequest
+from root.generated.openapi_client.models.status_change import StatusChange
+from root.generated.openapi_client.models.status_change_request import StatusChangeRequest
+from root.generated.openapi_client.models.status_change_status_enum import StatusChangeStatusEnum
 from root.generated.openapi_client.models.status_enum import StatusEnum
 from root.generated.openapi_client.models.validation import Validation
 from root.generated.openapi_client.models.validation_result_status import ValidationResultStatus
