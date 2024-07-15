@@ -89,6 +89,7 @@ Class | Method | HTTP request | Description
 *DatasetsApi* | [**datasets_destroy**](root/generated/openapi_client/docs/DatasetsApi.md#datasets_destroy) | **DELETE** /v1/datasets/{id}/ | 
 *DatasetsApi* | [**datasets_list**](root/generated/openapi_client/docs/DatasetsApi.md#datasets_list) | **GET** /v1/datasets/ | 
 *DatasetsApi* | [**datasets_retrieve**](root/generated/openapi_client/docs/DatasetsApi.md#datasets_retrieve) | **GET** /v1/datasets/{id}/ | 
+*DatasetsApi* | [**datasets_status_update**](root/generated/openapi_client/docs/DatasetsApi.md#datasets_status_update) | **PUT** /v1/datasets/status/{id}/ | 
 *ExecutionLogsApi* | [**execution_logs_list**](root/generated/openapi_client/docs/ExecutionLogsApi.md#execution_logs_list) | **GET** /v1/execution-logs/ | 
 *ExecutionLogsApi* | [**execution_logs_retrieve**](root/generated/openapi_client/docs/ExecutionLogsApi.md#execution_logs_retrieve) | **GET** /v1/execution-logs/{log_id}/ | 
 *ModelsApi* | [**models_create**](root/generated/openapi_client/docs/ModelsApi.md#models_create) | **POST** /v1/models/ | 
@@ -117,6 +118,7 @@ Class | Method | HTTP request | Description
 *SkillsApi* | [**skills_partial_update**](root/generated/openapi_client/docs/SkillsApi.md#skills_partial_update) | **PATCH** /v1/skills/{id}/ | 
 *SkillsApi* | [**skills_retrieve**](root/generated/openapi_client/docs/SkillsApi.md#skills_retrieve) | **GET** /v1/skills/{id}/ | 
 *SkillsApi* | [**skills_status_create**](root/generated/openapi_client/docs/SkillsApi.md#skills_status_create) | **POST** /v1/skills/status/{id}/ | 
+*SkillsApi* | [**skills_status_update**](root/generated/openapi_client/docs/SkillsApi.md#skills_status_update) | **PUT** /v1/skills/status/{id}/ | 
 *SkillsApi* | [**skills_test_create**](root/generated/openapi_client/docs/SkillsApi.md#skills_test_create) | **POST** /v1/skills/test/ | 
 *SkillsApi* | [**skills_test_create2**](root/generated/openapi_client/docs/SkillsApi.md#skills_test_create2) | **POST** /v1/skills/test/{id} | 
 *SkillsApi* | [**skills_update**](root/generated/openapi_client/docs/SkillsApi.md#skills_update) | **PUT** /v1/skills/{id}/ | 
@@ -189,8 +191,6 @@ Class | Method | HTTP request | Description
  - [SkillExecutionValidatorResult](root/generated/openapi_client/docs/SkillExecutionValidatorResult.md)
  - [SkillListOutput](root/generated/openapi_client/docs/SkillListOutput.md)
  - [SkillRequest](root/generated/openapi_client/docs/SkillRequest.md)
- - [SkillStatus](root/generated/openapi_client/docs/SkillStatus.md)
- - [SkillStatusRequest](root/generated/openapi_client/docs/SkillStatusRequest.md)
  - [SkillTestDataRequest](root/generated/openapi_client/docs/SkillTestDataRequest.md)
  - [SkillTestInputRequest](root/generated/openapi_client/docs/SkillTestInputRequest.md)
  - [SkillTestOutput](root/generated/openapi_client/docs/SkillTestOutput.md)
@@ -198,6 +198,9 @@ Class | Method | HTTP request | Description
  - [SkillValidator](root/generated/openapi_client/docs/SkillValidator.md)
  - [SkillValidatorExecutionRequest](root/generated/openapi_client/docs/SkillValidatorExecutionRequest.md)
  - [SkillValidatorRequest](root/generated/openapi_client/docs/SkillValidatorRequest.md)
+ - [StatusChange](root/generated/openapi_client/docs/StatusChange.md)
+ - [StatusChangeRequest](root/generated/openapi_client/docs/StatusChangeRequest.md)
+ - [StatusChangeStatusEnum](root/generated/openapi_client/docs/StatusChangeStatusEnum.md)
  - [StatusEnum](root/generated/openapi_client/docs/StatusEnum.md)
  - [Validation](root/generated/openapi_client/docs/Validation.md)
  - [ValidationResultStatus](root/generated/openapi_client/docs/ValidationResultStatus.md)

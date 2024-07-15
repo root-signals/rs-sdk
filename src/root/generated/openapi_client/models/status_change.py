@@ -21,15 +21,15 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict
 from typing_extensions import Self
 
-from root.generated.openapi_client.models.status_enum import StatusEnum
+from root.generated.openapi_client.models.status_change_status_enum import StatusChangeStatusEnum
 
 
-class SkillStatus(BaseModel):
+class StatusChange(BaseModel):
     """
-    SkillStatus
+    StatusChange
     """  # noqa: E501
 
-    status: StatusEnum
+    status: StatusChangeStatusEnum
     __properties: ClassVar[List[str]] = ["status"]
 
     model_config = ConfigDict(
@@ -49,7 +49,7 @@ class SkillStatus(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of SkillStatus from a JSON string"""
+        """Create an instance of StatusChange from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -73,7 +73,7 @@ class SkillStatus(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of SkillStatus from a dict"""
+        """Create an instance of StatusChange from a dict"""
         if obj is None:
             return None
 
