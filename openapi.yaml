@@ -24,7 +24,6 @@ paths:
       tags:
       - chats
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '200':
@@ -45,7 +44,6 @@ paths:
       tags:
       - chats
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '200':
@@ -95,7 +93,6 @@ paths:
             schema:
               $ref: '#/components/schemas/ChatExecutionRequestRequest'
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '200':
@@ -138,7 +135,6 @@ paths:
               $ref: '#/components/schemas/ChatCreateRequest'
         required: true
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '201':
@@ -167,7 +163,6 @@ paths:
       tags:
       - chats
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '200':
@@ -200,7 +195,6 @@ paths:
               $ref: '#/components/schemas/ChatCreateRequest'
         required: true
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '201':
@@ -247,7 +241,6 @@ paths:
       tags:
       - datasets
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '200':
@@ -293,7 +286,6 @@ paths:
             schema:
               $ref: '#/components/schemas/DataSetCreateRequest'
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '201':
@@ -321,7 +313,6 @@ paths:
       tags:
       - datasets
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '200':
@@ -342,7 +333,6 @@ paths:
       tags:
       - datasets
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '204':
@@ -377,7 +367,6 @@ paths:
               $ref: '#/components/schemas/StatusChangeRequest'
         required: true
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '200':
@@ -430,7 +419,6 @@ paths:
       tags:
       - execution-logs
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '200':
@@ -452,7 +440,6 @@ paths:
       tags:
       - execution-logs
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '200':
@@ -487,7 +474,6 @@ paths:
       tags:
       - models
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '200':
@@ -533,7 +519,6 @@ paths:
               $ref: '#/components/schemas/ModelCreateRequest'
         required: true
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '201':
@@ -555,7 +540,6 @@ paths:
       tags:
       - models
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '200':
@@ -576,7 +560,6 @@ paths:
       tags:
       - models
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '204':
@@ -619,7 +602,6 @@ paths:
       tags:
       - objectives
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '200':
@@ -659,7 +641,6 @@ paths:
             schema:
               $ref: '#/components/schemas/ObjectiveRequest'
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '201':
@@ -694,7 +675,6 @@ paths:
               $ref: '#/components/schemas/VariablesRequest'
         required: true
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '201':
@@ -720,7 +700,6 @@ paths:
       tags:
       - objectives
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '200':
@@ -754,7 +733,6 @@ paths:
             schema:
               $ref: '#/components/schemas/ObjectiveRequest'
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '200':
@@ -787,7 +765,6 @@ paths:
             schema:
               $ref: '#/components/schemas/PatchedObjectiveRequest'
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '200':
@@ -810,7 +787,6 @@ paths:
       tags:
       - objectives
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '204':
@@ -847,7 +823,6 @@ paths:
               $ref: '#/components/schemas/ObjectiveExecutionRequest'
         required: true
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '200':
@@ -907,7 +882,6 @@ paths:
       tags:
       - skills
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '200':
@@ -959,7 +933,6 @@ paths:
             schema:
               $ref: '#/components/schemas/SkillRequest'
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '201':
@@ -994,7 +967,6 @@ paths:
       tags:
       - skills
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '200':
@@ -1026,7 +998,6 @@ paths:
             schema:
               $ref: '#/components/schemas/SkillRequest'
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '200':
@@ -1065,7 +1036,6 @@ paths:
             schema:
               $ref: '#/components/schemas/PatchedSkillRequest'
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '200':
@@ -1086,7 +1056,6 @@ paths:
       tags:
       - skills
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '204':
@@ -1134,7 +1103,6 @@ paths:
               $ref: '#/components/schemas/SkillTestInputRequest'
         required: true
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '200':
@@ -1183,7 +1151,6 @@ paths:
             schema:
               $ref: '#/components/schemas/SkillTestDataRequest'
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '200':
@@ -1207,7 +1174,6 @@ paths:
       tags:
       - skills
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '201':
@@ -1256,7 +1222,6 @@ paths:
               $ref: '#/components/schemas/EvaluatorExecutionRequest'
         required: true
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '200':
@@ -1297,7 +1262,6 @@ paths:
               $ref: '#/components/schemas/SkillValidatorExecutionRequest'
         required: true
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '200':
@@ -1345,7 +1309,6 @@ paths:
             schema:
               $ref: '#/components/schemas/SkillExecutionRequest'
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '200':
@@ -1418,7 +1381,6 @@ paths:
               $ref: '#/components/schemas/StatusChangeRequest'
         required: true
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '200':
@@ -1456,7 +1418,6 @@ paths:
               $ref: '#/components/schemas/StatusChangeRequest'
         required: true
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '200':
@@ -1512,7 +1473,6 @@ paths:
               $ref: '#/components/schemas/SkillTestInputRequest'
         required: true
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '200':
@@ -1561,7 +1521,6 @@ paths:
             schema:
               $ref: '#/components/schemas/SkillTestDataRequest'
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '200':
@@ -1596,7 +1555,6 @@ paths:
       tags:
       - skills
       security:
-      - tokenAuth: []
       - publicApiKey: []
       responses:
         '200':
@@ -3411,10 +3369,5 @@ components:
       in: header
       name: Authorization
       description: Token-based authentication with required prefix "Api-Key"
-    tokenAuth:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: Token-based authentication with required prefix "Token"
 servers:
 - url: https://api.app.rootsignals.ai
