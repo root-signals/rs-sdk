@@ -44,12 +44,6 @@ configuration = root.generated.openapi_client.Configuration(
 # Examples for each auth method are provided below, use the example that
 # satisfies your auth use case.
 
-# Configure API key authorization: tokenAuth
-configuration.api_key['tokenAuth'] = os.environ["API_KEY"]
-
-# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# configuration.api_key_prefix['tokenAuth'] = 'Bearer'
-
 # Configure API key authorization: publicApiKey
 configuration.api_key['publicApiKey'] = os.environ["API_KEY"]
 
@@ -216,13 +210,6 @@ Class | Method | HTTP request | Description
 Authentication schemes defined for the API:
 <a id="publicApiKey"></a>
 ### publicApiKey
-
-- **Type**: API key
-- **API key parameter name**: Authorization
-- **Location**: HTTP header
-
-<a id="tokenAuth"></a>
-### tokenAuth
 
 - **Type**: API key
 - **API key parameter name**: Authorization
