@@ -1995,9 +1995,13 @@ components:
           nullable: true
         execution_log_id:
           type: string
+        justification:
+          type: string
+          nullable: true
       required:
       - cost
       - execution_log_id
+      - justification
       - score
     ExecutionLogDetails:
       type: object
@@ -3352,6 +3356,9 @@ components:
           type: boolean
         status:
           $ref: '#/components/schemas/ValidationResultStatus'
+        justification:
+          type: string
+          nullable: true
       required:
       - evaluator_id
     VariablesRequest:

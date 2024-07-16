@@ -30,7 +30,8 @@ class EvaluatorExecutionResult(BaseModel):
     score: Optional[Union[StrictFloat, StrictInt]]
     cost: Optional[Union[StrictFloat, StrictInt]]
     execution_log_id: StrictStr
-    __properties: ClassVar[List[str]] = ["score", "cost", "execution_log_id"]
+    justification: Optional[StrictStr]
+    __properties: ClassVar[List[str]] = ["score", "cost", "execution_log_id", "justification"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -79,6 +80,11 @@ class EvaluatorExecutionResult(BaseModel):
         if self.cost is None and "cost" in self.model_fields_set:
             _dict["cost"] = None
 
+        # set to None if justification (nullable) is None
+        # and model_fields_set contains the field
+        if self.justification is None and "justification" in self.model_fields_set:
+            _dict["justification"] = None
+
         return _dict
 
     @classmethod
@@ -91,6 +97,11 @@ class EvaluatorExecutionResult(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate(
-            {"score": obj.get("score"), "cost": obj.get("cost"), "execution_log_id": obj.get("execution_log_id")}
+            {
+                "score": obj.get("score"),
+                "cost": obj.get("cost"),
+                "execution_log_id": obj.get("execution_log_id"),
+                "justification": obj.get("justification"),
+            }
         )
         return _obj

@@ -36,6 +36,7 @@ class ValidatorResult(BaseModel):
     cost: Optional[Union[StrictFloat, StrictInt]] = None
     is_valid: Optional[StrictBool] = None
     status: Optional[ValidationResultStatus] = None
+    justification: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = [
         "evaluator_name",
         "evaluator_id",
@@ -44,6 +45,7 @@ class ValidatorResult(BaseModel):
         "cost",
         "is_valid",
         "status",
+        "justification",
     ]
 
     model_config = ConfigDict(
@@ -103,6 +105,11 @@ class ValidatorResult(BaseModel):
         if self.cost is None and "cost" in self.model_fields_set:
             _dict["cost"] = None
 
+        # set to None if justification (nullable) is None
+        # and model_fields_set contains the field
+        if self.justification is None and "justification" in self.model_fields_set:
+            _dict["justification"] = None
+
         return _dict
 
     @classmethod
@@ -123,6 +130,7 @@ class ValidatorResult(BaseModel):
                 "cost": obj.get("cost"),
                 "is_valid": obj.get("is_valid"),
                 "status": obj.get("status"),
+                "justification": obj.get("justification"),
             }
         )
         return _obj
