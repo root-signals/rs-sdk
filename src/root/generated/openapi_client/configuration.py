@@ -398,15 +398,6 @@ class Configuration:
                     "publicApiKey",
                 ),
             }
-        if "tokenAuth" in self.api_key:
-            auth["tokenAuth"] = {
-                "type": "api_key",
-                "in": "header",
-                "key": "Authorization",
-                "value": self.get_api_key_with_prefix(
-                    "tokenAuth",
-                ),
-            }
         return auth
 
     def to_debug_report(self):
