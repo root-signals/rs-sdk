@@ -1686,6 +1686,9 @@ components:
           type: number
           format: double
           nullable: true
+        model_call_duration:
+          type: number
+          format: double
         chat_id:
           type: string
       required:
@@ -2081,6 +2084,9 @@ components:
           readOnly: true
         variables:
           readOnly: true
+        model_call_duration:
+          type: number
+          format: double
       required:
       - chat_id
       - cost
@@ -2088,6 +2094,7 @@ components:
       - id
       - llm_output
       - model
+      - model_call_duration
       - objective
       - owner
       - rendered_prompt
@@ -2954,6 +2961,9 @@ components:
           type: number
           format: double
           nullable: true
+        model_call_duration:
+          type: number
+          format: double
       required:
       - cost
       - execution_log_id
@@ -3203,6 +3213,9 @@ components:
         variables:
           type: object
           additionalProperties: {}
+        model_call_duration:
+          type: number
+          format: double
       required:
       - result
       - variables

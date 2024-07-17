@@ -35,6 +35,7 @@ class SkillExecutionResult(BaseModel):
     execution_log_id: StrictStr
     rendered_prompt: StrictStr
     cost: Optional[Union[StrictFloat, StrictInt]]
+    model_call_duration: Optional[Union[StrictFloat, StrictInt]] = None
     __properties: ClassVar[List[str]] = [
         "llm_output",
         "validation",
@@ -42,6 +43,7 @@ class SkillExecutionResult(BaseModel):
         "execution_log_id",
         "rendered_prompt",
         "cost",
+        "model_call_duration",
     ]
 
     model_config = ConfigDict(
@@ -115,6 +117,7 @@ class SkillExecutionResult(BaseModel):
                 "execution_log_id": obj.get("execution_log_id"),
                 "rendered_prompt": obj.get("rendered_prompt"),
                 "cost": obj.get("cost"),
+                "model_call_duration": obj.get("model_call_duration"),
             }
         )
         return _obj

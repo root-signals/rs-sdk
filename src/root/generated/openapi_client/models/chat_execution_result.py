@@ -35,6 +35,7 @@ class ChatExecutionResult(BaseModel):
     execution_log_id: StrictStr
     rendered_prompt: StrictStr
     cost: Optional[Union[StrictFloat, StrictInt]]
+    model_call_duration: Optional[Union[StrictFloat, StrictInt]] = None
     chat_id: StrictStr
     __properties: ClassVar[List[str]] = [
         "llm_output",
@@ -43,6 +44,7 @@ class ChatExecutionResult(BaseModel):
         "execution_log_id",
         "rendered_prompt",
         "cost",
+        "model_call_duration",
         "chat_id",
     ]
 
@@ -117,6 +119,7 @@ class ChatExecutionResult(BaseModel):
                 "execution_log_id": obj.get("execution_log_id"),
                 "rendered_prompt": obj.get("rendered_prompt"),
                 "cost": obj.get("cost"),
+                "model_call_duration": obj.get("model_call_duration"),
                 "chat_id": obj.get("chat_id"),
             }
         )

@@ -47,6 +47,7 @@ class ExecutionLogDetails(BaseModel):
     objective: ExecutionLogDetailsObjective
     validation_results: List[SkillExecutionValidatorResult]
     variables: Optional[Any]
+    model_call_duration: Union[StrictFloat, StrictInt]
     __properties: ClassVar[List[str]] = [
         "chat_id",
         "cost",
@@ -61,6 +62,7 @@ class ExecutionLogDetails(BaseModel):
         "objective",
         "validation_results",
         "variables",
+        "model_call_duration",
     ]
 
     model_config = ConfigDict(
@@ -201,6 +203,7 @@ class ExecutionLogDetails(BaseModel):
                 if obj.get("validation_results") is not None
                 else None,
                 "variables": obj.get("variables"),
+                "model_call_duration": obj.get("model_call_duration"),
             }
         )
         return _obj

@@ -16,9 +16,9 @@ from __future__ import annotations
 import json
 import pprint
 import re  # noqa: F401
-from typing import Any, ClassVar, Dict, List, Optional, Set
+from typing import Any, ClassVar, Dict, List, Optional, Set, Union
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt
 from typing_extensions import Self
 
 
@@ -29,7 +29,8 @@ class SkillTestOutput(BaseModel):
 
     result: Dict[str, Any]
     variables: Dict[str, Any]
-    __properties: ClassVar[List[str]] = ["result", "variables"]
+    model_call_duration: Optional[Union[StrictFloat, StrictInt]] = None
+    __properties: ClassVar[List[str]] = ["result", "variables", "model_call_duration"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -79,5 +80,11 @@ class SkillTestOutput(BaseModel):
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
 
-        _obj = cls.model_validate({"result": obj.get("result"), "variables": obj.get("variables")})
+        _obj = cls.model_validate(
+            {
+                "result": obj.get("result"),
+                "variables": obj.get("variables"),
+                "model_call_duration": obj.get("model_call_duration"),
+            }
+        )
         return _obj
