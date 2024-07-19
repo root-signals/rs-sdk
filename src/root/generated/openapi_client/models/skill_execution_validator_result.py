@@ -34,7 +34,15 @@ class SkillExecutionValidatorResult(BaseModel):
     result: Optional[Union[StrictFloat, StrictInt]]
     threshold: Union[StrictFloat, StrictInt]
     status: ValidationResultStatus
-    __properties: ClassVar[List[str]] = ["evaluator_id", "evaluator_name", "result", "threshold", "status"]
+    justification: StrictStr
+    __properties: ClassVar[List[str]] = [
+        "evaluator_id",
+        "evaluator_name",
+        "result",
+        "threshold",
+        "status",
+        "justification",
+    ]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -70,6 +78,7 @@ class SkillExecutionValidatorResult(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
@@ -78,6 +87,7 @@ class SkillExecutionValidatorResult(BaseModel):
                 "result",
                 "threshold",
                 "status",
+                "justification",
             ]
         )
 
@@ -114,6 +124,7 @@ class SkillExecutionValidatorResult(BaseModel):
                 "result": obj.get("result"),
                 "threshold": obj.get("threshold"),
                 "status": obj.get("status"),
+                "justification": obj.get("justification"),
             }
         )
         return _obj

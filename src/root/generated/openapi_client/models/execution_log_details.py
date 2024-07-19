@@ -38,31 +38,33 @@ class ExecutionLogDetails(BaseModel):
     cost: Optional[Union[StrictFloat, StrictInt]]
     created_at: Optional[datetime]
     id: StrictStr
+    justification: StrictStr
     llm_output: StrictStr
     model: StrictStr
+    model_call_duration: Union[StrictFloat, StrictInt]
     model_params: Optional[ModelParams] = None
+    objective: ExecutionLogDetailsObjective
     owner: NestedUserDetails
     rendered_prompt: StrictStr
     skill: ExecutionLogDetailsSkill
-    objective: ExecutionLogDetailsObjective
     validation_results: List[SkillExecutionValidatorResult]
     variables: Optional[Any]
-    model_call_duration: Union[StrictFloat, StrictInt]
     __properties: ClassVar[List[str]] = [
         "chat_id",
         "cost",
         "created_at",
         "id",
+        "justification",
         "llm_output",
         "model",
+        "model_call_duration",
         "model_params",
+        "objective",
         "owner",
         "rendered_prompt",
         "skill",
-        "objective",
         "validation_results",
         "variables",
-        "model_call_duration",
     ]
 
     model_config = ConfigDict(
@@ -104,6 +106,7 @@ class ExecutionLogDetails(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
@@ -111,6 +114,7 @@ class ExecutionLogDetails(BaseModel):
                 "cost",
                 "created_at",
                 "id",
+                "justification",
                 "llm_output",
                 "model",
                 "owner",
@@ -128,15 +132,15 @@ class ExecutionLogDetails(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of model_params
         if self.model_params:
             _dict["model_params"] = self.model_params.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of objective
+        if self.objective:
+            _dict["objective"] = self.objective.to_dict()
         # override the default output from pydantic by calling `to_dict()` of owner
         if self.owner:
             _dict["owner"] = self.owner.to_dict()
         # override the default output from pydantic by calling `to_dict()` of skill
         if self.skill:
             _dict["skill"] = self.skill.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of objective
-        if self.objective:
-            _dict["objective"] = self.objective.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in validation_results (list)
         _items = []
         if self.validation_results:
@@ -186,24 +190,25 @@ class ExecutionLogDetails(BaseModel):
                 "cost": obj.get("cost"),
                 "created_at": obj.get("created_at"),
                 "id": obj.get("id"),
+                "justification": obj.get("justification"),
                 "llm_output": obj.get("llm_output"),
                 "model": obj.get("model"),
+                "model_call_duration": obj.get("model_call_duration"),
                 "model_params": ModelParams.from_dict(obj["model_params"])
                 if obj.get("model_params") is not None
+                else None,
+                "objective": ExecutionLogDetailsObjective.from_dict(obj["objective"])
+                if obj.get("objective") is not None
                 else None,
                 "owner": NestedUserDetails.from_dict(obj["owner"]) if obj.get("owner") is not None else None,
                 "rendered_prompt": obj.get("rendered_prompt"),
                 "skill": ExecutionLogDetailsSkill.from_dict(obj["skill"]) if obj.get("skill") is not None else None,
-                "objective": ExecutionLogDetailsObjective.from_dict(obj["objective"])
-                if obj.get("objective") is not None
-                else None,
                 "validation_results": [
                     SkillExecutionValidatorResult.from_dict(_item) for _item in obj["validation_results"]
                 ]
                 if obj.get("validation_results") is not None
                 else None,
                 "variables": obj.get("variables"),
-                "model_call_duration": obj.get("model_call_duration"),
             }
         )
         return _obj
