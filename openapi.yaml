@@ -2027,16 +2027,31 @@ components:
           type: string
           format: uuid
           readOnly: true
+        justification:
+          type: string
+          readOnly: true
         llm_output:
           type: string
           readOnly: true
         model:
           type: string
           readOnly: true
+        model_call_duration:
+          type: number
+          format: double
         model_params:
           allOf:
           - $ref: '#/components/schemas/ModelParams'
           nullable: true
+        objective:
+          type: object
+          properties:
+            intent:
+              type: string
+            id:
+              type: string
+              format: uuid
+          readOnly: true
         owner:
           allOf:
           - $ref: '#/components/schemas/NestedUserDetails'
@@ -2068,15 +2083,6 @@ components:
             type: skill
             id: dfd76dd3-1415-4339-9b20-3bc2bbe3e8ce
           readOnly: true
-        objective:
-          type: object
-          properties:
-            intent:
-              type: string
-            id:
-              type: string
-              format: uuid
-          readOnly: true
         validation_results:
           type: array
           items:
@@ -2084,14 +2090,12 @@ components:
           readOnly: true
         variables:
           readOnly: true
-        model_call_duration:
-          type: number
-          format: double
       required:
       - chat_id
       - cost
       - created_at
       - id
+      - justification
       - llm_output
       - model
       - model_call_duration
@@ -2995,9 +2999,13 @@ components:
           allOf:
           - $ref: '#/components/schemas/ValidationResultStatus'
           readOnly: true
+        justification:
+          type: string
+          readOnly: true
       required:
       - evaluator_id
       - evaluator_name
+      - justification
       - result
       - status
       - threshold
