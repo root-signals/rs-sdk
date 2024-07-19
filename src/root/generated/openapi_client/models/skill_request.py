@@ -49,6 +49,9 @@ class SkillRequest(BaseModel):
     name: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=1000)]] = None
     objective: Optional[ObjectiveRequest] = None
     objective_id: Optional[StrictStr] = None
+    overwrite: Optional[StrictBool] = Field(
+        default=False, description="Overwrite existing skill with the same name. Only for POST requests."
+    )
     pii_filter: Optional[StrictBool] = Field(
         default=None, description="Filter out personally identifiable information before sending a prompt to a LLM"
     )
@@ -69,6 +72,7 @@ class SkillRequest(BaseModel):
         "name",
         "objective",
         "objective_id",
+        "overwrite",
         "pii_filter",
         "prompt",
         "reference_variables",
@@ -207,6 +211,7 @@ class SkillRequest(BaseModel):
                 "name": obj.get("name"),
                 "objective": ObjectiveRequest.from_dict(obj["objective"]) if obj.get("objective") is not None else None,
                 "objective_id": obj.get("objective_id"),
+                "overwrite": obj.get("overwrite") if obj.get("overwrite") is not None else False,
                 "pii_filter": obj.get("pii_filter"),
                 "prompt": obj.get("prompt"),
                 "reference_variables": [

@@ -2718,6 +2718,12 @@ components:
           format: uuid
           writeOnly: true
           nullable: true
+        overwrite:
+          type: boolean
+          writeOnly: true
+          default: false
+          description: Overwrite existing skill with the same name. Only for POST
+            requests.
         pii_filter:
           type: boolean
           description: Filter out personally identifiable information before sending
@@ -3127,6 +3133,12 @@ components:
           format: uuid
           writeOnly: true
           nullable: true
+        overwrite:
+          type: boolean
+          writeOnly: true
+          default: false
+          description: Overwrite existing skill with the same name. Only for POST
+            requests.
         pii_filter:
           type: boolean
           description: Filter out personally identifiable information before sending
