@@ -278,6 +278,7 @@ class Skills:
         data_loaders: Optional[List[DataLoader]] = None,
         model_params: Optional[Union[ModelParams, ModelParamsRequest]] = None,
         objective_id: Optional[str] = None,
+        overwrite: bool = False,
     ) -> Skill:
         """Create a new skill and return the result
 
@@ -317,6 +318,8 @@ class Skills:
 
           model_params: An optional set of additional parameters to the model.
 
+          overwrite: Whether to overwrite a skill with the same name if it exists.
+
         """
         if name is None:
             name = "<unnamed>"
@@ -344,6 +347,7 @@ class Skills:
             input_variables=_to_input_variables(input_variables),
             data_loaders=_to_data_loaders(data_loaders),
             model_params=_to_model_params(model_params),
+            overwrite=overwrite,
         )
 
         skill = api_instance.skills_create(skill_request=skill_request)
