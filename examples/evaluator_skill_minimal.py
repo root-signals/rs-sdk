@@ -4,6 +4,7 @@ from root.validators import Validator
 client = RootSignals()
 
 cooking_skill = client.skills.create(
+    name="Cooking skill with validators",
     prompt="Find me a good recipe for Italian food.",
     validators=[
         Validator(
