@@ -5,7 +5,7 @@ from root.validators import Validator
 client = RootSignals()
 
 skill = client.skills.create(
-    name="My Q&A chatbot",
+    name="My strict chatbot",
     intent="Simple Q&A chatbot",
     prompt="Provide a clear answer to the question: {{question}}",
     model="gpt-4",

@@ -4,7 +4,7 @@ from root.validators import Validator
 client = RootSignals()
 
 evaluator_skill = client.skills.create(
-    name="Cooking recipe evaluator",
+    name="Cooking recipe",
     intent="This skill will evaluate if the answer is a cooking recipe.",
     prompt="Is the following a cooking recipe: {{output}}",
     model="gpt-3.5-turbo",
@@ -12,6 +12,7 @@ evaluator_skill = client.skills.create(
 )
 
 cooking_skill = client.skills.create(
+    name="Cooking skill with a custom evaluator",
     prompt="Find me a good recipe for Italian food.",
     validators=[
         Validator(evaluator_id=evaluator_skill.id, threshold=0.1),
