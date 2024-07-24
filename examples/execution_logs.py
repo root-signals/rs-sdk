@@ -15,6 +15,12 @@ skill = client.skills.create(
 # Execute the skill
 response = skill.run({"question": "What is the capital of France?"})
 
+# Get the validation results
+print(response.validation)
+# {'validator_results': [{'cost': 0.000..., 'evaluator_name': 'Clarity'
+# 'threshold': 0.6, is_valid': True, 'result': 0.xy}]
+
+
 # Get the execution details
 log = client.execution_logs.get(execution_result=response)
 print(log)
