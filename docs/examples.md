@@ -18,14 +18,17 @@ The simple skill example adds some more metadata to the skill. It specifies expl
 
 ## Skill with a validator
 
-In order to ensure the results of skill execution remain within acceptable guardrails, we can add a validator. In this example, the validator scores the results by relevance of the answer to the input prompt. Relevance result less than the threshold 0.9 will block the skill execution.
-
-```{literalinclude} ../examples/validator.py
-```
-
-The validation results can be retrieved from the execution logs for analysis and audit.
+In order to ensure the results of skill execution remain within acceptable guardrails, we can add a validator. In this example, the validator scores the results by the clarity of the model output.
 
 ```{literalinclude} ../examples/execution_logs.py
+```
+
+
+## Skill with reference data
+
+Skills can leverage reference data, such as a document, to provide additional context to the model.
+
+```{literalinclude} ../examples/reference_variable.py
 ```
 
 ## Evaluator skill and minimal version of it
@@ -99,7 +102,7 @@ Adding a model is as simple as specifying the model name and an endpoint. The mo
 
 ## Skill with a data loader
 
-In this example, we add a data loader which loads the contents of a reference variable called kimchi_ingredients from Wikipedia, and then uses that to populate the prompt.
+In this example, we add a data loader which loads the contents of a data loader variable called kimchi_ingredients from Wikipedia, and then uses that to populate the prompt.
 
 ```{literalinclude} ../examples/data_loader.py
 ```
