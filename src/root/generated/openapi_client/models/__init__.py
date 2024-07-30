@@ -50,6 +50,7 @@ from root.generated.openapi_client.models.execution_log_details import Execution
 from root.generated.openapi_client.models.execution_log_details_objective import ExecutionLogDetailsObjective
 from root.generated.openapi_client.models.execution_log_details_skill import ExecutionLogDetailsSkill
 from root.generated.openapi_client.models.execution_log_list import ExecutionLogList
+from root.generated.openapi_client.models.execution_log_list_skill import ExecutionLogListSkill
 from root.generated.openapi_client.models.id import ID
 from root.generated.openapi_client.models.input_variable import InputVariable
 from root.generated.openapi_client.models.input_variable_request import InputVariableRequest

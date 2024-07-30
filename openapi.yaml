@@ -2129,12 +2129,6 @@ components:
         skill:
           type: object
           properties:
-            prompt:
-              type: string
-            pii_filter:
-              type: boolean
-            version_id:
-              type: string
             name:
               type: string
             type:
@@ -2143,9 +2137,6 @@ components:
               type: string
               format: uuid
           example:
-            prompt: 'Provide a clear answer to the question: {{question}}'
-            pii_filter: false
-            version_id: '1234'
             name: Skill name
             type: skill
             id: dfd76dd3-1415-4339-9b20-3bc2bbe3e8ce

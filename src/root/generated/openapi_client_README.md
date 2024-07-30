@@ -147,6 +147,7 @@ Class | Method | HTTP request | Description
  - [ExecutionLogDetailsObjective](root/generated/openapi_client/docs/ExecutionLogDetailsObjective.md)
  - [ExecutionLogDetailsSkill](root/generated/openapi_client/docs/ExecutionLogDetailsSkill.md)
  - [ExecutionLogList](root/generated/openapi_client/docs/ExecutionLogList.md)
+ - [ExecutionLogListSkill](root/generated/openapi_client/docs/ExecutionLogListSkill.md)
  - [ID](root/generated/openapi_client/docs/ID.md)
  - [InputVariable](root/generated/openapi_client/docs/InputVariable.md)
  - [InputVariableRequest](root/generated/openapi_client/docs/InputVariableRequest.md)

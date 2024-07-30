@@ -22,7 +22,7 @@ from typing import Any, ClassVar, Dict, List, Optional, Set, Union
 from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
 from typing_extensions import Self
 
-from root.generated.openapi_client.models.execution_log_details_skill import ExecutionLogDetailsSkill
+from root.generated.openapi_client.models.execution_log_list_skill import ExecutionLogListSkill
 from root.generated.openapi_client.models.nested_user_details import NestedUserDetails
 
 
@@ -35,7 +35,7 @@ class ExecutionLogList(BaseModel):
     created_at: Optional[datetime]
     id: StrictStr
     owner: NestedUserDetails
-    skill: ExecutionLogDetailsSkill
+    skill: ExecutionLogListSkill
     validation_result_average: Optional[Union[StrictFloat, StrictInt]]
     __properties: ClassVar[List[str]] = ["cost", "created_at", "id", "owner", "skill", "validation_result_average"]
 
@@ -127,7 +127,7 @@ class ExecutionLogList(BaseModel):
                 "created_at": obj.get("created_at"),
                 "id": obj.get("id"),
                 "owner": NestedUserDetails.from_dict(obj["owner"]) if obj.get("owner") is not None else None,
-                "skill": ExecutionLogDetailsSkill.from_dict(obj["skill"]) if obj.get("skill") is not None else None,
+                "skill": ExecutionLogListSkill.from_dict(obj["skill"]) if obj.get("skill") is not None else None,
                 "validation_result_average": obj.get("validation_result_average"),
             }
         )
