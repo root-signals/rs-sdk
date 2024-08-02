@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import math
+from collections import defaultdict
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from functools import partial
 from typing import TYPE_CHECKING, Dict, Iterator, List, Literal, Optional, Union, cast
 
@@ -91,6 +94,34 @@ class EvaluatorDemonstration(BaseModel):
     output: str
     score: float
     justification: Optional[str] = None
+
+
+class CalibrateBatchParameters:
+    def __init__(
+        self,
+        name: str,
+        prompt: str,
+        model: "ModelName",
+        pii_filter: bool = False,
+        reference_variables: Optional[Union[List["ReferenceVariable"], List["ReferenceVariableRequest"]]] = None,
+        input_variables: Optional[Union[List["InputVariable"], List["InputVariableRequest"]]] = None,
+        data_loaders: Optional[List["DataLoader"]] = None,
+    ):
+        self.name = name
+        self.prompt = prompt
+        self.model = model
+        self.pii_filter = pii_filter
+        self.reference_variables = reference_variables
+        self.input_variables = input_variables
+        self.data_loaders = data_loaders
+
+
+class CalibrateBatchResult(BaseModel):
+    results: List[SkillTestOutput]
+    rms_errors_model: Dict[str, float]
+    mae_errors_model: Dict[str, float]
+    rms_errors_prompt: Dict[str, float]
+    mae_errors_prompt: Dict[str, float]
 
 
 class Versions:
@@ -670,3 +701,162 @@ class Evaluators:
             test_data=test_data,
         )
         return api_instance.skills_calibrate_create2(evaluator_id, skill_test_request)
+
+    def calibrate(
+        self,
+        *,
+        name: str,
+        test_dataset_id: Optional[str] = None,
+        test_data: Optional[List[List[str]]] = None,
+        prompt: str,
+        model: ModelName,
+        pii_filter: bool = False,
+        reference_variables: Optional[Union[List[ReferenceVariable], List[ReferenceVariableRequest]]] = None,
+        input_variables: Optional[Union[List[InputVariable], List[InputVariableRequest]]] = None,
+        data_loaders: Optional[List[DataLoader]] = None,
+    ) -> List[SkillTestOutput]:
+        """
+        Run calibration set on an existing evaluator.
+        """
+        if not test_dataset_id and not test_data:
+            raise ValueError("Either test_dataset_id or test_data must be provided")
+        if test_dataset_id and test_data:
+            raise ValueError("Only one of test_dataset_id or test_data must be provided")
+        api_instance = SkillsApi(self.client)
+        skill_test_request = SkillTestInputRequest(
+            name=name,
+            test_dataset_id=test_dataset_id,
+            test_data=test_data,
+            prompt=prompt,
+            models=[model],
+            is_evaluator=True,
+            pii_filter=pii_filter,
+            objective=ObjectiveRequest(intent="Calibration"),
+            reference_variables=_to_reference_variables(reference_variables),
+            input_variables=_to_input_variables(input_variables),
+            data_loaders=_to_data_loaders(data_loaders),
+        )
+        return api_instance.skills_calibrate_create(skill_test_request)
+
+    def calibrate_batch(
+        self,
+        *,
+        evaluator_definitions: List[CalibrateBatchParameters],
+        test_dataset_id: Optional[str] = None,
+        test_data: Optional[List[List[str]]] = None,
+        parallel_requests: int = 1,
+    ) -> CalibrateBatchResult:
+        """
+        Run calibration for a set of prompts and models
+
+        Args:
+
+             evaluator_definitions: List of evaluator definitions.
+
+             test_dataset_id: ID of the dataset to be used to test the skill.
+
+             test_data: Actual data to be used to test the skill.
+
+             parallel_requests: Number of parallel requests. Uses ThreadPoolExecutor if > 1.
+
+        Returns a dictionary with the results and errors for each model and prompt.
+        """
+
+        model_errors: Dict[str, Dict[str, float]] = defaultdict(
+            lambda: {"sum_squared_errors": 0, "abs_errors": 0, "count": 0}
+        )
+        prompt_errors: Dict[str, Dict[str, float]] = defaultdict(
+            lambda: {"sum_squared_errors": 0, "abs_errors": 0, "count": 0}
+        )
+
+        all_results = []
+
+        use_thread_pool = parallel_requests > 1
+
+        def process_results(results: List[SkillTestOutput], param: CalibrateBatchParameters) -> None:
+            for result in results:
+                score = result.result["score"]
+                expected_score = result.result["expected_score"]
+                squared_error = (score - expected_score) ** 2
+                abs_error = abs(score - expected_score)
+
+                model_errors[param.model]["sum_squared_errors"] += squared_error
+                model_errors[param.model]["abs_errors"] += abs_error
+                model_errors[param.model]["count"] += 1
+
+                prompt_errors[param.prompt]["sum_squared_errors"] += squared_error
+                prompt_errors[param.prompt]["abs_errors"] += abs_error
+                prompt_errors[param.prompt]["count"] += 1
+
+                all_results.append(result)
+
+        if use_thread_pool:
+            with ThreadPoolExecutor(max_workers=parallel_requests) as executor:
+                futures = {
+                    executor.submit(
+                        self.calibrate,
+                        name=param.name,
+                        test_dataset_id=test_dataset_id,
+                        test_data=test_data,
+                        prompt=param.prompt,
+                        model=param.model,
+                        pii_filter=param.pii_filter,
+                        reference_variables=param.reference_variables,
+                        input_variables=param.input_variables,
+                        data_loaders=param.data_loaders,
+                    ): param
+                    for param in evaluator_definitions
+                }
+
+                for future in as_completed(futures):
+                    param = futures[future]
+                    try:
+                        results = future.result()
+                        process_results(results, param)
+                    except Exception as exc:
+                        raise ValueError(f"Calibration failed for {param.prompt} with model {param.model}") from exc
+        else:
+            for param in evaluator_definitions:
+                try:
+                    results = self.calibrate(
+                        name=param.name,
+                        test_dataset_id=test_dataset_id,
+                        test_data=test_data,
+                        prompt=param.prompt,
+                        model=param.model,
+                        pii_filter=param.pii_filter,
+                        reference_variables=param.reference_variables,
+                        input_variables=param.input_variables,
+                        data_loaders=param.data_loaders,
+                    )
+                    process_results(results, param)
+                except Exception as exc:
+                    raise ValueError(f"Calibration failed for {param.prompt} with model {param.model}") from exc
+
+        rms_errors_model = {
+            model: math.sqrt(data["sum_squared_errors"] / data["count"])
+            for model, data in model_errors.items()
+            if data["count"] > 0
+        }
+
+        rms_errors_prompt = {
+            prompt: math.sqrt(data["sum_squared_errors"] / data["count"])
+            for prompt, data in prompt_errors.items()
+            if data["count"] > 0
+        }
+
+        mae_errors_model = {
+            model: data["abs_errors"] / data["count"] for model, data in model_errors.items() if data["count"] > 0
+        }
+
+        mae_errors_prompt = {
+            prompt: data["abs_errors"] / data["count"] for prompt, data in prompt_errors.items() if data["count"] > 0
+        }
+
+        return CalibrateBatchResult(
+            results=all_results,
+            rms_errors_model=rms_errors_model,
+            rms_errors_prompt=rms_errors_prompt,
+            mae_errors_model=mae_errors_model,
+            mae_errors_prompt=mae_errors_prompt,
+        )
