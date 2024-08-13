@@ -3,7 +3,7 @@ from typing import Iterator, Optional
 
 from root.generated.openapi_client.api.models_api import ModelsApi
 from root.generated.openapi_client.models.model import Model
-from root.generated.openapi_client.models.model_create_request import ModelCreateRequest
+from root.generated.openapi_client.models.model_request import ModelRequest
 
 from .generated.openapi_client import ApiClient
 from .utils import iterate_cursor_list
@@ -63,7 +63,7 @@ class Models:
           url: Optional URL pointing to the model's endpoint.
 
         """
-        request = ModelCreateRequest(
+        request = ModelRequest(
             name=name,
             model=model,
             default_key=default_key,
@@ -74,7 +74,7 @@ class Models:
         )
 
         api_instance = ModelsApi(self.client)
-        return api_instance.models_create(model_create_request=request).id
+        return api_instance.models_create(model_request=request).id
 
     def delete(self, model_id: str) -> None:
         """
@@ -87,3 +87,5 @@ class Models:
         """
         api_instance = ModelsApi(self.client)
         return api_instance.models_destroy(id=model_id)
+
+    # TODO: update

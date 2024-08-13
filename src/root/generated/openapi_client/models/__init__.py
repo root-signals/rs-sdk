@@ -55,10 +55,10 @@ from root.generated.openapi_client.models.id import ID
 from root.generated.openapi_client.models.input_variable import InputVariable
 from root.generated.openapi_client.models.input_variable_request import InputVariableRequest
 from root.generated.openapi_client.models.model import Model
-from root.generated.openapi_client.models.model_create import ModelCreate
-from root.generated.openapi_client.models.model_create_request import ModelCreateRequest
+from root.generated.openapi_client.models.model_list import ModelList
 from root.generated.openapi_client.models.model_params import ModelParams
 from root.generated.openapi_client.models.model_params_request import ModelParamsRequest
+from root.generated.openapi_client.models.model_request import ModelRequest
 from root.generated.openapi_client.models.nested_objective_list import NestedObjectiveList
 from root.generated.openapi_client.models.nested_skill_evaluator import NestedSkillEvaluator
 from root.generated.openapi_client.models.nested_skill_evaluator_request import NestedSkillEvaluatorRequest
@@ -72,10 +72,11 @@ from root.generated.openapi_client.models.open_ai_message_request import OpenAIM
 from root.generated.openapi_client.models.paginated_chat_list import PaginatedChatList
 from root.generated.openapi_client.models.paginated_data_set_list_list import PaginatedDataSetListList
 from root.generated.openapi_client.models.paginated_execution_log_list_list import PaginatedExecutionLogListList
-from root.generated.openapi_client.models.paginated_model_list import PaginatedModelList
+from root.generated.openapi_client.models.paginated_model_list_list import PaginatedModelListList
 from root.generated.openapi_client.models.paginated_objective_list_list import PaginatedObjectiveListList
 from root.generated.openapi_client.models.paginated_skill_list import PaginatedSkillList
 from root.generated.openapi_client.models.paginated_skill_list_output_list import PaginatedSkillListOutputList
+from root.generated.openapi_client.models.patched_model_request import PatchedModelRequest
 from root.generated.openapi_client.models.patched_objective_request import PatchedObjectiveRequest
 from root.generated.openapi_client.models.patched_skill_request import PatchedSkillRequest
 from root.generated.openapi_client.models.provider import Provider

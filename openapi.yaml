@@ -480,7 +480,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedModelList'
+                $ref: '#/components/schemas/PaginatedModelListList'
           description: ''
     post:
       operationId: models_create
@@ -491,7 +491,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ModelCreateRequest'
+              $ref: '#/components/schemas/ModelRequest'
             examples:
               CreateACustomLLMExecutionModel(SaaS):
                 value:
@@ -513,10 +513,10 @@ paths:
                 description: An example with non-SaaS LLM model.
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/ModelCreateRequest'
+              $ref: '#/components/schemas/ModelRequest'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/ModelCreateRequest'
+              $ref: '#/components/schemas/ModelRequest'
         required: true
       security:
       - publicApiKey: []
@@ -525,7 +525,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ModelCreate'
+                $ref: '#/components/schemas/Model'
           description: ''
   /v1/models/{id}/:
     get:
@@ -548,9 +548,70 @@ paths:
               schema:
                 $ref: '#/components/schemas/Model'
           description: ''
+    put:
+      operationId: models_update
+      description: Update a custom LLM model.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - models
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModelRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ModelRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ModelRequest'
+        required: true
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Model'
+          description: ''
+    patch:
+      operationId: models_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - models
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedModelRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedModelRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedModelRequest'
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Model'
+          description: ''
     delete:
       operationId: models_destroy
-      description: Delete a custom model.
       parameters:
       - in: path
         name: id
@@ -2205,6 +2266,38 @@ components:
     Model:
       type: object
       properties:
+        default_key:
+          type: string
+          nullable: true
+          maxLength: 4000
+        id:
+          type: string
+          readOnly: true
+        is_local:
+          type: boolean
+        max_output_token_count:
+          type: integer
+          minimum: 800
+        max_token_count:
+          type: integer
+          maximum: 2147483647
+          minimum: 800
+          nullable: true
+        model:
+          type: string
+        name:
+          type: string
+          maxLength: 100
+        url:
+          type: string
+          nullable: true
+          maxLength: 1024
+      required:
+      - id
+      - name
+    ModelList:
+      type: object
+      properties:
         id:
           type: string
           format: uuid
@@ -2228,66 +2321,6 @@ components:
       - name
       - owner
       - provider
-    ModelCreate:
-      type: object
-      properties:
-        default_key:
-          type: string
-          nullable: true
-          maxLength: 4000
-        id:
-          type: string
-          readOnly: true
-        is_local:
-          type: boolean
-        max_output_token_count:
-          type: integer
-        max_token_count:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-          nullable: true
-        model:
-          type: string
-        name:
-          type: string
-          maxLength: 100
-        url:
-          type: string
-          nullable: true
-          maxLength: 1024
-      required:
-      - id
-      - name
-    ModelCreateRequest:
-      type: object
-      properties:
-        default_key:
-          type: string
-          nullable: true
-          maxLength: 4000
-        is_local:
-          type: boolean
-        max_output_token_count:
-          type: integer
-        max_token_count:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-          nullable: true
-        model:
-          type: string
-          minLength: 1
-        name:
-          type: string
-          minLength: 1
-          maxLength: 100
-        url:
-          type: string
-          nullable: true
-          maxLength: 1024
-      required:
-      - name
     ModelParams:
       type: object
       properties:
@@ -2304,6 +2337,36 @@ components:
           type: number
           format: double
           nullable: true
+    ModelRequest:
+      type: object
+      properties:
+        default_key:
+          type: string
+          nullable: true
+          maxLength: 4000
+        is_local:
+          type: boolean
+        max_output_token_count:
+          type: integer
+          minimum: 800
+        max_token_count:
+          type: integer
+          maximum: 2147483647
+          minimum: 800
+          nullable: true
+        model:
+          type: string
+          minLength: 1
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        url:
+          type: string
+          nullable: true
+          maxLength: 1024
+      required:
+      - name
     NestedObjectiveList:
       type: object
       properties:
@@ -2560,7 +2623,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ExecutionLogList'
-    PaginatedModelList:
+    PaginatedModelListList:
       type: object
       required:
       - results
@@ -2578,7 +2641,7 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Model'
+            $ref: '#/components/schemas/ModelList'
     PaginatedObjectiveListList:
       type: object
       required:
@@ -2636,6 +2699,34 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SkillListOutput'
+    PatchedModelRequest:
+      type: object
+      properties:
+        default_key:
+          type: string
+          nullable: true
+          maxLength: 4000
+        is_local:
+          type: boolean
+        max_output_token_count:
+          type: integer
+          minimum: 800
+        max_token_count:
+          type: integer
+          maximum: 2147483647
+          minimum: 800
+          nullable: true
+        model:
+          type: string
+          minLength: 1
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        url:
+          type: string
+          nullable: true
+          maxLength: 1024
     PatchedObjectiveRequest:
       type: object
       properties:
