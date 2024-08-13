@@ -20,9 +20,9 @@ from typing_extensions import Annotated
 from root.generated.openapi_client.api_client import ApiClient, RequestSerialized
 from root.generated.openapi_client.api_response import ApiResponse
 from root.generated.openapi_client.models.model import Model
-from root.generated.openapi_client.models.model_create import ModelCreate
-from root.generated.openapi_client.models.model_create_request import ModelCreateRequest
-from root.generated.openapi_client.models.paginated_model_list import PaginatedModelList
+from root.generated.openapi_client.models.model_request import ModelRequest
+from root.generated.openapi_client.models.paginated_model_list_list import PaginatedModelListList
+from root.generated.openapi_client.models.patched_model_request import PatchedModelRequest
 from root.generated.openapi_client.rest import RESTResponseType
 
 
@@ -41,7 +41,7 @@ class ModelsApi:
     @validate_call
     def models_create(
         self,
-        model_create_request: ModelCreateRequest,
+        model_request: ModelRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -51,13 +51,13 @@ class ModelsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ModelCreate:
+    ) -> Model:
         """models_create
 
         Create a custom LLM model.
 
-        :param model_create_request: (required)
-        :type model_create_request: ModelCreateRequest
+        :param model_request: (required)
+        :type model_request: ModelRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -81,7 +81,7 @@ class ModelsApi:
         """  # noqa: E501
 
         _param = self._models_create_serialize(
-            model_create_request=model_create_request,
+            model_request=model_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -89,7 +89,7 @@ class ModelsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "201": "ModelCreate",
+            "201": "Model",
         }
         response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
         response_data.read()
@@ -101,7 +101,7 @@ class ModelsApi:
     @validate_call
     def models_create_with_http_info(
         self,
-        model_create_request: ModelCreateRequest,
+        model_request: ModelRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -111,13 +111,13 @@ class ModelsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[ModelCreate]:
+    ) -> ApiResponse[Model]:
         """models_create
 
         Create a custom LLM model.
 
-        :param model_create_request: (required)
-        :type model_create_request: ModelCreateRequest
+        :param model_request: (required)
+        :type model_request: ModelRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -141,7 +141,7 @@ class ModelsApi:
         """  # noqa: E501
 
         _param = self._models_create_serialize(
-            model_create_request=model_create_request,
+            model_request=model_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -149,7 +149,7 @@ class ModelsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "201": "ModelCreate",
+            "201": "Model",
         }
         response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
         response_data.read()
@@ -161,7 +161,7 @@ class ModelsApi:
     @validate_call
     def models_create_without_preload_content(
         self,
-        model_create_request: ModelCreateRequest,
+        model_request: ModelRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -176,8 +176,8 @@ class ModelsApi:
 
         Create a custom LLM model.
 
-        :param model_create_request: (required)
-        :type model_create_request: ModelCreateRequest
+        :param model_request: (required)
+        :type model_request: ModelRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -201,7 +201,7 @@ class ModelsApi:
         """  # noqa: E501
 
         _param = self._models_create_serialize(
-            model_create_request=model_create_request,
+            model_request=model_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -209,14 +209,14 @@ class ModelsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "201": "ModelCreate",
+            "201": "Model",
         }
         response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
         return response_data.response
 
     def _models_create_serialize(
         self,
-        model_create_request,
+        model_request,
         _request_auth,
         _content_type,
         _headers,
@@ -238,8 +238,8 @@ class ModelsApi:
         # process the header parameters
         # process the form parameters
         # process the body parameter
-        if model_create_request is not None:
-            _body_params = model_create_request
+        if model_request is not None:
+            _body_params = model_request
 
         # set the HTTP header `Accept`
         _header_params["Accept"] = self.api_client.select_header_accept(["application/json"])
@@ -288,7 +288,6 @@ class ModelsApi:
     ) -> None:
         """models_destroy
 
-        Delete a custom model.
 
         :param id: (required)
         :type id: str
@@ -344,7 +343,6 @@ class ModelsApi:
     ) -> ApiResponse[None]:
         """models_destroy
 
-        Delete a custom model.
 
         :param id: (required)
         :type id: str
@@ -400,7 +398,6 @@ class ModelsApi:
     ) -> RESTResponseType:
         """models_destroy
 
-        Delete a custom model.
 
         :param id: (required)
         :type id: str
@@ -498,7 +495,7 @@ class ModelsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> PaginatedModelList:
+    ) -> PaginatedModelListList:
         """models_list
 
         Get all available LLM models.
@@ -542,7 +539,7 @@ class ModelsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "PaginatedModelList",
+            "200": "PaginatedModelListList",
         }
         response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
         response_data.read()
@@ -568,7 +565,7 @@ class ModelsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[PaginatedModelList]:
+    ) -> ApiResponse[PaginatedModelListList]:
         """models_list
 
         Get all available LLM models.
@@ -612,7 +609,7 @@ class ModelsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "PaginatedModelList",
+            "200": "PaginatedModelListList",
         }
         response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
         response_data.read()
@@ -682,7 +679,7 @@ class ModelsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "PaginatedModelList",
+            "200": "PaginatedModelListList",
         }
         response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
         return response_data.response
@@ -732,6 +729,252 @@ class ModelsApi:
         return self.api_client.param_serialize(
             method="GET",
             resource_path="/v1/models/",
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth,
+        )
+
+    @validate_call
+    def models_partial_update(
+        self,
+        id: StrictStr,
+        patched_model_request: Optional[PatchedModelRequest] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> Model:
+        """models_partial_update
+
+
+        :param id: (required)
+        :type id: str
+        :param patched_model_request:
+        :type patched_model_request: PatchedModelRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """  # noqa: E501
+
+        _param = self._models_partial_update_serialize(
+            id=id,
+            patched_model_request=patched_model_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            "200": "Model",
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+    @validate_call
+    def models_partial_update_with_http_info(
+        self,
+        id: StrictStr,
+        patched_model_request: Optional[PatchedModelRequest] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[Model]:
+        """models_partial_update
+
+
+        :param id: (required)
+        :type id: str
+        :param patched_model_request:
+        :type patched_model_request: PatchedModelRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """  # noqa: E501
+
+        _param = self._models_partial_update_serialize(
+            id=id,
+            patched_model_request=patched_model_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            "200": "Model",
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+    @validate_call
+    def models_partial_update_without_preload_content(
+        self,
+        id: StrictStr,
+        patched_model_request: Optional[PatchedModelRequest] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """models_partial_update
+
+
+        :param id: (required)
+        :type id: str
+        :param patched_model_request:
+        :type patched_model_request: PatchedModelRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """  # noqa: E501
+
+        _param = self._models_partial_update_serialize(
+            id=id,
+            patched_model_request=patched_model_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            "200": "Model",
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        return response_data.response
+
+    def _models_partial_update_serialize(
+        self,
+        id,
+        patched_model_request,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+        _host = None
+
+        _collection_formats: Dict[str, str] = {}
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, str] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if id is not None:
+            _path_params["id"] = id
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if patched_model_request is not None:
+            _body_params = patched_model_request
+
+        # set the HTTP header `Accept`
+        _header_params["Accept"] = self.api_client.select_header_accept(["application/json"])
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params["Content-Type"] = _content_type
+        else:
+            _default_content_type = self.api_client.select_header_content_type(
+                ["application/json", "application/x-www-form-urlencoded", "multipart/form-data"]
+            )
+            if _default_content_type is not None:
+                _header_params["Content-Type"] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = ["publicApiKey"]
+
+        return self.api_client.param_serialize(
+            method="PATCH",
+            resource_path="/v1/models/{id}/",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -943,6 +1186,255 @@ class ModelsApi:
 
         return self.api_client.param_serialize(
             method="GET",
+            resource_path="/v1/models/{id}/",
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth,
+        )
+
+    @validate_call
+    def models_update(
+        self,
+        id: StrictStr,
+        model_request: ModelRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> Model:
+        """models_update
+
+        Update a custom LLM model.
+
+        :param id: (required)
+        :type id: str
+        :param model_request: (required)
+        :type model_request: ModelRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """  # noqa: E501
+
+        _param = self._models_update_serialize(
+            id=id,
+            model_request=model_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            "200": "Model",
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+    @validate_call
+    def models_update_with_http_info(
+        self,
+        id: StrictStr,
+        model_request: ModelRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[Model]:
+        """models_update
+
+        Update a custom LLM model.
+
+        :param id: (required)
+        :type id: str
+        :param model_request: (required)
+        :type model_request: ModelRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """  # noqa: E501
+
+        _param = self._models_update_serialize(
+            id=id,
+            model_request=model_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            "200": "Model",
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+    @validate_call
+    def models_update_without_preload_content(
+        self,
+        id: StrictStr,
+        model_request: ModelRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """models_update
+
+        Update a custom LLM model.
+
+        :param id: (required)
+        :type id: str
+        :param model_request: (required)
+        :type model_request: ModelRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """  # noqa: E501
+
+        _param = self._models_update_serialize(
+            id=id,
+            model_request=model_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            "200": "Model",
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        return response_data.response
+
+    def _models_update_serialize(
+        self,
+        id,
+        model_request,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+        _host = None
+
+        _collection_formats: Dict[str, str] = {}
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, str] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if id is not None:
+            _path_params["id"] = id
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if model_request is not None:
+            _body_params = model_request
+
+        # set the HTTP header `Accept`
+        _header_params["Accept"] = self.api_client.select_header_accept(["application/json"])
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params["Content-Type"] = _content_type
+        else:
+            _default_content_type = self.api_client.select_header_content_type(
+                ["application/json", "application/x-www-form-urlencoded", "multipart/form-data"]
+            )
+            if _default_content_type is not None:
+                _header_params["Content-Type"] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = ["publicApiKey"]
+
+        return self.api_client.param_serialize(
+            method="PUT",
             resource_path="/v1/models/{id}/",
             path_params=_path_params,
             query_params=_query_params,

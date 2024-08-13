@@ -18,19 +18,19 @@ import pprint
 import re  # noqa: F401
 from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt
+from pydantic import BaseModel, ConfigDict, Field, StrictBool
 from typing_extensions import Annotated, Self
 
 
-class ModelCreateRequest(BaseModel):
+class ModelRequest(BaseModel):
     """
-    ModelCreateRequest
+    ModelRequest
     """  # noqa: E501
 
     default_key: Optional[Annotated[str, Field(strict=True, max_length=4000)]] = None
     is_local: Optional[StrictBool] = None
-    max_output_token_count: Optional[StrictInt] = None
-    max_token_count: Optional[Annotated[int, Field(le=2147483647, strict=True, ge=-2147483648)]] = None
+    max_output_token_count: Optional[Annotated[int, Field(strict=True, ge=800)]] = None
+    max_token_count: Optional[Annotated[int, Field(le=2147483647, strict=True, ge=800)]] = None
     model: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
     name: Annotated[str, Field(min_length=1, strict=True, max_length=100)]
     url: Optional[Annotated[str, Field(strict=True, max_length=1024)]] = None
@@ -61,7 +61,7 @@ class ModelCreateRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ModelCreateRequest from a JSON string"""
+        """Create an instance of ModelRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -100,7 +100,7 @@ class ModelCreateRequest(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ModelCreateRequest from a dict"""
+        """Create an instance of ModelRequest from a dict"""
         if obj is None:
             return None
 

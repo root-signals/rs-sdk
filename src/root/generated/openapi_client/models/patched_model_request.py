@@ -18,26 +18,24 @@ import pprint
 import re  # noqa: F401
 from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool
 from typing_extensions import Annotated, Self
 
 
-class ModelCreate(BaseModel):
+class PatchedModelRequest(BaseModel):
     """
-    ModelCreate
+    PatchedModelRequest
     """  # noqa: E501
 
     default_key: Optional[Annotated[str, Field(strict=True, max_length=4000)]] = None
-    id: StrictStr
     is_local: Optional[StrictBool] = None
-    max_output_token_count: Optional[StrictInt] = None
-    max_token_count: Optional[Annotated[int, Field(le=2147483647, strict=True, ge=-2147483648)]] = None
-    model: Optional[StrictStr] = None
-    name: Annotated[str, Field(strict=True, max_length=100)]
+    max_output_token_count: Optional[Annotated[int, Field(strict=True, ge=800)]] = None
+    max_token_count: Optional[Annotated[int, Field(le=2147483647, strict=True, ge=800)]] = None
+    model: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
+    name: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=100)]] = None
     url: Optional[Annotated[str, Field(strict=True, max_length=1024)]] = None
     __properties: ClassVar[List[str]] = [
         "default_key",
-        "id",
         "is_local",
         "max_output_token_count",
         "max_token_count",
@@ -63,7 +61,7 @@ class ModelCreate(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ModelCreate from a JSON string"""
+        """Create an instance of PatchedModelRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -75,13 +73,8 @@ class ModelCreate(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
-        * OpenAPI `readOnly` fields are excluded.
         """
-        excluded_fields: Set[str] = set(
-            [
-                "id",
-            ]
-        )
+        excluded_fields: Set[str] = set([])
 
         _dict = self.model_dump(
             by_alias=True,
@@ -107,7 +100,7 @@ class ModelCreate(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ModelCreate from a dict"""
+        """Create an instance of PatchedModelRequest from a dict"""
         if obj is None:
             return None
 
@@ -117,7 +110,6 @@ class ModelCreate(BaseModel):
         _obj = cls.model_validate(
             {
                 "default_key": obj.get("default_key"),
-                "id": obj.get("id"),
                 "is_local": obj.get("is_local"),
                 "max_output_token_count": obj.get("max_output_token_count"),
                 "max_token_count": obj.get("max_token_count"),

@@ -21,17 +21,17 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict, StrictStr
 from typing_extensions import Self
 
-from root.generated.openapi_client.models.model import Model
+from root.generated.openapi_client.models.model_list import ModelList
 
 
-class PaginatedModelList(BaseModel):
+class PaginatedModelListList(BaseModel):
     """
-    PaginatedModelList
+    PaginatedModelListList
     """  # noqa: E501
 
     next: Optional[StrictStr] = None
     previous: Optional[StrictStr] = None
-    results: List[Model]
+    results: List[ModelList]
     __properties: ClassVar[List[str]] = ["next", "previous", "results"]
 
     model_config = ConfigDict(
@@ -51,7 +51,7 @@ class PaginatedModelList(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of PaginatedModelList from a JSON string"""
+        """Create an instance of PaginatedModelListList from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -92,7 +92,7 @@ class PaginatedModelList(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of PaginatedModelList from a dict"""
+        """Create an instance of PaginatedModelListList from a dict"""
         if obj is None:
             return None
 
@@ -103,7 +103,7 @@ class PaginatedModelList(BaseModel):
             {
                 "next": obj.get("next"),
                 "previous": obj.get("previous"),
-                "results": [Model.from_dict(_item) for _item in obj["results"]]
+                "results": [ModelList.from_dict(_item) for _item in obj["results"]]
                 if obj.get("results") is not None
                 else None,
             }

@@ -89,7 +89,9 @@ Class | Method | HTTP request | Description
 *ModelsApi* | [**models_create**](root/generated/openapi_client/docs/ModelsApi.md#models_create) | **POST** /v1/models/ | 
 *ModelsApi* | [**models_destroy**](root/generated/openapi_client/docs/ModelsApi.md#models_destroy) | **DELETE** /v1/models/{id}/ | 
 *ModelsApi* | [**models_list**](root/generated/openapi_client/docs/ModelsApi.md#models_list) | **GET** /v1/models/ | 
+*ModelsApi* | [**models_partial_update**](root/generated/openapi_client/docs/ModelsApi.md#models_partial_update) | **PATCH** /v1/models/{id}/ | 
 *ModelsApi* | [**models_retrieve**](root/generated/openapi_client/docs/ModelsApi.md#models_retrieve) | **GET** /v1/models/{id}/ | 
+*ModelsApi* | [**models_update**](root/generated/openapi_client/docs/ModelsApi.md#models_update) | **PUT** /v1/models/{id}/ | 
 *ObjectivesApi* | [**objectives_create**](root/generated/openapi_client/docs/ObjectivesApi.md#objectives_create) | **POST** /v1/objectives/ | 
 *ObjectivesApi* | [**objectives_destroy**](root/generated/openapi_client/docs/ObjectivesApi.md#objectives_destroy) | **DELETE** /v1/objectives/{id}/ | 
 *ObjectivesApi* | [**objectives_list**](root/generated/openapi_client/docs/ObjectivesApi.md#objectives_list) | **GET** /v1/objectives/ | 
@@ -152,10 +154,10 @@ Class | Method | HTTP request | Description
  - [InputVariable](root/generated/openapi_client/docs/InputVariable.md)
  - [InputVariableRequest](root/generated/openapi_client/docs/InputVariableRequest.md)
  - [Model](root/generated/openapi_client/docs/Model.md)
- - [ModelCreate](root/generated/openapi_client/docs/ModelCreate.md)
- - [ModelCreateRequest](root/generated/openapi_client/docs/ModelCreateRequest.md)
+ - [ModelList](root/generated/openapi_client/docs/ModelList.md)
  - [ModelParams](root/generated/openapi_client/docs/ModelParams.md)
  - [ModelParamsRequest](root/generated/openapi_client/docs/ModelParamsRequest.md)
+ - [ModelRequest](root/generated/openapi_client/docs/ModelRequest.md)
  - [NestedObjectiveList](root/generated/openapi_client/docs/NestedObjectiveList.md)
  - [NestedSkillEvaluator](root/generated/openapi_client/docs/NestedSkillEvaluator.md)
  - [NestedSkillEvaluatorRequest](root/generated/openapi_client/docs/NestedSkillEvaluatorRequest.md)
@@ -169,10 +171,11 @@ Class | Method | HTTP request | Description
  - [PaginatedChatList](root/generated/openapi_client/docs/PaginatedChatList.md)
  - [PaginatedDataSetListList](root/generated/openapi_client/docs/PaginatedDataSetListList.md)
  - [PaginatedExecutionLogListList](root/generated/openapi_client/docs/PaginatedExecutionLogListList.md)
- - [PaginatedModelList](root/generated/openapi_client/docs/PaginatedModelList.md)
+ - [PaginatedModelListList](root/generated/openapi_client/docs/PaginatedModelListList.md)
  - [PaginatedObjectiveListList](root/generated/openapi_client/docs/PaginatedObjectiveListList.md)
  - [PaginatedSkillList](root/generated/openapi_client/docs/PaginatedSkillList.md)
  - [PaginatedSkillListOutputList](root/generated/openapi_client/docs/PaginatedSkillListOutputList.md)
+ - [PatchedModelRequest](root/generated/openapi_client/docs/PatchedModelRequest.md)
  - [PatchedObjectiveRequest](root/generated/openapi_client/docs/PatchedObjectiveRequest.md)
  - [PatchedSkillRequest](root/generated/openapi_client/docs/PatchedSkillRequest.md)
  - [Provider](root/generated/openapi_client/docs/Provider.md)

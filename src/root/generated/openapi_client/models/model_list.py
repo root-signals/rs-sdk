@@ -21,30 +21,21 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing_extensions import Annotated, Self
 
+from root.generated.openapi_client.models.nested_user_details import NestedUserDetails
+from root.generated.openapi_client.models.provider import Provider
 
-class Model(BaseModel):
+
+class ModelList(BaseModel):
     """
-    Model
+    ModelList
     """  # noqa: E501
 
-    default_key: Optional[Annotated[str, Field(strict=True, max_length=4000)]] = None
     id: StrictStr
     is_local: Optional[StrictBool] = None
-    max_output_token_count: Optional[Annotated[int, Field(strict=True, ge=800)]] = None
-    max_token_count: Optional[Annotated[int, Field(le=2147483647, strict=True, ge=800)]] = None
-    model: Optional[StrictStr] = None
     name: Annotated[str, Field(strict=True, max_length=100)]
-    url: Optional[Annotated[str, Field(strict=True, max_length=1024)]] = None
-    __properties: ClassVar[List[str]] = [
-        "default_key",
-        "id",
-        "is_local",
-        "max_output_token_count",
-        "max_token_count",
-        "model",
-        "name",
-        "url",
-    ]
+    owner: NestedUserDetails
+    provider: Optional[Provider]
+    __properties: ClassVar[List[str]] = ["id", "is_local", "name", "owner", "provider"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -63,7 +54,7 @@ class Model(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of Model from a JSON string"""
+        """Create an instance of ModelList from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -76,10 +67,14 @@ class Model(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
                 "id",
+                "owner",
+                "provider",
             ]
         )
 
@@ -88,26 +83,22 @@ class Model(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if default_key (nullable) is None
+        # override the default output from pydantic by calling `to_dict()` of owner
+        if self.owner:
+            _dict["owner"] = self.owner.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of provider
+        if self.provider:
+            _dict["provider"] = self.provider.to_dict()
+        # set to None if provider (nullable) is None
         # and model_fields_set contains the field
-        if self.default_key is None and "default_key" in self.model_fields_set:
-            _dict["default_key"] = None
-
-        # set to None if max_token_count (nullable) is None
-        # and model_fields_set contains the field
-        if self.max_token_count is None and "max_token_count" in self.model_fields_set:
-            _dict["max_token_count"] = None
-
-        # set to None if url (nullable) is None
-        # and model_fields_set contains the field
-        if self.url is None and "url" in self.model_fields_set:
-            _dict["url"] = None
+        if self.provider is None and "provider" in self.model_fields_set:
+            _dict["provider"] = None
 
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of Model from a dict"""
+        """Create an instance of ModelList from a dict"""
         if obj is None:
             return None
 
@@ -116,14 +107,11 @@ class Model(BaseModel):
 
         _obj = cls.model_validate(
             {
-                "default_key": obj.get("default_key"),
                 "id": obj.get("id"),
                 "is_local": obj.get("is_local"),
-                "max_output_token_count": obj.get("max_output_token_count"),
-                "max_token_count": obj.get("max_token_count"),
-                "model": obj.get("model"),
                 "name": obj.get("name"),
-                "url": obj.get("url"),
+                "owner": NestedUserDetails.from_dict(obj["owner"]) if obj.get("owner") is not None else None,
+                "provider": Provider.from_dict(obj["provider"]) if obj.get("provider") is not None else None,
             }
         )
         return _obj
