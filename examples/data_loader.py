@@ -9,7 +9,7 @@ skill = client.skills.create(
     name="My kimchi cooking assistant",
     intent="This skill will find you a recipe for kimchi.",
     prompt=(
-        "Find me good recipes for kimchi. "
+        "Help me prepare Kimchi. "
         "Use this web page for ingredients {{kimchi_ingredients}}"
     ),
     model="gpt-3.5-turbo",
@@ -17,7 +17,7 @@ skill = client.skills.create(
     data_loaders=[
         WebPageDataLoader(
             name="kimchi_ingredients",
-            url="https://en.wikipedia.org/wiki/Kimchi",
+            url="https://simple.wikipedia.org/wiki/Kimchi",
         )
     ],
 )
