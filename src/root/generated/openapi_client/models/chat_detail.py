@@ -31,7 +31,7 @@ class ChatDetail(BaseModel):
     """  # noqa: E501
 
     chat_id: StrictStr
-    skill_id: Optional[StrictStr]
+    skill_id: StrictStr
     created_at: Optional[datetime]
     messages: Optional[List[ChatMessage]] = None
     __properties: ClassVar[List[str]] = ["chat_id", "skill_id", "created_at", "messages"]
@@ -87,11 +87,6 @@ class ChatDetail(BaseModel):
                 if _item:
                     _items.append(_item.to_dict())
             _dict["messages"] = _items
-        # set to None if skill_id (nullable) is None
-        # and model_fields_set contains the field
-        if self.skill_id is None and "skill_id" in self.model_fields_set:
-            _dict["skill_id"] = None
-
         # set to None if created_at (nullable) is None
         # and model_fields_set contains the field
         if self.created_at is None and "created_at" in self.model_fields_set:
