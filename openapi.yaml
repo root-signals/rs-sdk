@@ -1677,7 +1677,6 @@ components:
         skill_id:
           type: string
           format: uuid
-          nullable: true
           readOnly: true
         created_at:
           type: string
@@ -2991,6 +2990,7 @@ components:
           nullable: true
         version_id:
           type: string
+          format: uuid
           readOnly: true
         _meta:
           readOnly: true
@@ -3069,8 +3069,8 @@ components:
         evaluator_id:
           type: string
           format: uuid
-          nullable: true
           readOnly: true
+          nullable: true
         evaluator_name:
           type: string
           readOnly: true
