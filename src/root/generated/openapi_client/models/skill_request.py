@@ -49,6 +49,10 @@ class SkillRequest(BaseModel):
     name: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=1000)]] = None
     objective: Optional[ObjectiveRequest] = None
     objective_id: Optional[StrictStr] = None
+    objective_version_id: Optional[StrictStr] = Field(
+        default=None,
+        description="Optionally pin the Skill to a specific version of an Objective. If not provided, the latest version of the objective will be used and followed.",
+    )
     overwrite: Optional[StrictBool] = Field(
         default=False, description="Overwrite existing skill with the same name. Only for POST requests."
     )
@@ -72,6 +76,7 @@ class SkillRequest(BaseModel):
         "name",
         "objective",
         "objective_id",
+        "objective_version_id",
         "overwrite",
         "pii_filter",
         "prompt",
@@ -176,6 +181,11 @@ class SkillRequest(BaseModel):
         if self.objective_id is None and "objective_id" in self.model_fields_set:
             _dict["objective_id"] = None
 
+        # set to None if objective_version_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.objective_version_id is None and "objective_version_id" in self.model_fields_set:
+            _dict["objective_version_id"] = None
+
         return _dict
 
     @classmethod
@@ -211,6 +221,7 @@ class SkillRequest(BaseModel):
                 "name": obj.get("name"),
                 "objective": ObjectiveRequest.from_dict(obj["objective"]) if obj.get("objective") is not None else None,
                 "objective_id": obj.get("objective_id"),
+                "objective_version_id": obj.get("objective_version_id"),
                 "overwrite": obj.get("overwrite") if obj.get("overwrite") is not None else False,
                 "pii_filter": obj.get("pii_filter"),
                 "prompt": obj.get("prompt"),

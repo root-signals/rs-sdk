@@ -710,6 +710,108 @@ paths:
               schema:
                 $ref: '#/components/schemas/ID'
           description: ''
+  /v1/objectives/{id}/:
+    get:
+      operationId: objectives_retrieve
+      description: Get an Objective definition details.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - objectives
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Objective'
+          description: ''
+    put:
+      operationId: objectives_update
+      description: Update an Objective definition.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - objectives
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ObjectiveRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ObjectiveRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ObjectiveRequest'
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Objective'
+          description: ''
+    patch:
+      operationId: objectives_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - objectives
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedObjectiveRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedObjectiveRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedObjectiveRequest'
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Objective'
+          description: ''
+    delete:
+      operationId: objectives_destroy
+      description: Delete an Objective definition.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - objectives
+      security:
+      - publicApiKey: []
+      responses:
+        '204':
+          description: No response body
   /v1/objectives/{objective_id}/test-set/append:
     post:
       operationId: objectives_test_set_append_create
@@ -746,112 +848,6 @@ paths:
                 additionalProperties: {}
                 description: Unspecified response body
           description: ''
-  /v1/objectives/{id}/:
-    get:
-      operationId: objectives_retrieve
-      description: Get an Objective definition details.
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-          format: uuid
-        description: A UUID string identifying this objective.
-        required: true
-      tags:
-      - objectives
-      security:
-      - publicApiKey: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Objective'
-          description: ''
-    put:
-      operationId: objectives_update
-      description: Update an Objective definition.
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-          format: uuid
-        description: A UUID string identifying this objective.
-        required: true
-      tags:
-      - objectives
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ObjectiveRequest'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/ObjectiveRequest'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/ObjectiveRequest'
-      security:
-      - publicApiKey: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Objective'
-          description: ''
-    patch:
-      operationId: objectives_partial_update
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-          format: uuid
-        description: A UUID string identifying this objective.
-        required: true
-      tags:
-      - objectives
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PatchedObjectiveRequest'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/PatchedObjectiveRequest'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/PatchedObjectiveRequest'
-      security:
-      - publicApiKey: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Objective'
-          description: ''
-    delete:
-      operationId: objectives_destroy
-      description: Delete an Objective definition.
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-          format: uuid
-        description: A UUID string identifying this objective.
-        required: true
-      tags:
-      - objectives
-      security:
-      - publicApiKey: []
-      responses:
-        '204':
-          description: No response body
   /v1/objectives/objectives/{objective_id}/execute/:
     post:
       operationId: objectives_objectives_execute_create
@@ -2449,6 +2445,10 @@ components:
           allOf:
           - $ref: '#/components/schemas/NestedUserDetails'
           readOnly: true
+        version_id:
+          type: string
+          format: uuid
+          readOnly: true
         _meta:
           type: object
           additionalProperties: {}
@@ -2459,6 +2459,7 @@ components:
       - created_at
       - id
       - owner
+      - version_id
     ObjectiveExecutionRequest:
       type: object
       properties:
@@ -2799,6 +2800,14 @@ components:
           format: uuid
           writeOnly: true
           nullable: true
+        objective_version_id:
+          type: string
+          format: uuid
+          writeOnly: true
+          nullable: true
+          description: Optionally pin the Skill to a specific version of an Objective.
+            If not provided, the latest version of the objective will be used and
+            followed.
         overwrite:
           type: boolean
           writeOnly: true
@@ -3215,6 +3224,14 @@ components:
           format: uuid
           writeOnly: true
           nullable: true
+        objective_version_id:
+          type: string
+          format: uuid
+          writeOnly: true
+          nullable: true
+          description: Optionally pin the Skill to a specific version of an Objective.
+            If not provided, the latest version of the objective will be used and
+            followed.
         overwrite:
           type: boolean
           writeOnly: true

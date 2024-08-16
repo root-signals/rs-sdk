@@ -279,7 +279,7 @@ class ObjectivesApi:
     @validate_call
     def objectives_destroy(
         self,
-        id: Annotated[StrictStr, Field(description="A UUID string identifying this objective.")],
+        id: StrictStr,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -294,7 +294,7 @@ class ObjectivesApi:
 
         Delete an Objective definition.
 
-        :param id: A UUID string identifying this objective. (required)
+        :param id: (required)
         :type id: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -335,7 +335,7 @@ class ObjectivesApi:
     @validate_call
     def objectives_destroy_with_http_info(
         self,
-        id: Annotated[StrictStr, Field(description="A UUID string identifying this objective.")],
+        id: StrictStr,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -350,7 +350,7 @@ class ObjectivesApi:
 
         Delete an Objective definition.
 
-        :param id: A UUID string identifying this objective. (required)
+        :param id: (required)
         :type id: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -391,7 +391,7 @@ class ObjectivesApi:
     @validate_call
     def objectives_destroy_without_preload_content(
         self,
-        id: Annotated[StrictStr, Field(description="A UUID string identifying this objective.")],
+        id: StrictStr,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -406,7 +406,7 @@ class ObjectivesApi:
 
         Delete an Objective definition.
 
-        :param id: A UUID string identifying this objective. (required)
+        :param id: (required)
         :type id: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1038,7 +1038,7 @@ class ObjectivesApi:
     @validate_call
     def objectives_partial_update(
         self,
-        id: Annotated[StrictStr, Field(description="A UUID string identifying this objective.")],
+        id: StrictStr,
         patched_objective_request: Optional[PatchedObjectiveRequest] = None,
         _request_timeout: Union[
             None,
@@ -1053,7 +1053,7 @@ class ObjectivesApi:
         """objectives_partial_update
 
 
-        :param id: A UUID string identifying this objective. (required)
+        :param id: (required)
         :type id: str
         :param patched_objective_request:
         :type patched_objective_request: PatchedObjectiveRequest
@@ -1101,7 +1101,7 @@ class ObjectivesApi:
     @validate_call
     def objectives_partial_update_with_http_info(
         self,
-        id: Annotated[StrictStr, Field(description="A UUID string identifying this objective.")],
+        id: StrictStr,
         patched_objective_request: Optional[PatchedObjectiveRequest] = None,
         _request_timeout: Union[
             None,
@@ -1116,7 +1116,7 @@ class ObjectivesApi:
         """objectives_partial_update
 
 
-        :param id: A UUID string identifying this objective. (required)
+        :param id: (required)
         :type id: str
         :param patched_objective_request:
         :type patched_objective_request: PatchedObjectiveRequest
@@ -1164,7 +1164,7 @@ class ObjectivesApi:
     @validate_call
     def objectives_partial_update_without_preload_content(
         self,
-        id: Annotated[StrictStr, Field(description="A UUID string identifying this objective.")],
+        id: StrictStr,
         patched_objective_request: Optional[PatchedObjectiveRequest] = None,
         _request_timeout: Union[
             None,
@@ -1179,7 +1179,7 @@ class ObjectivesApi:
         """objectives_partial_update
 
 
-        :param id: A UUID string identifying this objective. (required)
+        :param id: (required)
         :type id: str
         :param patched_objective_request:
         :type patched_objective_request: PatchedObjectiveRequest
@@ -1284,7 +1284,7 @@ class ObjectivesApi:
     @validate_call
     def objectives_retrieve(
         self,
-        id: Annotated[StrictStr, Field(description="A UUID string identifying this objective.")],
+        id: StrictStr,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1299,7 +1299,7 @@ class ObjectivesApi:
 
         Get an Objective definition details.
 
-        :param id: A UUID string identifying this objective. (required)
+        :param id: (required)
         :type id: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1340,7 +1340,7 @@ class ObjectivesApi:
     @validate_call
     def objectives_retrieve_with_http_info(
         self,
-        id: Annotated[StrictStr, Field(description="A UUID string identifying this objective.")],
+        id: StrictStr,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1355,7 +1355,7 @@ class ObjectivesApi:
 
         Get an Objective definition details.
 
-        :param id: A UUID string identifying this objective. (required)
+        :param id: (required)
         :type id: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1396,7 +1396,7 @@ class ObjectivesApi:
     @validate_call
     def objectives_retrieve_without_preload_content(
         self,
-        id: Annotated[StrictStr, Field(description="A UUID string identifying this objective.")],
+        id: StrictStr,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1411,7 +1411,7 @@ class ObjectivesApi:
 
         Get an Objective definition details.
 
-        :param id: A UUID string identifying this objective. (required)
+        :param id: (required)
         :type id: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1745,7 +1745,7 @@ class ObjectivesApi:
     @validate_call
     def objectives_update(
         self,
-        id: Annotated[StrictStr, Field(description="A UUID string identifying this objective.")],
+        id: StrictStr,
         objective_request: Optional[ObjectiveRequest] = None,
         _request_timeout: Union[
             None,
@@ -1761,7 +1761,7 @@ class ObjectivesApi:
 
         Update an Objective definition.
 
-        :param id: A UUID string identifying this objective. (required)
+        :param id: (required)
         :type id: str
         :param objective_request:
         :type objective_request: ObjectiveRequest
@@ -1809,7 +1809,7 @@ class ObjectivesApi:
     @validate_call
     def objectives_update_with_http_info(
         self,
-        id: Annotated[StrictStr, Field(description="A UUID string identifying this objective.")],
+        id: StrictStr,
         objective_request: Optional[ObjectiveRequest] = None,
         _request_timeout: Union[
             None,
@@ -1825,7 +1825,7 @@ class ObjectivesApi:
 
         Update an Objective definition.
 
-        :param id: A UUID string identifying this objective. (required)
+        :param id: (required)
         :type id: str
         :param objective_request:
         :type objective_request: ObjectiveRequest
@@ -1873,7 +1873,7 @@ class ObjectivesApi:
     @validate_call
     def objectives_update_without_preload_content(
         self,
-        id: Annotated[StrictStr, Field(description="A UUID string identifying this objective.")],
+        id: StrictStr,
         objective_request: Optional[ObjectiveRequest] = None,
         _request_timeout: Union[
             None,
@@ -1889,7 +1889,7 @@ class ObjectivesApi:
 
         Update an Objective definition.
 
-        :param id: A UUID string identifying this objective. (required)
+        :param id: (required)
         :type id: str
         :param objective_request:
         :type objective_request: ObjectiveRequest
