@@ -39,6 +39,7 @@ class Objective(BaseModel):
     validators: Optional[List[SkillValidator]] = None
     created_at: Optional[datetime]
     owner: NestedUserDetails
+    version_id: StrictStr
     meta: Dict[str, Any] = Field(alias="_meta")
     __properties: ClassVar[List[str]] = [
         "id",
@@ -48,6 +49,7 @@ class Objective(BaseModel):
         "validators",
         "created_at",
         "owner",
+        "version_id",
         "_meta",
     ]
 
@@ -84,12 +86,14 @@ class Objective(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
                 "id",
                 "created_at",
                 "owner",
+                "version_id",
                 "meta",
             ]
         )
@@ -141,6 +145,7 @@ class Objective(BaseModel):
                 else None,
                 "created_at": obj.get("created_at"),
                 "owner": NestedUserDetails.from_dict(obj["owner"]) if obj.get("owner") is not None else None,
+                "version_id": obj.get("version_id"),
                 "_meta": obj.get("_meta"),
             }
         )
