@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING, Dict, Iterator, List, Literal, Optional, Union
 from pydantic import BaseModel
 
 from root.generated.openapi_client.api.chats_api import ChatsApi
+from root.generated.openapi_client.api.objectives_api import ObjectivesApi
 from root.generated.openapi_client.api.skills_api import SkillsApi
 from root.generated.openapi_client.models.chat_create_request import ChatCreateRequest
 from root.generated.openapi_client.models.data_loader_request import DataLoaderRequest
@@ -360,14 +361,16 @@ class Skills:
             if intent is None:
                 intent = name
             objective = self._to_objective_request(intent=intent, validators=validators)
+            objectives_api_instance = ObjectivesApi(self.client)
+            objective_id = objectives_api_instance.objectives_create(objective_request=objective).id
         else:
             if intent:
                 raise ValueError("Supplying both objective_id and intent is not supported")
             if validators:
                 raise ValueError("Supplying both objective_id and validators is not supported")
+
         skill_request = SkillRequest(
             name=name,
-            objective=objective,
             objective_id=objective_id,
             system_message=system_message,
             prompt=prompt,
@@ -390,7 +393,6 @@ class Skills:
         *,
         change_note: Optional[str] = None,
         data_loaders: Optional[List[DataLoader]] = None,
-        intent: Optional[str] = None,
         fallback_models: Optional[List[ModelName]] = None,
         input_variables: Optional[Union[List[InputVariable], List[InputVariableRequest]]] = None,
         model: Optional[ModelName] = None,
@@ -399,9 +401,9 @@ class Skills:
         prompt: Optional[str] = None,
         is_evaluator: Optional[bool] = None,
         reference_variables: Optional[Union[List[ReferenceVariable], List[ReferenceVariableRequest]]] = None,
-        validators: Optional[List[Validator]] = None,
         model_params: Optional[Union[ModelParams, ModelParamsRequest]] = None,
         evaluator_demonstrations: Optional[List[EvaluatorDemonstration]] = None,
+        objective_id: Optional[str] = None,
     ) -> Skill:
         """Update existing skill instance and return the result.
 
@@ -411,10 +413,10 @@ class Skills:
         Args:
           skill_id: The skill to be updated
         """
+
         api_instance = SkillsApi(self.client)
         request = PatchedSkillRequest(
             name=name,
-            objective=self._to_objective_request(intent=intent, validators=validators),
             prompt=prompt,
             models=[model] + (fallback_models or []) if model else None,
             pii_filter=pii_filter,
@@ -425,6 +427,7 @@ class Skills:
             change_note=change_note or "Updated skill from SDK",
             model_params=_to_model_params(model_params),
             evaluator_demonstrations=_to_evaluator_demonstrations(evaluator_demonstrations),
+            objective_id=objective_id,
         )
         api_response = api_instance.skills_partial_update(id=skill_id, patched_skill_request=request)
         return Skill._wrap(api_response, self.client)
