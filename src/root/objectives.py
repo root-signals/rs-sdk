@@ -11,6 +11,7 @@ from root.generated.openapi_client.models.objective import Objective as OpenApiO
 from root.generated.openapi_client.models.objective_execution_request import ObjectiveExecutionRequest
 from root.generated.openapi_client.models.objective_list import ObjectiveList
 from root.generated.openapi_client.models.objective_request import ObjectiveRequest
+from root.generated.openapi_client.models.patched_objective_request import PatchedObjectiveRequest
 from root.generated.openapi_client.models.validator_execution_result import ValidatorExecutionResult
 
 from .generated.openapi_client import ApiClient
@@ -175,4 +176,28 @@ class Objectives:
             objective_id=objective_id, objective_execution_request=skill_execution_request
         )
 
-    # TODO: update
+    def update(
+        self, objective_id: str, *, intent: Optional[str] = None, validators: Optional[List[Validator]] = None
+    ) -> Objective:
+        """
+        Update an existing objective.
+
+        Args:
+
+          objective_id: The objective to be updated.
+
+          intent: The intent of the objective.
+
+          validators: An optional list of validators.
+        """
+
+        skills = Skills(self.client)
+        request = PatchedObjectiveRequest(
+            intent=intent,
+            validators=[validator._to_request(skills) for validator in validators] if validators else None,
+        )
+        api_instance = ObjectivesApi(self.client)
+        return Objective._wrap(
+            api_instance.objectives_partial_update(id=objective_id, patched_objective_request=request),
+            client=self.client,
+        )
