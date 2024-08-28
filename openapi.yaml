@@ -496,20 +496,18 @@ paths:
               CreateACustomLLMExecutionModel(SaaS):
                 value:
                   default_key: something secret
-                  is_local: false
-                  model: gpt-3.5-turbo
+                  model: gpt-4-turbo
                   name: my-custom-gpt
                 summary: Create a custom LLM execution model (SaaS)
                 description: An example showing model with name my-custom-gpt, but
                   using SaaS service.
-              CreateACustomLLMExecutionModel(local):
+              CreateACustomLLMExecutionModel(non-SaaS):
                 value:
                   default_key: something secret
-                  is_local: true
-                  model: gpt-3.5-turbo
-                  name: my-local-custom-gpt
-                  url: http://127.0.0.1:1234
-                summary: Create a custom LLM execution model (local)
+                  model: azure/gpt-4-turbo
+                  name: azure/gpt-4-turbo
+                  url: https://azure-openai-somewhere.openai.azure.com
+                summary: Create a custom LLM execution model (non-SaaS)
                 description: An example with non-SaaS LLM model.
           application/x-www-form-urlencoded:
             schema:
@@ -2268,8 +2266,6 @@ components:
         id:
           type: string
           readOnly: true
-        is_local:
-          type: boolean
         max_output_token_count:
           type: integer
           minimum: 800
@@ -2297,8 +2293,6 @@ components:
           type: string
           format: uuid
           readOnly: true
-        is_local:
-          type: boolean
         name:
           type: string
           maxLength: 100
@@ -2339,8 +2333,6 @@ components:
           type: string
           nullable: true
           maxLength: 4000
-        is_local:
-          type: boolean
         max_output_token_count:
           type: integer
           minimum: 800
@@ -2706,8 +2698,6 @@ components:
           type: string
           nullable: true
           maxLength: 4000
-        is_local:
-          type: boolean
         max_output_token_count:
           type: integer
           minimum: 800

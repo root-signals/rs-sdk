@@ -18,7 +18,7 @@ import pprint
 import re  # noqa: F401
 from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing_extensions import Annotated, Self
 
 from root.generated.openapi_client.models.nested_user_details import NestedUserDetails
@@ -31,11 +31,10 @@ class ModelList(BaseModel):
     """  # noqa: E501
 
     id: StrictStr
-    is_local: Optional[StrictBool] = None
     name: Annotated[str, Field(strict=True, max_length=100)]
     owner: NestedUserDetails
     provider: Optional[Provider]
-    __properties: ClassVar[List[str]] = ["id", "is_local", "name", "owner", "provider"]
+    __properties: ClassVar[List[str]] = ["id", "name", "owner", "provider"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -108,7 +107,6 @@ class ModelList(BaseModel):
         _obj = cls.model_validate(
             {
                 "id": obj.get("id"),
-                "is_local": obj.get("is_local"),
                 "name": obj.get("name"),
                 "owner": NestedUserDetails.from_dict(obj["owner"]) if obj.get("owner") is not None else None,
                 "provider": Provider.from_dict(obj["provider"]) if obj.get("provider") is not None else None,

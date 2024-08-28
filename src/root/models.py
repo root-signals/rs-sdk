@@ -69,7 +69,6 @@ class Models:
             default_key=default_key,
             max_output_token_count=max_output_token_count,
             max_token_count=max_token_count,
-            is_local=url is not None,
             url=url,
         )
 

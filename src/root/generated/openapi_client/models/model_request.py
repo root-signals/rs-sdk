@@ -18,7 +18,7 @@ import pprint
 import re  # noqa: F401
 from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool
+from pydantic import BaseModel, ConfigDict, Field
 from typing_extensions import Annotated, Self
 
 
@@ -28,7 +28,6 @@ class ModelRequest(BaseModel):
     """  # noqa: E501
 
     default_key: Optional[Annotated[str, Field(strict=True, max_length=4000)]] = None
-    is_local: Optional[StrictBool] = None
     max_output_token_count: Optional[Annotated[int, Field(strict=True, ge=800)]] = None
     max_token_count: Optional[Annotated[int, Field(le=2147483647, strict=True, ge=800)]] = None
     model: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
@@ -36,7 +35,6 @@ class ModelRequest(BaseModel):
     url: Optional[Annotated[str, Field(strict=True, max_length=1024)]] = None
     __properties: ClassVar[List[str]] = [
         "default_key",
-        "is_local",
         "max_output_token_count",
         "max_token_count",
         "model",
@@ -110,7 +108,6 @@ class ModelRequest(BaseModel):
         _obj = cls.model_validate(
             {
                 "default_key": obj.get("default_key"),
-                "is_local": obj.get("is_local"),
                 "max_output_token_count": obj.get("max_output_token_count"),
                 "max_token_count": obj.get("max_token_count"),
                 "model": obj.get("model"),
