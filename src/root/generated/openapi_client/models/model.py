@@ -18,7 +18,7 @@ import pprint
 import re  # noqa: F401
 from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing_extensions import Annotated, Self
 
 
@@ -29,7 +29,6 @@ class Model(BaseModel):
 
     default_key: Optional[Annotated[str, Field(strict=True, max_length=4000)]] = None
     id: StrictStr
-    is_local: Optional[StrictBool] = None
     max_output_token_count: Optional[Annotated[int, Field(strict=True, ge=800)]] = None
     max_token_count: Optional[Annotated[int, Field(le=2147483647, strict=True, ge=800)]] = None
     model: Optional[StrictStr] = None
@@ -38,7 +37,6 @@ class Model(BaseModel):
     __properties: ClassVar[List[str]] = [
         "default_key",
         "id",
-        "is_local",
         "max_output_token_count",
         "max_token_count",
         "model",
@@ -118,7 +116,6 @@ class Model(BaseModel):
             {
                 "default_key": obj.get("default_key"),
                 "id": obj.get("id"),
-                "is_local": obj.get("is_local"),
                 "max_output_token_count": obj.get("max_output_token_count"),
                 "max_token_count": obj.get("max_token_count"),
                 "model": obj.get("model"),
