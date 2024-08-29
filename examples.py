@@ -58,16 +58,20 @@ def update_readme() -> bool:
     return False
 
 
-def generate_pytest(path: str) -> None:
+def generate_pytest(tests_requiring_llm) -> None:
     # This produces Python which doesn't quite handle our coding
     # style, but we have Ruff for that
     print("""# Automatically generated pytest definition, please do not edit
 
+import pytest
 from root import RootSignals
 """)
     skip_line_match = re.compile(r"^(\s*#.*|from root import RootSignals|\s*)$").match
     for example_path in EXAMPLE_DIR.glob("*.py"):
-        print(f"\ndef test_{example_path.stem}():")
+        print("")
+        if example_path.stem in (tests_requiring_llm or []):
+            print("@pytest.mark.requires_llm")
+        print(f"def test_{example_path.stem}():")
         for line in example_path.read_text().split("\n"):
             line = line.rstrip()
             if skip_line_match(line) is not None:
@@ -89,9 +93,10 @@ if __name__ == "__main__":
     p.add_argument(
         "--generate-pytest", "-t", action="store_true", help="Generate test module with contents of examples"
     )
+    p.add_argument("--requires-llm", "-l", nargs="+", help="Specify one or more tests that require an LLM")
     args = p.parse_args()
     if args.update_readme:
         if not update_readme():
             sys.exit(1)
     if args.generate_pytest:
-        generate_pytest(args.generate_pytest)
+        generate_pytest(args.requires_llm)
