@@ -12,7 +12,7 @@ skill = client.skills.create(
         "Help me prepare Kimchi. "
         "Use this web page for ingredients {{kimchi_ingredients}}"
     ),
-    model="gpt-3.5-turbo",
+    model="gpt-4o",
     fallback_models=["gpt-4"],
     data_loaders=[
         WebPageDataLoader(

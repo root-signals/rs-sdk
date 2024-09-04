@@ -1,8 +1,6 @@
-# root-sdk
-
 <!-- the image cannot be within pypi, so we get it from the sdk website -->
 <h1 align="center">
-  <img style="vertical-align:middle" height="200" src="https://sdk.rootsignals.ai/en/latest/_images/root_signals+bounding_box.svg">
+  <img style="vertical-align:middle" height="200" src="https://cdn.prod.website-files.com/660f4bb4fb990316f902c545/66d83dd0ca040ea331127908_Logo%20-%20Blue%20-%20Root%20Signals%20(1).png">
 </h1>
 
   <!-- This is commented so it is easier to sync with the docs/index.rst -->
@@ -59,7 +57,6 @@ echo ROOTSIGNALS_API_KEY=your-Root-API-key >> .env
 ```
 
 ### Minimal skill
-{::comment}examples/minimal.py{:/comment}
 ```python
 from root import RootSignals
 
@@ -86,7 +83,7 @@ print(response)
 
 # "llm_output": "Finance",
 # "validation": Validation(is_valid=True, validator_results=[]),
-# "model": "gpt-3.5-turbo",
+# "model": "gpt-4o",
 # "execution_log_id": "9b3c713d-7bdc-4f7d-a85c-ed7d92ff4a56",
 # "rendered_prompt": "Classify this text into ...",
 # "cost": 5.6e-05,

@@ -23,7 +23,7 @@ print(response)
 
 # "llm_output": "Finance",
 # "validation": Validation(is_valid=True, validator_results=[]),
-# "model": "gpt-3.5-turbo",
+# "model": "gpt-4o",
 # "execution_log_id": "9b3c713d-7bdc-4f7d-a85c-ed7d92ff4a56",
 # "rendered_prompt": "Classify this text into ...",
 # "cost": 5.6e-05,
