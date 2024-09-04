@@ -7,7 +7,7 @@ evaluator_skill = client.skills.create(
     name="Cooking recipe",
     intent="This skill will evaluate if the answer is a cooking recipe.",
     prompt="Is the following a cooking recipe: {{output}}",
-    model="gpt-3.5-turbo",
+    model="gpt-4o",
     is_evaluator=True,
 )
 

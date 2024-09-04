@@ -8,7 +8,7 @@ direct_language_evaluator = client.skills.create(
     name="Direct language",
     prompt="Does the {{ output }} contain weasel words?",
     intent="Is the language direct and unambiguous",
-    model="gpt-3.5-turbo",
+    model="gpt-4o",
     is_evaluator=True,
 )
 

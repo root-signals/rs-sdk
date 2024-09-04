@@ -9,7 +9,7 @@
 .. raw:: html
 
   <p align="center">
-    <i>Robust AI Skill Management</i>
+    <i>Control and Measurement for LLM automations</i>
   </p>
 
   <p align="center">

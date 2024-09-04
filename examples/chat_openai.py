@@ -5,7 +5,7 @@ from root.validators import Validator
 # Connect to the Root Signals API
 rs_client = RootSignals()
 
-model = "gpt-3.5-turbo"
+model = "gpt-4o"
 another_model = "gpt-4"
 
 skill = rs_client.skills.create(

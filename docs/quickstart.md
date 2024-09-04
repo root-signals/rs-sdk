@@ -24,7 +24,7 @@ After that, you can create a new skill and execute it.
 #llm_output="1. Kimchi Jjigae (Kimchi Stew): This spicy and flavorful
 #stew is made with fermented kimchi, pork, tofu, and vegetables. ..."
 #validation={'validator_results': [], 'is_valid': True}
-#model='gpt-3.5-turbo' engine='gpt-3.5-turbo'
+#model='gpt-4o'
 #execution_log_id='181eb95b-b972-4e96-8e30-ca7d3447d4fe'
 #rendered_prompt='Find me good recipes for spicy food that are Korean.'
 ```

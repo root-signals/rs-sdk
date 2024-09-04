@@ -5,7 +5,7 @@ from root.validators import Validator
 # Connect to the Root Signals API
 rs_client = RootSignals()
 
-model = "gpt-3.5-turbo"
+model = "gpt-4o"
 skill = rs_client.skills.create(
     name="My Q&A chatbot",
     intent="Simple Q&A chatbot",

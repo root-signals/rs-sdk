@@ -25,7 +25,7 @@ skill = client.skills.create(
 response = skill.run(
     {
         "email_dataset": (
-            "Which email has the longest domain name?"
+            "Which email has the longest non-domain part?"
             "Respond with just the email address."
         )
     },
