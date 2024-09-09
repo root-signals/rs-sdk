@@ -30,20 +30,20 @@ class SkillExecutionResult(BaseModel):
     """  # noqa: E501
 
     llm_output: StrictStr
-    validation: Validation
     model: StrictStr
     execution_log_id: StrictStr
     rendered_prompt: StrictStr
     cost: Optional[Union[StrictFloat, StrictInt]]
     model_call_duration: Optional[Union[StrictFloat, StrictInt]] = None
+    validation: Validation
     __properties: ClassVar[List[str]] = [
         "llm_output",
-        "validation",
         "model",
         "execution_log_id",
         "rendered_prompt",
         "cost",
         "model_call_duration",
+        "validation",
     ]
 
     model_config = ConfigDict(
@@ -112,12 +112,12 @@ class SkillExecutionResult(BaseModel):
         _obj = cls.model_validate(
             {
                 "llm_output": obj.get("llm_output"),
-                "validation": Validation.from_dict(obj["validation"]) if obj.get("validation") is not None else None,
                 "model": obj.get("model"),
                 "execution_log_id": obj.get("execution_log_id"),
                 "rendered_prompt": obj.get("rendered_prompt"),
                 "cost": obj.get("cost"),
                 "model_call_duration": obj.get("model_call_duration"),
+                "validation": Validation.from_dict(obj["validation"]) if obj.get("validation") is not None else None,
             }
         )
         return _obj

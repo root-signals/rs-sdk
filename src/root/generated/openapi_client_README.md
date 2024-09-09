@@ -135,6 +135,8 @@ Class | Method | HTTP request | Description
  - [DataSetCreateRequest](root/generated/openapi_client/docs/DataSetCreateRequest.md)
  - [DataSetList](root/generated/openapi_client/docs/DataSetList.md)
  - [DataSetType](root/generated/openapi_client/docs/DataSetType.md)
+ - [EvaluatorCalibrationOutput](root/generated/openapi_client/docs/EvaluatorCalibrationOutput.md)
+ - [EvaluatorCalibrationResult](root/generated/openapi_client/docs/EvaluatorCalibrationResult.md)
  - [EvaluatorDemonstrations](root/generated/openapi_client/docs/EvaluatorDemonstrations.md)
  - [EvaluatorDemonstrationsRequest](root/generated/openapi_client/docs/EvaluatorDemonstrationsRequest.md)
  - [EvaluatorExecutionFunctionParameterPropertyRequest](root/generated/openapi_client/docs/EvaluatorExecutionFunctionParameterPropertyRequest.md)

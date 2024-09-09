@@ -21,12 +21,12 @@ from typing import Any, ClassVar, Dict, List, Optional, Set, Union
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt
 from typing_extensions import Self
 
-from root.generated.openapi_client.models.skill_execution_result import SkillExecutionResult
+from root.generated.openapi_client.models.evaluator_calibration_result import EvaluatorCalibrationResult
 
 
-class SkillTestOutput(BaseModel):
+class EvaluatorCalibrationOutput(BaseModel):
     """
-    SkillTestOutput
+    EvaluatorCalibrationOutput
     """  # noqa: E501
 
     variables: Dict[str, Any]
@@ -34,7 +34,7 @@ class SkillTestOutput(BaseModel):
         default=None, description="Deprecated, use result.model_call_duration instead."
     )
     row_number: StrictInt
-    result: SkillExecutionResult
+    result: EvaluatorCalibrationResult
     __properties: ClassVar[List[str]] = ["variables", "model_call_duration", "row_number", "result"]
 
     model_config = ConfigDict(
@@ -54,7 +54,7 @@ class SkillTestOutput(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of SkillTestOutput from a JSON string"""
+        """Create an instance of EvaluatorCalibrationOutput from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -81,7 +81,7 @@ class SkillTestOutput(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of SkillTestOutput from a dict"""
+        """Create an instance of EvaluatorCalibrationOutput from a dict"""
         if obj is None:
             return None
 
@@ -93,7 +93,9 @@ class SkillTestOutput(BaseModel):
                 "variables": obj.get("variables"),
                 "model_call_duration": obj.get("model_call_duration"),
                 "row_number": obj.get("row_number"),
-                "result": SkillExecutionResult.from_dict(obj["result"]) if obj.get("result") is not None else None,
+                "result": EvaluatorCalibrationResult.from_dict(obj["result"])
+                if obj.get("result") is not None
+                else None,
             }
         )
         return _obj

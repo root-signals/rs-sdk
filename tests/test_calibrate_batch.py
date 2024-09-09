@@ -2,7 +2,8 @@ from unittest.mock import patch
 
 import pytest
 from root.client import RootSignals
-from root.generated.openapi_client.models.skill_test_output import SkillTestOutput
+from root.generated.openapi_client.models.evaluator_calibration_output import EvaluatorCalibrationOutput
+from root.generated.openapi_client.models.evaluator_calibration_result import EvaluatorCalibrationResult
 from root.skills import CalibrateBatchParameters
 
 
@@ -14,8 +15,32 @@ def mock_skills_calibrate_api():
 
 def test_calibrate_evaluator_batch(mock_skills_calibrate_api):
     mock_skills_calibrate_api.return_value = [
-        SkillTestOutput(result={"score": 0.8, "expected_score": 0.75}, variables={}),
-        SkillTestOutput(result={"score": 0.9, "expected_score": 0.55}, variables={}),
+        EvaluatorCalibrationOutput(
+            result=EvaluatorCalibrationResult(
+                score=0.8,
+                expected_score=0.75,
+                llm_output="output",
+                model="gpt-4",
+                rendered_prompt="What is the weather today?",
+                cost=0.1,
+                execution_log_id="1",
+            ),
+            row_number=1,
+            variables={},
+        ),
+        EvaluatorCalibrationOutput(
+            result=EvaluatorCalibrationResult(
+                score=0.9,
+                expected_score=0.55,
+                llm_output="output",
+                model="gpt-4",
+                rendered_prompt="What is the weather today?",
+                cost=0.1,
+                execution_log_id="2",
+            ),
+            row_number=2,
+            variables={},
+        ),
     ]
 
     client = RootSignals(api_key="fake")

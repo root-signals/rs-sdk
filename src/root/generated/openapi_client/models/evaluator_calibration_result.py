@@ -18,24 +18,33 @@ import pprint
 import re  # noqa: F401
 from typing import Any, ClassVar, Dict, List, Optional, Set, Union
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt
+from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
 from typing_extensions import Self
 
-from root.generated.openapi_client.models.skill_execution_result import SkillExecutionResult
 
-
-class SkillTestOutput(BaseModel):
+class EvaluatorCalibrationResult(BaseModel):
     """
-    SkillTestOutput
+    EvaluatorCalibrationResult
     """  # noqa: E501
 
-    variables: Dict[str, Any]
-    model_call_duration: Optional[Union[StrictFloat, StrictInt]] = Field(
-        default=None, description="Deprecated, use result.model_call_duration instead."
-    )
-    row_number: StrictInt
-    result: SkillExecutionResult
-    __properties: ClassVar[List[str]] = ["variables", "model_call_duration", "row_number", "result"]
+    llm_output: StrictStr
+    model: StrictStr
+    execution_log_id: StrictStr
+    rendered_prompt: StrictStr
+    cost: Optional[Union[StrictFloat, StrictInt]]
+    model_call_duration: Optional[Union[StrictFloat, StrictInt]] = None
+    expected_score: Union[StrictFloat, StrictInt]
+    score: Optional[Union[StrictFloat, StrictInt]]
+    __properties: ClassVar[List[str]] = [
+        "llm_output",
+        "model",
+        "execution_log_id",
+        "rendered_prompt",
+        "cost",
+        "model_call_duration",
+        "expected_score",
+        "score",
+    ]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -54,7 +63,7 @@ class SkillTestOutput(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of SkillTestOutput from a JSON string"""
+        """Create an instance of EvaluatorCalibrationResult from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -66,22 +75,36 @@ class SkillTestOutput(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
-        excluded_fields: Set[str] = set([])
+        excluded_fields: Set[str] = set(
+            [
+                "model",
+                "rendered_prompt",
+            ]
+        )
 
         _dict = self.model_dump(
             by_alias=True,
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of result
-        if self.result:
-            _dict["result"] = self.result.to_dict()
+        # set to None if cost (nullable) is None
+        # and model_fields_set contains the field
+        if self.cost is None and "cost" in self.model_fields_set:
+            _dict["cost"] = None
+
+        # set to None if score (nullable) is None
+        # and model_fields_set contains the field
+        if self.score is None and "score" in self.model_fields_set:
+            _dict["score"] = None
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of SkillTestOutput from a dict"""
+        """Create an instance of EvaluatorCalibrationResult from a dict"""
         if obj is None:
             return None
 
@@ -90,10 +113,14 @@ class SkillTestOutput(BaseModel):
 
         _obj = cls.model_validate(
             {
-                "variables": obj.get("variables"),
+                "llm_output": obj.get("llm_output"),
+                "model": obj.get("model"),
+                "execution_log_id": obj.get("execution_log_id"),
+                "rendered_prompt": obj.get("rendered_prompt"),
+                "cost": obj.get("cost"),
                 "model_call_duration": obj.get("model_call_duration"),
-                "row_number": obj.get("row_number"),
-                "result": SkillExecutionResult.from_dict(obj["result"]) if obj.get("result") is not None else None,
+                "expected_score": obj.get("expected_score"),
+                "score": obj.get("score"),
             }
         )
         return _obj

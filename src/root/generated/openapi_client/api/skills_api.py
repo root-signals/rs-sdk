@@ -19,6 +19,7 @@ from typing_extensions import Annotated
 
 from root.generated.openapi_client.api_client import ApiClient, RequestSerialized
 from root.generated.openapi_client.api_response import ApiResponse
+from root.generated.openapi_client.models.evaluator_calibration_output import EvaluatorCalibrationOutput
 from root.generated.openapi_client.models.evaluator_execution_request import EvaluatorExecutionRequest
 from root.generated.openapi_client.models.evaluator_execution_result import EvaluatorExecutionResult
 from root.generated.openapi_client.models.open_ai_chat_completion_request import OpenAIChatCompletionRequest
@@ -317,7 +318,7 @@ class SkillsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[SkillTestOutput]:
+    ) -> List[EvaluatorCalibrationOutput]:
         """skills_calibrate_create
 
         Test an evaluator definition using calibration data
@@ -355,7 +356,7 @@ class SkillsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "List[SkillTestOutput]",
+            "200": "List[EvaluatorCalibrationOutput]",
         }
         response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
         response_data.read()
@@ -377,7 +378,7 @@ class SkillsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[SkillTestOutput]]:
+    ) -> ApiResponse[List[EvaluatorCalibrationOutput]]:
         """skills_calibrate_create
 
         Test an evaluator definition using calibration data
@@ -415,7 +416,7 @@ class SkillsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "List[SkillTestOutput]",
+            "200": "List[EvaluatorCalibrationOutput]",
         }
         response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
         response_data.read()
@@ -475,7 +476,7 @@ class SkillsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "List[SkillTestOutput]",
+            "200": "List[EvaluatorCalibrationOutput]",
         }
         response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
         return response_data.response
@@ -552,7 +553,7 @@ class SkillsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[SkillTestOutput]:
+    ) -> List[EvaluatorCalibrationOutput]:
         """skills_calibrate_create2
 
         Test an existing evaluator using calibration data
@@ -593,7 +594,7 @@ class SkillsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "List[SkillTestOutput]",
+            "200": "List[EvaluatorCalibrationOutput]",
         }
         response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
         response_data.read()
@@ -616,7 +617,7 @@ class SkillsApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[SkillTestOutput]]:
+    ) -> ApiResponse[List[EvaluatorCalibrationOutput]]:
         """skills_calibrate_create2
 
         Test an existing evaluator using calibration data
@@ -657,7 +658,7 @@ class SkillsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "List[SkillTestOutput]",
+            "200": "List[EvaluatorCalibrationOutput]",
         }
         response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
         response_data.read()
@@ -721,7 +722,7 @@ class SkillsApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            "200": "List[SkillTestOutput]",
+            "200": "List[EvaluatorCalibrationOutput]",
         }
         response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
         return response_data.response
