@@ -3,8 +3,13 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-.. image:: root_signals+bounding_box.svg
+.. image:: root_signals_black_logo.svg
    :height: 200
+   :class: only-light
+
+.. image:: root_signals_white_logo.svg
+   :height: 200
+   :class: only-dark
 
 .. raw:: html
 
