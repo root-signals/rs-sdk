@@ -13,6 +13,7 @@ from root.generated.openapi_client.api.objectives_api import ObjectivesApi
 from root.generated.openapi_client.api.skills_api import SkillsApi
 from root.generated.openapi_client.models.chat_create_request import ChatCreateRequest
 from root.generated.openapi_client.models.data_loader_request import DataLoaderRequest
+from root.generated.openapi_client.models.evaluator_calibration_output import EvaluatorCalibrationOutput
 from root.generated.openapi_client.models.input_variable_request import InputVariableRequest
 from root.generated.openapi_client.models.objective_request import ObjectiveRequest
 from root.generated.openapi_client.models.paginated_skill_list import PaginatedSkillList
@@ -118,7 +119,7 @@ class CalibrateBatchParameters:
 
 
 class CalibrateBatchResult(BaseModel):
-    results: List[SkillTestOutput]
+    results: List[EvaluatorCalibrationOutput]
     rms_errors_model: Dict[str, float]
     mae_errors_model: Dict[str, float]
     rms_errors_prompt: Dict[str, float]
@@ -690,7 +691,7 @@ class Evaluators:
         *,
         test_dataset_id: Optional[str] = None,
         test_data: Optional[List[List[str]]] = None,
-    ) -> List[SkillTestOutput]:
+    ) -> List[EvaluatorCalibrationOutput]:
         """
         Run calibration set on an existing evaluator.
         """
@@ -717,7 +718,7 @@ class Evaluators:
         reference_variables: Optional[Union[List[ReferenceVariable], List[ReferenceVariableRequest]]] = None,
         input_variables: Optional[Union[List[InputVariable], List[InputVariableRequest]]] = None,
         data_loaders: Optional[List[DataLoader]] = None,
-    ) -> List[SkillTestOutput]:
+    ) -> List[EvaluatorCalibrationOutput]:
         """
         Run calibration set on an existing evaluator.
         """
@@ -776,10 +777,10 @@ class Evaluators:
 
         use_thread_pool = parallel_requests > 1
 
-        def process_results(results: List[SkillTestOutput], param: CalibrateBatchParameters) -> None:
+        def process_results(results: List[EvaluatorCalibrationOutput], param: CalibrateBatchParameters) -> None:
             for result in results:
-                score = result.result["score"]
-                expected_score = result.result["expected_score"]
+                score = result.result.score or 0
+                expected_score = result.result.expected_score or 0
                 squared_error = (score - expected_score) ** 2
                 abs_error = abs(score - expected_score)
 

@@ -1166,7 +1166,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/SkillTestOutput'
+                  $ref: '#/components/schemas/EvaluatorCalibrationOutput'
           description: ''
   /v1/skills/calibrate/{id}:
     post:
@@ -1214,7 +1214,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/SkillTestOutput'
+                  $ref: '#/components/schemas/EvaluatorCalibrationOutput'
           description: ''
   /v1/skills/duplicate/{id}/:
     post:
@@ -1726,8 +1726,6 @@ components:
       properties:
         llm_output:
           type: string
-        validation:
-          $ref: '#/components/schemas/Validation'
         model:
           type: string
           readOnly: true
@@ -1743,6 +1741,8 @@ components:
         model_call_duration:
           type: number
           format: double
+        validation:
+          $ref: '#/components/schemas/Validation'
         chat_id:
           type: string
       required:
@@ -1909,6 +1909,59 @@ components:
       description: |-
         * `reference` - REFERENCE
         * `test` - TEST
+    EvaluatorCalibrationOutput:
+      type: object
+      properties:
+        variables:
+          type: object
+          additionalProperties: {}
+        model_call_duration:
+          type: number
+          format: double
+          description: Deprecated, use result.model_call_duration instead.
+        row_number:
+          type: integer
+        result:
+          $ref: '#/components/schemas/EvaluatorCalibrationResult'
+      required:
+      - result
+      - row_number
+      - variables
+    EvaluatorCalibrationResult:
+      type: object
+      properties:
+        llm_output:
+          type: string
+        model:
+          type: string
+          readOnly: true
+        execution_log_id:
+          type: string
+        rendered_prompt:
+          type: string
+          readOnly: true
+        cost:
+          type: number
+          format: double
+          nullable: true
+        model_call_duration:
+          type: number
+          format: double
+        expected_score:
+          type: number
+          format: double
+        score:
+          type: number
+          format: double
+          nullable: true
+      required:
+      - cost
+      - execution_log_id
+      - expected_score
+      - llm_output
+      - model
+      - rendered_prompt
+      - score
     EvaluatorDemonstrations:
       type: object
       properties:
@@ -3038,8 +3091,6 @@ components:
       properties:
         llm_output:
           type: string
-        validation:
-          $ref: '#/components/schemas/Validation'
         model:
           type: string
           readOnly: true
@@ -3055,6 +3106,8 @@ components:
         model_call_duration:
           type: number
           format: double
+        validation:
+          $ref: '#/components/schemas/Validation'
       required:
       - cost
       - execution_log_id
@@ -3316,17 +3369,20 @@ components:
     SkillTestOutput:
       type: object
       properties:
-        result:
-          type: object
-          additionalProperties: {}
         variables:
           type: object
           additionalProperties: {}
         model_call_duration:
           type: number
           format: double
+          description: Deprecated, use result.model_call_duration instead.
+        row_number:
+          type: integer
+        result:
+          $ref: '#/components/schemas/SkillExecutionResult'
       required:
       - result
+      - row_number
       - variables
     SkillTypeEnum:
       enum:
