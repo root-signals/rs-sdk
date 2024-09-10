@@ -2477,6 +2477,7 @@ components:
             items:
               type: string
           nullable: true
+          description: 'Deprecated: Use test_dataset_id instead.'
         validators:
           type: array
           items:
@@ -2494,6 +2495,10 @@ components:
           type: string
           format: uuid
           readOnly: true
+        test_dataset_id:
+          type: string
+          format: uuid
+          nullable: true
         _meta:
           type: object
           additionalProperties: {}
@@ -2573,6 +2578,7 @@ components:
               type: string
               minLength: 1
           nullable: true
+          description: 'Deprecated: Use test_dataset_id instead.'
         validators:
           type: array
           items:
@@ -2581,6 +2587,10 @@ components:
           type: boolean
           writeOnly: true
           description: Force creation of a new objective. Applies only to PUT requests.
+        test_dataset_id:
+          type: string
+          format: uuid
+          nullable: true
     OpenAIChatCompletionRequest:
       type: object
       properties:
@@ -2787,6 +2797,7 @@ components:
               type: string
               minLength: 1
           nullable: true
+          description: 'Deprecated: Use test_dataset_id instead.'
         validators:
           type: array
           items:
@@ -2795,6 +2806,10 @@ components:
           type: boolean
           writeOnly: true
           description: Force creation of a new objective. Applies only to PUT requests.
+        test_dataset_id:
+          type: string
+          format: uuid
+          nullable: true
     PatchedSkillRequest:
       type: object
       properties:
