@@ -18,7 +18,7 @@ import pprint
 import re  # noqa: F401
 from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing_extensions import Annotated, Self
 
 from root.generated.openapi_client.models.skill_validator_request import SkillValidatorRequest
@@ -32,12 +32,22 @@ class PatchedObjectiveRequest(BaseModel):
 
     intent: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=10000)]] = None
     status: Optional[StatusEnum] = None
-    test_set: Optional[List[List[Annotated[str, Field(min_length=1, strict=True)]]]] = None
+    test_set: Optional[List[List[Annotated[str, Field(min_length=1, strict=True)]]]] = Field(
+        default=None, description="Deprecated: Use test_dataset_id instead."
+    )
     validators: Optional[List[SkillValidatorRequest]] = None
     force_create: Optional[StrictBool] = Field(
         default=None, description="Force creation of a new objective. Applies only to PUT requests."
     )
-    __properties: ClassVar[List[str]] = ["intent", "status", "test_set", "validators", "force_create"]
+    test_dataset_id: Optional[StrictStr] = None
+    __properties: ClassVar[List[str]] = [
+        "intent",
+        "status",
+        "test_set",
+        "validators",
+        "force_create",
+        "test_dataset_id",
+    ]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -88,6 +98,11 @@ class PatchedObjectiveRequest(BaseModel):
         if self.test_set is None and "test_set" in self.model_fields_set:
             _dict["test_set"] = None
 
+        # set to None if test_dataset_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.test_dataset_id is None and "test_dataset_id" in self.model_fields_set:
+            _dict["test_dataset_id"] = None
+
         return _dict
 
     @classmethod
@@ -108,6 +123,7 @@ class PatchedObjectiveRequest(BaseModel):
                 if obj.get("validators") is not None
                 else None,
                 "force_create": obj.get("force_create"),
+                "test_dataset_id": obj.get("test_dataset_id"),
             }
         )
         return _obj

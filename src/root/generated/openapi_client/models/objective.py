@@ -35,11 +35,14 @@ class Objective(BaseModel):
     id: StrictStr
     intent: Optional[Annotated[str, Field(strict=True, max_length=10000)]] = None
     status: Optional[StatusEnum] = None
-    test_set: Optional[List[List[StrictStr]]] = None
+    test_set: Optional[List[List[StrictStr]]] = Field(
+        default=None, description="Deprecated: Use test_dataset_id instead."
+    )
     validators: Optional[List[SkillValidator]] = None
     created_at: Optional[datetime]
     owner: NestedUserDetails
     version_id: StrictStr
+    test_dataset_id: Optional[StrictStr] = None
     meta: Dict[str, Any] = Field(alias="_meta")
     __properties: ClassVar[List[str]] = [
         "id",
@@ -50,6 +53,7 @@ class Objective(BaseModel):
         "created_at",
         "owner",
         "version_id",
+        "test_dataset_id",
         "_meta",
     ]
 
@@ -123,6 +127,11 @@ class Objective(BaseModel):
         if self.created_at is None and "created_at" in self.model_fields_set:
             _dict["created_at"] = None
 
+        # set to None if test_dataset_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.test_dataset_id is None and "test_dataset_id" in self.model_fields_set:
+            _dict["test_dataset_id"] = None
+
         return _dict
 
     @classmethod
@@ -146,6 +155,7 @@ class Objective(BaseModel):
                 "created_at": obj.get("created_at"),
                 "owner": NestedUserDetails.from_dict(obj["owner"]) if obj.get("owner") is not None else None,
                 "version_id": obj.get("version_id"),
+                "test_dataset_id": obj.get("test_dataset_id"),
                 "_meta": obj.get("_meta"),
             }
         )
