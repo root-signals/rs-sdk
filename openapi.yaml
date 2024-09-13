@@ -810,42 +810,6 @@ paths:
       responses:
         '204':
           description: No response body
-  /v1/objectives/{objective_id}/test-set/append:
-    post:
-      operationId: objectives_test_set_append_create
-      description: Append a test set to an Objective.
-      parameters:
-      - in: path
-        name: objective_id
-        schema:
-          type: string
-          format: uuid
-        required: true
-      tags:
-      - objectives
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/VariablesRequest'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/VariablesRequest'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/VariablesRequest'
-        required: true
-      security:
-      - publicApiKey: []
-      responses:
-        '201':
-          content:
-            application/json:
-              schema:
-                type: object
-                additionalProperties: {}
-                description: Unspecified response body
-          description: ''
   /v1/objectives/objectives/{objective_id}/execute/:
     post:
       operationId: objectives_objectives_execute_create
@@ -2476,6 +2440,7 @@ components:
             type: array
             items:
               type: string
+          readOnly: true
           nullable: true
           description: 'Deprecated: Use test_dataset_id instead.'
         validators:
@@ -2509,6 +2474,7 @@ components:
       - created_at
       - id
       - owner
+      - test_set
       - version_id
     ObjectiveExecutionRequest:
       type: object
@@ -2570,15 +2536,6 @@ components:
           maxLength: 10000
         status:
           $ref: '#/components/schemas/StatusEnum'
-        test_set:
-          type: array
-          items:
-            type: array
-            items:
-              type: string
-              minLength: 1
-          nullable: true
-          description: 'Deprecated: Use test_dataset_id instead.'
         validators:
           type: array
           items:
@@ -2789,15 +2746,6 @@ components:
           maxLength: 10000
         status:
           $ref: '#/components/schemas/StatusEnum'
-        test_set:
-          type: array
-          items:
-            type: array
-            items:
-              type: string
-              minLength: 1
-          nullable: true
-          description: 'Deprecated: Use test_dataset_id instead.'
         validators:
           type: array
           items:
@@ -3554,15 +3502,6 @@ components:
           nullable: true
       required:
       - evaluator_id
-    VariablesRequest:
-      type: object
-      properties:
-        variables:
-          type: array
-          items:
-            type: string
-      required:
-      - variables
   securitySchemes:
     publicApiKey:
       type: apiKey
