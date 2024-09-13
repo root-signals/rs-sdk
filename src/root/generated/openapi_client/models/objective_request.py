@@ -32,22 +32,12 @@ class ObjectiveRequest(BaseModel):
 
     intent: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=10000)]] = None
     status: Optional[StatusEnum] = None
-    test_set: Optional[List[List[Annotated[str, Field(min_length=1, strict=True)]]]] = Field(
-        default=None, description="Deprecated: Use test_dataset_id instead."
-    )
     validators: Optional[List[SkillValidatorRequest]] = None
     force_create: Optional[StrictBool] = Field(
         default=None, description="Force creation of a new objective. Applies only to PUT requests."
     )
     test_dataset_id: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = [
-        "intent",
-        "status",
-        "test_set",
-        "validators",
-        "force_create",
-        "test_dataset_id",
-    ]
+    __properties: ClassVar[List[str]] = ["intent", "status", "validators", "force_create", "test_dataset_id"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -93,11 +83,6 @@ class ObjectiveRequest(BaseModel):
                 if _item:
                     _items.append(_item.to_dict())
             _dict["validators"] = _items
-        # set to None if test_set (nullable) is None
-        # and model_fields_set contains the field
-        if self.test_set is None and "test_set" in self.model_fields_set:
-            _dict["test_set"] = None
-
         # set to None if test_dataset_id (nullable) is None
         # and model_fields_set contains the field
         if self.test_dataset_id is None and "test_dataset_id" in self.model_fields_set:
@@ -118,7 +103,6 @@ class ObjectiveRequest(BaseModel):
             {
                 "intent": obj.get("intent"),
                 "status": obj.get("status"),
-                "test_set": obj.get("test_set"),
                 "validators": [SkillValidatorRequest.from_dict(_item) for _item in obj["validators"]]
                 if obj.get("validators") is not None
                 else None,

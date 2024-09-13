@@ -35,9 +35,7 @@ class Objective(BaseModel):
     id: StrictStr
     intent: Optional[Annotated[str, Field(strict=True, max_length=10000)]] = None
     status: Optional[StatusEnum] = None
-    test_set: Optional[List[List[StrictStr]]] = Field(
-        default=None, description="Deprecated: Use test_dataset_id instead."
-    )
+    test_set: Optional[List[List[StrictStr]]] = Field(description="Deprecated: Use test_dataset_id instead.")
     validators: Optional[List[SkillValidator]] = None
     created_at: Optional[datetime]
     owner: NestedUserDetails
@@ -91,10 +89,12 @@ class Objective(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
                 "id",
+                "test_set",
                 "created_at",
                 "owner",
                 "version_id",

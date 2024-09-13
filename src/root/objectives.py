@@ -84,7 +84,13 @@ class Objectives:
     def __init__(self, client: ApiClient):
         self.client = client
 
-    def create(self, *, intent: Optional[str] = None, validators: Optional[List[Validator]] = None) -> Objective:
+    def create(
+        self,
+        *,
+        intent: Optional[str] = None,
+        validators: Optional[List[Validator]] = None,
+        test_dataset_id: Optional[str] = None,
+    ) -> Objective:
         """Create a new objective and return its ID.
 
         Args:
@@ -93,11 +99,14 @@ class Objectives:
 
           validators: An optional list of validators.
 
+          test_dataset_id: The ID of the test dataset
+
         """
         skills = Skills(self.client)
         request = ObjectiveRequest(
             intent=intent,
             validators=[validator._to_request(skills) for validator in validators or []],
+            test_dataset_id=test_dataset_id,
         )
         api_instance = ObjectivesApi(self.client)
         objective = api_instance.objectives_create(objective_request=request)
@@ -177,7 +186,12 @@ class Objectives:
         )
 
     def update(
-        self, objective_id: str, *, intent: Optional[str] = None, validators: Optional[List[Validator]] = None
+        self,
+        objective_id: str,
+        *,
+        intent: Optional[str] = None,
+        validators: Optional[List[Validator]] = None,
+        test_dataset_id: Optional[str] = None,
     ) -> Objective:
         """
         Update an existing objective.
@@ -195,6 +209,7 @@ class Objectives:
         request = PatchedObjectiveRequest(
             intent=intent,
             validators=[validator._to_request(skills) for validator in validators] if validators else None,
+            test_dataset_id=test_dataset_id,
         )
         api_instance = ObjectivesApi(self.client)
         return Objective._wrap(
