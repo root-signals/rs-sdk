@@ -62,10 +62,11 @@ openapi-unchanged:
 src/root/generated/__init__.py: openapi.yaml
 	make generate-openapi-client
 
-.PHONY: generate-opeapi-client
+.PHONY: generate-openapi-client
 generate-openapi-client:
 	rm -rf src/root/generated
 	docker run --rm \
+		-u $(shell id -u):$(shell id -g) \
 		-v ${PWD}:/local openapitools/openapi-generator-cli:v7.4.0 \
 		generate -i /local/openapi.yaml \
 		-g python -o /local/src \
