@@ -380,6 +380,33 @@ paths:
                     status: unlisted | listed
                   summary: Change dataset status
           description: ''
+  /v1/document-parsing/:
+    post:
+      operationId: document_parsing_create
+      description: Parse document contents encoded as base64 strings
+      tags:
+      - document-parsing
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocumentParseRequestRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DocumentParseRequestRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DocumentParseRequestRequest'
+        required: true
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentParseResponse'
+          description: ''
   /v1/execution-logs/:
     get:
       operationId: execution_logs_list
@@ -1873,6 +1900,126 @@ components:
       description: |-
         * `reference` - REFERENCE
         * `test` - TEST
+    DocumentParseRequestRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          minLength: 32
+          description: An arbitrary string between 32 and 36 characters for version
+            tracking. Will be auto generated if not provided.
+          maxLength: 36
+        document_content:
+          type: string
+          minLength: 1
+          description: The content of the document to parse, encoded as base64 string
+        document_type:
+          allOf:
+          - $ref: '#/components/schemas/DocumentTypeEnum'
+          description: |-
+            The type of the document to parse
+
+            * `csv` - CSV
+            * `pdf` - PDF
+            * `html` - HTML
+            * `docx` - DOCX
+            * `doc` - DOC
+            * `txt` - TXT
+            * `md` - MD
+            * `pptx` - PPTX
+            * `ppt` - PPT
+            * `xlsx` - XLSX
+            * `xls` - XLS
+            * `odt` - ODT
+            * `rtf` - RTF
+            * `xml` - XML
+            * `eml` - EML
+            * `epub` - EPUB
+        document_language:
+          type: string
+          minLength: 1
+          description: The language of the document to parse, using ISO 639-2 three-letter
+            language code
+        response_format:
+          allOf:
+          - $ref: '#/components/schemas/ResponseFormatEnum'
+          description: |-
+            'plain' returns concatenated text and is fast. 'structured' will return a json object with chunks and metadata that needs post-processing
+
+            * `plain` - plain
+            * `structured` - structured
+      required:
+      - document_content
+      - document_language
+      - document_type
+      - id
+      - response_format
+    DocumentParseResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: An arbitrary string between 32 and 36 characters for version
+            tracking. Will be auto generated if not provided.
+          maxLength: 36
+          minLength: 32
+        request_id:
+          type: string
+          description: The ID of the corresponding DocumentParseRequest
+          maxLength: 36
+          minLength: 32
+        content_plain:
+          type: string
+          description: The content of the document as plain text
+        content_elements:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+          nullable: true
+          description: The content of the document as a list of elements with metadata.
+            Returned only if response format was 'structured' in the request
+      required:
+      - content_elements
+      - content_plain
+      - id
+      - request_id
+    DocumentTypeEnum:
+      enum:
+      - csv
+      - pdf
+      - html
+      - docx
+      - doc
+      - txt
+      - md
+      - pptx
+      - ppt
+      - xlsx
+      - xls
+      - odt
+      - rtf
+      - xml
+      - eml
+      - epub
+      type: string
+      description: |-
+        * `csv` - CSV
+        * `pdf` - PDF
+        * `html` - HTML
+        * `docx` - DOCX
+        * `doc` - DOC
+        * `txt` - TXT
+        * `md` - MD
+        * `pptx` - PPTX
+        * `ppt` - PPT
+        * `xlsx` - XLSX
+        * `xls` - XLS
+        * `odt` - ODT
+        * `rtf` - RTF
+        * `xml` - XML
+        * `eml` - EML
+        * `epub` - EPUB
     EvaluatorCalibrationOutput:
       type: object
       properties:
@@ -2911,6 +3058,14 @@ components:
       required:
       - dataset
       - name
+    ResponseFormatEnum:
+      enum:
+      - plain
+      - structured
+      type: string
+      description: |-
+        * `plain` - plain
+        * `structured` - structured
     RoleEnum:
       enum:
       - system

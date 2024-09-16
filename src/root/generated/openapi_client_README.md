@@ -84,6 +84,7 @@ Class | Method | HTTP request | Description
 *DatasetsApi* | [**datasets_list**](root/generated/openapi_client/docs/DatasetsApi.md#datasets_list) | **GET** /v1/datasets/ | 
 *DatasetsApi* | [**datasets_retrieve**](root/generated/openapi_client/docs/DatasetsApi.md#datasets_retrieve) | **GET** /v1/datasets/{id}/ | 
 *DatasetsApi* | [**datasets_status_update**](root/generated/openapi_client/docs/DatasetsApi.md#datasets_status_update) | **PUT** /v1/datasets/status/{id}/ | 
+*DocumentParsingApi* | [**document_parsing_create**](root/generated/openapi_client/docs/DocumentParsingApi.md#document_parsing_create) | **POST** /v1/document-parsing/ | 
 *ExecutionLogsApi* | [**execution_logs_list**](root/generated/openapi_client/docs/ExecutionLogsApi.md#execution_logs_list) | **GET** /v1/execution-logs/ | 
 *ExecutionLogsApi* | [**execution_logs_retrieve**](root/generated/openapi_client/docs/ExecutionLogsApi.md#execution_logs_retrieve) | **GET** /v1/execution-logs/{log_id}/ | 
 *ModelsApi* | [**models_create**](root/generated/openapi_client/docs/ModelsApi.md#models_create) | **POST** /v1/models/ | 
@@ -134,6 +135,9 @@ Class | Method | HTTP request | Description
  - [DataSetCreateRequest](root/generated/openapi_client/docs/DataSetCreateRequest.md)
  - [DataSetList](root/generated/openapi_client/docs/DataSetList.md)
  - [DataSetType](root/generated/openapi_client/docs/DataSetType.md)
+ - [DocumentParseRequestRequest](root/generated/openapi_client/docs/DocumentParseRequestRequest.md)
+ - [DocumentParseResponse](root/generated/openapi_client/docs/DocumentParseResponse.md)
+ - [DocumentTypeEnum](root/generated/openapi_client/docs/DocumentTypeEnum.md)
  - [EvaluatorCalibrationOutput](root/generated/openapi_client/docs/EvaluatorCalibrationOutput.md)
  - [EvaluatorCalibrationResult](root/generated/openapi_client/docs/EvaluatorCalibrationResult.md)
  - [EvaluatorDemonstrations](root/generated/openapi_client/docs/EvaluatorDemonstrations.md)
@@ -183,6 +187,7 @@ Class | Method | HTTP request | Description
  - [ReferenceVariable](root/generated/openapi_client/docs/ReferenceVariable.md)
  - [ReferenceVariableDynamicDatasetsRequest](root/generated/openapi_client/docs/ReferenceVariableDynamicDatasetsRequest.md)
  - [ReferenceVariableRequest](root/generated/openapi_client/docs/ReferenceVariableRequest.md)
+ - [ResponseFormatEnum](root/generated/openapi_client/docs/ResponseFormatEnum.md)
  - [RoleEnum](root/generated/openapi_client/docs/RoleEnum.md)
  - [Skill](root/generated/openapi_client/docs/Skill.md)
  - [SkillExecutionRequest](root/generated/openapi_client/docs/SkillExecutionRequest.md)

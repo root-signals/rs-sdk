@@ -26,6 +26,9 @@ from root.generated.openapi_client.models.data_set_create import DataSetCreate
 from root.generated.openapi_client.models.data_set_create_request import DataSetCreateRequest
 from root.generated.openapi_client.models.data_set_list import DataSetList
 from root.generated.openapi_client.models.data_set_type import DataSetType
+from root.generated.openapi_client.models.document_parse_request_request import DocumentParseRequestRequest
+from root.generated.openapi_client.models.document_parse_response import DocumentParseResponse
+from root.generated.openapi_client.models.document_type_enum import DocumentTypeEnum
 from root.generated.openapi_client.models.evaluator_calibration_output import EvaluatorCalibrationOutput
 from root.generated.openapi_client.models.evaluator_calibration_result import EvaluatorCalibrationResult
 from root.generated.openapi_client.models.evaluator_demonstrations import EvaluatorDemonstrations
@@ -87,6 +90,7 @@ from root.generated.openapi_client.models.reference_variable_dynamic_datasets_re
     ReferenceVariableDynamicDatasetsRequest,
 )
 from root.generated.openapi_client.models.reference_variable_request import ReferenceVariableRequest
+from root.generated.openapi_client.models.response_format_enum import ResponseFormatEnum
 from root.generated.openapi_client.models.role_enum import RoleEnum
 from root.generated.openapi_client.models.skill import Skill
 from root.generated.openapi_client.models.skill_execution_request import SkillExecutionRequest
