@@ -539,7 +539,14 @@ class Skills:
         )
         return api_instance.skills_test_create2(skill_id, skill_test_request)
 
-    def create_chat(self, skill_id: str, *, chat_id: Optional[str] = None, name: Optional[str] = None) -> SkillChat:
+    def create_chat(
+        self,
+        skill_id: str,
+        *,
+        chat_id: Optional[str] = None,
+        name: Optional[str] = None,
+        history_from_chat_id: Optional[str] = None,
+    ) -> SkillChat:
         """
         Create and store chat object with the given parameters.
 
@@ -550,12 +557,15 @@ class Skills:
           chat_id: Optional identifier to identify the chat. If not supplied, one is automatically generated.
 
           name: Optional name for the chat.
+
+          history_from_chat_id: Optional chat_id to copy chat history from.
         """
         api_instance = ChatsApi(self.client)
         chat_create_request = ChatCreateRequest(
             name=name,
             skill_id=skill_id,
             chat_id=chat_id,
+            history_from_chat_id=history_from_chat_id,
         )
         if chat_id:
             return SkillChat._wrap(
