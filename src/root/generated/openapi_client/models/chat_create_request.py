@@ -31,7 +31,16 @@ class ChatCreateRequest(BaseModel):
     skill_id: StrictStr
     name: Optional[StrictStr] = None
     assistant_welcome_messages: Optional[List[Any]] = None
-    __properties: ClassVar[List[str]] = ["chat_id", "skill_id", "name", "assistant_welcome_messages"]
+    history_from_chat_id: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(
+        default=None, description="Chat to copy the message history from."
+    )
+    __properties: ClassVar[List[str]] = [
+        "chat_id",
+        "skill_id",
+        "name",
+        "assistant_welcome_messages",
+        "history_from_chat_id",
+    ]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -75,6 +84,11 @@ class ChatCreateRequest(BaseModel):
         if self.assistant_welcome_messages is None and "assistant_welcome_messages" in self.model_fields_set:
             _dict["assistant_welcome_messages"] = None
 
+        # set to None if history_from_chat_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.history_from_chat_id is None and "history_from_chat_id" in self.model_fields_set:
+            _dict["history_from_chat_id"] = None
+
         return _dict
 
     @classmethod
@@ -92,6 +106,7 @@ class ChatCreateRequest(BaseModel):
                 "skill_id": obj.get("skill_id"),
                 "name": obj.get("name"),
                 "assistant_welcome_messages": obj.get("assistant_welcome_messages"),
+                "history_from_chat_id": obj.get("history_from_chat_id"),
             }
         )
         return _obj
