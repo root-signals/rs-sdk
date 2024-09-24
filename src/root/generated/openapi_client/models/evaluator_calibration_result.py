@@ -35,6 +35,7 @@ class EvaluatorCalibrationResult(BaseModel):
     model_call_duration: Optional[Union[StrictFloat, StrictInt]] = None
     expected_score: Union[StrictFloat, StrictInt]
     score: Optional[Union[StrictFloat, StrictInt]]
+    justification: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = [
         "llm_output",
         "model",
@@ -44,6 +45,7 @@ class EvaluatorCalibrationResult(BaseModel):
         "model_call_duration",
         "expected_score",
         "score",
+        "justification",
     ]
 
     model_config = ConfigDict(
@@ -100,6 +102,11 @@ class EvaluatorCalibrationResult(BaseModel):
         if self.score is None and "score" in self.model_fields_set:
             _dict["score"] = None
 
+        # set to None if justification (nullable) is None
+        # and model_fields_set contains the field
+        if self.justification is None and "justification" in self.model_fields_set:
+            _dict["justification"] = None
+
         return _dict
 
     @classmethod
@@ -121,6 +128,7 @@ class EvaluatorCalibrationResult(BaseModel):
                 "model_call_duration": obj.get("model_call_duration"),
                 "expected_score": obj.get("expected_score"),
                 "score": obj.get("score"),
+                "justification": obj.get("justification"),
             }
         )
         return _obj
