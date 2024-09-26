@@ -36,7 +36,8 @@ class ObjectiveList(BaseModel):
     status: Optional[StatusEnum] = None
     owner: NestedUserDetails
     created_at: Optional[datetime]
-    __properties: ClassVar[List[str]] = ["id", "intent", "status", "owner", "created_at"]
+    meta: Dict[str, Any] = Field(alias="_meta")
+    __properties: ClassVar[List[str]] = ["id", "intent", "status", "owner", "created_at", "_meta"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -70,12 +71,14 @@ class ObjectiveList(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
                 "id",
                 "owner",
                 "created_at",
+                "meta",
             ]
         )
 
@@ -110,6 +113,7 @@ class ObjectiveList(BaseModel):
                 "status": obj.get("status"),
                 "owner": NestedUserDetails.from_dict(obj["owner"]) if obj.get("owner") is not None else None,
                 "created_at": obj.get("created_at"),
+                "_meta": obj.get("_meta"),
             }
         )
         return _obj

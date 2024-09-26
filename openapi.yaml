@@ -2679,7 +2679,13 @@ components:
           format: date-time
           readOnly: true
           nullable: true
+        _meta:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+          title: ' meta'
       required:
+      - _meta
       - created_at
       - id
       - owner
