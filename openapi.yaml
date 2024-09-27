@@ -959,7 +959,7 @@ paths:
                   - name: job_title
                   - name: question
                   models:
-                  - gpt-3.5-turbo
+                  - gpt-4-turbo
                 summary: Create a simple skill
               CreateAnEvaluator:
                 value:
@@ -970,7 +970,7 @@ paths:
                     intent: Does the output contain ambiguous language?
                   is_evaluator: true
                   models:
-                  - gpt-3.5-turbo
+                  - gpt-4-turbo
                 summary: Create an Evaluator
           application/x-www-form-urlencoded:
             schema:
@@ -1135,7 +1135,7 @@ paths:
                     given in {{input}}.
                   name: Relevancy
                   models:
-                  - gpt-3.5-turbo
+                  - gpt-4-turbo
                   is_evaluator: true
                 summary: Test with calibration data.
                 description: 'Calibration test_data must have columns in this order:
@@ -1369,7 +1369,7 @@ paths:
                       used for web development, data analysis, artificial intelligence,
                       and scientific computing.
                     validation: null
-                    model: gpt-3.5-turbo
+                    model: gpt-4-turbo
                     execution_log_id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
                     rendered_prompt: Describe the Python programming language.
                     cost: 0.0001
@@ -1496,7 +1496,7 @@ paths:
                     answer here:'
                   name: Test skill
                   models:
-                  - gpt-3.5-turbo
+                  - gpt-4-turbo
                 summary: Test a skill definition with an existig test dataset
               TestASkillDefinitionWithOne-offTestData:
                 value:
@@ -1509,7 +1509,7 @@ paths:
                     answer here:'
                   name: Test skill
                   models:
-                  - gpt-3.5-turbo
+                  - gpt-4-turbo
                 summary: Test a skill definition with one-off test data
           application/x-www-form-urlencoded:
             schema:

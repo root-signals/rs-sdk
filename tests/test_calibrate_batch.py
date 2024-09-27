@@ -56,9 +56,9 @@ def test_calibrate_evaluator_batch(mock_skills_calibrate_api):
             data_loaders=None,
         ),
         CalibrateBatchParameters(
-            name="With gpt-3.5-turbo",
+            name="With gpt-4-turbo",
             prompt="What is the weather today?",
-            model="gpt-3.5-turbo",
+            model="gpt-4-turbo",
             pii_filter=False,
             reference_variables=None,
             input_variables=None,
@@ -72,12 +72,12 @@ def test_calibrate_evaluator_batch(mock_skills_calibrate_api):
 
     assert result.rms_errors_model == {
         "gpt-4": pytest.approx(0.2499, rel=1e-3),
-        "gpt-3.5-turbo": pytest.approx(0.2499, rel=1e-3),
+        "gpt-4-turbo": pytest.approx(0.2499, rel=1e-3),
     }
 
     assert result.mae_errors_model == {
         "gpt-4": pytest.approx(0.2, rel=1e-3),
-        "gpt-3.5-turbo": pytest.approx(0.2, rel=1e-3),
+        "gpt-4-turbo": pytest.approx(0.2, rel=1e-3),
     }
 
     assert result.rms_errors_prompt == {
