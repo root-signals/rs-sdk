@@ -27,7 +27,11 @@ class SkillChat(ChatDetail):
         return schat
 
     def run(
-        self, variables: Optional[Dict[str, str]] = None, *, skill_version_id: Optional[str] = None
+        self,
+        variables: Optional[Dict[str, str]] = None,
+        *,
+        skill_version_id: Optional[str] = None,
+        _request_timeout: Optional[int] = None,
     ) -> ChatExecutionResult:
         """
         Run a skill with optional variables as an interactive chat. The chat message history is stored and can
@@ -41,5 +45,7 @@ class SkillChat(ChatDetail):
             skill_version_id=skill_version_id,
         )
         return api_instance.chats_execute_create(
-            chat_id=self.chat_id, chat_execution_request_request=chat_execution_request
+            chat_id=self.chat_id,
+            chat_execution_request_request=chat_execution_request,
+            _request_timeout=_request_timeout,
         )

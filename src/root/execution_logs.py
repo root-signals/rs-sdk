@@ -27,6 +27,7 @@ class ExecutionLogs:
         *,
         limit: int = 100,
         search_term: Optional[str] = None,
+        _request_timeout: Optional[int] = None,
     ) -> Iterator[ExecutionLogList]:
         """List execution logs
 
@@ -40,6 +41,7 @@ class ExecutionLogs:
             partial(
                 api_instance.execution_logs_list,
                 search=search_term,
+                _request_timeout=_request_timeout,
             ),
             limit=limit,
         )
@@ -49,6 +51,7 @@ class ExecutionLogs:
         *,
         log_id: Optional[str] = None,
         execution_result: Optional[ExecutionResult] = None,
+        _request_timeout: Optional[int] = None,
     ) -> ExecutionLogDetails:
         """Get a specific execution log details
 
@@ -64,4 +67,4 @@ class ExecutionLogs:
         _log_id = execution_result.execution_log_id if execution_result else log_id
         if _log_id is None:
             raise ValueError("Either log_id or execution_result must be provided")
-        return api_instance.execution_logs_retrieve(_log_id)
+        return api_instance.execution_logs_retrieve(_log_id, _request_timeout=_request_timeout)

@@ -41,3 +41,7 @@ locally installed:
 pip install -e .
 ```
 
+## Request timeout
+
+Use the `_request_timeout` parameter to set the timeout for the API requests. The default is not set, which means that the requests will wait indefinitely. The value is in seconds.
+
