@@ -8,11 +8,17 @@ from root.generated.openapi_client.models.evaluator_execution_functions_request 
     EvaluatorExecutionFunctionsRequest,
 )
 from root.generated.openapi_client.models.objective import Objective as OpenApiObjective
-from root.generated.openapi_client.models.objective_execution_request import ObjectiveExecutionRequest
+from root.generated.openapi_client.models.objective_execution_request import (
+    ObjectiveExecutionRequest,
+)
 from root.generated.openapi_client.models.objective_list import ObjectiveList
 from root.generated.openapi_client.models.objective_request import ObjectiveRequest
-from root.generated.openapi_client.models.patched_objective_request import PatchedObjectiveRequest
-from root.generated.openapi_client.models.validator_execution_result import ValidatorExecutionResult
+from root.generated.openapi_client.models.patched_objective_request import (
+    PatchedObjectiveRequest,
+)
+from root.generated.openapi_client.models.validator_execution_result import (
+    ValidatorExecutionResult,
+)
 
 from .generated.openapi_client import ApiClient
 from .skills import Skills
@@ -47,6 +53,7 @@ class Objective(OpenApiObjective):
         request: Optional[str] = None,
         contexts: Optional[List[str]] = None,
         functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
+        _request_timeout: Optional[int] = None,
     ) -> ValidatorExecutionResult:
         """
         Run all validators associated with the objective.
@@ -68,7 +75,9 @@ class Objective(OpenApiObjective):
             functions=functions,
         )
         return api_instance.objectives_objectives_execute_create(
-            objective_id=self.id, objective_execution_request=skill_execution_request
+            objective_id=self.id,
+            objective_execution_request=skill_execution_request,
+            _request_timeout=_request_timeout,
         )
 
 
@@ -90,6 +99,7 @@ class Objectives:
         intent: Optional[str] = None,
         validators: Optional[List[Validator]] = None,
         test_dataset_id: Optional[str] = None,
+        _request_timeout: Optional[int] = None,
     ) -> Objective:
         """Create a new objective and return its ID.
 
@@ -110,9 +120,14 @@ class Objectives:
         )
         api_instance = ObjectivesApi(self.client)
         objective = api_instance.objectives_create(objective_request=request)
-        return self.get(objective.id)
+        return self.get(objective.id, _request_timeout=_request_timeout)
 
-    def get(self, objective_id: str) -> Objective:
+    def get(
+        self,
+        objective_id: str,
+        *,
+        _request_timeout: Optional[int] = None,
+    ) -> Objective:
         """
         Get an objective by ID.
 
@@ -122,9 +137,12 @@ class Objectives:
 
         """
         api_instance = ObjectivesApi(self.client)
-        return Objective._wrap(api_instance.objectives_retrieve(id=objective_id), self.client)
+        return Objective._wrap(
+            api_instance.objectives_retrieve(id=objective_id, _request_timeout=_request_timeout),
+            self.client,
+        )
 
-    def delete(self, objective_id: str) -> None:
+    def delete(self, objective_id: str, *, _request_timeout: Optional[int] = None) -> None:
         """
         Delete the objective from the registry.
 
@@ -134,7 +152,7 @@ class Objectives:
 
         """
         api_instance = ObjectivesApi(self.client)
-        return api_instance.objectives_destroy(id=objective_id)
+        return api_instance.objectives_destroy(id=objective_id, _request_timeout=_request_timeout)
 
     def list(self, *, intent: Optional[str] = None, limit: int = 100) -> Iterator[ObjectiveList]:
         """Iterate through the objectives.
@@ -160,6 +178,7 @@ class Objectives:
         request: Optional[str] = None,
         contexts: Optional[List[str]] = None,
         functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
+        _request_timeout: Optional[int] = None,
     ) -> ValidatorExecutionResult:
         """
         Run all validators associated with an objective.
@@ -182,7 +201,9 @@ class Objectives:
             functions=functions,
         )
         return api_instance.objectives_objectives_execute_create(
-            objective_id=objective_id, objective_execution_request=skill_execution_request
+            objective_id=objective_id,
+            objective_execution_request=skill_execution_request,
+            _request_timeout=_request_timeout,
         )
 
     def update(
@@ -192,6 +213,7 @@ class Objectives:
         intent: Optional[str] = None,
         validators: Optional[List[Validator]] = None,
         test_dataset_id: Optional[str] = None,
+        _request_timeout: Optional[int] = None,
     ) -> Objective:
         """
         Update an existing objective.
@@ -213,6 +235,10 @@ class Objectives:
         )
         api_instance = ObjectivesApi(self.client)
         return Objective._wrap(
-            api_instance.objectives_partial_update(id=objective_id, patched_objective_request=request),
+            api_instance.objectives_partial_update(
+                id=objective_id,
+                patched_objective_request=request,
+                _request_timeout=_request_timeout,
+            ),
             client=self.client,
         )

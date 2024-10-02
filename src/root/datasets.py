@@ -26,7 +26,12 @@ class DataSets:
         self.api_key = api_key
 
     def create(
-        self, *, name: Optional[str] = None, path: Optional[str] = None, type: str = "reference"
+        self,
+        *,
+        name: Optional[str] = None,
+        path: Optional[str] = None,
+        type: str = "reference",
+        _request_timeout: Optional[int] = None,
     ) -> Optional[DataSetCreate]:
         """
         Create a dataset object with the given parameters to the registry.
@@ -45,21 +50,28 @@ class DataSets:
             headers={"Authorization": f"Api-Key {self.api_key}"},
             data=payload,
             files=files,
-            timeout=120,
+            timeout=_request_timeout or 120,
         )
         if not response.ok:
             raise Exception(f"create failed with status code {response.status_code} and message\n{response.text}")
 
         return DataSetCreate.from_dict(response.json())
 
-    def get(self, dataset_id: str) -> DataSetList:
+    def get(
+        self,
+        dataset_id: str,
+        *,
+        _request_timeout: Optional[int] = None,
+    ) -> DataSetList:
         """
         Get a dataset object from the registry.
         """
         api_instance = DatasetsApi(self.client)
-        return api_instance.datasets_retrieve(dataset_id)
+        return api_instance.datasets_retrieve(dataset_id, _request_timeout=_request_timeout)
 
-    def list(self, search_term: Optional[str] = None, *, limit: int = 100) -> Iterator[DataSetList]:
+    def list(
+        self, search_term: Optional[str] = None, *, limit: int = 100, _request_timeout: Optional[int] = None
+    ) -> Iterator[DataSetList]:
         """Iterate through the datasets.
 
         Args:
@@ -69,11 +81,18 @@ class DataSets:
 
         """
         api_instance = DatasetsApi(self.client)
-        yield from iterate_cursor_list(partial(api_instance.datasets_list, search=search_term), limit=limit)
+        yield from iterate_cursor_list(
+            partial(api_instance.datasets_list, search=search_term, _request_timeout=_request_timeout), limit=limit
+        )
 
-    def delete(self, dataset_id: str) -> None:
+    def delete(
+        self,
+        dataset_id: str,
+        *,
+        _request_timeout: Optional[int] = None,
+    ) -> None:
         """
         Delete a dataset object from the registry.
         """
         api_instance = DatasetsApi(self.client)
-        return api_instance.datasets_destroy(dataset_id)
+        return api_instance.datasets_destroy(dataset_id, _request_timeout=_request_timeout)

@@ -21,7 +21,11 @@ class Models:
     def __init__(self, client: ApiClient):
         self.client = client
 
-    def list(self, *, limit: int = 100) -> Iterator[Model]:
+    def list(
+        self,
+        *,
+        limit: int = 100,
+    ) -> Iterator[Model]:
         """Iterate through the models.
 
         Note:
@@ -45,6 +49,7 @@ class Models:
         max_output_token_count: Optional[int] = None,
         max_token_count: Optional[int] = None,
         url: Optional[str] = None,
+        _request_timeout: Optional[int] = None,
     ) -> str:
         """Create a new model and return its ID.
 
@@ -73,9 +78,14 @@ class Models:
         )
 
         api_instance = ModelsApi(self.client)
-        return api_instance.models_create(model_request=request).id
+        return api_instance.models_create(model_request=request, _request_timeout=_request_timeout).id
 
-    def delete(self, model_id: str) -> None:
+    def delete(
+        self,
+        model_id: str,
+        *,
+        _request_timeout: Optional[int] = None,
+    ) -> None:
         """
         Delete the model.
 
@@ -85,6 +95,6 @@ class Models:
 
         """
         api_instance = ModelsApi(self.client)
-        return api_instance.models_destroy(id=model_id)
+        return api_instance.models_destroy(id=model_id, _request_timeout=_request_timeout)
 
     # TODO: update

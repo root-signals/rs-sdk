@@ -181,7 +181,7 @@ class Skill(OpenAPISkill):
         api_instance = SkillsApi(self._client)
         skill_execution_request = SkillExecutionRequest(
             variables=variables,
-            skill_version_id=None,
+            skill_version_id=self.version_id,
         )
         return api_instance.skills_execute_create(id=self.id, skill_execution_request=skill_execution_request)
 
@@ -192,6 +192,7 @@ class Skill(OpenAPISkill):
         request: Optional[str] = None,
         contexts: Optional[List[str]] = None,
         functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
+        _request_timeout: Optional[int] = None,
     ) -> ValidatorExecutionResult:
         """
         Run all validators attached to a skill.
@@ -214,7 +215,9 @@ class Skill(OpenAPISkill):
             functions=functions,
         )
         return api_instance.skills_execute_validators_create(
-            id=self.id, skill_validator_execution_request=skill_execution_request
+            id=self.id,
+            skill_validator_execution_request=skill_execution_request,
+            _request_timeout=_request_timeout,
         )
 
 
@@ -312,6 +315,7 @@ class Skills:
         model_params: Optional[Union[ModelParams, ModelParamsRequest]] = None,
         objective_id: Optional[str] = None,
         overwrite: bool = False,
+        _request_timeout: Optional[int] = None,
     ) -> Skill:
         """Create a new skill and return the result
 
@@ -385,7 +389,7 @@ class Skills:
             overwrite=overwrite,
         )
 
-        skill = api_instance.skills_create(skill_request=skill_request)
+        skill = api_instance.skills_create(skill_request=skill_request, _request_timeout=_request_timeout)
         return Skill._wrap(skill, self.client)
 
     def update(
@@ -405,6 +409,7 @@ class Skills:
         model_params: Optional[Union[ModelParams, ModelParamsRequest]] = None,
         evaluator_demonstrations: Optional[List[EvaluatorDemonstration]] = None,
         objective_id: Optional[str] = None,
+        _request_timeout: Optional[int] = None,
     ) -> Skill:
         """Update existing skill instance and return the result.
 
@@ -430,10 +435,16 @@ class Skills:
             evaluator_demonstrations=_to_evaluator_demonstrations(evaluator_demonstrations),
             objective_id=objective_id,
         )
-        api_response = api_instance.skills_partial_update(id=skill_id, patched_skill_request=request)
+        api_response = api_instance.skills_partial_update(
+            id=skill_id, patched_skill_request=request, _request_timeout=_request_timeout
+        )
         return Skill._wrap(api_response, self.client)
 
-    def get(self, skill_id: str) -> Skill:
+    def get(
+        self,
+        skill_id: str,
+        _request_timeout: Optional[int] = None,
+    ) -> Skill:
         """Get a Skill instance by ID.
 
         Args:
@@ -441,7 +452,7 @@ class Skills:
         """
 
         api_instance = SkillsApi(self.client)
-        api_response = api_instance.skills_retrieve(id=skill_id)
+        api_response = api_instance.skills_retrieve(id=skill_id, _request_timeout=_request_timeout)
         return Skill._wrap(api_response, self.client)
 
     def list(
@@ -488,6 +499,7 @@ class Skills:
         reference_variables: Optional[Union[List[ReferenceVariable], List[ReferenceVariableRequest]]] = None,
         input_variables: Optional[Union[List[InputVariable], List[InputVariableRequest]]] = None,
         data_loaders: Optional[List[DataLoader]] = None,
+        _request_timeout: Optional[int] = None,
     ) -> List[SkillTestOutput]:
         """
         Test a skill definition with a test dataset and return the result.
@@ -507,7 +519,7 @@ class Skills:
             input_variables=_to_input_variables(input_variables),
             data_loaders=_to_data_loaders(data_loaders),
         )
-        return api_instance.skills_test_create(skill_test_request)
+        return api_instance.skills_test_create(skill_test_request, _request_timeout=_request_timeout)
 
     def test_existing(
         self,
@@ -515,6 +527,7 @@ class Skills:
         *,
         test_dataset_id: Optional[str] = None,
         test_data: Optional[List[List[str]]] = None,
+        _request_timeout: Optional[int] = None,
     ) -> List[SkillTestOutput]:
         """
         Test an existing skill.
@@ -537,7 +550,7 @@ class Skills:
             test_dataset_id=test_dataset_id,
             test_data=test_data,
         )
-        return api_instance.skills_test_create2(skill_id, skill_test_request)
+        return api_instance.skills_test_create2(skill_id, skill_test_request, _request_timeout=_request_timeout)
 
     def create_chat(
         self,
@@ -546,6 +559,7 @@ class Skills:
         chat_id: Optional[str] = None,
         name: Optional[str] = None,
         history_from_chat_id: Optional[str] = None,
+        _request_timeout: Optional[int] = None,
     ) -> SkillChat:
         """
         Create and store chat object with the given parameters.
@@ -573,7 +587,10 @@ class Skills:
                 self.client,
             )
         else:
-            return SkillChat._wrap(api_instance.chats_initiate_create(chat_create_request), self.client)
+            return SkillChat._wrap(
+                api_instance.chats_initiate_create(chat_create_request, _request_timeout=_request_timeout),
+                self.client,
+            )
 
     def delete(self, skill_id: str) -> None:
         """
@@ -594,6 +611,7 @@ class Skills:
         *,
         model_params: Optional[Union[ModelParams, ModelParamsRequest]] = None,
         skill_version_id: Optional[str] = None,
+        _request_timeout: Optional[int] = None,
     ) -> SkillExecutionResult:
         """
         Run a skill with optional variables, model parameters, and a skill version id.
@@ -611,7 +629,11 @@ class Skills:
             skill_version_id=skill_version_id,
             model_params=_to_model_params(model_params),
         )
-        return api_instance.skills_execute_create(id=skill_id, skill_execution_request=skill_execution_request)
+        return api_instance.skills_execute_create(
+            id=skill_id,
+            skill_execution_request=skill_execution_request,
+            _request_timeout=_request_timeout,
+        )
 
     def evaluate(
         self,
@@ -622,6 +644,7 @@ class Skills:
         contexts: Optional[List[str]] = None,
         functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
         skill_version_id: Optional[str] = None,
+        _request_timeout: Optional[int] = None,
     ) -> ValidatorExecutionResult:
         """
         Run all validators attached to a skill.
@@ -646,7 +669,9 @@ class Skills:
             functions=functions,
         )
         return api_instance.skills_execute_validators_create(
-            id=skill_id, skill_validator_execution_request=skill_execution_request
+            id=skill_id,
+            skill_validator_execution_request=skill_execution_request,
+            _request_timeout=_request_timeout,
         )
 
 
@@ -673,6 +698,7 @@ class Evaluators:
         functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
         expected_output: Optional[str] = None,
         evaluator_version_id: Optional[str] = None,
+        _request_timeout: Optional[int] = None,
     ) -> EvaluatorExecutionResult:
         """
         Run an evaluator using its id and an optional version id .
@@ -693,6 +719,7 @@ class Evaluators:
         return api_instance.skills_evaluator_execute_create(
             skill_id=evaluator_id,
             evaluator_execution_request=evaluator_execution_request,
+            _request_timeout=_request_timeout,
         )
 
     def calibrate_existing(
@@ -701,6 +728,7 @@ class Evaluators:
         *,
         test_dataset_id: Optional[str] = None,
         test_data: Optional[List[List[str]]] = None,
+        _request_timeout: Optional[int] = None,
     ) -> List[EvaluatorCalibrationOutput]:
         """
         Run calibration set on an existing evaluator.
@@ -714,7 +742,9 @@ class Evaluators:
             test_dataset_id=test_dataset_id,
             test_data=test_data,
         )
-        return api_instance.skills_calibrate_create2(evaluator_id, skill_test_request)
+        return api_instance.skills_calibrate_create2(
+            evaluator_id, skill_test_request, _request_timeout=_request_timeout
+        )
 
     def calibrate(
         self,
@@ -728,6 +758,7 @@ class Evaluators:
         reference_variables: Optional[Union[List[ReferenceVariable], List[ReferenceVariableRequest]]] = None,
         input_variables: Optional[Union[List[InputVariable], List[InputVariableRequest]]] = None,
         data_loaders: Optional[List[DataLoader]] = None,
+        _request_timeout: Optional[int] = None,
     ) -> List[EvaluatorCalibrationOutput]:
         """
         Run calibration set on an existing evaluator.
@@ -750,7 +781,7 @@ class Evaluators:
             input_variables=_to_input_variables(input_variables),
             data_loaders=_to_data_loaders(data_loaders),
         )
-        return api_instance.skills_calibrate_create(skill_test_request)
+        return api_instance.skills_calibrate_create(skill_test_request, _request_timeout=_request_timeout)
 
     def calibrate_batch(
         self,
@@ -759,6 +790,7 @@ class Evaluators:
         test_dataset_id: Optional[str] = None,
         test_data: Optional[List[List[str]]] = None,
         parallel_requests: int = 1,
+        _request_timeout: Optional[int] = None,
     ) -> CalibrateBatchResult:
         """
         Run calibration for a set of prompts and models
@@ -818,6 +850,7 @@ class Evaluators:
                         reference_variables=param.reference_variables,
                         input_variables=param.input_variables,
                         data_loaders=param.data_loaders,
+                        _request_timeout=_request_timeout,
                     ): param
                     for param in evaluator_definitions
                 }
@@ -842,6 +875,7 @@ class Evaluators:
                         reference_variables=param.reference_variables,
                         input_variables=param.input_variables,
                         data_loaders=param.data_loaders,
+                        _request_timeout=_request_timeout,
                     )
                     process_results(results, param)
                 except Exception as exc:
