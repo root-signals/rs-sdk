@@ -877,6 +877,38 @@ paths:
               schema:
                 $ref: '#/components/schemas/ValidatorExecutionResult'
           description: ''
+  /v1/objectives/versions/{id}/:
+    get:
+      operationId: Get a list of all versions of a objective
+      parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - objectives
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedObjectiveList'
+          description: ''
   /v1/skills/:
     get:
       operationId: skills_list
@@ -2816,6 +2848,25 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ModelList'
+    PaginatedObjectiveList:
+      type: object
+      required:
+      - results
+      properties:
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Objective'
     PaginatedObjectiveListList:
       type: object
       required:
