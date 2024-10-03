@@ -3678,5 +3678,6 @@ components:
       in: header
       name: Authorization
       description: Token-based authentication with required prefix "Api-Key"
+      x-default: Api-Key <your-api-key>
 servers:
 - url: https://api.app.rootsignals.ai
