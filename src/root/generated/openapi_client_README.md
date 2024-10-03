@@ -93,6 +93,7 @@ Class | Method | HTTP request | Description
 *ModelsApi* | [**models_partial_update**](root/generated/openapi_client/docs/ModelsApi.md#models_partial_update) | **PATCH** /v1/models/{id}/ | 
 *ModelsApi* | [**models_retrieve**](root/generated/openapi_client/docs/ModelsApi.md#models_retrieve) | **GET** /v1/models/{id}/ | 
 *ModelsApi* | [**models_update**](root/generated/openapi_client/docs/ModelsApi.md#models_update) | **PUT** /v1/models/{id}/ | 
+*ObjectivesApi* | [**get_a_list_of_all_versions_of_a_objective**](root/generated/openapi_client/docs/ObjectivesApi.md#get_a_list_of_all_versions_of_a_objective) | **GET** /v1/objectives/versions/{id}/ | 
 *ObjectivesApi* | [**objectives_create**](root/generated/openapi_client/docs/ObjectivesApi.md#objectives_create) | **POST** /v1/objectives/ | 
 *ObjectivesApi* | [**objectives_destroy**](root/generated/openapi_client/docs/ObjectivesApi.md#objectives_destroy) | **DELETE** /v1/objectives/{id}/ | 
 *ObjectivesApi* | [**objectives_list**](root/generated/openapi_client/docs/ObjectivesApi.md#objectives_list) | **GET** /v1/objectives/ | 
@@ -177,6 +178,7 @@ Class | Method | HTTP request | Description
  - [PaginatedDataSetListList](root/generated/openapi_client/docs/PaginatedDataSetListList.md)
  - [PaginatedExecutionLogListList](root/generated/openapi_client/docs/PaginatedExecutionLogListList.md)
  - [PaginatedModelListList](root/generated/openapi_client/docs/PaginatedModelListList.md)
+ - [PaginatedObjectiveList](root/generated/openapi_client/docs/PaginatedObjectiveList.md)
  - [PaginatedObjectiveListList](root/generated/openapi_client/docs/PaginatedObjectiveListList.md)
  - [PaginatedSkillList](root/generated/openapi_client/docs/PaginatedSkillList.md)
  - [PaginatedSkillListOutputList](root/generated/openapi_client/docs/PaginatedSkillListOutputList.md)

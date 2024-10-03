@@ -78,6 +78,7 @@ from root.generated.openapi_client.models.paginated_chat_list import PaginatedCh
 from root.generated.openapi_client.models.paginated_data_set_list_list import PaginatedDataSetListList
 from root.generated.openapi_client.models.paginated_execution_log_list_list import PaginatedExecutionLogListList
 from root.generated.openapi_client.models.paginated_model_list_list import PaginatedModelListList
+from root.generated.openapi_client.models.paginated_objective_list import PaginatedObjectiveList
 from root.generated.openapi_client.models.paginated_objective_list_list import PaginatedObjectiveListList
 from root.generated.openapi_client.models.paginated_skill_list import PaginatedSkillList
 from root.generated.openapi_client.models.paginated_skill_list_output_list import PaginatedSkillListOutputList
