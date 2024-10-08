@@ -1,7 +1,6 @@
 from unittest.mock import patch
 
 import pytest
-
 from root.client import RootSignals
 from root.generated.openapi_client.models.evaluator_calibration_output import EvaluatorCalibrationOutput
 from root.generated.openapi_client.models.evaluator_calibration_result import EvaluatorCalibrationResult
