@@ -879,7 +879,7 @@ paths:
           description: ''
   /v1/objectives/versions/{id}/:
     get:
-      operationId: Get a list of all versions of a objective
+      operationId: Get a list of all versions of an objective
       parameters:
       - name: cursor
         required: false

@@ -43,7 +43,7 @@ class ObjectivesApi:
         self.api_client = api_client
 
     @validate_call
-    def get_a_list_of_all_versions_of_a_objective(
+    def get_a_list_of_all_versions_of_an_objective(
         self,
         id: StrictStr,
         cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
@@ -58,7 +58,7 @@ class ObjectivesApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> PaginatedObjectiveList:
-        """get_a_list_of_all_versions_of_a_objective
+        """get_a_list_of_all_versions_of_an_objective
 
 
         :param id: (required)
@@ -89,7 +89,7 @@ class ObjectivesApi:
         :return: Returns the result object.
         """  # noqa: E501
 
-        _param = self._get_a_list_of_all_versions_of_a_objective_serialize(
+        _param = self._get_a_list_of_all_versions_of_an_objective_serialize(
             id=id,
             cursor=cursor,
             page_size=page_size,
@@ -110,7 +110,7 @@ class ObjectivesApi:
         ).data
 
     @validate_call
-    def get_a_list_of_all_versions_of_a_objective_with_http_info(
+    def get_a_list_of_all_versions_of_an_objective_with_http_info(
         self,
         id: StrictStr,
         cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
@@ -125,7 +125,7 @@ class ObjectivesApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[PaginatedObjectiveList]:
-        """get_a_list_of_all_versions_of_a_objective
+        """get_a_list_of_all_versions_of_an_objective
 
 
         :param id: (required)
@@ -156,7 +156,7 @@ class ObjectivesApi:
         :return: Returns the result object.
         """  # noqa: E501
 
-        _param = self._get_a_list_of_all_versions_of_a_objective_serialize(
+        _param = self._get_a_list_of_all_versions_of_an_objective_serialize(
             id=id,
             cursor=cursor,
             page_size=page_size,
@@ -177,7 +177,7 @@ class ObjectivesApi:
         )
 
     @validate_call
-    def get_a_list_of_all_versions_of_a_objective_without_preload_content(
+    def get_a_list_of_all_versions_of_an_objective_without_preload_content(
         self,
         id: StrictStr,
         cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
@@ -192,7 +192,7 @@ class ObjectivesApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """get_a_list_of_all_versions_of_a_objective
+        """get_a_list_of_all_versions_of_an_objective
 
 
         :param id: (required)
@@ -223,7 +223,7 @@ class ObjectivesApi:
         :return: Returns the result object.
         """  # noqa: E501
 
-        _param = self._get_a_list_of_all_versions_of_a_objective_serialize(
+        _param = self._get_a_list_of_all_versions_of_an_objective_serialize(
             id=id,
             cursor=cursor,
             page_size=page_size,
@@ -239,7 +239,7 @@ class ObjectivesApi:
         response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
         return response_data.response
 
-    def _get_a_list_of_all_versions_of_a_objective_serialize(
+    def _get_a_list_of_all_versions_of_an_objective_serialize(
         self,
         id,
         cursor,
