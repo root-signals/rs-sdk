@@ -662,6 +662,11 @@ paths:
         schema:
           type: string
       - in: query
+        name: has_validators
+        schema:
+          type: boolean
+        description: Filter objectives by whether they have validators.
+      - in: query
         name: intent
         schema:
           type: string
