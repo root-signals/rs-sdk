@@ -14,7 +14,7 @@ Do not edit the class manually.
 import warnings
 from typing import Any, Dict, List, Optional, Tuple, Union
 
-from pydantic import Field, StrictFloat, StrictInt, StrictStr, validate_call
+from pydantic import Field, StrictBool, StrictFloat, StrictInt, StrictStr, validate_call
 from typing_extensions import Annotated
 
 from root.generated.openapi_client.api_client import ApiClient, RequestSerialized
@@ -742,6 +742,9 @@ class ObjectivesApi:
     def objectives_list(
         self,
         cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
+        has_validators: Annotated[
+            Optional[StrictBool], Field(description="Filter objectives by whether they have validators.")
+        ] = None,
         intent: Annotated[
             Optional[StrictStr], Field(description="Search for objectives by intent (exact match).")
         ] = None,
@@ -766,6 +769,8 @@ class ObjectivesApi:
 
         :param cursor: The pagination cursor value.
         :type cursor: str
+        :param has_validators: Filter objectives by whether they have validators.
+        :type has_validators: bool
         :param intent: Search for objectives by intent (exact match).
         :type intent: str
         :param ordering: Which field to use when ordering the results.
@@ -798,6 +803,7 @@ class ObjectivesApi:
 
         _param = self._objectives_list_serialize(
             cursor=cursor,
+            has_validators=has_validators,
             intent=intent,
             ordering=ordering,
             page_size=page_size,
@@ -822,6 +828,9 @@ class ObjectivesApi:
     def objectives_list_with_http_info(
         self,
         cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
+        has_validators: Annotated[
+            Optional[StrictBool], Field(description="Filter objectives by whether they have validators.")
+        ] = None,
         intent: Annotated[
             Optional[StrictStr], Field(description="Search for objectives by intent (exact match).")
         ] = None,
@@ -846,6 +855,8 @@ class ObjectivesApi:
 
         :param cursor: The pagination cursor value.
         :type cursor: str
+        :param has_validators: Filter objectives by whether they have validators.
+        :type has_validators: bool
         :param intent: Search for objectives by intent (exact match).
         :type intent: str
         :param ordering: Which field to use when ordering the results.
@@ -878,6 +889,7 @@ class ObjectivesApi:
 
         _param = self._objectives_list_serialize(
             cursor=cursor,
+            has_validators=has_validators,
             intent=intent,
             ordering=ordering,
             page_size=page_size,
@@ -902,6 +914,9 @@ class ObjectivesApi:
     def objectives_list_without_preload_content(
         self,
         cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
+        has_validators: Annotated[
+            Optional[StrictBool], Field(description="Filter objectives by whether they have validators.")
+        ] = None,
         intent: Annotated[
             Optional[StrictStr], Field(description="Search for objectives by intent (exact match).")
         ] = None,
@@ -926,6 +941,8 @@ class ObjectivesApi:
 
         :param cursor: The pagination cursor value.
         :type cursor: str
+        :param has_validators: Filter objectives by whether they have validators.
+        :type has_validators: bool
         :param intent: Search for objectives by intent (exact match).
         :type intent: str
         :param ordering: Which field to use when ordering the results.
@@ -958,6 +975,7 @@ class ObjectivesApi:
 
         _param = self._objectives_list_serialize(
             cursor=cursor,
+            has_validators=has_validators,
             intent=intent,
             ordering=ordering,
             page_size=page_size,
@@ -977,6 +995,7 @@ class ObjectivesApi:
     def _objectives_list_serialize(
         self,
         cursor,
+        has_validators,
         intent,
         ordering,
         page_size,
@@ -1001,6 +1020,9 @@ class ObjectivesApi:
         # process the query parameters
         if cursor is not None:
             _query_params.append(("cursor", cursor))
+
+        if has_validators is not None:
+            _query_params.append(("has_validators", has_validators))
 
         if intent is not None:
             _query_params.append(("intent", intent))
