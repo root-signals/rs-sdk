@@ -13,6 +13,7 @@ from root.generated.openapi_client.models.objective_execution_request import (
 )
 from root.generated.openapi_client.models.objective_list import ObjectiveList
 from root.generated.openapi_client.models.objective_request import ObjectiveRequest
+from root.generated.openapi_client.models.paginated_objective_list import PaginatedObjectiveList
 from root.generated.openapi_client.models.patched_objective_request import (
     PatchedObjectiveRequest,
 )
@@ -26,6 +27,25 @@ from .utils import iterate_cursor_list
 
 if TYPE_CHECKING:
     from .validators import Validator
+
+
+class Versions:
+    """Version listing (sub)API
+
+    Note that this should not be directly instantiated.
+    """
+
+    def __init__(self, client: ApiClient):
+        self._client = client
+
+    def list(self, objective_id: str) -> PaginatedObjectiveList:
+        """List all versions of an objective.
+
+        Args:
+          objective_id: The objective to list the versions for
+        """
+        api_instance = ObjectivesApi(self._client)
+        return api_instance.get_a_list_of_all_versions_of_an_objective(id=objective_id)
 
 
 class Objective(OpenApiObjective):
@@ -92,6 +112,7 @@ class Objectives:
 
     def __init__(self, client: ApiClient):
         self.client = client
+        self.versions = Versions(client)
 
     def create(
         self,
