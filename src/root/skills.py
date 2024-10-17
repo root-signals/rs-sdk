@@ -3,6 +3,7 @@ from __future__ import annotations
 import math
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from enum import Enum
 from functools import partial
 from typing import TYPE_CHECKING, Dict, Iterator, List, Literal, Optional, Union, cast
 
@@ -276,6 +277,63 @@ def _to_evaluator_demonstrations(
     return [_convert_dict(entry) for entry in input_variables or {}]
 
 
+class Evaluator(OpenAPISkill):
+    _client: ApiClient
+
+    @classmethod
+    def _wrap(cls, apiobj: OpenAPISkill, client: ApiClient) -> "Evaluator":
+        if not isinstance(apiobj, OpenAPISkill):
+            raise ValueError(f"Wrong instance in _wrap: {apiobj!r}")
+        obj = cast(Evaluator, apiobj)
+        obj.__class__ = cls
+        obj._client = client
+        return obj
+
+    def __init__(self, client: ApiClient, skill_id: str, skill_version_id: Optional[str] = None):
+        self._client = client
+        self.skill_id = skill_id
+        self.skill_version_id = skill_version_id
+
+    def __call__(
+        self,
+        response: str,
+        request: Optional[str] = None,
+        contexts: Optional[List[str]] = None,
+        functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
+        expected_output: Optional[str] = None,
+    ) -> EvaluatorExecutionResult:
+        """
+        Run the evaluator.
+
+        Args:
+
+          response: LLM output.
+
+          request: The prompt sent to the LLM. Optional.
+
+          contexts: Optional documents passed to RAG evaluators
+
+          functions: Optional list of evaluator execution functions.
+
+          expected_output: Optional expected output for the evaluator.
+
+        """
+        api_instance = SkillsApi(self._client)
+
+        evaluator_execution_request = EvaluatorExecutionRequest(
+            skill_version_id=self.skill_version_id,
+            request=request,
+            response=response,
+            contexts=contexts,
+            functions=functions,
+            expected_output=expected_output,
+        )
+        return api_instance.skills_evaluator_execute_create(
+            skill_id=self.skill_id,
+            evaluator_execution_request=evaluator_execution_request,
+        )
+
+
 class Skills:
     """Skills API
 
@@ -332,6 +390,8 @@ class Skills:
 
           model: The model to use (defaults to 'root', which means
             Root Signals default at the time of skill creation)
+
+          fallback_models: The fallback models to use in case the primary model fails.
 
           system_message: The system instruction to give to the model
             (mainly useful with OpenAI compatibility API).
@@ -391,6 +451,74 @@ class Skills:
 
         skill = api_instance.skills_create(skill_request=skill_request, _request_timeout=_request_timeout)
         return Skill._wrap(skill, self.client)
+
+    def create_evaluator(
+        self,
+        predicate: str = "",
+        *,
+        name: Optional[str] = None,
+        intent: Optional[str] = None,
+        model: Optional[ModelName] = None,
+        fallback_models: Optional[List[ModelName]] = None,
+        pii_filter: bool = False,
+        reference_variables: Optional[Union[List[ReferenceVariable], List[ReferenceVariableRequest]]] = None,
+        input_variables: Optional[Union[List[InputVariable], List[InputVariableRequest]]] = None,
+        data_loaders: Optional[List[DataLoader]] = None,
+        model_params: Optional[Union[ModelParams, ModelParamsRequest]] = None,
+        objective_id: Optional[str] = None,
+        overwrite: bool = False,
+    ) -> Evaluator:
+        """Create a new evaluator and return the result
+        Args:
+
+          predicate: The question / predicate that is provided to the semantic quantification layer to
+          transform it into a final prompt before being passed to the model (not used
+          if using OpenAI compatibility API)
+
+          name: Name of the skill (defaulting to <unnamed>)
+
+          objective_id: Already created objective id to assign to the eval skill.
+
+          intent: The intent of the skill (defaulting to name); not available if objective_id is set.
+
+          model: The model to use (defaults to 'root', which means
+            Root Signals default at the time of skill creation)
+          fallback_models: The fallback models to use in case the primary model fails.
+
+          pii_filter: Whether to use PII filter or not.
+
+          reference_variables: An optional list of input variables for
+            the skill.
+
+          input_variables: An optional list of reference variables for
+            the skill.
+
+          data_loaders: An optional list of data loaders, which
+            populate the reference variables.
+
+          model_params: An optional set of additional parameters to the model.
+
+          overwrite: Whether to overwrite a skill with the same name if it exists.
+
+        """
+        _eval_skill = self.create(
+            name=name,
+            prompt=predicate,
+            model=model,
+            intent=intent,
+            system_message="",
+            fallback_models=fallback_models,
+            pii_filter=pii_filter,
+            validators=None,
+            reference_variables=reference_variables,
+            input_variables=input_variables,
+            is_evaluator=True,
+            data_loaders=data_loaders,
+            model_params=model_params,
+            objective_id=objective_id,
+            overwrite=overwrite,
+        )
+        return Evaluator(self.client, _eval_skill.id)
 
     def update(
         self,
@@ -684,9 +812,48 @@ class Evaluators:
       accesing an attribute of a :class:`root.client.RootSignals` instance.
     """
 
+    # Accessed via https://api.app.rootsignals.ai/v1/skills/?page_size=60&is_evaluator=true&ordering=-created_at&status=public
+    class Eval(Enum):
+        # TODO: These eval names should be retrieved automatically from the API or a shared config file
+        Faithfulness = "901794f9-634c-4852-9e41-7c558f1ff1ab"
+        Relevance = "bd789257-f458-4e9e-8ce9-fa6e86dc3fb9"
+        Clarity = "9976d9f3-7265-4732-b518-d61c2642b14e"
+        Non_toxicity = "e296e374-7539-4eb2-a74a-47847dd26fb8"
+        Helpfulness = "88bc92d5-bebf-45e4-9cd1-dfa33309c320"
+        Politeness = "2856903a-e48c-4548-b3fe-520fd88c4f25"
+        Formality = "8ab6cf1a-42b5-4a23-a15c-21372816483d"
+        Harmlessness = "379fee0a-4fd1-4942-833b-7d78d78b334d"
+        Confidentiality = "2eaa0a02-47a9-48f7-9b47-66ad257f93eb"
+        Persuasiveness = "85bb6a74-f5dd-4130-8dcc-cffdf72327cc"
+        JSON_Empty_Values_Ratio = "03829088-1799-438e-ae30-1db60832e52d"
+        JSON_Property_Name_Accuracy = "740923aa-8ffd-49cc-a95d-14f831243b25"
+        JSON_Property_Type_Accuracy = "eabc6924-1fec-4e96-82ce-c03bf415c885"
+        JSON_Property_Completeness = "e5de37f7-d20c-420f-8072-f41dce96ecfc"
+        JSON_Content_Accuracy = "b6a9aeff-c888-46d7-9e9c-7cf8cb461762"
+        Context_Recall = "8bb60975-5062-4367-9fc6-a920044cba56"
+        Answer_Correctness = "d4487568-4243-4da8-9c76-adbaf762dbe0"
+        Answer_Semantic_Similarity = "ff350bce-4b07-4af7-9640-803c9d3c2ff9"
+        Sentiment_recognition = "e3782c1e-eaf4-4b2d-8d26-53db2160f1fd"
+        Safety_for_Children = "39a8b5ba-de77-4726-a6b0-621d40b3cdf5"
+        Precision = "767bdd49-5f8c-48ca-8324-dfd6be7f8a79"
+        Originality = "e72cb54f-548a-44f9-a6ca-4e14e5ade7f7"
+        Engagingness = "64729487-d4a8-42d8-bd9e-72fd8390c134"
+        Conciseness = "be828d33-158a-4e92-a2eb-f4d96c13f956"
+        Coherence = "e599886c-c338-458f-91b3-5d7eba452618"
+        Quality_of_Writing_Professional = "059affa9-2d1c-48de-8e97-f81dd3fc3cbe"
+        Quality_of_Writing_Creative = "060abfb6-57c9-43b5-9a6d-8a1a9bb853b8"
+        Truthfulness = "053df10f-b0c7-400b-892e-46ce3aa1e430"
+        Context_Precision = "9d1e9a25-7e76-4771-b1e3-40825d7918c5"
+        Answer_Relevance = "0907d422-e94f-4c9c-a63d-ec0eefd8a903"
+
     def __init__(self, client: ApiClient):
         self.client = client
         self.versions = Versions(client)
+
+    def __getattr__(self, name: str) -> Evaluator:
+        if name in self.Eval.__members__:
+            return Evaluator(self.client, self.Eval.__members__[name].value)
+        raise AttributeError(f"{name} is not a valid attribute")
 
     def run(
         self,
@@ -908,3 +1075,24 @@ class Evaluators:
             mae_errors_model=mae_errors_model,
             mae_errors_prompt=mae_errors_prompt,
         )
+
+    def get(self, name: str) -> Evaluator:
+        """Get an evaluator instance by name.
+
+        Args:
+          name: The evaluator to be fetched. Note this only works for uniquely named evaluators.
+        """
+
+        api_instance = SkillsApi(self.client)
+
+        result_list: List[Skill] = list(
+            iterate_cursor_list(
+                partial(api_instance.skills_list, name=name, is_evaluator=True),
+                limit=50,
+            )
+        )
+
+        if not result_list:
+            raise ValueError(f"No evaluator found with name '{name}'")
+
+        return Evaluator(self.client, result_list[0].id)
