@@ -22,7 +22,3 @@ response = cooking_skill.run()
 
 # Check if the recipe was about cooking
 print(response.validation)
-
-# {'validator_results': [{'evaluator_name': 'Cooking recipe
-# evaluator', 'evaluator_id': ..., 'threshold': 0.1, 'is_valid': True,
-# 'result': 0.8, 'status': 'finished'}], 'is_valid': True}

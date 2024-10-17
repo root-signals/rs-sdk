@@ -17,33 +17,11 @@ response = skill.run({"question": "What is the capital of France?"})
 
 # Get the validation results
 print(response.validation)
-# {'validator_results': [{'cost': 0.000..., 'evaluator_name': 'Clarity'
-# 'threshold': 0.6, is_valid': True, 'result': 0.xy}]
-
 
 # Get the execution details
 log = client.execution_logs.get(execution_result=response)
 print(log)
-# cost: 0.000...
-# skill:
-#   name: My Q&A chatbot
-#   ...
-# llm_output: "The capital of France is Paris."
-# rendered_prompt: "Provide a clear answer to the question: What is ..."
-# validation_results: [
-#   evaluator_name: Clarity
-#   result: 0.9
-#   is_valid: true
-#   ...
-# ]
-# ...
 
 # List all execution logs
 iterator = client.execution_logs.list(limit=10)
 print(next(iterator))
-# Note that the list result does not contain the full execution details
-
-# cost: 0.000...
-# skill:
-#  name: My Q&A chatbot
-#  ...

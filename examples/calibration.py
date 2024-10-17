@@ -20,9 +20,8 @@ test_result = client.evaluators.calibrate_existing(
         ["0.1", "We probably won't need to make any major changes."],
     ],
 )
+
 print(test_result[0].result)
-#  "score": 0.5,
-#  "expected_score": 0.1,
 
 # Improve the evaluator with demonstrations, penalize the "probably" weasel word
 client.skills.update(
@@ -52,5 +51,3 @@ test_result = client.evaluators.calibrate_existing(
 
 # Check the results
 print(test_result[0].result)
-#  "score": 0.1,
-#  "expected_score": 0.1,

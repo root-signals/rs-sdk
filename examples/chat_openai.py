@@ -26,8 +26,8 @@ messages = [
     {"role": "user", "content": "Why is the sky blue?"},
 ]
 completion = client.chat.completions.create(model=model, messages=messages)
+
 print(completion.choices[0].message.content)
-# The sky appears blue because of the way sunlight interacts ...
 
 
 # We can use either the model, or one of the fallback models defined for the
@@ -38,16 +38,10 @@ messages = [
 completion = client.chat.completions.create(
     model=another_model, messages=messages
 )
-print(completion.choices[0].message.content)
-# The sky appears blue because of the way sunlight interacts ...
 
+print(completion.choices[0].message.content)
 
 # We can get the full execution details, including the validation results
 log = rs_client.execution_logs.get(log_id=completion.id)
+
 print(log.validation_results)
-# [
-#   evaluator_name: Truthfulness
-#   result: 0.9
-#   is_valid: true
-#   ...
-# ]
