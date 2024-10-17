@@ -21,13 +21,8 @@ response = skill.run(
         "categories": "Finance, Sports, Politics",
     }
 )
+
 print(response)
-# "llm_output": "Finance",
-# "validation": Validation(is_valid=True, validator_results=[]),
-# "model": "gpt-4",
-# "execution_log_id": "1181e790-7b87-457f-a2cb-6b1dfc1eddf4",
-# "rendered_prompt": "Classify this text into ...",
-# "cost": 0.00093,
 
 # We can retrieve the skill by id
 skill_2 = client.skills.get(skill_id=skill.id)

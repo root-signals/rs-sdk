@@ -24,4 +24,3 @@ completion = client.chat.completions.create(
 )
 for chunk in completion:
     print(chunk.choices[0].delta.content)
-# The sky appears blue because of the way sunlight interacts ...

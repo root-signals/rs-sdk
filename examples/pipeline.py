@@ -24,10 +24,3 @@ llm_response = "Some LLM response I got from my custom LLM pipeline."
 response = skill.evaluate(response=llm_response)
 
 print(response)
-# validation:
-#   validation_results: [
-#     evaluator_name: Clarity
-#     result: 0.5
-#     is_valid: true
-#     ...
-#   ]

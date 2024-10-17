@@ -23,9 +23,3 @@ skill = client.skills.create(
 )
 response = skill.run()
 print(response)
-
-# llm_output='Kimchi, a traditional Korean side dish, is renowned for
-# its unique taste and health benefits. Made from salted and fermented
-# vegetables, it uses seasonings such as gochugaru (Korean chili
-# powder), ... Here are a few recipes for you to try at
-# home:\n\n1. Traditional Napa Cabbage Kimchi:\n\nIngredients:...'

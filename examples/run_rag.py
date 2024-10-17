@@ -19,5 +19,5 @@ result = client.evaluators.run(
         "1) Recipe for a tomato sauce",
     ],
 )
+
 print(result.score)
-# 0.0
