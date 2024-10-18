@@ -4,7 +4,7 @@ from root.skills import EvaluatorDemonstration
 client = RootSignals()
 
 # Create an evaluator
-direct_language_evaluator = client.skills.create_evaluator(
+direct_language_evaluator = client.evaluators.create(
     name="Direct language",
     predicate="Does the {{ output }} contain weasel words?",
     intent="Is the language direct and unambiguous",

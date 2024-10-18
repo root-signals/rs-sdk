@@ -3,7 +3,7 @@ from root.validators import Validator
 
 client = RootSignals()
 
-evaluator_skill = client.skills.create_evaluator(
+evaluator_skill = client.evaluators.create(
     name="Cooking recipe",
     intent="This skill will evaluate if the answer is a cooking recipe.",
     predicate="Is the following a cooking recipe: {{output}}",

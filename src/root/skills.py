@@ -501,74 +501,6 @@ class Skills:
         skill = api_instance.skills_create(skill_request=skill_request, _request_timeout=_request_timeout)
         return Skill._wrap(skill, self.client)
 
-    def create_evaluator(
-        self,
-        predicate: str = "",
-        *,
-        name: Optional[str] = None,
-        intent: Optional[str] = None,
-        model: Optional[ModelName] = None,
-        fallback_models: Optional[List[ModelName]] = None,
-        pii_filter: bool = False,
-        reference_variables: Optional[Union[List[ReferenceVariable], List[ReferenceVariableRequest]]] = None,
-        input_variables: Optional[Union[List[InputVariable], List[InputVariableRequest]]] = None,
-        data_loaders: Optional[List[DataLoader]] = None,
-        model_params: Optional[Union[ModelParams, ModelParamsRequest]] = None,
-        objective_id: Optional[str] = None,
-        overwrite: bool = False,
-    ) -> Evaluator:
-        """Create a new evaluator and return the result
-        Args:
-
-          predicate: The question / predicate that is provided to the semantic quantification layer to
-          transform it into a final prompt before being passed to the model (not used
-          if using OpenAI compatibility API)
-
-          name: Name of the skill (defaulting to <unnamed>)
-
-          objective_id: Already created objective id to assign to the eval skill.
-
-          intent: The intent of the skill (defaulting to name); not available if objective_id is set.
-
-          model: The model to use (defaults to 'root', which means
-            Root Signals default at the time of skill creation)
-          fallback_models: The fallback models to use in case the primary model fails.
-
-          pii_filter: Whether to use PII filter or not.
-
-          reference_variables: An optional list of input variables for
-            the skill.
-
-          input_variables: An optional list of reference variables for
-            the skill.
-
-          data_loaders: An optional list of data loaders, which
-            populate the reference variables.
-
-          model_params: An optional set of additional parameters to the model.
-
-          overwrite: Whether to overwrite a skill with the same name if it exists.
-
-        """
-        _eval_skill = self.create(
-            name=name,
-            prompt=predicate,
-            model=model,
-            intent=intent,
-            system_message="",
-            fallback_models=fallback_models,
-            pii_filter=pii_filter,
-            validators=None,
-            reference_variables=reference_variables,
-            input_variables=input_variables,
-            is_evaluator=True,
-            data_loaders=data_loaders,
-            model_params=model_params,
-            objective_id=objective_id,
-            overwrite=overwrite,
-        )
-        return Evaluator._wrap(_eval_skill, self.client)
-
     def update(
         self,
         skill_id: str,
@@ -1181,3 +1113,71 @@ class Evaluators:
         api_response = api_instance.skills_retrieve(id=evaluator.id)
 
         return Evaluator._wrap(api_response, self.client)
+
+    def create(
+        self,
+        predicate: str = "",
+        *,
+        name: Optional[str] = None,
+        intent: Optional[str] = None,
+        model: Optional[ModelName] = None,
+        fallback_models: Optional[List[ModelName]] = None,
+        pii_filter: bool = False,
+        reference_variables: Optional[Union[List[ReferenceVariable], List[ReferenceVariableRequest]]] = None,
+        input_variables: Optional[Union[List[InputVariable], List[InputVariableRequest]]] = None,
+        data_loaders: Optional[List[DataLoader]] = None,
+        model_params: Optional[Union[ModelParams, ModelParamsRequest]] = None,
+        objective_id: Optional[str] = None,
+        overwrite: bool = False,
+    ) -> Evaluator:
+        """Create a new evaluator and return the result
+        Args:
+
+          predicate: The question / predicate that is provided to the semantic quantification layer to
+          transform it into a final prompt before being passed to the model (not used
+          if using OpenAI compatibility API)
+
+          name: Name of the skill (defaulting to <unnamed>)
+
+          objective_id: Already created objective id to assign to the eval skill.
+
+          intent: The intent of the skill (defaulting to name); not available if objective_id is set.
+
+          model: The model to use (defaults to 'root', which means
+            Root Signals default at the time of skill creation)
+          fallback_models: The fallback models to use in case the primary model fails.
+
+          pii_filter: Whether to use PII filter or not.
+
+          reference_variables: An optional list of input variables for
+            the skill.
+
+          input_variables: An optional list of reference variables for
+            the skill.
+
+          data_loaders: An optional list of data loaders, which
+            populate the reference variables.
+
+          model_params: An optional set of additional parameters to the model.
+
+          overwrite: Whether to overwrite a skill with the same name if it exists.
+
+        """
+        _eval_skill = Skills(self.client).create(
+            name=name,
+            prompt=predicate,
+            model=model,
+            intent=intent,
+            system_message="",
+            fallback_models=fallback_models,
+            pii_filter=pii_filter,
+            validators=None,
+            reference_variables=reference_variables,
+            input_variables=input_variables,
+            is_evaluator=True,
+            data_loaders=data_loaders,
+            model_params=model_params,
+            objective_id=objective_id,
+            overwrite=overwrite,
+        )
+        return Evaluator._wrap(_eval_skill, self.client)
