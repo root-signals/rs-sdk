@@ -222,6 +222,64 @@ class Skill(OpenAPISkill):
         )
 
 
+class Evaluator(OpenAPISkill):
+    """Wrapper for a single Evaluator.
+
+    For available attributes, please check the (automatically
+    generated) superclass documentation.
+    """
+
+    _client: ApiClient
+
+    @classmethod
+    def _wrap(cls, apiobj: OpenAPISkill, client: ApiClient) -> "Evaluator":
+        if not isinstance(apiobj, OpenAPISkill):
+            raise ValueError(f"Wrong instance in _wrap: {apiobj!r}")
+        obj = cast(Evaluator, apiobj)
+        obj.__class__ = cls
+        obj._client = client
+        return obj
+
+    def run(
+        self,
+        response: str,
+        request: Optional[str] = None,
+        contexts: Optional[List[str]] = None,
+        functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
+        expected_output: Optional[str] = None,
+    ) -> EvaluatorExecutionResult:
+        """
+        Run the evaluator.
+
+        Args:
+
+          response: LLM output.
+
+          request: The prompt sent to the LLM. Optional.
+
+          contexts: Optional documents passed to RAG evaluators
+
+          functions: Optional list of evaluator execution functions.
+
+          expected_output: Optional expected output for the evaluator.
+
+        """
+        api_instance = SkillsApi(self._client)
+
+        evaluator_execution_request = EvaluatorExecutionRequest(
+            skill_version_id=self.version_id,
+            request=request,
+            response=response,
+            contexts=contexts,
+            functions=functions,
+            expected_output=expected_output,
+        )
+        return api_instance.skills_evaluator_execute_create(
+            skill_id=self.id,
+            evaluator_execution_request=evaluator_execution_request,
+        )
+
+
 def _to_data_loaders(data_loaders: Optional[List[DataLoader]]) -> List[DataLoaderRequest]:
     return [
         DataLoaderRequest(name=data_loader.name, type=data_loader.type, parameters=data_loader._get_parameter_dict())
@@ -277,17 +335,8 @@ def _to_evaluator_demonstrations(
     return [_convert_dict(entry) for entry in input_variables or {}]
 
 
-class Evaluator(OpenAPISkill):
+class PresetEvaluatorRunner:
     _client: ApiClient
-
-    @classmethod
-    def _wrap(cls, apiobj: OpenAPISkill, client: ApiClient) -> "Evaluator":
-        if not isinstance(apiobj, OpenAPISkill):
-            raise ValueError(f"Wrong instance in _wrap: {apiobj!r}")
-        obj = cast(Evaluator, apiobj)
-        obj.__class__ = cls
-        obj._client = client
-        return obj
 
     def __init__(self, client: ApiClient, skill_id: str, skill_version_id: Optional[str] = None):
         self._client = client
@@ -518,7 +567,7 @@ class Skills:
             objective_id=objective_id,
             overwrite=overwrite,
         )
-        return Evaluator(self.client, _eval_skill.id)
+        return Evaluator._wrap(_eval_skill, self.client)
 
     def update(
         self,
@@ -850,9 +899,42 @@ class Evaluators:
         self.client = client
         self.versions = Versions(client)
 
-    def __getattr__(self, name: str) -> Evaluator:
+    EvaluatorName = Literal[
+        "Faithfulness",
+        "Relevance",
+        "Clarity",
+        "Non_toxicity",
+        "Helpfulness",
+        "Politeness",
+        "Formality",
+        "Harmlessness",
+        "Confidentiality",
+        "Persuasiveness",
+        "JSON_Empty_Values_Ratio",
+        "JSON_Property_Name_Accuracy",
+        "JSON_Property_Type_Accuracy",
+        "JSON_Property_Completeness",
+        "JSON_Content_Accuracy",
+        "Context_Recall",
+        "Answer_Correctness",
+        "Answer_Semantic_Similarity",
+        "Sentiment_recognition",
+        "Safety_for_Children",
+        "Precision",
+        "Originality",
+        "Engagingness",
+        "Conciseness",
+        "Coherence",
+        "Quality_of_Writing_Professional",
+        "Quality_of_Writing_Creative",
+        "Truthfulness",
+        "Context_Precision",
+        "Answer_Relevance",
+    ]
+
+    def __getattr__(self, name: Union[EvaluatorName, str]) -> "PresetEvaluatorRunner":
         if name in self.Eval.__members__:
-            return Evaluator(self.client, self.Eval.__members__[name].value)
+            return PresetEvaluatorRunner(self.client, self.Eval.__members__[name].value)
         raise AttributeError(f"{name} is not a valid attribute")
 
     def run(
@@ -1076,23 +1158,26 @@ class Evaluators:
             mae_errors_prompt=mae_errors_prompt,
         )
 
-    def get(self, name: str) -> Evaluator:
+    def get_by_name(self, name: str) -> Evaluator:
         """Get an evaluator instance by name.
 
         Args:
-          name: The evaluator to be fetched. Note this only works for uniquely named evaluators.
+        name: The evaluator to be fetched. Note this only works for uniquely named evaluators.
         """
 
         api_instance = SkillsApi(self.client)
 
-        result_list: List[Skill] = list(
+        evaluator_list: List[SkillListOutput] = list(
             iterate_cursor_list(
                 partial(api_instance.skills_list, name=name, is_evaluator=True),
-                limit=50,
+                limit=1,
             )
         )
 
-        if not result_list:
+        if not evaluator_list:
             raise ValueError(f"No evaluator found with name '{name}'")
 
-        return Evaluator(self.client, result_list[0].id)
+        evaluator = evaluator_list[0]
+        api_response = api_instance.skills_retrieve(id=evaluator.id)
+
+        return Evaluator._wrap(api_response, self.client)
