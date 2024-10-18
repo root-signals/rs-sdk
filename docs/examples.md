@@ -99,6 +99,15 @@ Skills can leverage reference data, such as a document, to provide additional co
 longer-email@example.com
 ```
 
+## Root Signals evaluators
+
+Root Signals provides [over 30 ready-made](https://docs.rootsignals.ai/quick-start/usage/evaluators#list-of-evaluators-maintained-by-root-signals) evaluators that can be used to validate any textual content.
+
+
+```{literalinclude} ../examples/preset_evaluator.py
+```
+
+
 ## Evaluator skill and minimal version of it
 
 We can also create an evaluator skill. Evaluator skills return only floating point values between 0 and 1, based on how well the received output (of a skill) matches what the evaluator is described to look for.

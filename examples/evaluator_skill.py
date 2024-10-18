@@ -3,12 +3,11 @@ from root.validators import Validator
 
 client = RootSignals()
 
-evaluator_skill = client.skills.create(
+evaluator_skill = client.skills.create_evaluator(
     name="Cooking recipe",
     intent="This skill will evaluate if the answer is a cooking recipe.",
-    prompt="Is the following a cooking recipe: {{output}}",
+    predicate="Is the following a cooking recipe: {{output}}",
     model="gpt-4o",
-    is_evaluator=True,
 )
 
 cooking_skill = client.skills.create(
