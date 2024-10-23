@@ -23,7 +23,7 @@ from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing_extensions import Annotated, Self
 
 from root.generated.openapi_client.models.nested_user_details import NestedUserDetails
-from root.generated.openapi_client.models.skill_validator import SkillValidator
+from root.generated.openapi_client.models.objective_validator import ObjectiveValidator
 from root.generated.openapi_client.models.status_enum import StatusEnum
 
 
@@ -36,7 +36,7 @@ class Objective(BaseModel):
     intent: Optional[Annotated[str, Field(strict=True, max_length=10000)]] = None
     status: Optional[StatusEnum] = None
     test_set: Optional[List[List[StrictStr]]] = Field(description="Deprecated: Use test_dataset_id instead.")
-    validators: Optional[List[SkillValidator]] = None
+    validators: Optional[List[ObjectiveValidator]] = None
     created_at: Optional[datetime]
     owner: NestedUserDetails
     version_id: StrictStr
@@ -149,7 +149,7 @@ class Objective(BaseModel):
                 "intent": obj.get("intent"),
                 "status": obj.get("status"),
                 "test_set": obj.get("test_set"),
-                "validators": [SkillValidator.from_dict(_item) for _item in obj["validators"]]
+                "validators": [ObjectiveValidator.from_dict(_item) for _item in obj["validators"]]
                 if obj.get("validators") is not None
                 else None,
                 "created_at": obj.get("created_at"),
