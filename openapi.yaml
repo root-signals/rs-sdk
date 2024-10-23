@@ -2564,6 +2564,29 @@ components:
           maxLength: 1024
       required:
       - name
+    NestedObjectiveEvaluator:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 1000
+        evaluator_only_offline:
+          type: boolean
+      required:
+      - id
+    NestedObjectiveEvaluatorRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 1000
+        evaluator_only_offline:
+          type: boolean
     NestedObjectiveList:
       type: object
       properties:
@@ -2578,29 +2601,6 @@ components:
           $ref: '#/components/schemas/StatusEnum'
       required:
       - id
-    NestedSkillEvaluator:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 1000
-        evaluator_only_offline:
-          type: boolean
-      required:
-      - id
-    NestedSkillEvaluatorRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 1000
-        evaluator_only_offline:
-          type: boolean
     NestedUserDetails:
       type: object
       properties:
@@ -2639,7 +2639,7 @@ components:
         validators:
           type: array
           items:
-            $ref: '#/components/schemas/SkillValidator'
+            $ref: '#/components/schemas/ObjectiveValidator'
         created_at:
           type: string
           format: date-time
@@ -2716,6 +2716,11 @@ components:
           format: date-time
           readOnly: true
           nullable: true
+        validators:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectiveValidator'
+          readOnly: true
         _meta:
           type: object
           additionalProperties: {}
@@ -2726,6 +2731,7 @@ components:
       - created_at
       - id
       - owner
+      - validators
     ObjectiveRequest:
       type: object
       properties:
@@ -2738,7 +2744,7 @@ components:
         validators:
           type: array
           items:
-            $ref: '#/components/schemas/SkillValidatorRequest'
+            $ref: '#/components/schemas/ObjectiveValidatorRequest'
         force_create:
           type: boolean
           writeOnly: true
@@ -2747,6 +2753,32 @@ components:
           type: string
           format: uuid
           nullable: true
+    ObjectiveValidator:
+      type: object
+      properties:
+        evaluator:
+          allOf:
+          - $ref: '#/components/schemas/NestedObjectiveEvaluator'
+          readOnly: true
+        threshold:
+          type: number
+          format: double
+      required:
+      - evaluator
+    ObjectiveValidatorRequest:
+      type: object
+      properties:
+        evaluator_id:
+          type: string
+          format: uuid
+          writeOnly: true
+        evaluator_name:
+          type: string
+          writeOnly: true
+          minLength: 1
+        threshold:
+          type: number
+          format: double
     OpenAIChatCompletionRequest:
       type: object
       properties:
@@ -2967,7 +2999,7 @@ components:
         validators:
           type: array
           items:
-            $ref: '#/components/schemas/SkillValidatorRequest'
+            $ref: '#/components/schemas/ObjectiveValidatorRequest'
         force_create:
           type: boolean
           writeOnly: true
@@ -3581,18 +3613,6 @@ components:
       description: |-
         * `managed` - managed
         * `native` - native
-    SkillValidator:
-      type: object
-      properties:
-        evaluator:
-          allOf:
-          - $ref: '#/components/schemas/NestedSkillEvaluator'
-          readOnly: true
-        threshold:
-          type: number
-          format: double
-      required:
-      - evaluator
     SkillValidatorExecutionRequest:
       type: object
       properties:
@@ -3623,20 +3643,6 @@ components:
           maxLength: 1000000
       required:
       - response
-    SkillValidatorRequest:
-      type: object
-      properties:
-        evaluator_id:
-          type: string
-          format: uuid
-          writeOnly: true
-        evaluator_name:
-          type: string
-          writeOnly: true
-          minLength: 1
-        threshold:
-          type: number
-          format: double
     StatusChange:
       type: object
       properties:

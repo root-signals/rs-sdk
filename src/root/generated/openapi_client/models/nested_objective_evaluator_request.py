@@ -18,19 +18,18 @@ import pprint
 import re  # noqa: F401
 from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool
 from typing_extensions import Annotated, Self
 
 
-class NestedSkillEvaluator(BaseModel):
+class NestedObjectiveEvaluatorRequest(BaseModel):
     """
-    NestedSkillEvaluator
+    NestedObjectiveEvaluatorRequest
     """  # noqa: E501
 
-    id: StrictStr
-    name: Optional[Annotated[str, Field(strict=True, max_length=1000)]] = None
+    name: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=1000)]] = None
     evaluator_only_offline: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["id", "name", "evaluator_only_offline"]
+    __properties: ClassVar[List[str]] = ["name", "evaluator_only_offline"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -49,7 +48,7 @@ class NestedSkillEvaluator(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of NestedSkillEvaluator from a JSON string"""
+        """Create an instance of NestedObjectiveEvaluatorRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -61,13 +60,8 @@ class NestedSkillEvaluator(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
-        * OpenAPI `readOnly` fields are excluded.
         """
-        excluded_fields: Set[str] = set(
-            [
-                "id",
-            ]
-        )
+        excluded_fields: Set[str] = set([])
 
         _dict = self.model_dump(
             by_alias=True,
@@ -78,7 +72,7 @@ class NestedSkillEvaluator(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of NestedSkillEvaluator from a dict"""
+        """Create an instance of NestedObjectiveEvaluatorRequest from a dict"""
         if obj is None:
             return None
 
@@ -86,6 +80,6 @@ class NestedSkillEvaluator(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate(
-            {"id": obj.get("id"), "name": obj.get("name"), "evaluator_only_offline": obj.get("evaluator_only_offline")}
+            {"name": obj.get("name"), "evaluator_only_offline": obj.get("evaluator_only_offline")}
         )
         return _obj

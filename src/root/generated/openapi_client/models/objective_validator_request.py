@@ -18,20 +18,19 @@ import pprint
 import re  # noqa: F401
 from typing import Any, ClassVar, Dict, List, Optional, Set, Union
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt
-from typing_extensions import Self
-
-from root.generated.openapi_client.models.nested_skill_evaluator import NestedSkillEvaluator
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
+from typing_extensions import Annotated, Self
 
 
-class SkillValidator(BaseModel):
+class ObjectiveValidatorRequest(BaseModel):
     """
-    SkillValidator
+    ObjectiveValidatorRequest
     """  # noqa: E501
 
-    evaluator: NestedSkillEvaluator
+    evaluator_id: Optional[StrictStr] = None
+    evaluator_name: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
     threshold: Optional[Union[StrictFloat, StrictInt]] = None
-    __properties: ClassVar[List[str]] = ["evaluator", "threshold"]
+    __properties: ClassVar[List[str]] = ["evaluator_id", "evaluator_name", "threshold"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -50,7 +49,7 @@ class SkillValidator(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of SkillValidator from a JSON string"""
+        """Create an instance of ObjectiveValidatorRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -62,27 +61,19 @@ class SkillValidator(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
-        * OpenAPI `readOnly` fields are excluded.
         """
-        excluded_fields: Set[str] = set(
-            [
-                "evaluator",
-            ]
-        )
+        excluded_fields: Set[str] = set([])
 
         _dict = self.model_dump(
             by_alias=True,
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of evaluator
-        if self.evaluator:
-            _dict["evaluator"] = self.evaluator.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of SkillValidator from a dict"""
+        """Create an instance of ObjectiveValidatorRequest from a dict"""
         if obj is None:
             return None
 
@@ -91,9 +82,8 @@ class SkillValidator(BaseModel):
 
         _obj = cls.model_validate(
             {
-                "evaluator": NestedSkillEvaluator.from_dict(obj["evaluator"])
-                if obj.get("evaluator") is not None
-                else None,
+                "evaluator_id": obj.get("evaluator_id"),
+                "evaluator_name": obj.get("evaluator_name"),
                 "threshold": obj.get("threshold"),
             }
         )

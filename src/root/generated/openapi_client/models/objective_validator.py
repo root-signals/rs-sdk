@@ -16,20 +16,22 @@ from __future__ import annotations
 import json
 import pprint
 import re  # noqa: F401
-from typing import Any, ClassVar, Dict, List, Optional, Set
+from typing import Any, ClassVar, Dict, List, Optional, Set, Union
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool
-from typing_extensions import Annotated, Self
+from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt
+from typing_extensions import Self
+
+from root.generated.openapi_client.models.nested_objective_evaluator import NestedObjectiveEvaluator
 
 
-class NestedSkillEvaluatorRequest(BaseModel):
+class ObjectiveValidator(BaseModel):
     """
-    NestedSkillEvaluatorRequest
+    ObjectiveValidator
     """  # noqa: E501
 
-    name: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=1000)]] = None
-    evaluator_only_offline: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["name", "evaluator_only_offline"]
+    evaluator: NestedObjectiveEvaluator
+    threshold: Optional[Union[StrictFloat, StrictInt]] = None
+    __properties: ClassVar[List[str]] = ["evaluator", "threshold"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -48,7 +50,7 @@ class NestedSkillEvaluatorRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of NestedSkillEvaluatorRequest from a JSON string"""
+        """Create an instance of ObjectiveValidator from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -60,19 +62,27 @@ class NestedSkillEvaluatorRequest(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * OpenAPI `readOnly` fields are excluded.
         """
-        excluded_fields: Set[str] = set([])
+        excluded_fields: Set[str] = set(
+            [
+                "evaluator",
+            ]
+        )
 
         _dict = self.model_dump(
             by_alias=True,
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of evaluator
+        if self.evaluator:
+            _dict["evaluator"] = self.evaluator.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of NestedSkillEvaluatorRequest from a dict"""
+        """Create an instance of ObjectiveValidator from a dict"""
         if obj is None:
             return None
 
@@ -80,6 +90,11 @@ class NestedSkillEvaluatorRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate(
-            {"name": obj.get("name"), "evaluator_only_offline": obj.get("evaluator_only_offline")}
+            {
+                "evaluator": NestedObjectiveEvaluator.from_dict(obj["evaluator"])
+                if obj.get("evaluator") is not None
+                else None,
+                "threshold": obj.get("threshold"),
+            }
         )
         return _obj

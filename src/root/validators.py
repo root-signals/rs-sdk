@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Optional
 
-from root.generated.openapi_client.models.skill_validator_request import SkillValidatorRequest
+from root.generated.openapi_client.models.objective_validator_request import ObjectiveValidatorRequest
 
 if TYPE_CHECKING:
     from .skills import ModelName, Skills
@@ -54,7 +54,7 @@ class Validator:
         self.prompt = prompt
         self.threshold = threshold
 
-    def _to_request(self, skills: Skills) -> SkillValidatorRequest:
+    def _to_request(self, skills: Skills) -> ObjectiveValidatorRequest:
         if not self.evaluator_id:
             # Iterate through existing skills with matching evaluator_name and that are accessible to the user
             for skill in skills.list(self.prompt, name=self.evaluator_name, only_evaluators=True):
@@ -67,7 +67,7 @@ class Validator:
                 self.evaluator_id = skills.create(
                     self.prompt or "", model=self.model, name=self.evaluator_name, is_evaluator=True
                 ).id
-        return SkillValidatorRequest(
+        return ObjectiveValidatorRequest(
             evaluator_id=self.evaluator_id, evaluator_name=self.evaluator_name, threshold=self.threshold
         )
 

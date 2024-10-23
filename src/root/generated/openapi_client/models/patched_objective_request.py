@@ -21,7 +21,7 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing_extensions import Annotated, Self
 
-from root.generated.openapi_client.models.skill_validator_request import SkillValidatorRequest
+from root.generated.openapi_client.models.objective_validator_request import ObjectiveValidatorRequest
 from root.generated.openapi_client.models.status_enum import StatusEnum
 
 
@@ -32,7 +32,7 @@ class PatchedObjectiveRequest(BaseModel):
 
     intent: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=10000)]] = None
     status: Optional[StatusEnum] = None
-    validators: Optional[List[SkillValidatorRequest]] = None
+    validators: Optional[List[ObjectiveValidatorRequest]] = None
     force_create: Optional[StrictBool] = Field(
         default=None, description="Force creation of a new objective. Applies only to PUT requests."
     )
@@ -103,7 +103,7 @@ class PatchedObjectiveRequest(BaseModel):
             {
                 "intent": obj.get("intent"),
                 "status": obj.get("status"),
-                "validators": [SkillValidatorRequest.from_dict(_item) for _item in obj["validators"]]
+                "validators": [ObjectiveValidatorRequest.from_dict(_item) for _item in obj["validators"]]
                 if obj.get("validators") is not None
                 else None,
                 "force_create": obj.get("force_create"),
