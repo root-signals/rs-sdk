@@ -1,5 +1,5 @@
 from functools import partial
-from typing import Iterator, Optional
+from typing import Iterator, List, Optional
 
 from root.generated.openapi_client.api.models_api import ModelsApi
 from root.generated.openapi_client.models.model import Model
@@ -24,6 +24,7 @@ class Models:
     def list(
         self,
         *,
+        capable_of: Optional[List[str]] = None,
         limit: int = 100,
     ) -> Iterator[Model]:
         """Iterate through the models.
@@ -36,9 +37,11 @@ class Models:
         Args:
           limit: Number of entries to iterate through at most.
 
+          capable_of: List of capabilities to filter the models by.
+
         """
         api_instance = ModelsApi(self.client)
-        yield from iterate_cursor_list(partial(api_instance.models_list), limit=limit)
+        yield from iterate_cursor_list(partial(api_instance.models_list, capable_of=capable_of), limit=limit)
 
     def create(
         self,
