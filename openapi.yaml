@@ -480,6 +480,15 @@ paths:
       operationId: models_list
       description: Get all available LLM models.
       parameters:
+      - in: query
+        name: capable_of
+        schema:
+          type: array
+          items:
+            type: string
+        description: Search for models by capabilities.
+        explode: false
+        style: form
       - name: cursor
         required: false
         in: query
