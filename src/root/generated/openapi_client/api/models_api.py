@@ -481,6 +481,9 @@ class ModelsApi:
     @validate_call
     def models_list(
         self,
+        capable_of: Annotated[
+            Optional[List[StrictStr]], Field(description="Search for models by capabilities.")
+        ] = None,
         cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
         ordering: Annotated[
             Optional[StrictStr], Field(description="Which field to use when ordering the results.")
@@ -500,6 +503,8 @@ class ModelsApi:
 
         Get all available LLM models.
 
+        :param capable_of: Search for models by capabilities.
+        :type capable_of: List[str]
         :param cursor: The pagination cursor value.
         :type cursor: str
         :param ordering: Which field to use when ordering the results.
@@ -529,6 +534,7 @@ class ModelsApi:
         """  # noqa: E501
 
         _param = self._models_list_serialize(
+            capable_of=capable_of,
             cursor=cursor,
             ordering=ordering,
             page_size=page_size,
@@ -551,6 +557,9 @@ class ModelsApi:
     @validate_call
     def models_list_with_http_info(
         self,
+        capable_of: Annotated[
+            Optional[List[StrictStr]], Field(description="Search for models by capabilities.")
+        ] = None,
         cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
         ordering: Annotated[
             Optional[StrictStr], Field(description="Which field to use when ordering the results.")
@@ -570,6 +579,8 @@ class ModelsApi:
 
         Get all available LLM models.
 
+        :param capable_of: Search for models by capabilities.
+        :type capable_of: List[str]
         :param cursor: The pagination cursor value.
         :type cursor: str
         :param ordering: Which field to use when ordering the results.
@@ -599,6 +610,7 @@ class ModelsApi:
         """  # noqa: E501
 
         _param = self._models_list_serialize(
+            capable_of=capable_of,
             cursor=cursor,
             ordering=ordering,
             page_size=page_size,
@@ -621,6 +633,9 @@ class ModelsApi:
     @validate_call
     def models_list_without_preload_content(
         self,
+        capable_of: Annotated[
+            Optional[List[StrictStr]], Field(description="Search for models by capabilities.")
+        ] = None,
         cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
         ordering: Annotated[
             Optional[StrictStr], Field(description="Which field to use when ordering the results.")
@@ -640,6 +655,8 @@ class ModelsApi:
 
         Get all available LLM models.
 
+        :param capable_of: Search for models by capabilities.
+        :type capable_of: List[str]
         :param cursor: The pagination cursor value.
         :type cursor: str
         :param ordering: Which field to use when ordering the results.
@@ -669,6 +686,7 @@ class ModelsApi:
         """  # noqa: E501
 
         _param = self._models_list_serialize(
+            capable_of=capable_of,
             cursor=cursor,
             ordering=ordering,
             page_size=page_size,
@@ -686,6 +704,7 @@ class ModelsApi:
 
     def _models_list_serialize(
         self,
+        capable_of,
         cursor,
         ordering,
         page_size,
@@ -696,7 +715,9 @@ class ModelsApi:
     ) -> RequestSerialized:
         _host = None
 
-        _collection_formats: Dict[str, str] = {}
+        _collection_formats: Dict[str, str] = {
+            "capable_of": "csv",
+        }
 
         _path_params: Dict[str, str] = {}
         _query_params: List[Tuple[str, str]] = []
@@ -707,6 +728,9 @@ class ModelsApi:
 
         # process the path parameters
         # process the query parameters
+        if capable_of is not None:
+            _query_params.append(("capable_of", capable_of))
+
         if cursor is not None:
             _query_params.append(("cursor", cursor))
 
