@@ -2608,8 +2608,14 @@ components:
           maxLength: 10000
         status:
           $ref: '#/components/schemas/StatusEnum'
+        validators:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectiveValidator'
+          readOnly: true
       required:
       - id
+      - validators
     NestedUserDetails:
       type: object
       properties:
