@@ -1,12 +1,13 @@
+import asyncio
 from functools import partial
-from typing import Iterator, List, Optional
+from typing import AsyncIterator, Awaitable, Iterator, List, Optional
 
-from root.generated.openapi_client.api.models_api import ModelsApi
-from root.generated.openapi_client.models.model import Model
-from root.generated.openapi_client.models.model_request import ModelRequest
+from root.generated.openapi_aclient.api.models_api import ModelsApi
+from root.generated.openapi_aclient.models.model import Model
+from root.generated.openapi_aclient.models.model_request import ModelRequest
 
-from .generated.openapi_client import ApiClient
-from .utils import iterate_cursor_list
+from .generated.openapi_aclient import ApiClient
+from .utils import iterate_cursor_list, wrap_async_iter
 
 
 class Models:
@@ -18,7 +19,7 @@ class Models:
       accesing an attribute of a :class:`root.client.RootSignals` instance.
     """
 
-    def __init__(self, client: ApiClient):
+    def __init__(self, client: Awaitable[ApiClient]):
         self.client = client
 
     def list(
@@ -27,7 +28,7 @@ class Models:
         capable_of: Optional[List[str]] = None,
         limit: int = 100,
     ) -> Iterator[Model]:
-        """Iterate through the models.
+        """Synchronously iterate through the models.
 
         Note:
 
@@ -40,8 +41,32 @@ class Models:
           capable_of: List of capabilities to filter the models by.
 
         """
-        api_instance = ModelsApi(self.client)
-        yield from iterate_cursor_list(partial(api_instance.models_list, capable_of=capable_of), limit=limit)
+
+        yield from wrap_async_iter(self.alist(capable_of=capable_of, limit=limit))
+
+    async def alist(
+        self,
+        *,
+        capable_of: Optional[List[str]] = None,
+        limit: int = 100,
+    ) -> AsyncIterator[Model]:
+        """Asynchronously iterate through the models.
+
+        Note:
+
+          The call will list only publicly available global models and
+          those models available to the organzation(s) of the user.
+
+        Args:
+          limit: Number of entries to iterate through at most.
+
+          capable_of: List of capabilities to filter the models by.
+
+        """
+        api_instance = ModelsApi(await self.client())  # type: ignore[operator]
+        yield iterate_cursor_list(  # type: ignore[misc]
+            partial(api_instance.models_list, capable_of=capable_of), limit=limit
+        )
 
     def create(
         self,
@@ -54,7 +79,48 @@ class Models:
         url: Optional[str] = None,
         _request_timeout: Optional[int] = None,
     ) -> str:
-        """Create a new model and return its ID.
+        """Synchronously create a new model and return its ID.
+
+        Args:
+
+          name: The unique identifier for the model instance  (e.g. "google/gemma-2-9b").
+
+          model: The base model name to be used. Defaults to name.
+
+          default_key: The default API key required for the model, if applicable.
+
+          max_output_token_count: The maximum number of tokens to output.
+
+          max_token_count: The maximum number of tokens to process.
+
+          url: Optional URL pointing to the model's endpoint.
+
+        """
+
+        return asyncio.run(
+            self.acreate(
+                name=name,
+                model=model,
+                default_key=default_key,
+                max_output_token_count=max_output_token_count,
+                max_token_count=max_token_count,
+                url=url,
+                _request_timeout=_request_timeout,
+            )
+        )
+
+    async def acreate(
+        self,
+        *,
+        name: str,
+        model: Optional[str] = None,
+        default_key: Optional[str] = None,
+        max_output_token_count: Optional[int] = None,
+        max_token_count: Optional[int] = None,
+        url: Optional[str] = None,
+        _request_timeout: Optional[int] = None,
+    ) -> str:
+        """Asynchronously create a new model and return its ID.
 
         Args:
 
@@ -80,8 +146,9 @@ class Models:
             url=url,
         )
 
-        api_instance = ModelsApi(self.client)
-        return api_instance.models_create(model_request=request, _request_timeout=_request_timeout).id
+        api_instance = ModelsApi(await self.client())  # type: ignore[operator]
+        created_model = await api_instance.models_create(model_request=request, _request_timeout=_request_timeout)
+        return created_model.id
 
     def delete(
         self,
@@ -90,14 +157,30 @@ class Models:
         _request_timeout: Optional[int] = None,
     ) -> None:
         """
-        Delete the model.
+        Synchronously delete the model.
 
         Args:
 
           model: The model to be deleted.
 
         """
-        api_instance = ModelsApi(self.client)
-        return api_instance.models_destroy(id=model_id, _request_timeout=_request_timeout)
+        return asyncio.run(self.adelete(model_id=model_id, _request_timeout=_request_timeout))
+
+    async def adelete(
+        self,
+        model_id: str,
+        *,
+        _request_timeout: Optional[int] = None,
+    ) -> None:  # vraca korutinu pa i to treba promjenit
+        """
+        Asynchronously delete the model.
+
+        Args:
+
+          model: The model to be deleted.
+
+        """
+        api_instance = ModelsApi(await self.client())  # type: ignore[operator]
+        return await api_instance.models_destroy(id=model_id, _request_timeout=_request_timeout)
 
     # TODO: update

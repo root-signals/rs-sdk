@@ -1,43 +1,45 @@
 from __future__ import annotations
 
+import asyncio
 import math
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from enum import Enum
 from functools import partial
-from typing import TYPE_CHECKING, Dict, Iterator, List, Literal, Optional, Union, cast
+from typing import TYPE_CHECKING, AsyncIterator, Awaitable, Dict, Iterator, List, Literal, Optional, Union, cast
 
 from pydantic import BaseModel
 
-from root.generated.openapi_client.api.chats_api import ChatsApi
-from root.generated.openapi_client.api.objectives_api import ObjectivesApi
-from root.generated.openapi_client.api.skills_api import SkillsApi
-from root.generated.openapi_client.models.chat_create_request import ChatCreateRequest
-from root.generated.openapi_client.models.data_loader_request import DataLoaderRequest
-from root.generated.openapi_client.models.evaluator_calibration_output import EvaluatorCalibrationOutput
-from root.generated.openapi_client.models.input_variable_request import InputVariableRequest
-from root.generated.openapi_client.models.objective_request import ObjectiveRequest
-from root.generated.openapi_client.models.paginated_skill_list import PaginatedSkillList
-from root.generated.openapi_client.models.patched_skill_request import PatchedSkillRequest
-from root.generated.openapi_client.models.reference_variable_request import ReferenceVariableRequest
-from root.generated.openapi_client.models.skill import Skill as OpenAPISkill
-from root.generated.openapi_client.models.skill_execution_request import SkillExecutionRequest
-from root.generated.openapi_client.models.skill_execution_result import SkillExecutionResult
-from root.generated.openapi_client.models.skill_list_output import SkillListOutput
-from root.generated.openapi_client.models.skill_request import SkillRequest
-from root.generated.openapi_client.models.skill_test_data_request import SkillTestDataRequest
-from root.generated.openapi_client.models.skill_test_input_request import SkillTestInputRequest
-from root.generated.openapi_client.models.skill_test_output import SkillTestOutput
-from root.generated.openapi_client.models.skill_validator_execution_request import (
+from root.generated.openapi_aclient.api.chats_api import ChatsApi
+from root.generated.openapi_aclient.api.objectives_api import ObjectivesApi
+from root.generated.openapi_aclient.api.skills_api import SkillsApi
+from root.generated.openapi_aclient.models.chat_create_request import ChatCreateRequest
+from root.generated.openapi_aclient.models.data_loader_request import DataLoaderRequest
+from root.generated.openapi_aclient.models.evaluator_calibration_output import EvaluatorCalibrationOutput
+from root.generated.openapi_aclient.models.input_variable_request import InputVariableRequest
+from root.generated.openapi_aclient.models.objective_request import ObjectiveRequest
+from root.generated.openapi_aclient.models.paginated_skill_list import PaginatedSkillList
+from root.generated.openapi_aclient.models.patched_skill_request import PatchedSkillRequest
+from root.generated.openapi_aclient.models.reference_variable_request import ReferenceVariableRequest
+from root.generated.openapi_aclient.models.skill import Skill as OpenAPISkill
+from root.generated.openapi_aclient.models.skill_execution_request import SkillExecutionRequest
+from root.generated.openapi_aclient.models.skill_execution_result import SkillExecutionResult
+from root.generated.openapi_aclient.models.skill_list_output import SkillListOutput
+from root.generated.openapi_aclient.models.skill_request import SkillRequest
+from root.generated.openapi_aclient.models.skill_test_data_request import SkillTestDataRequest
+from root.generated.openapi_aclient.models.skill_test_input_request import SkillTestInputRequest
+from root.generated.openapi_aclient.models.skill_test_output import SkillTestOutput
+from root.generated.openapi_aclient.models.skill_validator_execution_request import (
     SkillValidatorExecutionRequest,
 )
-from root.generated.openapi_client.models.validator_execution_result import (
+from root.generated.openapi_aclient.models.validator_execution_result import (
     ValidatorExecutionResult,
 )
+from root.utils import wrap_async_iter
 
 from .data_loader import DataLoader
-from .generated.openapi_client import ApiClient
-from .generated.openapi_client.models import (
+from .generated.openapi_aclient import ApiClient
+from .generated.openapi_aclient.models import (
     EvaluatorDemonstrationsRequest,
     EvaluatorExecutionFunctionsRequest,
     EvaluatorExecutionRequest,
@@ -133,17 +135,25 @@ class Versions:
     Note that this should not be directly instantiated.
     """
 
-    def __init__(self, client: ApiClient):
+    def __init__(self, client: Awaitable[ApiClient]):
         self._client = client
 
     def list(self, skill_id: str) -> PaginatedSkillList:
-        """List all versions of a skill.
+        """Synchronously list all versions of a skill.
 
         Args:
           skill_id: The skill to list the versions for
         """
-        api_instance = SkillsApi(self._client)
-        return api_instance.get_a_list_of_all_versions_of_a_skill(id=skill_id)
+        return asyncio.run(self.alist(skill_id))
+
+    async def alist(self, skill_id: str) -> PaginatedSkillList:
+        """Asynchronously list all versions of a skill.
+
+        Args:
+          skill_id: The skill to list the versions for
+        """
+        api_instance = SkillsApi(await self._client())  # type: ignore[operator]
+        return await api_instance.get_a_list_of_all_versions_of_a_skill(id=skill_id)
 
 
 class Skill(OpenAPISkill):
@@ -153,10 +163,14 @@ class Skill(OpenAPISkill):
     generated) superclass documentation.
     """
 
-    _client: ApiClient
+    _client: Awaitable[ApiClient]
 
     @classmethod
-    def _wrap(cls, apiobj: OpenAPISkill, client: ApiClient) -> "Skill":
+    def _wrap(cls, apiobj: OpenAPISkill, client: Awaitable[ApiClient]) -> "Skill":
+        return asyncio.run(cls._awrap(apiobj, client))
+
+    @classmethod
+    async def _awrap(cls, apiobj: OpenAPISkill, client: Awaitable[ApiClient]) -> "Skill":
         if not isinstance(apiobj, OpenAPISkill):
             raise ValueError(f"Wrong instance in _wrap: {apiobj!r}")
         obj = cast(Skill, apiobj)
@@ -166,25 +180,45 @@ class Skill(OpenAPISkill):
 
     @property
     def openai_base_url(self) -> str:
-        """Get the OpenAI compatibility API URL for the skill.
+        """
+        Synchronously get the OpenAI compatibility API URL for the skill.
 
         Currently only OpenAI chat completions API is supported using
         the base URL.
         """
-        return f"{self._client.configuration._base_path}/skills/openai/{self.id}"
+        return asyncio.run(self.aopenai_base_url())
+
+    async def aopenai_base_url(self) -> str:
+        """
+        Asynchronously get the OpenAI compatibility API URL for the skill.
+
+        Currently only OpenAI chat completions API is supported using
+        the base URL.
+        """
+        client = await self._client()  # type: ignore[operator]
+        return f"{client.configuration._base_path}/skills/openai/{self.id}"
 
     def run(self, variables: Optional[Dict[str, str]] = None) -> SkillExecutionResult:
-        """Run a skill with optional variables.
+        """Synchronously run a skill with optional variables.
 
         Args:
           variables: The variables to be provided to the skill.
         """
-        api_instance = SkillsApi(self._client)
+        return asyncio.run(self.arun(variables))
+
+    async def arun(self, variables: Optional[Dict[str, str]] = None) -> SkillExecutionResult:
+        """Asynchronously run a skill with optional variables.
+
+        Args:
+          variables: The variables to be provided to the skill.
+        """
+
+        api_instance = SkillsApi(await self._client())  # type: ignore[operator]
         skill_execution_request = SkillExecutionRequest(
             variables=variables,
             skill_version_id=self.version_id,
         )
-        return api_instance.skills_execute_create(id=self.id, skill_execution_request=skill_execution_request)
+        return await api_instance.skills_execute_create(id=self.id, skill_execution_request=skill_execution_request)
 
     def evaluate(
         self,
@@ -196,7 +230,7 @@ class Skill(OpenAPISkill):
         _request_timeout: Optional[int] = None,
     ) -> ValidatorExecutionResult:
         """
-        Run all validators attached to a skill.
+        Synchronously run all validators attached to a skill.
 
         Args:
 
@@ -207,7 +241,38 @@ class Skill(OpenAPISkill):
           contexts: Optional documents passed to RAG evaluators
 
         """
-        api_instance = SkillsApi(self._client)
+        return asyncio.run(
+            self.aevaluate(
+                response=response,
+                request=request,
+                contexts=contexts,
+                functions=functions,
+                _request_timeout=_request_timeout,
+            )
+        )
+
+    async def aevaluate(
+        self,
+        *,
+        response: str,
+        request: Optional[str] = None,
+        contexts: Optional[List[str]] = None,
+        functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
+        _request_timeout: Optional[int] = None,
+    ) -> ValidatorExecutionResult:
+        """
+        Asynchronously run all validators attached to a skill.
+
+        Args:
+
+          response: LLM output.
+
+          request: The prompt sent to the LLM. Optional.
+
+          contexts: Optional documents passed to RAG evaluators
+
+        """
+        api_instance = SkillsApi(await self._client())  # type: ignore[operator]
         skill_execution_request = SkillValidatorExecutionRequest(
             skill_version_id=None,
             request=request,
@@ -215,7 +280,7 @@ class Skill(OpenAPISkill):
             contexts=contexts,
             functions=functions,
         )
-        return api_instance.skills_execute_validators_create(
+        return await api_instance.skills_execute_validators_create(
             id=self.id,
             skill_validator_execution_request=skill_execution_request,
             _request_timeout=_request_timeout,
@@ -229,10 +294,14 @@ class Evaluator(OpenAPISkill):
     generated) superclass documentation.
     """
 
-    _client: ApiClient
+    _client: Awaitable[ApiClient]
 
     @classmethod
-    def _wrap(cls, apiobj: OpenAPISkill, client: ApiClient) -> "Evaluator":
+    def _wrap(cls, apiobj: OpenAPISkill, client: Awaitable[ApiClient]) -> "Evaluator":
+        return asyncio.run(cls._awrap(apiobj, client))
+
+    @classmethod
+    async def _awrap(cls, apiobj: OpenAPISkill, client: Awaitable[ApiClient]) -> "Evaluator":
         if not isinstance(apiobj, OpenAPISkill):
             raise ValueError(f"Wrong instance in _wrap: {apiobj!r}")
         obj = cast(Evaluator, apiobj)
@@ -249,7 +318,7 @@ class Evaluator(OpenAPISkill):
         expected_output: Optional[str] = None,
     ) -> EvaluatorExecutionResult:
         """
-        Run the evaluator.
+        Synchronously run the evaluator.
 
         Args:
 
@@ -264,7 +333,42 @@ class Evaluator(OpenAPISkill):
           expected_output: Optional expected output for the evaluator.
 
         """
-        api_instance = SkillsApi(self._client)
+        return asyncio.run(
+            self.arun(
+                response=response,
+                request=request,
+                contexts=contexts,
+                functions=functions,
+                expected_output=expected_output,
+            )
+        )
+
+    async def arun(
+        self,
+        response: str,
+        request: Optional[str] = None,
+        contexts: Optional[List[str]] = None,
+        functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
+        expected_output: Optional[str] = None,
+    ) -> EvaluatorExecutionResult:
+        """
+        Asynchronously run the evaluator.
+
+        Args:
+
+          response: LLM output.
+
+          request: The prompt sent to the LLM. Optional.
+
+          contexts: Optional documents passed to RAG evaluators
+
+          functions: Optional list of evaluator execution functions.
+
+          expected_output: Optional expected output for the evaluator.
+
+        """
+
+        api_instance = SkillsApi(await self._client())  # type: ignore[operator]
 
         evaluator_execution_request = EvaluatorExecutionRequest(
             skill_version_id=self.version_id,
@@ -274,7 +378,7 @@ class Evaluator(OpenAPISkill):
             functions=functions,
             expected_output=expected_output,
         )
-        return api_instance.skills_evaluator_execute_create(
+        return await api_instance.skills_evaluator_execute_create(
             skill_id=self.id,
             evaluator_execution_request=evaluator_execution_request,
         )
@@ -336,9 +440,9 @@ def _to_evaluator_demonstrations(
 
 
 class PresetEvaluatorRunner:
-    _client: ApiClient
+    _client: Awaitable[ApiClient]
 
-    def __init__(self, client: ApiClient, skill_id: str, skill_version_id: Optional[str] = None):
+    def __init__(self, client: Awaitable[ApiClient], skill_id: str, skill_version_id: Optional[str] = None):
         self._client = client
         self.skill_id = skill_id
         self.skill_version_id = skill_version_id
@@ -352,7 +456,7 @@ class PresetEvaluatorRunner:
         expected_output: Optional[str] = None,
     ) -> EvaluatorExecutionResult:
         """
-        Run the evaluator.
+        Synchronously run the evaluator.
 
         Args:
 
@@ -367,7 +471,42 @@ class PresetEvaluatorRunner:
           expected_output: Optional expected output for the evaluator.
 
         """
-        api_instance = SkillsApi(self._client)
+        return asyncio.run(
+            self._acall(
+                response=response,
+                request=request,
+                contexts=contexts,
+                functions=functions,
+                expected_output=expected_output,
+            )
+        )
+
+    async def _acall(
+        self,
+        response: str,
+        request: Optional[str] = None,
+        contexts: Optional[List[str]] = None,
+        functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
+        expected_output: Optional[str] = None,
+    ) -> EvaluatorExecutionResult:
+        """
+        Asynchronously run the evaluator.
+
+        Args:
+
+          response: LLM output.
+
+          request: The prompt sent to the LLM. Optional.
+
+          contexts: Optional documents passed to RAG evaluators
+
+          functions: Optional list of evaluator execution functions.
+
+          expected_output: Optional expected output for the evaluator.
+
+        """
+
+        api_instance = SkillsApi(await self._client())  # type: ignore[operator]
 
         evaluator_execution_request = EvaluatorExecutionRequest(
             skill_version_id=self.skill_version_id,
@@ -377,7 +516,7 @@ class PresetEvaluatorRunner:
             functions=functions,
             expected_output=expected_output,
         )
-        return api_instance.skills_evaluator_execute_create(
+        return await api_instance.skills_evaluator_execute_create(
             skill_id=self.skill_id,
             evaluator_execution_request=evaluator_execution_request,
         )
@@ -392,16 +531,16 @@ class Skills:
       accesing an attribute of a :class:`root.client.RootSignals` instance.
     """
 
-    def __init__(self, client: ApiClient):
+    def __init__(self, client: Awaitable[ApiClient]):
         self.client = client
         self.versions = Versions(client)
 
-    def _to_objective_request(
+    async def _to_objective_request(
         self, *, intent: Optional[str] = None, validators: Optional[List[Validator]] = None
     ) -> ObjectiveRequest:
         return ObjectiveRequest(
             intent=intent,
-            validators=[validator._to_request(self) for validator in validators or []],
+            validators=[await validator._to_request(self) for validator in validators or []],
         )
 
     def create(
@@ -424,7 +563,7 @@ class Skills:
         overwrite: bool = False,
         _request_timeout: Optional[int] = None,
     ) -> Skill:
-        """Create a new skill and return the result
+        """Synchronously create a new skill and return the result
 
         Args:
 
@@ -467,16 +606,103 @@ class Skills:
           overwrite: Whether to overwrite a skill with the same name if it exists.
 
         """
+        return asyncio.run(
+            self.acreate(
+                prompt=prompt,
+                name=name,
+                intent=intent,
+                model=model,
+                system_message=system_message,
+                fallback_models=fallback_models,
+                pii_filter=pii_filter,
+                validators=validators,
+                reference_variables=reference_variables,
+                input_variables=input_variables,
+                is_evaluator=is_evaluator,
+                data_loaders=data_loaders,
+                model_params=model_params,
+                objective_id=objective_id,
+                overwrite=overwrite,
+                _request_timeout=_request_timeout,
+            )
+        )
+
+    async def acreate(
+        self,
+        prompt: str = "",
+        *,
+        name: Optional[str] = None,
+        intent: Optional[str] = None,
+        model: Optional[ModelName] = None,
+        system_message: str = "",
+        fallback_models: Optional[List[ModelName]] = None,
+        pii_filter: bool = False,
+        validators: Optional[List[Validator]] = None,
+        reference_variables: Optional[Union[List[ReferenceVariable], List[ReferenceVariableRequest]]] = None,
+        input_variables: Optional[Union[List[InputVariable], List[InputVariableRequest]]] = None,
+        is_evaluator: Optional[bool] = None,
+        data_loaders: Optional[List[DataLoader]] = None,
+        model_params: Optional[Union[ModelParams, ModelParamsRequest]] = None,
+        objective_id: Optional[str] = None,
+        overwrite: bool = False,
+        _request_timeout: Optional[int] = None,
+    ) -> Skill:
+        """Asynchronously create a new skill and return the result
+
+        Args:
+
+          prompt: The prompt that is provided to the model (not used
+          if using OpenAI compatibility API)
+
+          name: Name of the skill (defaulting to <unnamed>)
+
+          objective_id: Already created objective id to assign to the skill.
+
+          intent: The intent of the skill (defaulting to name); not available if objective_id is set.
+
+          model: The model to use (defaults to 'root', which means
+            Root Signals default at the time of skill creation)
+
+          fallback_models: The fallback models to use in case the primary model fails.
+
+          system_message: The system instruction to give to the model
+            (mainly useful with OpenAI compatibility API).
+
+          pii_filter: Whether to use PII filter or not.
+
+          validators: An optional list of validators; not available if objective_id is set.
+
+          reference_variables: An optional list of input variables for
+            the skill.
+
+          input_variables: An optional list of reference variables for
+            the skill.
+
+          is_evaluator: Whether the skill is an evaluator or
+            not. Evaluators should have prompts that cause model to
+            return
+
+          data_loaders: An optional list of data loaders, which
+            populate the reference variables.
+
+          model_params: An optional set of additional parameters to the model.
+
+          overwrite: Whether to overwrite a skill with the same name if it exists.
+
+        """
+
         if name is None:
             name = "<unnamed>"
-        api_instance = SkillsApi(self.client)
+
+        api_instance = SkillsApi(await self.client())  # type: ignore[operator]
         objective: Optional[ObjectiveRequest] = None
         if objective_id is None:
             if intent is None:
                 intent = name
-            objective = self._to_objective_request(intent=intent, validators=validators)
-            objectives_api_instance = ObjectivesApi(self.client)
-            objective_id = objectives_api_instance.objectives_create(objective_request=objective).id
+            objective = await self._to_objective_request(intent=intent, validators=validators)
+            objectives_api_instance = ObjectivesApi(await self.client())  # type: ignore[operator]
+            new_objective = await objectives_api_instance.objectives_create(objective_request=objective)
+            objective_id = new_objective.id
         else:
             if intent:
                 raise ValueError("Supplying both objective_id and intent is not supported")
@@ -498,8 +724,8 @@ class Skills:
             overwrite=overwrite,
         )
 
-        skill = api_instance.skills_create(skill_request=skill_request, _request_timeout=_request_timeout)
-        return Skill._wrap(skill, self.client)
+        skill = await api_instance.skills_create(skill_request=skill_request, _request_timeout=_request_timeout)
+        return await Skill._awrap(skill, self.client)
 
     def update(
         self,
@@ -520,7 +746,54 @@ class Skills:
         objective_id: Optional[str] = None,
         _request_timeout: Optional[int] = None,
     ) -> Skill:
-        """Update existing skill instance and return the result.
+        """Synchronously update existing skill instance and return the result.
+
+        For description of the rest of the arguments, please refer to create
+        method.
+
+        Args:
+          skill_id: The skill to be updated
+        """
+        return asyncio.run(
+            self.aupdate(
+                skill_id,
+                change_note=change_note,
+                data_loaders=data_loaders,
+                fallback_models=fallback_models,
+                input_variables=input_variables,
+                model=model,
+                name=name,
+                pii_filter=pii_filter,
+                prompt=prompt,
+                is_evaluator=is_evaluator,
+                reference_variables=reference_variables,
+                model_params=model_params,
+                evaluator_demonstrations=evaluator_demonstrations,
+                objective_id=objective_id,
+                _request_timeout=_request_timeout,
+            )
+        )
+
+    async def aupdate(
+        self,
+        skill_id: str,
+        *,
+        change_note: Optional[str] = None,
+        data_loaders: Optional[List[DataLoader]] = None,
+        fallback_models: Optional[List[ModelName]] = None,
+        input_variables: Optional[Union[List[InputVariable], List[InputVariableRequest]]] = None,
+        model: Optional[ModelName] = None,
+        name: Optional[str] = None,
+        pii_filter: Optional[bool] = None,
+        prompt: Optional[str] = None,
+        is_evaluator: Optional[bool] = None,
+        reference_variables: Optional[Union[List[ReferenceVariable], List[ReferenceVariableRequest]]] = None,
+        model_params: Optional[Union[ModelParams, ModelParamsRequest]] = None,
+        evaluator_demonstrations: Optional[List[EvaluatorDemonstration]] = None,
+        objective_id: Optional[str] = None,
+        _request_timeout: Optional[int] = None,
+    ) -> Skill:
+        """Asynchronously update existing skill instance and return the result.
 
         For description of the rest of the arguments, please refer to create
         method.
@@ -529,7 +802,7 @@ class Skills:
           skill_id: The skill to be updated
         """
 
-        api_instance = SkillsApi(self.client)
+        api_instance = SkillsApi(await self.client())  # type: ignore[operator]
         request = PatchedSkillRequest(
             name=name,
             prompt=prompt,
@@ -544,25 +817,36 @@ class Skills:
             evaluator_demonstrations=_to_evaluator_demonstrations(evaluator_demonstrations),
             objective_id=objective_id,
         )
-        api_response = api_instance.skills_partial_update(
+        api_response = await api_instance.skills_partial_update(
             id=skill_id, patched_skill_request=request, _request_timeout=_request_timeout
         )
-        return Skill._wrap(api_response, self.client)
+        return await Skill._awrap(api_response, self.client)
 
     def get(
         self,
         skill_id: str,
         _request_timeout: Optional[int] = None,
     ) -> Skill:
-        """Get a Skill instance by ID.
+        """Synchronously get a Skill instance by ID.
 
         Args:
           skill_id: The skill to be fetched
         """
+        return asyncio.run(self.aget(skill_id, _request_timeout=_request_timeout))
 
-        api_instance = SkillsApi(self.client)
-        api_response = api_instance.skills_retrieve(id=skill_id, _request_timeout=_request_timeout)
-        return Skill._wrap(api_response, self.client)
+    async def aget(
+        self,
+        skill_id: str,
+        _request_timeout: Optional[int] = None,
+    ) -> Skill:
+        """Asynchronously get a Skill instance by ID.
+
+        Args:
+          skill_id: The skill to be fetched
+        """
+        api_instance = SkillsApi(await self.client())  # type: ignore[operator]
+        api_response = await api_instance.skills_retrieve(id=skill_id, _request_timeout=_request_timeout)
+        return await Skill._awrap(api_response, self.client)
 
     def list(
         self,
@@ -572,7 +856,39 @@ class Skills:
         name: Optional[str] = None,
         only_evaluators: bool = False,
     ) -> Iterator[SkillListOutput]:
-        """Iterate through the skills.
+        """Synchronously iterate through the skills.
+
+        Note that call will list only publicly available global skills, and
+        those models within organization that are available to the current
+        user (or all if the user is an admin).
+
+        Args:
+          limit: Number of entries to iterate through at most.
+
+          name: Specific name the returned skills must match.
+
+          only_evaluators: Match only Skills with is_evaluator=True.
+
+          search_term: Can be used to limit returned skills.
+        """
+        yield from wrap_async_iter(
+            self.alist(
+                search_term=search_term,
+                limit=limit,
+                name=name,
+                only_evaluators=only_evaluators,
+            )
+        )
+
+    async def alist(
+        self,
+        search_term: Optional[str] = None,
+        *,
+        limit: int = 100,
+        name: Optional[str] = None,
+        only_evaluators: bool = False,
+    ) -> AsyncIterator[SkillListOutput]:
+        """Asynchronously iterate through the skills.
 
         Note that call will list only publicly available global skills, and
         those models within organization that are available to the current
@@ -588,8 +904,8 @@ class Skills:
           search_term: Can be used to limit returned skills.
         """
 
-        api_instance = SkillsApi(self.client)
-        yield from iterate_cursor_list(
+        api_instance = SkillsApi(await self.client())  # type: ignore[operator]
+        yield iterate_cursor_list(  # type: ignore[misc]
             partial(
                 api_instance.skills_list, name=name, search=search_term, is_evaluator=True if only_evaluators else None
             ),
@@ -611,24 +927,60 @@ class Skills:
         _request_timeout: Optional[int] = None,
     ) -> List[SkillTestOutput]:
         """
-        Test a skill definition with a test dataset and return the result.
+        Synchronously test a skill definition with a test dataset and return the result.
 
         For description of the rest of the arguments, please refer to create
         method.
 
         """
-        api_instance = SkillsApi(self.client)
+        return asyncio.run(
+            self.atest(
+                test_dataset_id=test_dataset_id,
+                prompt=prompt,
+                model=model,
+                fallback_models=fallback_models,
+                pii_filter=pii_filter,
+                validators=validators,
+                reference_variables=reference_variables,
+                input_variables=input_variables,
+                data_loaders=data_loaders,
+                _request_timeout=_request_timeout,
+            )
+        )
+
+    async def atest(
+        self,
+        test_dataset_id: str,
+        prompt: str,
+        model: ModelName,
+        *,
+        fallback_models: Optional[List[ModelName]] = None,
+        pii_filter: bool = False,
+        validators: Optional[List[Validator]] = None,
+        reference_variables: Optional[Union[List[ReferenceVariable], List[ReferenceVariableRequest]]] = None,
+        input_variables: Optional[Union[List[InputVariable], List[InputVariableRequest]]] = None,
+        data_loaders: Optional[List[DataLoader]] = None,
+        _request_timeout: Optional[int] = None,
+    ) -> List[SkillTestOutput]:
+        """
+        Asynchronously test a skill definition with a test dataset and return the result.
+
+        For description of the rest of the arguments, please refer to create
+        method.
+
+        """
+        api_instance = SkillsApi(await self.client())  # type: ignore[operator]
         skill_test_request = SkillTestInputRequest(
             test_dataset_id=test_dataset_id,
             prompt=prompt,
             models=[model] + (fallback_models or []),
             pii_filter=pii_filter,
-            objective=self._to_objective_request(validators=validators),
+            objective=await self._to_objective_request(validators=validators),
             reference_variables=_to_reference_variables(reference_variables),
             input_variables=_to_input_variables(input_variables),
             data_loaders=_to_data_loaders(data_loaders),
         )
-        return api_instance.skills_test_create(skill_test_request, _request_timeout=_request_timeout)
+        return await api_instance.skills_test_create(skill_test_request, _request_timeout=_request_timeout)
 
     def test_existing(
         self,
@@ -639,7 +991,36 @@ class Skills:
         _request_timeout: Optional[int] = None,
     ) -> List[SkillTestOutput]:
         """
-        Test an existing skill.
+        Synchronously test an existing skill.
+
+        Note that only one of the test_data and test_data_set must be provided.
+
+        Args:
+
+          test_data: Actual data to be used to test the skill.
+
+          test_dataset_id: ID of the dataset to be used to test the skill.
+
+        """
+        return asyncio.run(
+            self.atest_existing(
+                skill_id=skill_id,
+                test_dataset_id=test_dataset_id,
+                test_data=test_data,
+                _request_timeout=_request_timeout,
+            )
+        )
+
+    async def atest_existing(
+        self,
+        skill_id: str,
+        *,
+        test_dataset_id: Optional[str] = None,
+        test_data: Optional[List[List[str]]] = None,
+        _request_timeout: Optional[int] = None,
+    ) -> List[SkillTestOutput]:
+        """
+        Asynchronously test an existing skill.
 
         Note that only one of the test_data and test_data_set must be provided.
 
@@ -654,12 +1035,12 @@ class Skills:
             raise ValueError("Either test_dataset_id or test_data must be provided")
         if test_dataset_id and test_data:
             raise ValueError("Only one of test_dataset_id or test_data must be provided")
-        api_instance = SkillsApi(self.client)
+        api_instance = SkillsApi(await self.client())  # type: ignore[operator]
         skill_test_request = SkillTestDataRequest(
             test_dataset_id=test_dataset_id,
             test_data=test_data,
         )
-        return api_instance.skills_test_create2(skill_id, skill_test_request, _request_timeout=_request_timeout)
+        return await api_instance.skills_test_create2(skill_id, skill_test_request, _request_timeout=_request_timeout)
 
     def create_chat(
         self,
@@ -671,7 +1052,7 @@ class Skills:
         _request_timeout: Optional[int] = None,
     ) -> SkillChat:
         """
-        Create and store chat object with the given parameters.
+        Synchronously create and store chat object with the given parameters.
 
         Args:
 
@@ -683,7 +1064,33 @@ class Skills:
 
           history_from_chat_id: Optional chat_id to copy chat history from.
         """
-        api_instance = ChatsApi(self.client)
+        return asyncio.run(
+            self.acreate_chat(skill_id, chat_id=chat_id, name=name, history_from_chat_id=history_from_chat_id)
+        )
+
+    async def acreate_chat(
+        self,
+        skill_id: str,
+        *,
+        chat_id: Optional[str] = None,
+        name: Optional[str] = None,
+        history_from_chat_id: Optional[str] = None,
+        _request_timeout: Optional[int] = None,
+    ) -> SkillChat:
+        """
+        Asynchronously create and store chat object with the given parameters.
+
+        Args:
+
+          skill_id: The skill to chat with.
+
+          chat_id: Optional identifier to identify the chat. If not supplied, one is automatically generated.
+
+          name: Optional name for the chat.
+
+          history_from_chat_id: Optional chat_id to copy chat history from.
+        """
+        api_instance = ChatsApi(await self.client())  # type: ignore[operator]
         chat_create_request = ChatCreateRequest(
             name=name,
             skill_id=skill_id,
@@ -691,27 +1098,38 @@ class Skills:
             history_from_chat_id=history_from_chat_id,
         )
         if chat_id:
-            return SkillChat._wrap(
-                api_instance.chats_initiate_create2(chat_id=chat_id, chat_create_request=chat_create_request),
+            return await SkillChat._awrap(
+                await api_instance.chats_initiate_create2(chat_id=chat_id, chat_create_request=chat_create_request),
                 self.client,
             )
         else:
-            return SkillChat._wrap(
-                api_instance.chats_initiate_create(chat_create_request, _request_timeout=_request_timeout),
+            return await SkillChat._awrap(
+                await api_instance.chats_initiate_create(chat_create_request, _request_timeout=_request_timeout),
                 self.client,
             )
 
     def delete(self, skill_id: str) -> None:
         """
-        Delete the skill from the registry.
+        Synchronously delete the skill from the registry.
 
         Args:
 
           skill_id: The skill to be deleted.
 
         """
-        api_instance = SkillsApi(self.client)
-        return api_instance.skills_destroy(id=skill_id)
+        return asyncio.run(self.adelete(skill_id))
+
+    async def adelete(self, skill_id: str) -> None:
+        """
+        Asynchronously delete the skill from the registry.
+
+        Args:
+
+          skill_id: The skill to be deleted.
+
+        """
+        api_instance = SkillsApi(await self.client())  # type: ignore[operator]
+        return await api_instance.skills_destroy(id=skill_id)
 
     def run(
         self,
@@ -723,7 +1141,7 @@ class Skills:
         _request_timeout: Optional[int] = None,
     ) -> SkillExecutionResult:
         """
-        Run a skill with optional variables, model parameters, and a skill version id.
+        Synchronously run a skill with optional variables, model parameters, and a skill version id.
         If no skill version id is given, the latest version of the skill will be used.
         If model parameters are not given, Skill model params will be used. If the skill has no model params
         the default model parameters will be used.
@@ -732,13 +1150,44 @@ class Skills:
         - llm_output: the LLM response of the skill run
         - validation: the result of the skill validation
         """
-        api_instance = SkillsApi(self.client)
+        return asyncio.run(
+            self.arun(
+                skill_id,
+                variables,
+                model_params=model_params,
+                skill_version_id=skill_version_id,
+                _request_timeout=_request_timeout,
+            )
+        )
+
+    async def arun(
+        self,
+        skill_id: str,
+        variables: Optional[Dict[str, str]] = None,
+        *,
+        model_params: Optional[Union[ModelParams, ModelParamsRequest]] = None,
+        skill_version_id: Optional[str] = None,
+        _request_timeout: Optional[int] = None,
+    ) -> SkillExecutionResult:
+        """
+        Asynchronously run a skill with optional variables, model parameters, and a skill version id.
+        If no skill version id is given, the latest version of the skill will be used.
+        If model parameters are not given, Skill model params will be used. If the skill has no model params
+        the default model parameters will be used.
+
+        Returns a dictionary with the following keys:
+        - llm_output: the LLM response of the skill run
+        - validation: the result of the skill validation
+        """
+
+        api_instance = SkillsApi(await self.client())  # type: ignore[operator]
         skill_execution_request = SkillExecutionRequest(
             variables=variables,
             skill_version_id=skill_version_id,
             model_params=_to_model_params(model_params),
         )
-        return api_instance.skills_execute_create(
+
+        return await api_instance.skills_execute_create(
             id=skill_id,
             skill_execution_request=skill_execution_request,
             _request_timeout=_request_timeout,
@@ -756,7 +1205,7 @@ class Skills:
         _request_timeout: Optional[int] = None,
     ) -> ValidatorExecutionResult:
         """
-        Run all validators attached to a skill.
+        Synchronously run all validators attached to a skill.
 
         Args:
 
@@ -769,7 +1218,46 @@ class Skills:
           skill_version_id: Skill version id. If omitted, the latest version is used.
 
         """
-        api_instance = SkillsApi(self.client)
+
+        return asyncio.run(
+            self.aevaluate(
+                skill_id,
+                response=response,
+                request=request,
+                contexts=contexts,
+                functions=functions,
+                skill_version_id=skill_version_id,
+                _request_timeout=_request_timeout,
+            )
+        )
+
+    async def aevaluate(
+        self,
+        skill_id: str,
+        *,
+        response: str,
+        request: Optional[str] = None,
+        contexts: Optional[List[str]] = None,
+        functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
+        skill_version_id: Optional[str] = None,
+        _request_timeout: Optional[int] = None,
+    ) -> ValidatorExecutionResult:
+        """
+        Asynchronously run all validators attached to a skill.
+
+        Args:
+
+          response: LLM output.
+
+          request: The prompt sent to the LLM. Optional.
+
+          contexts: Optional documents passed to RAG evaluators
+
+          skill_version_id: Skill version id. If omitted, the latest version is used.
+
+        """
+
+        api_instance = SkillsApi(await self.client())  # type: ignore[operator]
         skill_execution_request = SkillValidatorExecutionRequest(
             skill_version_id=skill_version_id,
             request=request,
@@ -777,7 +1265,7 @@ class Skills:
             contexts=contexts,
             functions=functions,
         )
-        return api_instance.skills_execute_validators_create(
+        return await api_instance.skills_execute_validators_create(
             id=skill_id,
             skill_validator_execution_request=skill_execution_request,
             _request_timeout=_request_timeout,
@@ -827,7 +1315,7 @@ class Evaluators:
         Context_Precision = "9d1e9a25-7e76-4771-b1e3-40825d7918c5"
         Answer_Relevance = "0907d422-e94f-4c9c-a63d-ec0eefd8a903"
 
-    def __init__(self, client: ApiClient):
+    def __init__(self, client: Awaitable[ApiClient]):
         self.client = client
         self.versions = Versions(client)
 
@@ -882,13 +1370,45 @@ class Evaluators:
         _request_timeout: Optional[int] = None,
     ) -> EvaluatorExecutionResult:
         """
-        Run an evaluator using its id and an optional version id .
+        Synchronously run an evaluator using its id and an optional version id .
         If no evaluator version id is given, the latest version of the evaluator will be used.
 
         Returns a dictionary with the following keys:
         - score: a value between 0 and 1 representing the score of the evaluator
         """
-        api_instance = SkillsApi(self.client)
+        return asyncio.run(
+            self.arun(
+                evaluator_id,
+                request=request,
+                response=response,
+                contexts=contexts,
+                functions=functions,
+                expected_output=expected_output,
+                evaluator_version_id=evaluator_version_id,
+                _request_timeout=_request_timeout,
+            )
+        )
+
+    async def arun(
+        self,
+        evaluator_id: str,
+        *,
+        request: str,
+        response: str,
+        contexts: Optional[List[str]] = None,
+        functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
+        expected_output: Optional[str] = None,
+        evaluator_version_id: Optional[str] = None,
+        _request_timeout: Optional[int] = None,
+    ) -> EvaluatorExecutionResult:
+        """
+        Asynchronously run an evaluator using its id and an optional version id .
+        If no evaluator version id is given, the latest version of the evaluator will be used.
+
+        Returns a dictionary with the following keys:
+        - score: a value between 0 and 1 representing the score of the evaluator
+        """
+        api_instance = SkillsApi(await self.client())  # type: ignore[operator]
         evaluator_execution_request = EvaluatorExecutionRequest(
             skill_version_id=evaluator_version_id,
             request=request,
@@ -897,7 +1417,7 @@ class Evaluators:
             functions=functions,
             expected_output=expected_output,
         )
-        return api_instance.skills_evaluator_execute_create(
+        return await api_instance.skills_evaluator_execute_create(
             skill_id=evaluator_id,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
@@ -912,18 +1432,38 @@ class Evaluators:
         _request_timeout: Optional[int] = None,
     ) -> List[EvaluatorCalibrationOutput]:
         """
-        Run calibration set on an existing evaluator.
+        Synchronously run calibration set on an existing evaluator.
+        """
+        return asyncio.run(
+            self.acalibrate_existing(
+                evaluator_id=evaluator_id,
+                test_dataset_id=test_dataset_id,
+                test_data=test_data,
+                _request_timeout=_request_timeout,
+            )
+        )
+
+    async def acalibrate_existing(
+        self,
+        evaluator_id: str,
+        *,
+        test_dataset_id: Optional[str] = None,
+        test_data: Optional[List[List[str]]] = None,
+        _request_timeout: Optional[int] = None,
+    ) -> List[EvaluatorCalibrationOutput]:
+        """
+        Asynchronously run calibration set on an existing evaluator.
         """
         if not test_dataset_id and not test_data:
             raise ValueError("Either test_dataset_id or test_data must be provided")
         if test_dataset_id and test_data:
             raise ValueError("Only one of test_dataset_id or test_data must be provided")
-        api_instance = SkillsApi(self.client)
+        api_instance = SkillsApi(await self.client())  # type: ignore[operator]
         skill_test_request = SkillTestDataRequest(
             test_dataset_id=test_dataset_id,
             test_data=test_data,
         )
-        return api_instance.skills_calibrate_create2(
+        return await api_instance.skills_calibrate_create2(
             evaluator_id, skill_test_request, _request_timeout=_request_timeout
         )
 
@@ -942,13 +1482,45 @@ class Evaluators:
         _request_timeout: Optional[int] = None,
     ) -> List[EvaluatorCalibrationOutput]:
         """
-        Run calibration set on an existing evaluator.
+        Synchronously run calibration set on an existing evaluator.
+        """
+        return asyncio.run(
+            self.acalibrate(
+                name=name,
+                test_dataset_id=test_dataset_id,
+                test_data=test_data,
+                prompt=prompt,
+                model=model,
+                pii_filter=pii_filter,
+                reference_variables=reference_variables,
+                input_variables=input_variables,
+                data_loaders=data_loaders,
+                _request_timeout=_request_timeout,
+            )
+        )
+
+    async def acalibrate(
+        self,
+        *,
+        name: str,
+        test_dataset_id: Optional[str] = None,
+        test_data: Optional[List[List[str]]] = None,
+        prompt: str,
+        model: ModelName,
+        pii_filter: bool = False,
+        reference_variables: Optional[Union[List[ReferenceVariable], List[ReferenceVariableRequest]]] = None,
+        input_variables: Optional[Union[List[InputVariable], List[InputVariableRequest]]] = None,
+        data_loaders: Optional[List[DataLoader]] = None,
+        _request_timeout: Optional[int] = None,
+    ) -> List[EvaluatorCalibrationOutput]:
+        """
+        Asynchronously run calibration set on an existing evaluator.
         """
         if not test_dataset_id and not test_data:
             raise ValueError("Either test_dataset_id or test_data must be provided")
         if test_dataset_id and test_data:
             raise ValueError("Only one of test_dataset_id or test_data must be provided")
-        api_instance = SkillsApi(self.client)
+        api_instance = SkillsApi(await self.client())  # type: ignore[operator]
         skill_test_request = SkillTestInputRequest(
             name=name,
             test_dataset_id=test_dataset_id,
@@ -962,7 +1534,7 @@ class Evaluators:
             input_variables=_to_input_variables(input_variables),
             data_loaders=_to_data_loaders(data_loaders),
         )
-        return api_instance.skills_calibrate_create(skill_test_request, _request_timeout=_request_timeout)
+        return await api_instance.skills_calibrate_create(skill_test_request, _request_timeout=_request_timeout)
 
     def calibrate_batch(
         self,
@@ -974,7 +1546,41 @@ class Evaluators:
         _request_timeout: Optional[int] = None,
     ) -> CalibrateBatchResult:
         """
-        Run calibration for a set of prompts and models
+        Synchronously run calibration for a set of prompts and models
+
+        Args:
+
+             evaluator_definitions: List of evaluator definitions.
+
+             test_dataset_id: ID of the dataset to be used to test the skill.
+
+             test_data: Actual data to be used to test the skill.
+
+             parallel_requests: Number of parallel requests. Uses ThreadPoolExecutor if > 1.
+
+        Returns a dictionary with the results and errors for each model and prompt.
+        """
+        return asyncio.run(
+            self.acalibrate_batch(
+                evaluator_definitions=evaluator_definitions,
+                test_dataset_id=test_dataset_id,
+                test_data=test_data,
+                parallel_requests=parallel_requests,
+                _request_timeout=_request_timeout,
+            )
+        )
+
+    async def acalibrate_batch(
+        self,
+        *,
+        evaluator_definitions: List[CalibrateBatchParameters],
+        test_dataset_id: Optional[str] = None,
+        test_data: Optional[List[List[str]]] = None,
+        parallel_requests: int = 1,
+        _request_timeout: Optional[int] = None,
+    ) -> CalibrateBatchResult:
+        """
+        Asynchronously run calibration for a set of prompts and models
 
         Args:
 
@@ -1046,7 +1652,7 @@ class Evaluators:
         else:
             for param in evaluator_definitions:
                 try:
-                    results = self.calibrate(
+                    results = await self.acalibrate(
                         name=param.name,
                         test_dataset_id=test_dataset_id,
                         test_data=test_data,
@@ -1091,28 +1697,38 @@ class Evaluators:
         )
 
     def get_by_name(self, name: str) -> Evaluator:
-        """Get an evaluator instance by name.
+        """Synchronously get an evaluator instance by name.
 
         Args:
         name: The evaluator to be fetched. Note this only works for uniquely named evaluators.
         """
 
-        api_instance = SkillsApi(self.client)
+        return asyncio.run(self.aget_by_name(name))
 
-        evaluator_list: List[SkillListOutput] = list(
-            iterate_cursor_list(
+    async def aget_by_name(self, name: str) -> Evaluator:
+        """Asynchronously get an evaluator instance by name.
+
+        Args:
+        name: The evaluator to be fetched. Note this only works for uniquely named evaluators.
+        """
+
+        api_instance = SkillsApi(await self.client())  # type: ignore[operator]
+
+        evaluator_list: List[SkillListOutput] = [  # type: ignore[var-annotated]
+            skill
+            async for skill in iterate_cursor_list(
                 partial(api_instance.skills_list, name=name, is_evaluator=True),
                 limit=1,
             )
-        )
+        ]
 
         if not evaluator_list:
             raise ValueError(f"No evaluator found with name '{name}'")
 
         evaluator = evaluator_list[0]
-        api_response = api_instance.skills_retrieve(id=evaluator.id)
+        api_response = await api_instance.skills_retrieve(id=evaluator.id)
 
-        return Evaluator._wrap(api_response, self.client)
+        return await Evaluator._awrap(api_response, self.client)
 
     def create(
         self,
@@ -1130,7 +1746,7 @@ class Evaluators:
         objective_id: Optional[str] = None,
         overwrite: bool = False,
     ) -> Evaluator:
-        """Create a new evaluator and return the result
+        """Synchronously create a new evaluator and return the result
         Args:
 
           predicate: The question / predicate that is provided to the semantic quantification layer to
@@ -1163,7 +1779,73 @@ class Evaluators:
           overwrite: Whether to overwrite a skill with the same name if it exists.
 
         """
-        _eval_skill = Skills(self.client).create(
+        return asyncio.run(
+            self.acreate(
+                predicate=predicate,
+                name=name,
+                intent=intent,
+                model=model,
+                fallback_models=fallback_models,
+                pii_filter=pii_filter,
+                reference_variables=reference_variables,
+                input_variables=input_variables,
+                data_loaders=data_loaders,
+                model_params=model_params,
+                objective_id=objective_id,
+                overwrite=overwrite,
+            )
+        )
+
+    async def acreate(
+        self,
+        predicate: str = "",
+        *,
+        name: Optional[str] = None,
+        intent: Optional[str] = None,
+        model: Optional[ModelName] = None,
+        fallback_models: Optional[List[ModelName]] = None,
+        pii_filter: bool = False,
+        reference_variables: Optional[Union[List[ReferenceVariable], List[ReferenceVariableRequest]]] = None,
+        input_variables: Optional[Union[List[InputVariable], List[InputVariableRequest]]] = None,
+        data_loaders: Optional[List[DataLoader]] = None,
+        model_params: Optional[Union[ModelParams, ModelParamsRequest]] = None,
+        objective_id: Optional[str] = None,
+        overwrite: bool = False,
+    ) -> Evaluator:
+        """Asynchronously create a new evaluator and return the result
+        Args:
+
+          predicate: The question / predicate that is provided to the semantic quantification layer to
+          transform it into a final prompt before being passed to the model (not used
+          if using OpenAI compatibility API)
+
+          name: Name of the skill (defaulting to <unnamed>)
+
+          objective_id: Already created objective id to assign to the eval skill.
+
+          intent: The intent of the skill (defaulting to name); not available if objective_id is set.
+
+          model: The model to use (defaults to 'root', which means
+            Root Signals default at the time of skill creation)
+          fallback_models: The fallback models to use in case the primary model fails.
+
+          pii_filter: Whether to use PII filter or not.
+
+          reference_variables: An optional list of input variables for
+            the skill.
+
+          input_variables: An optional list of reference variables for
+            the skill.
+
+          data_loaders: An optional list of data loaders, which
+            populate the reference variables.
+
+          model_params: An optional set of additional parameters to the model.
+
+          overwrite: Whether to overwrite a skill with the same name if it exists.
+
+        """
+        _eval_skill = await Skills(self.client).acreate(
             name=name,
             prompt=predicate,
             model=model,
@@ -1180,4 +1862,4 @@ class Evaluators:
             objective_id=objective_id,
             overwrite=overwrite,
         )
-        return Evaluator._wrap(_eval_skill, self.client)
+        return await Evaluator._awrap(_eval_skill, self.client)

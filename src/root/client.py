@@ -4,11 +4,11 @@ import os
 import re
 import textwrap
 from functools import cached_property
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Awaitable, Optional
 
 from .__about__ import __version__
-from .generated import openapi_client
-from .generated.openapi_client.configuration import Configuration as _Configuration
+from .generated import openapi_aclient
+from .generated.openapi_aclient.configuration import Configuration as _Configuration
 
 if TYPE_CHECKING:
     from .datasets import DataSets
@@ -55,7 +55,7 @@ class RootSignals:
         api_key: Optional[str] = None,
         *,
         base_url: Optional[str] = None,
-        _api_client: Optional[openapi_client.ApiClient] = None,
+        _api_client: Optional[Awaitable[openapi_aclient.ApiClient]] = None,
     ):
         if api_key is None:
             api_key = _get_api_key()
@@ -65,8 +65,7 @@ class RootSignals:
         self.api_key = api_key
         self._api_client_arg = _api_client
 
-    @cached_property
-    def _api_client(self) -> openapi_client.ApiClient:
+    async def _api_client(self) -> openapi_aclient.ApiClient:
         """Get the OpenAPI client
 
         End users should not need to inheract with OpenAPI directly.
@@ -74,12 +73,14 @@ class RootSignals:
         Note that this call is cached for duration of the RootSignals
         instance; later calls will return the same instance.
         """
+
         if self._api_client_arg is not None:
-            return self._api_client_arg
+            return self._api_client_arg  # type: ignore[return-value]
 
         api_client_configuration = _Configuration(host=self.base_url)
         api_client_configuration.api_key["publicApiKey"] = f"Api-Key {self.api_key}"
-        return openapi_client.ApiClient(
+
+        return openapi_aclient.ApiClient(
             api_client_configuration, header_name="x-root-python-version", header_value=__version__
         )
 
@@ -89,39 +90,40 @@ class RootSignals:
 
         from .datasets import DataSets
 
-        return DataSets(self._api_client, self.base_url, self.api_key)
+        return DataSets(self._api_client, self.base_url, self.api_key)  # type: ignore[arg-type]
 
     @cached_property
     def evaluators(self) -> Evaluators:
         """Get Evaluators API"""
+
         from .skills import Evaluators
 
-        return Evaluators(self._api_client)
+        return Evaluators(self._api_client)  # type: ignore[arg-type]
 
     @cached_property
     def execution_logs(self) -> ExecutionLogs:
         """Get Execution Logs API"""
         from .execution_logs import ExecutionLogs
 
-        return ExecutionLogs(self._api_client)
+        return ExecutionLogs(self._api_client)  # type: ignore[arg-type]
 
     @cached_property
     def models(self) -> Models:
         """Get Models API"""
         from .models import Models
 
-        return Models(self._api_client)
+        return Models(self._api_client)  # type: ignore[arg-type]
 
     @cached_property
     def objectives(self) -> Objectives:
         """Get Objectives API"""
         from .objectives import Objectives
 
-        return Objectives(self._api_client)
+        return Objectives(self._api_client)  # type: ignore[arg-type]
 
     @cached_property
     def skills(self) -> Skills:
         """Get Skills API"""
         from .skills import Skills
 
-        return Skills(self._api_client)
+        return Skills(self._api_client)  # type: ignore[arg-type]
