@@ -1,7 +1,7 @@
 from abc import ABC
 from typing import Dict, Literal, Optional, Union
 
-from root.generated.openapi_client.models.data_loader_type_enum import DataLoaderTypeEnum as _DataLoaderTypeEnum
+from root.generated.openapi_aclient.models.data_loader_type_enum import DataLoaderTypeEnum as _DataLoaderTypeEnum
 
 _EngineType = Literal["google", "bing"]
 _ParameterDict = Dict[str, Union[str, Dict[str, str], None]]

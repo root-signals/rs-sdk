@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Optional
 
-from root.generated.openapi_client.models.objective_validator_request import ObjectiveValidatorRequest
+from root.generated.openapi_aclient.models.objective_validator_request import ObjectiveValidatorRequest
+from root.utils import wrap_async_iter
 
 if TYPE_CHECKING:
     from .skills import ModelName, Skills
@@ -54,19 +55,20 @@ class Validator:
         self.prompt = prompt
         self.threshold = threshold
 
-    def _to_request(self, skills: Skills) -> ObjectiveValidatorRequest:
+    async def _to_request(self, skills: Skills) -> ObjectiveValidatorRequest:
         if not self.evaluator_id:
             # Iterate through existing skills with matching evaluator_name and that are accessible to the user
-            for skill in skills.list(self.prompt, name=self.evaluator_name, only_evaluators=True):
+            for skill in wrap_async_iter(skills.alist(self.prompt, name=self.evaluator_name, only_evaluators=True)):
                 if self.prompt is not None and self.prompt != skill.prompt:
                     continue
                 self.evaluator_id = skill.id
                 break
             else:
                 # Implicitly create the evaluator
-                self.evaluator_id = skills.create(
+                evaluator = await skills.acreate(
                     self.prompt or "", model=self.model, name=self.evaluator_name, is_evaluator=True
-                ).id
+                )
+                self.evaluator_id = evaluator.id
         return ObjectiveValidatorRequest(
             evaluator_id=self.evaluator_id, evaluator_name=self.evaluator_name, threshold=self.threshold
         )

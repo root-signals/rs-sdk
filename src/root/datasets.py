@@ -1,14 +1,15 @@
+import asyncio
 from functools import partial
-from typing import Any, Dict, Iterator, Optional
+from typing import AsyncIterator, Awaitable, Iterator, Optional
 
-import requests
+import aiohttp
 
-from root.generated.openapi_client.api.datasets_api import DatasetsApi
-from root.generated.openapi_client.models.data_set_create import DataSetCreate
-from root.generated.openapi_client.models.data_set_list import DataSetList
+from root.generated.openapi_aclient.api.datasets_api import DatasetsApi
+from root.generated.openapi_aclient.models.data_set_create import DataSetCreate
+from root.generated.openapi_aclient.models.data_set_list import DataSetList
 
-from .generated.openapi_client import ApiClient
-from .utils import iterate_cursor_list
+from .generated.openapi_aclient import ApiClient
+from .utils import iterate_cursor_list, wrap_async_iter
 
 
 class DataSets:
@@ -20,7 +21,7 @@ class DataSets:
       accesing an attribute of a :class:`root.client.RootSignals` instance.
     """
 
-    def __init__(self, client: ApiClient, base_url: str, api_key: str):
+    def __init__(self, client: Awaitable[ApiClient], base_url: str, api_key: str):
         self.client = client
         self.base_url = base_url
         self.api_key = api_key
@@ -34,28 +35,48 @@ class DataSets:
         _request_timeout: Optional[int] = None,
     ) -> Optional[DataSetCreate]:
         """
-        Create a dataset object with the given parameters to the registry.
+        Synchronously create a dataset object with the given parameters to the registry.
         If the dataset has a path, it will be uploaded to the registry.
 
         """
 
-        payload: Dict[str, Any] = {"name": name, "type": type, "tags": []}
+        return asyncio.run(self.acreate(name=name, path=path, type=type, _request_timeout=_request_timeout))
+
+    async def acreate(
+        self,
+        *,
+        name: Optional[str] = None,
+        path: Optional[str] = None,
+        type: str = "reference",
+        _request_timeout: Optional[int] = None,
+    ) -> Optional[DataSetCreate]:
+        """
+        Asynchronously create a dataset object with the given parameters to the registry.
+        If the dataset has a path, it will be uploaded to the registry.
+
+        """
+
+        payload = aiohttp.FormData()
+        payload.add_field("name", name)
+        payload.add_field("type", type)
+
         if path:
-            files = {"file": open(path, "rb")}
+            file = open(path, "rb")
+            payload.add_field("file", file)
 
         # TODO Should use the generated client if the generator some day supports streaming upload
         # (Currently the underlying implementation loads file contents to memory always)
-        response = requests.post(
-            f"{self.base_url}/datasets/",
-            headers={"Authorization": f"Api-Key {self.api_key}"},
-            data=payload,
-            files=files,
-            timeout=_request_timeout or 120,
-        )
-        if not response.ok:
-            raise Exception(f"create failed with status code {response.status_code} and message\n{response.text}")
-
-        return DataSetCreate.from_dict(response.json())
+        async with aiohttp.ClientSession() as session:
+            async with session.post(
+                f"{self.base_url}/datasets/",
+                data=payload,
+                headers={"Authorization": f"Api-Key {self.api_key}"},
+                timeout=aiohttp.ClientTimeout(_request_timeout) or aiohttp.ClientTimeout(120),
+            ) as response:
+                if not response.ok:
+                    raise Exception(f"create failed with status code {response.status} and message\n{response.text}")
+                file.close()
+                return DataSetCreate.from_dict(await response.json())
 
     def get(
         self,
@@ -64,15 +85,27 @@ class DataSets:
         _request_timeout: Optional[int] = None,
     ) -> DataSetList:
         """
-        Get a dataset object from the registry.
+        Synchronously get a dataset object from the registry.
         """
-        api_instance = DatasetsApi(self.client)
-        return api_instance.datasets_retrieve(dataset_id, _request_timeout=_request_timeout)
+
+        return asyncio.run(self.aget(dataset_id, _request_timeout=_request_timeout))
+
+    async def aget(
+        self,
+        dataset_id: str,
+        *,
+        _request_timeout: Optional[int] = None,
+    ) -> DataSetList:
+        """
+        Asynchronously get a dataset object from the registry.
+        """
+        api_instance = DatasetsApi(await self.client())  # type: ignore[operator]
+        return await api_instance.datasets_retrieve(dataset_id, _request_timeout=_request_timeout)
 
     def list(
         self, search_term: Optional[str] = None, *, limit: int = 100, _request_timeout: Optional[int] = None
     ) -> Iterator[DataSetList]:
-        """Iterate through the datasets.
+        """Synchronously iterate through the datasets.
 
         Args:
           limit: Number of entries to iterate through at most.
@@ -80,8 +113,22 @@ class DataSets:
           search_term: Can be used to limit returned datasets.
 
         """
-        api_instance = DatasetsApi(self.client)
-        yield from iterate_cursor_list(
+        yield from wrap_async_iter(self.alist(search_term=search_term, limit=limit, _request_timeout=_request_timeout))
+
+    async def alist(
+        self, search_term: Optional[str] = None, *, limit: int = 100, _request_timeout: Optional[int] = None
+    ) -> AsyncIterator[DataSetList]:
+        """Asynchronously iterate through the datasets.
+
+        Args:
+          limit: Number of entries to iterate through at most.
+
+          search_term: Can be used to limit returned datasets.
+
+        """
+
+        api_instance = DatasetsApi(await self.client())  # type: ignore[operator]
+        yield iterate_cursor_list(  # type: ignore[misc]
             partial(api_instance.datasets_list, search=search_term, _request_timeout=_request_timeout), limit=limit
         )
 
@@ -92,7 +139,18 @@ class DataSets:
         _request_timeout: Optional[int] = None,
     ) -> None:
         """
-        Delete a dataset object from the registry.
+        Synchronously delete a dataset object from the registry.
         """
-        api_instance = DatasetsApi(self.client)
-        return api_instance.datasets_destroy(dataset_id, _request_timeout=_request_timeout)
+        return asyncio.run(self.adelete(dataset_id, _request_timeout=_request_timeout))
+
+    async def adelete(
+        self,
+        dataset_id: str,
+        *,
+        _request_timeout: Optional[int] = None,
+    ) -> None:
+        """
+        Asynchronously delete a dataset object from the registry.
+        """
+        api_instance = DatasetsApi(await self.client())  # type: ignore[operator]
+        return await api_instance.datasets_destroy(dataset_id, _request_timeout=_request_timeout)

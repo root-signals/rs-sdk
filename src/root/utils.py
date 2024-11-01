@@ -1,4 +1,7 @@
-from typing import Any, Generic, Iterator, List, Optional, TypeVar
+import asyncio
+import queue
+import threading
+from typing import Any, AsyncIterator, Generic, Iterator, List, Optional, TypeVar
 
 from pydantic import StrictStr
 
@@ -16,15 +19,54 @@ class _PartialResult(Generic[T]):
     results: Optional[List[T]] = None
 
 
-def iterate_cursor_list(partial_list: Any, *, limit: int) -> Iterator[T]:
+async def iterate_cursor_list(partial_list: Any, *, limit: int) -> AsyncIterator[T]:
     # TODO: it would be nice to type partial_list correctly.
     cursor: Optional[StrictStr] = None
     while limit > 0:
-        result: _PartialResult[T] = partial_list(page_size=limit, cursor=cursor)
+        result: _PartialResult[T] = await partial_list(page_size=limit, cursor=cursor)
         if not result.results:
             return
-        used_results = result.results[:limit]
-        yield from used_results
-        limit -= len(used_results)
+
+        for used_result in (used_results := result.results[:limit]):
+            yield used_result
+            limit -= len(used_results)
+
         if not (cursor := result.next):
             return
+
+
+# create an asyncio loop that runs in the background to
+# serve our asyncio needs
+loop = asyncio.get_event_loop()
+threading.Thread(target=loop.run_forever, daemon=True).start()
+
+
+def wrap_async_iter(ait: AsyncIterator) -> Iterator[Any]:
+    """Wrap an asynchronous iterator into a synchronous one"""
+    q: queue.Queue = queue.Queue()
+    _end = object()
+
+    def yield_queue_items() -> Iterator[Any]:
+        while True:
+            next_item = q.get()
+            if next_item is _end:
+                break
+            yield next_item
+        # After observing _end we know the aiter_to_queue coroutine has
+        # completed.  Invoke result() for side effect - if an exception
+        # was raised by the async iterator, it will be propagated here.
+        async_result.result()
+
+    async def aiter_to_queue() -> None:
+        try:
+            async for item in ait:
+                if isinstance(item, AsyncIterator):
+                    async for it in item:
+                        q.put(it)
+                else:
+                    q.put(item)
+        finally:
+            q.put(_end)
+
+    async_result = asyncio.run_coroutine_threadsafe(aiter_to_queue(), loop)
+    return yield_queue_items()
