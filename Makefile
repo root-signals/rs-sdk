@@ -71,12 +71,12 @@ generate-openapi-client:
 		generate -i /local/openapi.yaml \
 		-g python -o /local/src \
 		--skip-validate-spec \
-		--additional-properties=generateSourceCodeOnly=true,packageName=root.generated.openapi_client
+		--additional-properties=generateSourceCodeOnly=true,packageName=root.generated.openapi_aclient,library=asyncio
 
 .PHONY: fix-openapi-client
 fix-openapi-client:
-	echo "from .api_client import ApiClient" > src/root/generated/openapi_client/__init__.py
-	echo > src/root/generated/openapi_client/api/__init__.py
+	echo "from .api_client import ApiClient" > src/root/generated/openapi_aclient/__init__.py
+	echo > src/root/generated/openapi_aclient/api/__init__.py
 	make ruff || make ruff
 
 # Some comments about ^: These 2 echo lines are necessary as by
