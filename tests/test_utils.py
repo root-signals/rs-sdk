@@ -1,10 +1,12 @@
 from dataclasses import dataclass
 from typing import List, Optional
 
-from root.utils import iterate_cursor_list
+import pytest
+from root.utils import iterate_cursor_list, wrap_async_iter
 
 
-def test_iterate_cursor_list():
+@pytest.mark.asyncio
+async def test_iterate_cursor_list():
     test_data = list(range(1000))
 
     @dataclass
@@ -28,25 +30,25 @@ def test_iterate_cursor_list():
             next_cursor = "x" + str(next_index)
         return DummyPaginationResult(next=next_cursor, results=test_data[index:next_index])
 
-    assert list(iterate_cursor_list(dummy_partial, limit=0)) == test_data[:0]
+    assert list(wrap_async_iter(iterate_cursor_list(dummy_partial, limit=0))) == test_data[:0]
     assert calls == 0
 
-    assert list(iterate_cursor_list(dummy_partial, limit=12)) == test_data[:12]
+    assert list(wrap_async_iter(iterate_cursor_list(dummy_partial, limit=12))) == test_data[:12]
     assert calls == 1
 
     # Ensure that page size aligned fetches still call backend only correct number of times
     calls = 0
     limit = page_size_max * 2
-    assert list(iterate_cursor_list(dummy_partial, limit=limit)) == test_data[:limit]
+    assert list(wrap_async_iter(iterate_cursor_list(dummy_partial, limit=limit))) == test_data[:limit]
     assert calls == 2
 
     # Ensure that those that do not align make the extra fetch for partials
     calls = 0
     limit = 123
-    assert list(iterate_cursor_list(dummy_partial, limit=limit)) == test_data[:limit]
+    assert list(wrap_async_iter(iterate_cursor_list(dummy_partial, limit=limit))) == test_data[:limit]
     assert calls == limit // page_size_max + 1
 
     # Ensure that getting more than what is available works correctly too
     calls = 0
-    assert list(iterate_cursor_list(dummy_partial, limit=1234)) == test_data
+    assert list(wrap_async_iter(iterate_cursor_list(dummy_partial, limit=1234))) == test_data
     assert calls == 1000 // page_size_max + 1
