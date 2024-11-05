@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
 
 from root.generated.openapi_aclient.models.objective_validator_request import ObjectiveValidatorRequest
-from root.utils import wrap_async_iter
 
 if TYPE_CHECKING:
     from .skills import ModelName, Skills
@@ -58,7 +57,7 @@ class Validator:
     async def _to_request(self, skills: Skills) -> ObjectiveValidatorRequest:
         if not self.evaluator_id:
             # Iterate through existing skills with matching evaluator_name and that are accessible to the user
-            for skill in wrap_async_iter(skills.alist(self.prompt, name=self.evaluator_name, only_evaluators=True)):
+            async for skill in skills.alist(self.prompt, name=self.evaluator_name, only_evaluators=True):
                 if self.prompt is not None and self.prompt != skill.prompt:
                     continue
                 self.evaluator_id = skill.id

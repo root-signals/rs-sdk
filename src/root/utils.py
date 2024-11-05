@@ -14,6 +14,10 @@ T = TypeVar("T")
 # The original classes returned by partial_list may or may not have
 # anything to do with this (in practise they are pydantic BaseModel
 # subclasses that have no shared superclass unfortunately).
+#
+# Update November 2024. - This does not work well with our async iterators
+# since we end up in a nested async iterator situation. Not DRY.
+# Usable and left in one place with test for convenience.s
 class _PartialResult(Generic[T]):
     next: Optional[StrictStr] = None
     results: Optional[List[T]] = None
@@ -27,10 +31,9 @@ async def iterate_cursor_list(partial_list: Any, *, limit: int) -> AsyncIterator
         if not result.results:
             return
 
-        for used_result in (used_results := result.results[:limit]):
-            yield used_result
-            limit -= len(used_results)
-
+        used_results = result.results[:limit]
+        yield used_results  # type: ignore[misc]
+        limit -= len(used_results)
         if not (cursor := result.next):
             return
 
@@ -38,11 +41,15 @@ async def iterate_cursor_list(partial_list: Any, *, limit: int) -> AsyncIterator
 # create an asyncio loop that runs in the background to
 # serve our asyncio needs
 loop = asyncio.get_event_loop()
-threading.Thread(target=loop.run_forever, daemon=True).start()
+if not loop.is_running():
+    threading.Thread(target=loop.run_forever, daemon=True).start()
 
 
-def wrap_async_iter(ait: AsyncIterator) -> Iterator[Any]:
-    """Wrap an asynchronous iterator into a synchronous one"""
+def wrap_async_iter(ait: AsyncIterator, flatten: bool = False) -> Iterator[Any]:
+    """
+    Wrap an asynchronous iterator into a synchronous one for our sync SDK.
+    """
+
     q: queue.Queue = queue.Queue()
     _end = object()
 
@@ -60,11 +67,7 @@ def wrap_async_iter(ait: AsyncIterator) -> Iterator[Any]:
     async def aiter_to_queue() -> None:
         try:
             async for item in ait:
-                if isinstance(item, AsyncIterator):
-                    async for it in item:
-                        q.put(it)
-                else:
-                    q.put(item)
+                q.put(item)
         finally:
             q.put(_end)
 

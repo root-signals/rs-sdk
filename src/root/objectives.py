@@ -4,6 +4,8 @@ import asyncio
 from functools import partial
 from typing import TYPE_CHECKING, AsyncIterator, Awaitable, Iterator, List, Optional, cast
 
+from pydantic import StrictStr
+
 from root.generated.openapi_aclient.api.objectives_api import ObjectivesApi
 from root.generated.openapi_aclient.models.evaluator_execution_functions_request import (
     EvaluatorExecutionFunctionsRequest,
@@ -15,6 +17,9 @@ from root.generated.openapi_aclient.models.objective_execution_request import (
 from root.generated.openapi_aclient.models.objective_list import ObjectiveList
 from root.generated.openapi_aclient.models.objective_request import ObjectiveRequest
 from root.generated.openapi_aclient.models.paginated_objective_list import PaginatedObjectiveList
+from root.generated.openapi_aclient.models.paginated_objective_list_list import (
+    PaginatedObjectiveListList,
+)
 from root.generated.openapi_aclient.models.patched_objective_request import (
     PatchedObjectiveRequest,
 )
@@ -24,7 +29,7 @@ from root.generated.openapi_aclient.models.validator_execution_result import (
 
 from .generated.openapi_aclient import ApiClient
 from .skills import Skills
-from .utils import iterate_cursor_list, wrap_async_iter
+from .utils import wrap_async_iter
 
 if TYPE_CHECKING:
     from .validators import Validator
@@ -307,9 +312,21 @@ class Objectives:
 
         """
         api_instance = ObjectivesApi(await self.client())  # type: ignore[operator]
-        yield iterate_cursor_list(  # type: ignore[misc]
-            partial(api_instance.objectives_list, intent=intent), limit=limit
-        )
+        partial_list = partial(api_instance.objectives_list, intent=intent)
+
+        cursor: Optional[StrictStr] = None
+        while limit > 0:
+            result: PaginatedObjectiveListList = await partial_list(page_size=limit, cursor=cursor)
+            if not result.results:
+                return
+
+            used_results = result.results[:limit]
+            for used_result in used_results:
+                yield used_result
+
+                limit -= len(used_results)
+                if not (cursor := result.next):
+                    return
 
     def run(
         self,

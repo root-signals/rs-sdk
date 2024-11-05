@@ -2,12 +2,15 @@ import asyncio
 from functools import partial
 from typing import AsyncIterator, Awaitable, Iterator, List, Optional
 
+from pydantic import StrictStr
+
 from root.generated.openapi_aclient.api.models_api import ModelsApi
 from root.generated.openapi_aclient.models.model import Model
 from root.generated.openapi_aclient.models.model_request import ModelRequest
+from root.generated.openapi_aclient.models.paginated_model_list_list import PaginatedModelListList
 
 from .generated.openapi_aclient import ApiClient
-from .utils import iterate_cursor_list, wrap_async_iter
+from .utils import wrap_async_iter
 
 
 class Models:
@@ -64,9 +67,21 @@ class Models:
 
         """
         api_instance = ModelsApi(await self.client())  # type: ignore[operator]
-        yield iterate_cursor_list(  # type: ignore[misc]
-            partial(api_instance.models_list, capable_of=capable_of), limit=limit
-        )
+        partial_list = partial(api_instance.models_list, capable_of=capable_of)
+
+        cursor: Optional[StrictStr] = None
+        while limit > 0:
+            result: PaginatedModelListList = await partial_list(page_size=limit, cursor=cursor)
+            if not result.results:
+                return
+
+            used_results = result.results[:limit]
+            for used_result in used_results:
+                yield used_result  # type: ignore[misc]
+
+                limit -= len(used_results)
+                if not (cursor := result.next):
+                    return
 
     def create(
         self,
