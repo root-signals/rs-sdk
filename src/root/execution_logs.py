@@ -4,12 +4,17 @@ import asyncio
 from functools import partial
 from typing import TYPE_CHECKING, AsyncIterator, Awaitable, Iterator, Optional, Protocol
 
+from pydantic import StrictStr
+
 from root.generated.openapi_aclient.api.execution_logs_api import ExecutionLogsApi
 from root.generated.openapi_aclient.models.execution_log_details import ExecutionLogDetails
 from root.generated.openapi_aclient.models.execution_log_list import ExecutionLogList
+from root.generated.openapi_aclient.models.paginated_execution_log_list_list import (
+    PaginatedExecutionLogListList,
+)
 
 from .generated.openapi_aclient import ApiClient
-from .utils import iterate_cursor_list, wrap_async_iter
+from .utils import wrap_async_iter
 
 if TYPE_CHECKING:
 
@@ -54,14 +59,25 @@ class ExecutionLogs:
           search_term: Can be used to limit returned logs. For example, a skill id or name.
         """
         api_instance = ExecutionLogsApi(await self._client())  # type: ignore[operator]
-        yield iterate_cursor_list(  # type: ignore[misc]
-            partial(
-                api_instance.execution_logs_list,
-                search=search_term,
-                _request_timeout=_request_timeout,
-            ),
-            limit=limit,
+        partial_list = partial(
+            api_instance.execution_logs_list,
+            search=search_term,
+            _request_timeout=_request_timeout,
         )
+
+        cursor: Optional[StrictStr] = None
+        while limit > 0:
+            result: PaginatedExecutionLogListList = await partial_list(page_size=limit, cursor=cursor)
+            if not result.results:
+                return
+
+            used_results = result.results[:limit]
+            for used_result in used_results:
+                yield used_result
+
+                limit -= len(used_results)
+                if not (cursor := result.next):
+                    return
 
     def get(
         self,

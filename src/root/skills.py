@@ -8,7 +8,7 @@ from enum import Enum
 from functools import partial
 from typing import TYPE_CHECKING, AsyncIterator, Awaitable, Dict, Iterator, List, Literal, Optional, Union, cast
 
-from pydantic import BaseModel
+from pydantic import BaseModel, StrictStr
 
 from root.generated.openapi_aclient.api.chats_api import ChatsApi
 from root.generated.openapi_aclient.api.objectives_api import ObjectivesApi
@@ -19,6 +19,7 @@ from root.generated.openapi_aclient.models.evaluator_calibration_output import E
 from root.generated.openapi_aclient.models.input_variable_request import InputVariableRequest
 from root.generated.openapi_aclient.models.objective_request import ObjectiveRequest
 from root.generated.openapi_aclient.models.paginated_skill_list import PaginatedSkillList
+from root.generated.openapi_aclient.models.paginated_skill_list_output_list import PaginatedSkillListOutputList
 from root.generated.openapi_aclient.models.patched_skill_request import PatchedSkillRequest
 from root.generated.openapi_aclient.models.reference_variable_request import ReferenceVariableRequest
 from root.generated.openapi_aclient.models.skill import Skill as OpenAPISkill
@@ -905,12 +906,23 @@ class Skills:
         """
 
         api_instance = SkillsApi(await self.client())  # type: ignore[operator]
-        yield iterate_cursor_list(  # type: ignore[misc]
-            partial(
-                api_instance.skills_list, name=name, search=search_term, is_evaluator=True if only_evaluators else None
-            ),
-            limit=limit,
+        partial_list = partial(
+            api_instance.skills_list, name=name, search=search_term, is_evaluator=True if only_evaluators else None
         )
+
+        cursor: Optional[StrictStr] = None
+        while limit > 0:
+            result: PaginatedSkillListOutputList = await partial_list(page_size=limit, cursor=cursor)
+            if not result.results:
+                return
+
+            used_results = result.results[:limit]
+            for used_result in used_results:
+                yield used_result
+
+                limit -= len(used_results)
+                if not (cursor := result.next):
+                    return
 
     def test(
         self,
@@ -1714,13 +1726,12 @@ class Evaluators:
 
         api_instance = SkillsApi(await self.client())  # type: ignore[operator]
 
-        evaluator_list: List[SkillListOutput] = [  # type: ignore[var-annotated]
-            skill
-            async for skill in iterate_cursor_list(
-                partial(api_instance.skills_list, name=name, is_evaluator=True),
-                limit=1,
-            )
-        ]
+        evaluator_list: List[SkillListOutput] = []
+        async for skill in iterate_cursor_list(  # type: ignore[var-annotated]
+            partial(api_instance.skills_list, name=name, is_evaluator=True),
+            limit=1,
+        ):
+            evaluator_list.extend(skill)
 
         if not evaluator_list:
             raise ValueError(f"No evaluator found with name '{name}'")
