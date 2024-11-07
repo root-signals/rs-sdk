@@ -112,7 +112,7 @@ class Models:
 
         """
 
-        return asyncio.run(
+        return asyncio.run_coroutine_threadsafe(
             self.acreate(
                 name=name,
                 model=model,
@@ -121,8 +121,9 @@ class Models:
                 max_token_count=max_token_count,
                 url=url,
                 _request_timeout=_request_timeout,
-            )
-        )
+            ),
+            asyncio.get_event_loop(),
+        ).result()
 
     async def acreate(
         self,
@@ -179,7 +180,9 @@ class Models:
           model: The model to be deleted.
 
         """
-        return asyncio.run(self.adelete(model_id=model_id, _request_timeout=_request_timeout))
+        return asyncio.run_coroutine_threadsafe(
+            self.adelete(model_id=model_id, _request_timeout=_request_timeout), asyncio.get_event_loop()
+        ).result()
 
     async def adelete(
         self,

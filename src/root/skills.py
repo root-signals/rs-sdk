@@ -145,7 +145,7 @@ class Versions:
         Args:
           skill_id: The skill to list the versions for
         """
-        return asyncio.run(self.alist(skill_id))
+        return asyncio.run_coroutine_threadsafe(self.alist(skill_id), asyncio.get_event_loop()).result()
 
     async def alist(self, skill_id: str) -> PaginatedSkillList:
         """Asynchronously list all versions of a skill.
@@ -168,7 +168,7 @@ class Skill(OpenAPISkill):
 
     @classmethod
     def _wrap(cls, apiobj: OpenAPISkill, client: Awaitable[ApiClient]) -> "Skill":
-        return asyncio.run(cls._awrap(apiobj, client))
+        return asyncio.run_coroutine_threadsafe(cls._awrap(apiobj, client), asyncio.get_event_loop()).result()
 
     @classmethod
     async def _awrap(cls, apiobj: OpenAPISkill, client: Awaitable[ApiClient]) -> "Skill":
@@ -187,7 +187,7 @@ class Skill(OpenAPISkill):
         Currently only OpenAI chat completions API is supported using
         the base URL.
         """
-        return asyncio.run(self.aopenai_base_url())
+        return asyncio.run_coroutine_threadsafe(self.aopenai_base_url(), asyncio.get_event_loop()).result()
 
     async def aopenai_base_url(self) -> str:
         """
@@ -205,7 +205,7 @@ class Skill(OpenAPISkill):
         Args:
           variables: The variables to be provided to the skill.
         """
-        return asyncio.run(self.arun(variables))
+        return asyncio.run_coroutine_threadsafe(self.arun(variables), asyncio.get_event_loop()).result()
 
     async def arun(self, variables: Optional[Dict[str, str]] = None) -> SkillExecutionResult:
         """Asynchronously run a skill with optional variables.
@@ -242,15 +242,16 @@ class Skill(OpenAPISkill):
           contexts: Optional documents passed to RAG evaluators
 
         """
-        return asyncio.run(
+        return asyncio.run_coroutine_threadsafe(
             self.aevaluate(
                 response=response,
                 request=request,
                 contexts=contexts,
                 functions=functions,
                 _request_timeout=_request_timeout,
-            )
-        )
+            ),
+            asyncio.get_event_loop(),
+        ).result()
 
     async def aevaluate(
         self,
@@ -299,7 +300,7 @@ class Evaluator(OpenAPISkill):
 
     @classmethod
     def _wrap(cls, apiobj: OpenAPISkill, client: Awaitable[ApiClient]) -> "Evaluator":
-        return asyncio.run(cls._awrap(apiobj, client))
+        return asyncio.run_coroutine_threadsafe(cls._awrap(apiobj, client), asyncio.get_event_loop()).result()
 
     @classmethod
     async def _awrap(cls, apiobj: OpenAPISkill, client: Awaitable[ApiClient]) -> "Evaluator":
@@ -334,15 +335,16 @@ class Evaluator(OpenAPISkill):
           expected_output: Optional expected output for the evaluator.
 
         """
-        return asyncio.run(
+        return asyncio.run_coroutine_threadsafe(
             self.arun(
                 response=response,
                 request=request,
                 contexts=contexts,
                 functions=functions,
                 expected_output=expected_output,
-            )
-        )
+            ),
+            asyncio.get_event_loop(),
+        ).result()
 
     async def arun(
         self,
@@ -472,15 +474,16 @@ class PresetEvaluatorRunner:
           expected_output: Optional expected output for the evaluator.
 
         """
-        return asyncio.run(
+        return asyncio.run_coroutine_threadsafe(
             self._acall(
                 response=response,
                 request=request,
                 contexts=contexts,
                 functions=functions,
                 expected_output=expected_output,
-            )
-        )
+            ),
+            asyncio.get_event_loop(),
+        ).result()
 
     async def _acall(
         self,
@@ -607,7 +610,7 @@ class Skills:
           overwrite: Whether to overwrite a skill with the same name if it exists.
 
         """
-        return asyncio.run(
+        return asyncio.run_coroutine_threadsafe(
             self.acreate(
                 prompt=prompt,
                 name=name,
@@ -625,8 +628,9 @@ class Skills:
                 objective_id=objective_id,
                 overwrite=overwrite,
                 _request_timeout=_request_timeout,
-            )
-        )
+            ),
+            asyncio.get_event_loop(),
+        ).result()
 
     async def acreate(
         self,
@@ -755,7 +759,7 @@ class Skills:
         Args:
           skill_id: The skill to be updated
         """
-        return asyncio.run(
+        return asyncio.run_coroutine_threadsafe(
             self.aupdate(
                 skill_id,
                 change_note=change_note,
@@ -772,8 +776,9 @@ class Skills:
                 evaluator_demonstrations=evaluator_demonstrations,
                 objective_id=objective_id,
                 _request_timeout=_request_timeout,
-            )
-        )
+            ),
+            asyncio.get_event_loop(),
+        ).result()
 
     async def aupdate(
         self,
@@ -833,7 +838,9 @@ class Skills:
         Args:
           skill_id: The skill to be fetched
         """
-        return asyncio.run(self.aget(skill_id, _request_timeout=_request_timeout))
+        return asyncio.run_coroutine_threadsafe(
+            self.aget(skill_id, _request_timeout=_request_timeout), asyncio.get_event_loop()
+        ).result()
 
     async def aget(
         self,
@@ -945,7 +952,7 @@ class Skills:
         method.
 
         """
-        return asyncio.run(
+        return asyncio.run_coroutine_threadsafe(
             self.atest(
                 test_dataset_id=test_dataset_id,
                 prompt=prompt,
@@ -957,8 +964,9 @@ class Skills:
                 input_variables=input_variables,
                 data_loaders=data_loaders,
                 _request_timeout=_request_timeout,
-            )
-        )
+            ),
+            asyncio.get_event_loop(),
+        ).result()
 
     async def atest(
         self,
@@ -1014,14 +1022,15 @@ class Skills:
           test_dataset_id: ID of the dataset to be used to test the skill.
 
         """
-        return asyncio.run(
+        return asyncio.run_coroutine_threadsafe(
             self.atest_existing(
                 skill_id=skill_id,
                 test_dataset_id=test_dataset_id,
                 test_data=test_data,
                 _request_timeout=_request_timeout,
-            )
-        )
+            ),
+            asyncio.get_event_loop(),
+        ).result()
 
     async def atest_existing(
         self,
@@ -1076,9 +1085,10 @@ class Skills:
 
           history_from_chat_id: Optional chat_id to copy chat history from.
         """
-        return asyncio.run(
-            self.acreate_chat(skill_id, chat_id=chat_id, name=name, history_from_chat_id=history_from_chat_id)
-        )
+        return asyncio.run_coroutine_threadsafe(
+            self.acreate_chat(skill_id, chat_id=chat_id, name=name, history_from_chat_id=history_from_chat_id),
+            asyncio.get_event_loop(),
+        ).result()
 
     async def acreate_chat(
         self,
@@ -1129,7 +1139,7 @@ class Skills:
           skill_id: The skill to be deleted.
 
         """
-        return asyncio.run(self.adelete(skill_id))
+        return asyncio.run_coroutine_threadsafe(self.adelete(skill_id), asyncio.get_event_loop()).result()
 
     async def adelete(self, skill_id: str) -> None:
         """
@@ -1162,15 +1172,16 @@ class Skills:
         - llm_output: the LLM response of the skill run
         - validation: the result of the skill validation
         """
-        return asyncio.run(
+        return asyncio.run_coroutine_threadsafe(
             self.arun(
                 skill_id,
                 variables,
                 model_params=model_params,
                 skill_version_id=skill_version_id,
                 _request_timeout=_request_timeout,
-            )
-        )
+            ),
+            asyncio.get_event_loop(),
+        ).result()
 
     async def arun(
         self,
@@ -1231,7 +1242,7 @@ class Skills:
 
         """
 
-        return asyncio.run(
+        return asyncio.run_coroutine_threadsafe(
             self.aevaluate(
                 skill_id,
                 response=response,
@@ -1240,8 +1251,9 @@ class Skills:
                 functions=functions,
                 skill_version_id=skill_version_id,
                 _request_timeout=_request_timeout,
-            )
-        )
+            ),
+            asyncio.get_event_loop(),
+        ).result()
 
     async def aevaluate(
         self,
@@ -1388,7 +1400,7 @@ class Evaluators:
         Returns a dictionary with the following keys:
         - score: a value between 0 and 1 representing the score of the evaluator
         """
-        return asyncio.run(
+        return asyncio.run_coroutine_threadsafe(
             self.arun(
                 evaluator_id,
                 request=request,
@@ -1398,8 +1410,9 @@ class Evaluators:
                 expected_output=expected_output,
                 evaluator_version_id=evaluator_version_id,
                 _request_timeout=_request_timeout,
-            )
-        )
+            ),
+            asyncio.get_event_loop(),
+        ).result()
 
     async def arun(
         self,
@@ -1446,14 +1459,15 @@ class Evaluators:
         """
         Synchronously run calibration set on an existing evaluator.
         """
-        return asyncio.run(
+        return asyncio.run_coroutine_threadsafe(
             self.acalibrate_existing(
                 evaluator_id=evaluator_id,
                 test_dataset_id=test_dataset_id,
                 test_data=test_data,
                 _request_timeout=_request_timeout,
-            )
-        )
+            ),
+            asyncio.get_event_loop(),
+        ).result()
 
     async def acalibrate_existing(
         self,
@@ -1496,7 +1510,7 @@ class Evaluators:
         """
         Synchronously run calibration set on an existing evaluator.
         """
-        return asyncio.run(
+        return asyncio.run_coroutine_threadsafe(
             self.acalibrate(
                 name=name,
                 test_dataset_id=test_dataset_id,
@@ -1508,8 +1522,9 @@ class Evaluators:
                 input_variables=input_variables,
                 data_loaders=data_loaders,
                 _request_timeout=_request_timeout,
-            )
-        )
+            ),
+            asyncio.get_event_loop(),
+        ).result()
 
     async def acalibrate(
         self,
@@ -1572,15 +1587,16 @@ class Evaluators:
 
         Returns a dictionary with the results and errors for each model and prompt.
         """
-        return asyncio.run(
+        return asyncio.run_coroutine_threadsafe(
             self.acalibrate_batch(
                 evaluator_definitions=evaluator_definitions,
                 test_dataset_id=test_dataset_id,
                 test_data=test_data,
                 parallel_requests=parallel_requests,
                 _request_timeout=_request_timeout,
-            )
-        )
+            ),
+            asyncio.get_event_loop(),
+        ).result()
 
     async def acalibrate_batch(
         self,
@@ -1715,7 +1731,7 @@ class Evaluators:
         name: The evaluator to be fetched. Note this only works for uniquely named evaluators.
         """
 
-        return asyncio.run(self.aget_by_name(name))
+        return asyncio.run_coroutine_threadsafe(self.aget_by_name(name), asyncio.get_event_loop()).result()
 
     async def aget_by_name(self, name: str) -> Evaluator:
         """Asynchronously get an evaluator instance by name.
@@ -1790,7 +1806,7 @@ class Evaluators:
           overwrite: Whether to overwrite a skill with the same name if it exists.
 
         """
-        return asyncio.run(
+        return asyncio.run_coroutine_threadsafe(
             self.acreate(
                 predicate=predicate,
                 name=name,
@@ -1804,8 +1820,9 @@ class Evaluators:
                 model_params=model_params,
                 objective_id=objective_id,
                 overwrite=overwrite,
-            )
-        )
+            ),
+            asyncio.get_event_loop(),
+        ).result()
 
     async def acreate(
         self,

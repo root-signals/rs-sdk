@@ -96,9 +96,10 @@ class ExecutionLogs:
           ValueError: If both log_id and execution_result are None.
         """
 
-        return asyncio.run(
-            self.aget(log_id=log_id, execution_result=execution_result, _request_timeout=_request_timeout)
-        )
+        return asyncio.run_coroutine_threadsafe(
+            self.aget(log_id=log_id, execution_result=execution_result, _request_timeout=_request_timeout),
+            asyncio.get_event_loop(),
+        ).result()
 
     async def aget(
         self,
