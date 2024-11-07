@@ -20,7 +20,7 @@ class SkillChat(ChatDetail):
 
     @classmethod
     def _wrap(cls, chat: ChatDetail, client: Awaitable[ApiClient]) -> "SkillChat":
-        return asyncio.run(cls._awrap(chat, client))
+        return asyncio.run_coroutine_threadsafe(cls._awrap(chat, client), asyncio.get_event_loop()).result()
 
     @classmethod
     async def _awrap(cls, chat: ChatDetail, client: Awaitable[ApiClient]) -> "SkillChat":
@@ -44,13 +44,14 @@ class SkillChat(ChatDetail):
 
         The response is equal to the skill run response, with the addition of a chat_id key.
         """
-        return asyncio.run(
+        return asyncio.run_coroutine_threadsafe(
             self.arun(
                 variables=variables,
                 skill_version_id=skill_version_id,
                 _request_timeout=_request_timeout,
-            )
-        )
+            ),
+            asyncio.get_event_loop(),
+        ).result()
 
     async def arun(
         self,

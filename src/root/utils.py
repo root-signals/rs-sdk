@@ -41,8 +41,7 @@ async def iterate_cursor_list(partial_list: Any, *, limit: int) -> AsyncIterator
 # create an asyncio loop that runs in the background to
 # serve our asyncio needs
 loop = asyncio.get_event_loop()
-if not loop.is_running():
-    threading.Thread(target=loop.run_forever, daemon=True).start()
+threading.Thread(target=loop.run_forever, daemon=True).start()
 
 
 def wrap_async_iter(ait: AsyncIterator, flatten: bool = False) -> Iterator[Any]:

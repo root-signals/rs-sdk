@@ -50,7 +50,7 @@ class Versions:
         Args:
           objective_id: The objective to list the versions for
         """
-        return asyncio.run(self.alist(objective_id))
+        return asyncio.run_coroutine_threadsafe(self.alist(objective_id), asyncio.get_event_loop()).result()
 
     async def alist(self, objective_id: str) -> PaginatedObjectiveList:
         """Asynchronously list all versions of an objective.
@@ -73,7 +73,7 @@ class Objective(OpenApiObjective):
 
     @classmethod
     def _wrap(cls, apiobj: OpenApiObjective, client: Awaitable[ApiClient]) -> "Objective":
-        return asyncio.run(cls._awrap(apiobj, client))
+        return asyncio.run_coroutine_threadsafe(cls._awrap(apiobj, client), asyncio.get_event_loop()).result()
 
     @classmethod
     async def _awrap(cls, apiobj: OpenApiObjective, client: Awaitable[ApiClient]) -> "Objective":
@@ -105,15 +105,16 @@ class Objective(OpenApiObjective):
           contexts: Optional documents passed to RAG evaluators
 
         """
-        return asyncio.run(
+        return asyncio.run_coroutine_threadsafe(
             self.arun(
                 response=response,
                 request=request,
                 contexts=contexts,
                 functions=functions,
                 _request_timeout=_request_timeout,
-            )
-        )
+            ),
+            asyncio.get_event_loop(),
+        ).result()
 
     async def arun(
         self,
@@ -182,14 +183,15 @@ class Objectives:
           test_dataset_id: The ID of the test dataset
 
         """
-        return asyncio.run(
+        return asyncio.run_coroutine_threadsafe(
             self.acreate(
                 intent=intent,
                 validators=validators,
                 test_dataset_id=test_dataset_id,
                 _request_timeout=_request_timeout,
-            )
-        )
+            ),
+            asyncio.get_event_loop(),
+        ).result()
 
     async def acreate(
         self,
@@ -237,7 +239,9 @@ class Objectives:
           objective_id: The objective to be fetched.
 
         """
-        return asyncio.run(self.aget(objective_id, _request_timeout=_request_timeout))
+        return asyncio.run_coroutine_threadsafe(
+            self.aget(objective_id, _request_timeout=_request_timeout), asyncio.get_event_loop()
+        ).result()
 
     async def aget(
         self,
@@ -269,7 +273,9 @@ class Objectives:
           objective_id: The objective to be deleted.
 
         """
-        return asyncio.run(self.adelete(objective_id=objective_id, _request_timeout=_request_timeout))
+        return asyncio.run_coroutine_threadsafe(
+            self.adelete(objective_id=objective_id, _request_timeout=_request_timeout), asyncio.get_event_loop()
+        ).result()
 
     async def adelete(self, objective_id: str, *, _request_timeout: Optional[int] = None) -> None:
         """
@@ -351,7 +357,7 @@ class Objectives:
 
 
         """
-        return asyncio.run(
+        return asyncio.run_coroutine_threadsafe(
             self.arun(
                 objective_id=objective_id,
                 response=response,
@@ -359,8 +365,9 @@ class Objectives:
                 contexts=contexts,
                 functions=functions,
                 _request_timeout=_request_timeout,
-            )
-        )
+            ),
+            asyncio.get_event_loop(),
+        ).result()
 
     async def arun(
         self,
@@ -419,15 +426,16 @@ class Objectives:
           validators: An optional list of validators.
         """
 
-        return asyncio.run(
+        return asyncio.run_coroutine_threadsafe(
             self.aupdate(
                 objective_id=objective_id,
                 intent=intent,
                 validators=validators,
                 test_dataset_id=test_dataset_id,
                 _request_timeout=_request_timeout,
-            )
-        )
+            ),
+            asyncio.get_event_loop(),
+        ).result()
 
     async def aupdate(
         self,

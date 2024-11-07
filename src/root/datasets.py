@@ -42,7 +42,9 @@ class DataSets:
 
         """
 
-        return asyncio.run(self.acreate(name=name, path=path, type=type, _request_timeout=_request_timeout))
+        return asyncio.run_coroutine_threadsafe(
+            self.acreate(name=name, path=path, type=type, _request_timeout=_request_timeout), asyncio.get_event_loop()
+        ).result()
 
     async def acreate(
         self,
@@ -91,7 +93,9 @@ class DataSets:
         Synchronously get a dataset object from the registry.
         """
 
-        return asyncio.run(self.aget(dataset_id, _request_timeout=_request_timeout))
+        return asyncio.run_coroutine_threadsafe(
+            self.aget(dataset_id, _request_timeout=_request_timeout), asyncio.get_event_loop()
+        ).result()
 
     async def aget(
         self,
@@ -156,7 +160,9 @@ class DataSets:
         """
         Synchronously delete a dataset object from the registry.
         """
-        return asyncio.run(self.adelete(dataset_id, _request_timeout=_request_timeout))
+        return asyncio.run_coroutine_threadsafe(
+            self.adelete(dataset_id, _request_timeout=_request_timeout), asyncio.get_event_loop()
+        ).result()
 
     async def adelete(
         self,
