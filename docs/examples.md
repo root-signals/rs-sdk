@@ -1,10 +1,51 @@
-# SDK features using concrete examples #
+# SDK features using concrete examples
 
 These examples walk through some features of the platform in more detail.
 
-## Minimal skill
+## Root Signals evaluators
 
-Just like the quickstart example, but broken into multiple lines for readability. The APIs typically respond with Python objects that can be used to chain requests or alternatively reuse previous calls' results.
+Root Signals provides [over 30 ready-made](https://docs.rootsignals.ai/quick-start/usage/evaluators#list-of-evaluators-maintained-by-root-signals) evaluators that can be used to validate any textual content.
+
+
+```{literalinclude} ../examples/preset_evaluator.py
+```
+
+## Adjust evaluator behavior
+
+An evaluator can be calibrated to adjust its behavior
+
+```{literalinclude} ../examples/calibration.py
+```
+```json
+// print(test_result[0].result)
+
+"score": "0.5",
+"expected_score": "0.1",
+```
+```json
+// print(test_result[0].result)
+
+"score": "0.1",
+"expected_score": "0.1",
+```
+
+
+
+## Retrieval Augmented Generation (RAG) evaluation
+
+For RAG, there are special evaluators that can separately measure the different intermediate components of a RAG pipeline, in addition to the final output.
+
+```{literalinclude} ../examples/run_rag.py
+```
+```json
+// print(result.score)
+
+"0.0"
+```
+
+## Minimal *Skill*
+
+*Skills* are measurable units of automations powered by LLMs. The APIs typically respond with Python objects that can be used to chain requests or alternatively reuse previous calls' results.
 
 ```{literalinclude} ../examples/minimal.py
 ```
@@ -19,7 +60,7 @@ Just like the quickstart example, but broken into multiple lines for readability
 "cost": "5.6e-05",
 ```
 
-## Simple skill
+## Simple *Skill*
 
 The simple skill example adds some more metadata to the skill. It specifies explicitly the model to use, the descriptive intent, and the input variables that are referred to in the prompt.
 
@@ -36,7 +77,7 @@ The simple skill example adds some more metadata to the skill. It specifies expl
 "cost": "0.00093",
 ```
 
-## Skill with a validator
+## *Skill* with a validator
 
 In order to ensure the results of skill execution remain within acceptable guardrails, we can add a validator. In this example, the validator scores the results by the clarity of the model output.
 
@@ -87,7 +128,7 @@ In order to ensure the results of skill execution remain within acceptable guard
 ```
 
 
-## Skill with reference data
+## *Skill* with reference data
 
 Skills can leverage reference data, such as a document, to provide additional context to the model.
 
@@ -99,16 +140,24 @@ Skills can leverage reference data, such as a document, to provide additional co
 longer-email@example.com
 ```
 
-## Root Signals evaluators
+## *Skill* with a data loader
 
-Root Signals provides [over 30 ready-made](https://docs.rootsignals.ai/quick-start/usage/evaluators#list-of-evaluators-maintained-by-root-signals) evaluators that can be used to validate any textual content.
+In this example, we add a data loader which loads the contents of a data loader variable called kimchi_ingredients from Wikipedia, and then uses that to populate the prompt.
 
+```{literalinclude} ../examples/data_loader.py
+```
+```json
+// print(response)
 
-```{literalinclude} ../examples/preset_evaluator.py
+"llm_output":"Kimchi, a traditional Korean side dish, is renowned for
+its unique taste and health benefits. Made from salted and fermented
+vegetables, it uses seasonings such as gochugaru (Korean chili
+powder), ... Here are a few recipes for you to try at
+home:\n\n1. Traditional Napa Cabbage Kimchi:\n\nIngredients:..."
 ```
 
 
-## Evaluator skill and minimal version of it
+## Evaluator *Skill* and minimal version of it
 
 We can also create an evaluator skill. Evaluator skills return only floating point values between 0 and 1, based on how well the received output (of a skill) matches what the evaluator is described to look for.
 
@@ -149,39 +198,6 @@ The evaluator skill can be also created implicitly by supplying evaluator_name a
   }
 ],
 "is_valid": "True"}
-```
-
-## Adjust evaluator behavior
-
-An evaluator can be calibrated to adjust its behavior
-
-```{literalinclude} ../examples/calibration.py
-```
-```json
-// print(test_result[0].result)
-
-"score": "0.5",
-"expected_score": "0.1",
-```
-```json
-// print(test_result[0].result)
-
-"score": "0.1",
-"expected_score": "0.1",
-```
-
-
-
-## Use Retrieval Augmented Generation (RAG) evaluator
-
-For RAG, there are special evaluators that can separately measure the different intermediate components of a RAG pipeline, in addition to the final output.
-
-```{literalinclude} ../examples/run_rag.py
-```
-```json
-// print(result.score)
-
-"0.0"
 ```
 
 ## Use OpenAI client for chat completions
@@ -228,7 +244,7 @@ The sky appears blue because of the way sunlight interacts ...
 
 Do note that if validators are in use, it is not possible to stream the response as the response must be validated before returning it to the caller. In that case (and possibly for other reasons too), the platform will just return the final full response after validators are done evaluating it as a single chunk.
 
-## Evaluate your LLM pipeline by grouping validators to a skill
+## Evaluate your LLM pipeline by grouping validators to a *Skill*
 
 We can group and track any LLM pipeline results using a skill.
 
@@ -269,21 +285,4 @@ Alternatively, we can just execute the objective.
 Adding a model is as simple as specifying the model name and an endpoint. The model can be a local model or a model hosted on a cloud service.
 
 ```{literalinclude} ../examples/model.py
-```
-
-
-## Skill with a data loader
-
-In this example, we add a data loader which loads the contents of a data loader variable called kimchi_ingredients from Wikipedia, and then uses that to populate the prompt.
-
-```{literalinclude} ../examples/data_loader.py
-```
-```json
-// print(response)
-
-"llm_output":"Kimchi, a traditional Korean side dish, is renowned for
-its unique taste and health benefits. Made from salted and fermented
-vegetables, it uses seasonings such as gochugaru (Korean chili
-powder), ... Here are a few recipes for you to try at
-home:\n\n1. Traditional Napa Cabbage Kimchi:\n\nIngredients:..."
 ```
