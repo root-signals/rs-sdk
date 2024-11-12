@@ -1,30 +1,24 @@
-# Quickstart #
+# Quickstart
 
-Install root-signals Python SDK from PyPI:
-
-```bash
-# pip install root-signals
-```
-
-Once it has been installed, please create an API key from the user interface ( https://app.rootsignals.ai/settings/api-keys ), and set it to your environment variable:
+**1.** Install Root Signals Python SDK [from PyPI](https://pypi.org/project/root-signals/):
 
 ```bash
-export ROOTSIGNALS_API_KEY=somethingreallysecretyougotfromtheweb
+pip install root-signals
 ```
 
-After that, you can create a new skill and execute it.
+**2.** Create your API key from [Root Signals Application](https://app.rootsignals.ai/settings/api-keys) and add it as an environment variable:
 
+```bash
+export ROOTSIGNALS_API_KEY=SomethingReallySecret
 ```
-# python3
->>> from root import RootSignals
 
->>> response = RootSignals().skills.create("Find me good recipes for {{food_type}} food that are {{cuisine}}.").run({"food_type": "spicy", "cuisine": "Korean"})
+**3.** Start evaluating with Root Signals Judges:
 
->>> print(response)
-#llm_output="1. Kimchi Jjigae (Kimchi Stew): This spicy and flavorful
-#stew is made with fermented kimchi, pork, tofu, and vegetables. ..."
-#validation={'validator_results': [], 'is_valid': True}
-#model='gpt-4o'
-#execution_log_id='181eb95b-b972-4e96-8e30-ca7d3447d4fe'
-#rendered_prompt='Find me good recipes for spicy food that are Korean.'
+```python
+from root import RootSignals
+
+client = RootSignals()
+client.evaluators.Politeness(
+    response="You can find the instructions from our Careers page."
+)  # {score=0.7, justification='The response is st...', execution_log_id=...}
 ```
