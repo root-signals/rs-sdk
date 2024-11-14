@@ -225,7 +225,7 @@ class Objectives:
 
         """
 
-        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
+        if isinstance(self.client, AApiClient):
             raise Exception("This method is not available in asynchronous mode")
 
         skills = Skills(self.client)
@@ -286,7 +286,7 @@ class Objectives:
 
         """
 
-        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
+        if isinstance(self.client, AApiClient):
             raise Exception("This method is not available in asynchronous mode")
 
         api_instance = ObjectivesApi(self.client)
@@ -329,7 +329,7 @@ class Objectives:
 
         """
 
-        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
+        if isinstance(self.client, AApiClient):
             raise Exception("This method is not available in asynchronous mode")
 
         api_instance = ObjectivesApi(self.client)
@@ -365,7 +365,7 @@ class Objectives:
 
         """
 
-        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
+        if isinstance(self.client, AApiClient):
             raise Exception("This method is not available in asynchronous mode")
 
         api_instance = ObjectivesApi(self.client)
@@ -428,7 +428,7 @@ class Objectives:
 
         """
 
-        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
+        if isinstance(self.client, AApiClient):
             raise Exception("This method is not available in asynchronous mode")
 
         api_instance = ObjectivesApi(self.client)
@@ -504,7 +504,7 @@ class Objectives:
           validators: An optional list of validators.
         """
 
-        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
+        if isinstance(self.client, AApiClient):
             raise Exception("This method is not available in asynchronous mode")
 
         skills = Skills(self.client)
