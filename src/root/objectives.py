@@ -1,35 +1,48 @@
 from __future__ import annotations
 
-import asyncio
 from functools import partial
-from typing import TYPE_CHECKING, AsyncIterator, Awaitable, Iterator, List, Optional, cast
+from typing import TYPE_CHECKING, AsyncIterator, Awaitable, Iterator, List, Optional, Union, cast
 
 from pydantic import StrictStr
 
-from root.generated.openapi_aclient.api.objectives_api import ObjectivesApi
-from root.generated.openapi_aclient.models.evaluator_execution_functions_request import (
+from .generated.openapi_aclient import ApiClient as AApiClient
+from .generated.openapi_aclient.api.objectives_api import ObjectivesApi as AObjectivesApi
+from .generated.openapi_aclient.models.evaluator_execution_functions_request import (
+    EvaluatorExecutionFunctionsRequest as AEvaluatorExecutionFunctionsRequest,
+)
+from .generated.openapi_aclient.models.objective import Objective as AOpenApiObjective
+from .generated.openapi_aclient.models.objective_execution_request import (
+    ObjectiveExecutionRequest as AObjectiveExecutionRequest,
+)
+from .generated.openapi_aclient.models.objective_list import ObjectiveList as AObjectiveList
+from .generated.openapi_aclient.models.objective_request import ObjectiveRequest as AObjectiveRequest
+from .generated.openapi_aclient.models.paginated_objective_list import (
+    PaginatedObjectiveList as APaginatedObjectiveList,
+)
+from .generated.openapi_aclient.models.paginated_objective_list_list import (
+    PaginatedObjectiveListList as APaginatedObjectiveListList,
+)
+from .generated.openapi_aclient.models.patched_objective_request import (
+    PatchedObjectiveRequest as APatchedObjectiveRequest,
+)
+from .generated.openapi_aclient.models.validator_execution_result import (
+    ValidatorExecutionResult as AValidatorExecutionResult,
+)
+from .generated.openapi_client import ApiClient
+from .generated.openapi_client.api.objectives_api import ObjectivesApi
+from .generated.openapi_client.models.evaluator_execution_functions_request import (
     EvaluatorExecutionFunctionsRequest,
 )
-from root.generated.openapi_aclient.models.objective import Objective as OpenApiObjective
-from root.generated.openapi_aclient.models.objective_execution_request import (
-    ObjectiveExecutionRequest,
-)
-from root.generated.openapi_aclient.models.objective_list import ObjectiveList
-from root.generated.openapi_aclient.models.objective_request import ObjectiveRequest
-from root.generated.openapi_aclient.models.paginated_objective_list import PaginatedObjectiveList
-from root.generated.openapi_aclient.models.paginated_objective_list_list import (
-    PaginatedObjectiveListList,
-)
-from root.generated.openapi_aclient.models.patched_objective_request import (
-    PatchedObjectiveRequest,
-)
-from root.generated.openapi_aclient.models.validator_execution_result import (
-    ValidatorExecutionResult,
-)
-
-from .generated.openapi_aclient import ApiClient
+from .generated.openapi_client.models.objective import Objective as OpenApiObjective
+from .generated.openapi_client.models.objective_execution_request import ObjectiveExecutionRequest
+from .generated.openapi_client.models.objective_list import ObjectiveList
+from .generated.openapi_client.models.objective_request import ObjectiveRequest
+from .generated.openapi_client.models.paginated_objective_list import PaginatedObjectiveList
+from .generated.openapi_client.models.patched_objective_request import PatchedObjectiveRequest
+from .generated.openapi_client.models.validator_execution_result import ValidatorExecutionResult
 from .skills import Skills
-from .utils import wrap_async_iter
+from .utils import iterate_cursor_list
+from .validators import AValidator
 
 if TYPE_CHECKING:
     from .validators import Validator
@@ -41,24 +54,33 @@ class Versions:
     Note that this should not be directly instantiated.
     """
 
-    def __init__(self, client: Awaitable[ApiClient]):
+    def __init__(self, client: Union[Awaitable[AApiClient], ApiClient]):
         self._client = client
 
     def list(self, objective_id: str) -> PaginatedObjectiveList:
-        """Synchronously list all versions of an objective.
+        """List all versions of an objective.
 
         Args:
           objective_id: The objective to list the versions for
         """
-        return asyncio.run_coroutine_threadsafe(self.alist(objective_id), asyncio.get_event_loop()).result()
 
-    async def alist(self, objective_id: str) -> PaginatedObjectiveList:
+        if not isinstance(self._client, ApiClient) and self._client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
+            raise Exception("This method is not available in asynchronous mode")
+
+        api_instance = ObjectivesApi(self._client)
+        return api_instance.get_a_list_of_all_versions_of_an_objective(id=objective_id)
+
+    async def alist(self, objective_id: str) -> APaginatedObjectiveList:
         """Asynchronously list all versions of an objective.
 
         Args:
           objective_id: The objective to list the versions for
         """
-        api_instance = ObjectivesApi(await self._client())  # type: ignore[operator]
+
+        if self._client is ApiClient:
+            raise Exception("This method is not available in synchronous mode")
+
+        api_instance = AObjectivesApi(await self._client())  # type: ignore[operator]
         return await api_instance.get_a_list_of_all_versions_of_an_objective(id=objective_id)
 
 
@@ -69,14 +91,10 @@ class Objective(OpenApiObjective):
     generated) superclass documentation.
     """
 
-    _client: Awaitable[ApiClient]
+    _client: ApiClient
 
     @classmethod
-    def _wrap(cls, apiobj: OpenApiObjective, client: Awaitable[ApiClient]) -> "Objective":
-        return asyncio.run_coroutine_threadsafe(cls._awrap(apiobj, client), asyncio.get_event_loop()).result()
-
-    @classmethod
-    async def _awrap(cls, apiobj: OpenApiObjective, client: Awaitable[ApiClient]) -> "Objective":
+    def _wrap(cls, apiobj: OpenApiObjective, client: ApiClient) -> "Objective":
         if not isinstance(apiobj, OpenApiObjective):
             raise ValueError(f"Wrong instance in _wrap: {apiobj!r}")
         obj = cast(Objective, apiobj)
@@ -94,7 +112,7 @@ class Objective(OpenApiObjective):
         _request_timeout: Optional[int] = None,
     ) -> ValidatorExecutionResult:
         """
-        Synchronously run all validators associated with the objective.
+        Run all validators associated with the objective.
 
         Args:
 
@@ -105,16 +123,38 @@ class Objective(OpenApiObjective):
           contexts: Optional documents passed to RAG evaluators
 
         """
-        return asyncio.run_coroutine_threadsafe(
-            self.arun(
-                response=response,
-                request=request,
-                contexts=contexts,
-                functions=functions,
-                _request_timeout=_request_timeout,
-            ),
-            asyncio.get_event_loop(),
-        ).result()
+
+        api_instance = ObjectivesApi(self._client)
+        skill_execution_request = ObjectiveExecutionRequest(
+            request=request,
+            response=response,
+            contexts=contexts,
+            functions=functions,
+        )
+        return api_instance.objectives_objectives_execute_create(
+            objective_id=self.id,
+            objective_execution_request=skill_execution_request,
+            _request_timeout=_request_timeout,
+        )
+
+
+class AObjective(AOpenApiObjective):
+    """Wrapper for a single Objective.
+
+    For available attributes, please check the (automatically
+    generated) superclass documentation.
+    """
+
+    _client: Awaitable[AApiClient]
+
+    @classmethod
+    async def _awrap(cls, apiobj: AOpenApiObjective, client: Awaitable[AApiClient]) -> "AObjective":
+        if not isinstance(apiobj, AOpenApiObjective):
+            raise ValueError(f"Wrong instance in _wrap: {apiobj!r}")
+        obj = cast(AObjective, apiobj)
+        obj.__class__ = cls
+        obj._client = client
+        return obj
 
     async def arun(
         self,
@@ -122,9 +162,9 @@ class Objective(OpenApiObjective):
         response: str,
         request: Optional[str] = None,
         contexts: Optional[List[str]] = None,
-        functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
+        functions: Optional[List[AEvaluatorExecutionFunctionsRequest]] = None,
         _request_timeout: Optional[int] = None,
-    ) -> ValidatorExecutionResult:
+    ) -> AValidatorExecutionResult:
         """
         Asynchronously run all validators associated with the objective.
 
@@ -137,8 +177,9 @@ class Objective(OpenApiObjective):
           contexts: Optional documents passed to RAG evaluators
 
         """
-        api_instance = ObjectivesApi(await self._client())  # type: ignore[operator]
-        skill_execution_request = ObjectiveExecutionRequest(
+
+        api_instance = AObjectivesApi(await self._client())  # type: ignore[operator]
+        skill_execution_request = AObjectiveExecutionRequest(
             request=request,
             response=response,
             contexts=contexts,
@@ -160,7 +201,7 @@ class Objectives:
       accesing an attribute of a :class:`root.client.RootSignals` instance.
     """
 
-    def __init__(self, client: Awaitable[ApiClient]):
+    def __init__(self, client: Union[Awaitable[AApiClient], ApiClient]):
         self.client = client
         self.versions = Versions(client)
 
@@ -172,7 +213,7 @@ class Objectives:
         test_dataset_id: Optional[str] = None,
         _request_timeout: Optional[int] = None,
     ) -> Objective:
-        """Synchronously create a new objective and return its ID.
+        """Create a new objective and return its ID.
 
         Args:
 
@@ -183,24 +224,28 @@ class Objectives:
           test_dataset_id: The ID of the test dataset
 
         """
-        return asyncio.run_coroutine_threadsafe(
-            self.acreate(
-                intent=intent,
-                validators=validators,
-                test_dataset_id=test_dataset_id,
-                _request_timeout=_request_timeout,
-            ),
-            asyncio.get_event_loop(),
-        ).result()
+
+        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
+            raise Exception("This method is not available in asynchronous mode")
+
+        skills = Skills(self.client)
+        request = ObjectiveRequest(
+            intent=intent,
+            validators=[validator._to_request(skills) for validator in validators or []],
+            test_dataset_id=test_dataset_id,
+        )
+        api_instance = ObjectivesApi(self.client)
+        objective = api_instance.objectives_create(objective_request=request)
+        return self.get(objective.id, _request_timeout=_request_timeout)
 
     async def acreate(
         self,
         *,
         intent: Optional[str] = None,
-        validators: Optional[List[Validator]] = None,
+        validators: Optional[List[AValidator]] = None,
         test_dataset_id: Optional[str] = None,
         _request_timeout: Optional[int] = None,
-    ) -> Objective:
+    ) -> AObjective:
         """Asynchronously create a new objective and return its ID.
 
         Args:
@@ -213,15 +258,16 @@ class Objectives:
 
         """
 
+        if isinstance(self.client, ApiClient):
+            raise Exception("This method is not available in synchronous mode")
+
         skills = Skills(self.client)
-        request = ObjectiveRequest(
+        request = AObjectiveRequest(
             intent=intent,
-            validators=[
-                await validator._to_request(skills) for validator in validators or []
-            ],  # ovdjer unutra ima poziv na skill.list endpoint pa pripazit
+            validators=[await avalidator._ato_request(skills) for avalidator in validators or []],
             test_dataset_id=test_dataset_id,
         )
-        api_instance = ObjectivesApi(await self.client())  # type: ignore[operator]
+        api_instance = AObjectivesApi(await self.client())  # type: ignore[operator]
         objective = await api_instance.objectives_create(objective_request=request)
         return await self.aget(objective.id, _request_timeout=_request_timeout)
 
@@ -232,23 +278,29 @@ class Objectives:
         _request_timeout: Optional[int] = None,
     ) -> Objective:
         """
-        Synchronously get an objective by ID.
+        Get an objective by ID.
 
         Args:
 
           objective_id: The objective to be fetched.
 
         """
-        return asyncio.run_coroutine_threadsafe(
-            self.aget(objective_id, _request_timeout=_request_timeout), asyncio.get_event_loop()
-        ).result()
+
+        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
+            raise Exception("This method is not available in asynchronous mode")
+
+        api_instance = ObjectivesApi(self.client)
+        return Objective._wrap(
+            api_instance.objectives_retrieve(id=objective_id, _request_timeout=_request_timeout),
+            self.client,  # type: ignore[arg-type]
+        )
 
     async def aget(
         self,
         objective_id: str,
         *,
         _request_timeout: Optional[int] = None,
-    ) -> Objective:
+    ) -> AObjective:
         """
         Asynchronously get an objective by ID.
 
@@ -258,24 +310,30 @@ class Objectives:
 
         """
 
-        api_instance = ObjectivesApi(await self.client())  # type: ignore[operator]
-        return await Objective._awrap(
+        if isinstance(self.client, ApiClient):
+            raise Exception("This method is not available in synchronous mode")
+
+        api_instance = AObjectivesApi(await self.client())  # type: ignore[operator]
+        return await AObjective._awrap(
             await api_instance.objectives_retrieve(id=objective_id, _request_timeout=_request_timeout),
             self.client,
         )
 
     def delete(self, objective_id: str, *, _request_timeout: Optional[int] = None) -> None:
         """
-        Synchronously delete the objective from the registry.
+        Delete the objective from the registry.
 
         Args:
 
           objective_id: The objective to be deleted.
 
         """
-        return asyncio.run_coroutine_threadsafe(
-            self.adelete(objective_id=objective_id, _request_timeout=_request_timeout), asyncio.get_event_loop()
-        ).result()
+
+        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
+            raise Exception("This method is not available in asynchronous mode")
+
+        api_instance = ObjectivesApi(self.client)
+        return api_instance.objectives_destroy(id=objective_id, _request_timeout=_request_timeout)
 
     async def adelete(self, objective_id: str, *, _request_timeout: Optional[int] = None) -> None:
         """
@@ -286,11 +344,15 @@ class Objectives:
           objective_id: The objective to be deleted.
 
         """
-        api_instance = ObjectivesApi(await self.client())  # type: ignore[operator]
+
+        if isinstance(self.client, ApiClient):
+            raise Exception("This method is not available in synchronous mode")
+
+        api_instance = AObjectivesApi(await self.client())  # type: ignore[operator]
         return await api_instance.objectives_destroy(id=objective_id, _request_timeout=_request_timeout)
 
     def list(self, *, intent: Optional[str] = None, limit: int = 100) -> Iterator[ObjectiveList]:
-        """Synchronously iterate through the objectives.
+        """Iterate through the objectives.
 
         Note:
 
@@ -302,9 +364,14 @@ class Objectives:
           limit: Number of entries to iterate through at most.
 
         """
-        yield from wrap_async_iter(self.alist(intent=intent, limit=limit))
 
-    async def alist(self, *, intent: Optional[str] = None, limit: int = 100) -> AsyncIterator[ObjectiveList]:
+        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
+            raise Exception("This method is not available in asynchronous mode")
+
+        api_instance = ObjectivesApi(self.client)
+        yield from iterate_cursor_list(partial(api_instance.objectives_list, intent=intent), limit=limit)
+
+    async def alist(self, *, intent: Optional[str] = None, limit: int = 100) -> AsyncIterator[AObjectiveList]:
         """Asynchronously iterate through the objectives.
 
         Note:
@@ -317,12 +384,16 @@ class Objectives:
           limit: Number of entries to iterate through at most.
 
         """
-        api_instance = ObjectivesApi(await self.client())  # type: ignore[operator]
+
+        if isinstance(self.client, ApiClient):
+            raise Exception("This method is not available in synchronous mode")
+
+        api_instance = AObjectivesApi(await self.client())  # type: ignore[operator]
         partial_list = partial(api_instance.objectives_list, intent=intent)
 
         cursor: Optional[StrictStr] = None
         while limit > 0:
-            result: PaginatedObjectiveListList = await partial_list(page_size=limit, cursor=cursor)
+            result: APaginatedObjectiveListList = await partial_list(page_size=limit, cursor=cursor)
             if not result.results:
                 return
 
@@ -345,7 +416,7 @@ class Objectives:
         _request_timeout: Optional[int] = None,
     ) -> ValidatorExecutionResult:
         """
-        Synchronously run all validators associated with an objective.
+        Run all validators associated with an objective.
 
         Args:
 
@@ -355,19 +426,23 @@ class Objectives:
 
           contexts: Optional documents passed to RAG evaluators
 
-
         """
-        return asyncio.run_coroutine_threadsafe(
-            self.arun(
-                objective_id=objective_id,
-                response=response,
-                request=request,
-                contexts=contexts,
-                functions=functions,
-                _request_timeout=_request_timeout,
-            ),
-            asyncio.get_event_loop(),
-        ).result()
+
+        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
+            raise Exception("This method is not available in asynchronous mode")
+
+        api_instance = ObjectivesApi(self.client)
+        skill_execution_request = ObjectiveExecutionRequest(
+            request=request,
+            response=response,
+            contexts=contexts,
+            functions=functions,
+        )
+        return api_instance.objectives_objectives_execute_create(
+            objective_id=objective_id,
+            objective_execution_request=skill_execution_request,
+            _request_timeout=_request_timeout,
+        )
 
     async def arun(
         self,
@@ -376,9 +451,9 @@ class Objectives:
         response: str,
         request: Optional[str] = None,
         contexts: Optional[List[str]] = None,
-        functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
+        functions: Optional[List[AEvaluatorExecutionFunctionsRequest]] = None,
         _request_timeout: Optional[int] = None,
-    ) -> ValidatorExecutionResult:
+    ) -> AValidatorExecutionResult:
         """
         Asynchronously run all validators associated with an objective.
 
@@ -390,10 +465,13 @@ class Objectives:
 
           contexts: Optional documents passed to RAG evaluators
 
-
         """
-        api_instance = ObjectivesApi(await self.client())  # type: ignore[operator]
-        skill_execution_request = ObjectiveExecutionRequest(
+
+        if isinstance(self.client, ApiClient):
+            raise Exception("This method is not available in synchronous mode")
+
+        api_instance = AObjectivesApi(await self.client())  # type: ignore[operator]
+        skill_execution_request = AObjectiveExecutionRequest(
             request=request,
             response=response,
             contexts=contexts,
@@ -415,7 +493,7 @@ class Objectives:
         _request_timeout: Optional[int] = None,
     ) -> Objective:
         """
-        Synchronously update an existing objective.
+        Update an existing objective.
 
         Args:
 
@@ -426,26 +504,34 @@ class Objectives:
           validators: An optional list of validators.
         """
 
-        return asyncio.run_coroutine_threadsafe(
-            self.aupdate(
-                objective_id=objective_id,
-                intent=intent,
-                validators=validators,
-                test_dataset_id=test_dataset_id,
+        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
+            raise Exception("This method is not available in asynchronous mode")
+
+        skills = Skills(self.client)
+        request = PatchedObjectiveRequest(
+            intent=intent,
+            validators=[validator._to_request(skills) for validator in validators] if validators else None,
+            test_dataset_id=test_dataset_id,
+        )
+        api_instance = ObjectivesApi(self.client)
+        return Objective._wrap(
+            api_instance.objectives_partial_update(
+                id=objective_id,
+                patched_objective_request=request,
                 _request_timeout=_request_timeout,
             ),
-            asyncio.get_event_loop(),
-        ).result()
+            client=self.client,  # type: ignore[arg-type]
+        )
 
     async def aupdate(
         self,
         objective_id: str,
         *,
         intent: Optional[str] = None,
-        validators: Optional[List[Validator]] = None,
+        validators: Optional[List[AValidator]] = None,
         test_dataset_id: Optional[str] = None,
         _request_timeout: Optional[int] = None,
-    ) -> Objective:
+    ) -> AObjective:
         """
         Asynchronously update an existing objective.
 
@@ -458,14 +544,17 @@ class Objectives:
           validators: An optional list of validators.
         """
 
+        if isinstance(self.client, ApiClient):
+            raise Exception("This method is not available in synchronous mode")
+
         skills = Skills(self.client)
-        request = PatchedObjectiveRequest(
+        request = APatchedObjectiveRequest(
             intent=intent,
-            validators=[await validator._to_request(skills) for validator in validators] if validators else None,
+            validators=[await validator._ato_request(skills) for validator in validators] if validators else None,
             test_dataset_id=test_dataset_id,
         )
-        api_instance = ObjectivesApi(await self.client())  # type: ignore[operator]
-        return await Objective._awrap(
+        api_instance = AObjectivesApi(await self.client())  # type: ignore[operator]
+        return await AObjective._awrap(
             await api_instance.objectives_partial_update(
                 id=objective_id,
                 patched_objective_request=request,

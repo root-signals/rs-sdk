@@ -1,16 +1,20 @@
-import asyncio
 from functools import partial
-from typing import AsyncIterator, Awaitable, Iterator, List, Optional
+from typing import AsyncIterator, Awaitable, Iterator, List, Optional, Union
 
 from pydantic import StrictStr
 
-from root.generated.openapi_aclient.api.models_api import ModelsApi
-from root.generated.openapi_aclient.models.model import Model
-from root.generated.openapi_aclient.models.model_request import ModelRequest
-from root.generated.openapi_aclient.models.paginated_model_list_list import PaginatedModelListList
-
-from .generated.openapi_aclient import ApiClient
-from .utils import wrap_async_iter
+from .generated.openapi_aclient import ApiClient as AApiClient
+from .generated.openapi_aclient.api.models_api import ModelsApi as AModelsApi
+from .generated.openapi_aclient.models.model import Model as AModel
+from .generated.openapi_aclient.models.model_request import ModelRequest as AModelRequest
+from .generated.openapi_aclient.models.paginated_model_list_list import (
+    PaginatedModelListList as APaginatedModelListList,
+)
+from .generated.openapi_client import ApiClient
+from .generated.openapi_client.api.models_api import ModelsApi
+from .generated.openapi_client.models.model import Model
+from .generated.openapi_client.models.model_request import ModelRequest
+from .utils import iterate_cursor_list
 
 
 class Models:
@@ -22,7 +26,7 @@ class Models:
       accesing an attribute of a :class:`root.client.RootSignals` instance.
     """
 
-    def __init__(self, client: Awaitable[ApiClient]):
+    def __init__(self, client: Union[Awaitable[AApiClient], ApiClient]):
         self.client = client
 
     def list(
@@ -31,7 +35,7 @@ class Models:
         capable_of: Optional[List[str]] = None,
         limit: int = 100,
     ) -> Iterator[Model]:
-        """Synchronously iterate through the models.
+        """Iterate through the models.
 
         Note:
 
@@ -45,14 +49,18 @@ class Models:
 
         """
 
-        yield from wrap_async_iter(self.alist(capable_of=capable_of, limit=limit))
+        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
+            raise Exception("This method is not available in asynchronous mode")
+
+        api_instance = ModelsApi(self.client)
+        yield from iterate_cursor_list(partial(api_instance.models_list, capable_of=capable_of), limit=limit)
 
     async def alist(
         self,
         *,
         capable_of: Optional[List[str]] = None,
         limit: int = 100,
-    ) -> AsyncIterator[Model]:
+    ) -> AsyncIterator[AModel]:
         """Asynchronously iterate through the models.
 
         Note:
@@ -66,12 +74,16 @@ class Models:
           capable_of: List of capabilities to filter the models by.
 
         """
-        api_instance = ModelsApi(await self.client())  # type: ignore[operator]
+
+        if isinstance(self.client, ApiClient):
+            raise Exception("This method is not available in synchronous mode")
+
+        api_instance = AModelsApi(await self.client())  # type: ignore[operator]
         partial_list = partial(api_instance.models_list, capable_of=capable_of)
 
         cursor: Optional[StrictStr] = None
         while limit > 0:
-            result: PaginatedModelListList = await partial_list(page_size=limit, cursor=cursor)
+            result: APaginatedModelListList = await partial_list(page_size=limit, cursor=cursor)
             if not result.results:
                 return
 
@@ -94,7 +106,7 @@ class Models:
         url: Optional[str] = None,
         _request_timeout: Optional[int] = None,
     ) -> str:
-        """Synchronously create a new model and return its ID.
+        """Create a new model and return its ID.
 
         Args:
 
@@ -112,18 +124,20 @@ class Models:
 
         """
 
-        return asyncio.run_coroutine_threadsafe(
-            self.acreate(
-                name=name,
-                model=model,
-                default_key=default_key,
-                max_output_token_count=max_output_token_count,
-                max_token_count=max_token_count,
-                url=url,
-                _request_timeout=_request_timeout,
-            ),
-            asyncio.get_event_loop(),
-        ).result()
+        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
+            raise Exception("This method is not available in asynchronous mode")
+
+        request = ModelRequest(
+            name=name,
+            model=model,
+            default_key=default_key,
+            max_output_token_count=max_output_token_count,
+            max_token_count=max_token_count,
+            url=url,
+        )
+
+        api_instance = ModelsApi(self.client)
+        return api_instance.models_create(model_request=request, _request_timeout=_request_timeout).id
 
     async def acreate(
         self,
@@ -153,7 +167,11 @@ class Models:
           url: Optional URL pointing to the model's endpoint.
 
         """
-        request = ModelRequest(
+
+        if isinstance(self.client, ApiClient):
+            raise Exception("This method is not available in synchronous mode")
+
+        request = AModelRequest(
             name=name,
             model=model,
             default_key=default_key,
@@ -162,7 +180,7 @@ class Models:
             url=url,
         )
 
-        api_instance = ModelsApi(await self.client())  # type: ignore[operator]
+        api_instance = AModelsApi(await self.client())  # type: ignore[operator]
         created_model = await api_instance.models_create(model_request=request, _request_timeout=_request_timeout)
         return created_model.id
 
@@ -173,23 +191,26 @@ class Models:
         _request_timeout: Optional[int] = None,
     ) -> None:
         """
-        Synchronously delete the model.
+        Delete the model.
 
         Args:
 
           model: The model to be deleted.
 
         """
-        return asyncio.run_coroutine_threadsafe(
-            self.adelete(model_id=model_id, _request_timeout=_request_timeout), asyncio.get_event_loop()
-        ).result()
+
+        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
+            raise Exception("This method is not available in asynchronous mode")
+
+        api_instance = ModelsApi(self.client)
+        return api_instance.models_destroy(id=model_id, _request_timeout=_request_timeout)
 
     async def adelete(
         self,
         model_id: str,
         *,
         _request_timeout: Optional[int] = None,
-    ) -> None:  # vraca korutinu pa i to treba promjenit
+    ) -> None:
         """
         Asynchronously delete the model.
 
@@ -198,7 +219,11 @@ class Models:
           model: The model to be deleted.
 
         """
-        api_instance = ModelsApi(await self.client())  # type: ignore[operator]
+
+        if isinstance(self.client, ApiClient):
+            raise Exception("This method is not available in synchronous mode")
+
+        api_instance = AModelsApi(await self.client())  # type: ignore[operator]
         return await api_instance.models_destroy(id=model_id, _request_timeout=_request_timeout)
 
     # TODO: update
