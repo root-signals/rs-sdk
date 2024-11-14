@@ -65,6 +65,14 @@ src/root/generated/__init__.py: openapi.yaml
 .PHONY: generate-openapi-client
 generate-openapi-client:
 	rm -rf src/root/generated
+	rm -rf src/root/generated
+	docker run --rm \
+		-u $(shell id -u):$(shell id -g) \
+		-v ${PWD}:/local openapitools/openapi-generator-cli:v7.4.0 \
+		generate -i /local/openapi.yaml \
+		-g python -o /local/src \
+		--skip-validate-spec \
+		--additional-properties=generateSourceCodeOnly=true,packageName=root.generated.openapi_client
 	docker run --rm \
 		-u $(shell id -u):$(shell id -g) \
 		-v ${PWD}:/local openapitools/openapi-generator-cli:v7.4.0 \
@@ -75,6 +83,10 @@ generate-openapi-client:
 
 .PHONY: fix-openapi-client
 fix-openapi-client:
+	echo "Fixing sync client"
+	echo "from .api_client import ApiClient" > src/root/generated/openapi_client/__init__.py
+	echo > src/root/generated/openapi_client/api/__init__.py
+	echo "Fixing async client"
 	echo "from .api_client import ApiClient" > src/root/generated/openapi_aclient/__init__.py
 	echo > src/root/generated/openapi_aclient/api/__init__.py
 	make ruff || make ruff

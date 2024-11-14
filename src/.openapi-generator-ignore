@@ -31,6 +31,18 @@ root/generated/openapi_aclient/test/*
 # root/generated/openapi_aclient/models/social*
 # root/generated/openapi_aclient/models/verify_email*
 root/__init__.py
+root/generated/openapi_client/docs/*.md
+root/generated/openapi_client/test/*
+# root/generated/openapi_client/api/auth*
+# root/generated/openapi_client/api/health*
+# root/generated/openapi_client/api/apikeys*
+# root/generated/openapi_client/api/chatbot*
+# root/generated/openapi_client/api/dataset_drafts*
+# root/generated/openapi_client/api/organizations*
+# root/generated/openapi_client/models/api_key*
+# root/generated/openapi_client/models/password*
+# root/generated/openapi_client/models/social*
+# root/generated/openapi_client/models/verify_email*
 
 # Then explicitly reverse the ignore rule for a single file:
 #!docs/README.md

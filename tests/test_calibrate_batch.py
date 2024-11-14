@@ -1,21 +1,18 @@
-from unittest import mock
-from unittest.mock import MagicMock
+from unittest.mock import patch
 
 import pytest
 from root.client import RootSignals
-from root.generated.openapi_aclient.models.evaluator_calibration_output import EvaluatorCalibrationOutput
-from root.generated.openapi_aclient.models.evaluator_calibration_result import EvaluatorCalibrationResult
+from root.generated.openapi_client.models.evaluator_calibration_output import EvaluatorCalibrationOutput
+from root.generated.openapi_client.models.evaluator_calibration_result import EvaluatorCalibrationResult
 from root.skills import CalibrateBatchParameters
 
 
-class AsynchronousMock(MagicMock):
-    async def __call__(self, *args, **kwargs):
-        return super(AsynchronousMock, self).__call__(*args, **kwargs)
+@pytest.fixture
+def mock_skills_calibrate_api():
+    with patch("root.generated.openapi_client.api.skills_api.SkillsApi.skills_calibrate_create") as mock:
+        yield mock
 
 
-@mock.patch(
-    "root.generated.openapi_aclient.api.skills_api.SkillsApi.skills_calibrate_create", new_callable=AsynchronousMock
-)
 def test_calibrate_evaluator_batch(mock_skills_calibrate_api):
     mock_skills_calibrate_api.return_value = [
         EvaluatorCalibrationOutput(
