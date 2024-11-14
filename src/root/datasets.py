@@ -47,7 +47,7 @@ class DataSets:
 
         """
 
-        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
+        if isinstance(self.client, AApiClient):
             raise Exception("This method is not available in asynchronous mode")
 
         payload: Dict[str, Any] = {"name": name, "type": type, "tags": []}
@@ -118,7 +118,7 @@ class DataSets:
         Get a dataset object from the registry.
         """
 
-        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
+        if isinstance(self.client, AApiClient):
             raise Exception("This method is not available in asynchronous mode")
 
         api_instance = DatasetsApi(self.client)
@@ -151,7 +151,7 @@ class DataSets:
           search_term: Can be used to limit returned datasets.
 
         """
-        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
+        if isinstance(self.client, AApiClient):
             raise Exception("This method is not available in asynchronous mode")
 
         api_instance = DatasetsApi(self.client)
@@ -201,7 +201,7 @@ class DataSets:
         Delete a dataset object from the registry.
         """
 
-        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
+        if isinstance(self.client, AApiClient):
             raise Exception("This method is not available in asynchronous mode")
 
         api_instance = DatasetsApi(self.client)
