@@ -213,11 +213,12 @@ class DataSets:
         *,
         _request_timeout: Optional[int] = None,
     ) -> None:
-        if isinstance(self.client, ApiClient):
-            raise Exception("This method is not available in synchronous mode")
-
         """
         Asynchronously delete a dataset object from the registry.
         """
+
+        if isinstance(self.client, ApiClient):
+            raise Exception("This method is not available in synchronous mode")
+
         api_instance = ADatasetsApi(await self.client())  # type: ignore[operator]
         return await api_instance.datasets_destroy(dataset_id, _request_timeout=_request_timeout)
