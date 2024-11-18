@@ -631,10 +631,11 @@ def _ato_evaluator_demonstrations(
 class PresetEvaluatorRunner:
     _client: ApiClient
 
-    def __init__(self, client: ApiClient, skill_id: str, skill_version_id: Optional[str] = None):
+    def __init__(self, client: ApiClient, skill_id: str, eval_name: str, skill_version_id: Optional[str] = None):
         self._client = client
         self.skill_id = skill_id
         self.skill_version_id = skill_version_id
+        self.__name__ = eval_name
 
     def __call__(
         self,
@@ -680,10 +681,13 @@ class PresetEvaluatorRunner:
 class APresetEvaluatorRunner:
     _client: Awaitable[AApiClient]
 
-    def __init__(self, client: Awaitable[AApiClient], skill_id: str, skill_version_id: Optional[str] = None):
+    def __init__(
+        self, client: Awaitable[AApiClient], skill_id: str, eval_name: str, skill_version_id: Optional[str] = None
+    ):
         self._client = client
         self.skill_id = skill_id
         self.skill_version_id = skill_version_id
+        self.__name__ = eval_name
 
     async def __call__(
         self,
@@ -1685,9 +1689,9 @@ class Evaluators:
     def __getattr__(self, name: Union[EvaluatorName, str]) -> Union["PresetEvaluatorRunner", "APresetEvaluatorRunner"]:
         if name in self.Eval.__members__:
             if isinstance(self.client, ApiClient):
-                return PresetEvaluatorRunner(self.client, self.Eval.__members__[name].value)
+                return PresetEvaluatorRunner(self.client, self.Eval.__members__[name].value, name)
             else:
-                return APresetEvaluatorRunner(self.client, self.Eval.__members__[name].value)
+                return APresetEvaluatorRunner(self.client, self.Eval.__members__[name].value, name)
         raise AttributeError(f"{name} is not a valid attribute")
 
     def run(
