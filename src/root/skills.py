@@ -822,8 +822,7 @@ class Skills:
           overwrite: Whether to overwrite a skill with the same name if it exists.
 
         """
-
-        if isinstance(self.client, AApiClient):
+        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
             raise Exception("This method is not available in asynchronous mode")
 
         if name is None:
@@ -991,7 +990,7 @@ class Skills:
           skill_id: The skill to be updated
         """
 
-        if isinstance(self.client, AApiClient):
+        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
             raise Exception("This method is not available in asynchronous mode")
 
         api_instance = SkillsApi(self.client)
@@ -1076,7 +1075,7 @@ class Skills:
           skill_id: The skill to be fetched
         """
 
-        if isinstance(self.client, AApiClient):
+        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
             raise Exception("This method is not available in asynchronous mode")
 
         api_instance = SkillsApi(self.client)
@@ -1125,7 +1124,7 @@ class Skills:
           search_term: Can be used to limit returned skills.
         """
 
-        if isinstance(self.client, AApiClient):
+        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
             raise Exception("This method is not available in asynchronous mode")
 
         api_instance = SkillsApi(self.client)
@@ -1204,7 +1203,7 @@ class Skills:
 
         """
 
-        if isinstance(self.client, AApiClient):
+        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
             raise Exception("This method is not available in asynchronous mode")
 
         api_instance = SkillsApi(self.client)
@@ -1279,7 +1278,7 @@ class Skills:
 
         """
 
-        if isinstance(self.client, AApiClient):
+        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
             raise Exception("This method is not available in asynchronous mode")
 
         if not test_dataset_id and not test_data:
@@ -1351,7 +1350,7 @@ class Skills:
           history_from_chat_id: Optional chat_id to copy chat history from.
         """
 
-        if isinstance(self.client, AApiClient):
+        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
             raise Exception("This method is not available in asynchronous mode")
 
         api_instance = ChatsApi(self.client)
@@ -1426,7 +1425,7 @@ class Skills:
 
         """
 
-        if isinstance(self.client, AApiClient):
+        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
             raise Exception("This method is not available in asynchronous mode")
 
         api_instance = SkillsApi(self.client)
@@ -1468,7 +1467,7 @@ class Skills:
         - validation: the result of the skill validation
         """
 
-        if isinstance(self.client, AApiClient):
+        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
             raise Exception("This method is not available in asynchronous mode")
 
         api_instance = SkillsApi(self.client)
@@ -1545,7 +1544,7 @@ class Skills:
 
         """
 
-        if isinstance(self.client, AApiClient):
+        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
             raise Exception("This method is not available in asynchronous mode")
 
         api_instance = SkillsApi(self.client)
@@ -1714,7 +1713,7 @@ class Evaluators:
         - score: a value between 0 and 1 representing the score of the evaluator
         """
 
-        if isinstance(self.client, AApiClient):
+        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
             raise Exception("This method is not available in asynchronous mode")
 
         api_instance = SkillsApi(self.client)
@@ -1782,7 +1781,7 @@ class Evaluators:
         Run calibration set on an existing evaluator.
         """
 
-        if isinstance(self.client, AApiClient):
+        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
             raise Exception("This method is not available in asynchronous mode")
 
         if not test_dataset_id and not test_data:
@@ -1844,7 +1843,7 @@ class Evaluators:
         Run calibration set on an existing evaluator.
         """
 
-        if isinstance(self.client, AApiClient):
+        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
             raise Exception("This method is not available in asynchronous mode")
 
         if not test_dataset_id and not test_data:
@@ -1933,7 +1932,7 @@ class Evaluators:
         Returns a dictionary with the results and errors for each model and prompt.
         """
 
-        if isinstance(self.client, AApiClient):
+        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
             raise Exception("This method is not available in asynchronous mode")
 
         model_errors: Dict[str, Dict[str, float]] = defaultdict(
@@ -2173,7 +2172,7 @@ class Evaluators:
         name: The evaluator to be fetched. Note this only works for uniquely named evaluators.
         """
 
-        if isinstance(self.client, AApiClient):
+        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
             raise Exception("This method is not available in asynchronous mode")
 
         api_instance = SkillsApi(self.client)
@@ -2270,7 +2269,7 @@ class Evaluators:
 
         """
 
-        if isinstance(self.client, AApiClient):
+        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
             raise Exception("This method is not available in asynchronous mode")
 
         _eval_skill = Skills(self.client).create(

@@ -49,7 +49,7 @@ class Models:
 
         """
 
-        if isinstance(self.client, AApiClient):
+        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
             raise Exception("This method is not available in asynchronous mode")
 
         api_instance = ModelsApi(self.client)
@@ -124,7 +124,7 @@ class Models:
 
         """
 
-        if isinstance(self.client, AApiClient):
+        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
             raise Exception("This method is not available in asynchronous mode")
 
         request = ModelRequest(
@@ -199,7 +199,7 @@ class Models:
 
         """
 
-        if isinstance(self.client, AApiClient):
+        if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
             raise Exception("This method is not available in asynchronous mode")
 
         api_instance = ModelsApi(self.client)
