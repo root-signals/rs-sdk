@@ -2256,6 +2256,14 @@ components:
           type: string
           nullable: true
           maxLength: 1000000
+        variables:
+          type: object
+          additionalProperties:
+            type: string
+            minLength: 1
+          default: {}
+          description: Extra variables to be used in the execution of the evaluator.
+            Optional.
       required:
       - response
     EvaluatorExecutionResult:
@@ -3656,6 +3664,14 @@ components:
           type: string
           nullable: true
           maxLength: 1000000
+        variables:
+          type: object
+          additionalProperties:
+            type: string
+            minLength: 1
+          default: {}
+          description: Extra variables to be used in the execution of the evaluator.
+            Optional.
       required:
       - response
     StatusChange:
