@@ -369,6 +369,7 @@ class ASkill(AOpenAPISkill):
         response: str,
         request: Optional[str] = None,
         contexts: Optional[List[str]] = None,
+        variables: Optional[dict[str, str]] = None,
         functions: Optional[List[AEvaluatorExecutionFunctionsRequest]] = None,
         _request_timeout: Optional[int] = None,
     ) -> AValidatorExecutionResult:
@@ -383,6 +384,8 @@ class ASkill(AOpenAPISkill):
 
           contexts: Optional documents passed to RAG evaluators
 
+          variables: Optional variables for the evaluator prompt template
+
         """
 
         api_instance = ASkillsApi(await self._client())  # type: ignore[operator]
@@ -392,6 +395,7 @@ class ASkill(AOpenAPISkill):
             response=response,
             contexts=contexts,
             functions=functions,
+            variables=variables,
         )
         return await api_instance.skills_execute_validators_create(
             id=self.id,
@@ -425,6 +429,7 @@ class Evaluator(OpenAPISkill):
         contexts: Optional[List[str]] = None,
         functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
         expected_output: Optional[str] = None,
+        variables: Optional[dict[str, str]] = None,
     ) -> EvaluatorExecutionResult:
         """
         Run the evaluator.
@@ -441,6 +446,8 @@ class Evaluator(OpenAPISkill):
 
           expected_output: Optional expected output for the evaluator.
 
+          variables: Optional variables for the evaluator prompt template
+
         """
 
         api_instance = SkillsApi(self._client)
@@ -452,6 +459,7 @@ class Evaluator(OpenAPISkill):
             contexts=contexts,
             functions=functions,
             expected_output=expected_output,
+            variables=variables,
         )
         return api_instance.skills_evaluator_execute_create(
             skill_id=self.id,
@@ -1526,6 +1534,7 @@ class Skills:
         request: Optional[str] = None,
         contexts: Optional[List[str]] = None,
         functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
+        variables: Optional[dict[str, str]] = None,
         skill_version_id: Optional[str] = None,
         _request_timeout: Optional[int] = None,
     ) -> ValidatorExecutionResult:
@@ -1539,6 +1548,8 @@ class Skills:
           request: The prompt sent to the LLM. Optional.
 
           contexts: Optional documents passed to RAG evaluators
+
+          variables: Optional variables for the evaluator prompt template
 
           skill_version_id: Skill version id. If omitted, the latest version is used.
 
@@ -1554,6 +1565,7 @@ class Skills:
             response=response,
             contexts=contexts,
             functions=functions,
+            variables=variables,
         )
         return api_instance.skills_execute_validators_create(
             id=skill_id,

@@ -9,7 +9,7 @@ cooking_skill = client.skills.create(
     validators=[
         Validator(
             evaluator_name="Cooking recipe evaluator",
-            prompt="Is it a cooking recipe",
+            prompt="Is the following a cooking recipe: {{output}}",
             threshold=0.1,
         ),
         Validator(
