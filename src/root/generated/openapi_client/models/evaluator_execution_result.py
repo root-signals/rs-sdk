@@ -27,11 +27,12 @@ class EvaluatorExecutionResult(BaseModel):
     EvaluatorExecutionResult
     """  # noqa: E501
 
+    evaluator_name: StrictStr
     score: Optional[Union[StrictFloat, StrictInt]]
     cost: Optional[Union[StrictFloat, StrictInt]]
     execution_log_id: StrictStr
     justification: Optional[StrictStr]
-    __properties: ClassVar[List[str]] = ["score", "cost", "execution_log_id", "justification"]
+    __properties: ClassVar[List[str]] = ["evaluator_name", "score", "cost", "execution_log_id", "justification"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -98,6 +99,7 @@ class EvaluatorExecutionResult(BaseModel):
 
         _obj = cls.model_validate(
             {
+                "evaluator_name": obj.get("evaluator_name"),
                 "score": obj.get("score"),
                 "cost": obj.get("cost"),
                 "execution_log_id": obj.get("execution_log_id"),
