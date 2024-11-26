@@ -2269,6 +2269,8 @@ components:
     EvaluatorExecutionResult:
       type: object
       properties:
+        evaluator_name:
+          type: string
         score:
           type: number
           format: double
@@ -2284,6 +2286,7 @@ components:
           nullable: true
       required:
       - cost
+      - evaluator_name
       - execution_log_id
       - justification
       - score
