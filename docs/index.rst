@@ -43,6 +43,7 @@ Easily integrate with your CI/CD process for continuous monitoring to ensure the
    examples
    async_support
    setup
+   Release notes <CHANGELOG.md>
 
 
 Indices and tables
