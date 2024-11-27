@@ -11,6 +11,4 @@ model = client.models.create(
 )
 
 # Use the model in a skill
-skill = client.skills.create(
-    name="My model test", prompt="Hello, my model!", model="ollama/llama3"
-)
+skill = client.skills.create(name="My model test", prompt="Hello, my model!", model="ollama/llama3")

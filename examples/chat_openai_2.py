@@ -19,8 +19,6 @@ client = OpenAI(base_url=skill.openai_base_url, api_key=rs_client.api_key)
 messages = [
     {"role": "user", "content": "Why is the sky blue?"},
 ]
-completion = client.chat.completions.create(
-    model=model, messages=messages, stream=True
-)
+completion = client.chat.completions.create(model=model, messages=messages, stream=True)
 for chunk in completion:
     print(chunk.choices[0].delta.content)

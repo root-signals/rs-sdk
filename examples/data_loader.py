@@ -8,10 +8,7 @@ client = RootSignals()
 skill = client.skills.create(
     name="My kimchi cooking assistant",
     intent="This skill will find you a recipe for kimchi.",
-    prompt=(
-        "Help me prepare Kimchi. "
-        "Use this web page for ingredients {{kimchi_ingredients}}"
-    ),
+    prompt=("Help me prepare Kimchi. " "Use this web page for ingredients {{kimchi_ingredients}}"),
     model="gpt-4o",
     fallback_models=["gpt-4"],
     data_loaders=[
