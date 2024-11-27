@@ -2271,6 +2271,7 @@ components:
       properties:
         evaluator_name:
           type: string
+          nullable: true
         score:
           type: number
           format: double
