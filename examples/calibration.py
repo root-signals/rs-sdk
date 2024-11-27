@@ -34,9 +34,7 @@ client.skills.update(
             output="He probably knows the answer to your question.",
             score=0.1,
         ),
-        EvaluatorDemonstration(
-            output="It will probably rain later today.", score=0.1
-        ),
+        EvaluatorDemonstration(output="It will probably rain later today.", score=0.1),
     ],
 )
 # Run second calibration

@@ -41,6 +41,7 @@ Easily integrate with your CI/CD process for continuous monitoring to ensure the
 
    quickstart
    examples
+   async_support
    setup
 
 

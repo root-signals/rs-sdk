@@ -35,9 +35,7 @@ print(completion.choices[0].message.content)
 messages = [
     {"role": "user", "content": "Why is the sky blue?"},
 ]
-completion = client.chat.completions.create(
-    model=another_model, messages=messages
-)
+completion = client.chat.completions.create(model=another_model, messages=messages)
 
 print(completion.choices[0].message.content)
 
