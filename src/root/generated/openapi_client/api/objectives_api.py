@@ -1065,7 +1065,7 @@ class ObjectivesApi:
     def objectives_objectives_execute_create(
         self,
         objective_id: StrictStr,
-        objective_execution_request: ObjectiveExecutionRequest,
+        objective_execution_request: Optional[ObjectiveExecutionRequest] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1082,7 +1082,7 @@ class ObjectivesApi:
 
         :param objective_id: (required)
         :type objective_id: str
-        :param objective_execution_request: (required)
+        :param objective_execution_request:
         :type objective_execution_request: ObjectiveExecutionRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1129,7 +1129,7 @@ class ObjectivesApi:
     def objectives_objectives_execute_create_with_http_info(
         self,
         objective_id: StrictStr,
-        objective_execution_request: ObjectiveExecutionRequest,
+        objective_execution_request: Optional[ObjectiveExecutionRequest] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1146,7 +1146,7 @@ class ObjectivesApi:
 
         :param objective_id: (required)
         :type objective_id: str
-        :param objective_execution_request: (required)
+        :param objective_execution_request:
         :type objective_execution_request: ObjectiveExecutionRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1193,7 +1193,7 @@ class ObjectivesApi:
     def objectives_objectives_execute_create_without_preload_content(
         self,
         objective_id: StrictStr,
-        objective_execution_request: ObjectiveExecutionRequest,
+        objective_execution_request: Optional[ObjectiveExecutionRequest] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1210,7 +1210,7 @@ class ObjectivesApi:
 
         :param objective_id: (required)
         :type objective_id: str
-        :param objective_execution_request: (required)
+        :param objective_execution_request:
         :type objective_execution_request: ObjectiveExecutionRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request

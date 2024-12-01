@@ -881,7 +881,6 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/ObjectiveExecutionRequest'
-        required: true
       security:
       - publicApiKey: []
       responses:
@@ -1312,7 +1311,6 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/EvaluatorExecutionRequest'
-        required: true
       security:
       - publicApiKey: []
       responses:
@@ -1352,7 +1350,6 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/SkillValidatorExecutionRequest'
-        required: true
       security:
       - publicApiKey: []
       responses:
@@ -2241,7 +2238,7 @@ components:
           maxLength: 1000000
         response:
           type: string
-          minLength: 1
+          default: ''
           maxLength: 1000000
         contexts:
           type: array
@@ -2264,8 +2261,6 @@ components:
           default: {}
           description: Extra variables to be used in the execution of the evaluator.
             Optional.
-      required:
-      - response
     EvaluatorExecutionResult:
       type: object
       properties:
@@ -2705,7 +2700,7 @@ components:
           maxLength: 1000000
         response:
           type: string
-          minLength: 1
+          default: ''
           maxLength: 1000000
         contexts:
           type: array
@@ -2720,8 +2715,6 @@ components:
           type: string
           nullable: true
           maxLength: 1000000
-      required:
-      - response
     ObjectiveList:
       type: object
       properties:
@@ -3653,7 +3646,7 @@ components:
           maxLength: 1000000
         response:
           type: string
-          minLength: 1
+          default: ''
           maxLength: 1000000
         contexts:
           type: array
@@ -3676,8 +3669,6 @@ components:
           default: {}
           description: Extra variables to be used in the execution of the evaluator.
             Optional.
-      required:
-      - response
     StatusChange:
       type: object
       properties:

@@ -1447,7 +1447,7 @@ class SkillsApi:
     def skills_evaluator_execute_create(
         self,
         skill_id: StrictStr,
-        evaluator_execution_request: EvaluatorExecutionRequest,
+        evaluator_execution_request: Optional[EvaluatorExecutionRequest] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1464,7 +1464,7 @@ class SkillsApi:
 
         :param skill_id: (required)
         :type skill_id: str
-        :param evaluator_execution_request: (required)
+        :param evaluator_execution_request:
         :type evaluator_execution_request: EvaluatorExecutionRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1511,7 +1511,7 @@ class SkillsApi:
     def skills_evaluator_execute_create_with_http_info(
         self,
         skill_id: StrictStr,
-        evaluator_execution_request: EvaluatorExecutionRequest,
+        evaluator_execution_request: Optional[EvaluatorExecutionRequest] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1528,7 +1528,7 @@ class SkillsApi:
 
         :param skill_id: (required)
         :type skill_id: str
-        :param evaluator_execution_request: (required)
+        :param evaluator_execution_request:
         :type evaluator_execution_request: EvaluatorExecutionRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1575,7 +1575,7 @@ class SkillsApi:
     def skills_evaluator_execute_create_without_preload_content(
         self,
         skill_id: StrictStr,
-        evaluator_execution_request: EvaluatorExecutionRequest,
+        evaluator_execution_request: Optional[EvaluatorExecutionRequest] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1592,7 +1592,7 @@ class SkillsApi:
 
         :param skill_id: (required)
         :type skill_id: str
-        :param evaluator_execution_request: (required)
+        :param evaluator_execution_request:
         :type evaluator_execution_request: EvaluatorExecutionRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1945,7 +1945,7 @@ class SkillsApi:
     def skills_execute_validators_create(
         self,
         id: StrictStr,
-        skill_validator_execution_request: SkillValidatorExecutionRequest,
+        skill_validator_execution_request: Optional[SkillValidatorExecutionRequest] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1962,7 +1962,7 @@ class SkillsApi:
 
         :param id: (required)
         :type id: str
-        :param skill_validator_execution_request: (required)
+        :param skill_validator_execution_request:
         :type skill_validator_execution_request: SkillValidatorExecutionRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2009,7 +2009,7 @@ class SkillsApi:
     def skills_execute_validators_create_with_http_info(
         self,
         id: StrictStr,
-        skill_validator_execution_request: SkillValidatorExecutionRequest,
+        skill_validator_execution_request: Optional[SkillValidatorExecutionRequest] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2026,7 +2026,7 @@ class SkillsApi:
 
         :param id: (required)
         :type id: str
-        :param skill_validator_execution_request: (required)
+        :param skill_validator_execution_request:
         :type skill_validator_execution_request: SkillValidatorExecutionRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -2073,7 +2073,7 @@ class SkillsApi:
     def skills_execute_validators_create_without_preload_content(
         self,
         id: StrictStr,
-        skill_validator_execution_request: SkillValidatorExecutionRequest,
+        skill_validator_execution_request: Optional[SkillValidatorExecutionRequest] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2090,7 +2090,7 @@ class SkillsApi:
 
         :param id: (required)
         :type id: str
-        :param skill_validator_execution_request: (required)
+        :param skill_validator_execution_request:
         :type skill_validator_execution_request: SkillValidatorExecutionRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request

@@ -6,7 +6,7 @@ client = RootSignals()
 # Create an evaluator
 direct_language_evaluator = client.evaluators.create(
     name="Direct language",
-    predicate="Does the {{ output }} contain weasel words?",
+    predicate="Is the following text clear and has no weasel words: {{output}}",
     intent="Is the language direct and unambiguous",
     model="gpt-4o",
 )
