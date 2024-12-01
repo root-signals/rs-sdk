@@ -32,7 +32,7 @@ class ObjectiveExecutionRequest(BaseModel):
     """  # noqa: E501
 
     request: Optional[Annotated[str, Field(strict=True, max_length=1000000)]] = ""
-    response: Annotated[str, Field(min_length=1, strict=True, max_length=1000000)]
+    response: Optional[Annotated[str, Field(strict=True, max_length=1000000)]] = ""
     contexts: Optional[List[Annotated[str, Field(min_length=1, strict=True)]]] = None
     functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None
     expected_output: Optional[Annotated[str, Field(strict=True, max_length=1000000)]] = None
@@ -101,7 +101,7 @@ class ObjectiveExecutionRequest(BaseModel):
         _obj = cls.model_validate(
             {
                 "request": obj.get("request") if obj.get("request") is not None else "",
-                "response": obj.get("response"),
+                "response": obj.get("response") if obj.get("response") is not None else "",
                 "contexts": obj.get("contexts"),
                 "functions": [EvaluatorExecutionFunctionsRequest.from_dict(_item) for _item in obj["functions"]]
                 if obj.get("functions") is not None

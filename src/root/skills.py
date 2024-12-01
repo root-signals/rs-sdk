@@ -424,7 +424,7 @@ class Evaluator(OpenAPISkill):
 
     def run(
         self,
-        response: str,
+        response: Optional[str] = None,
         request: Optional[str] = None,
         contexts: Optional[List[str]] = None,
         functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
@@ -438,7 +438,7 @@ class Evaluator(OpenAPISkill):
 
           response: LLM output.
 
-          request: The prompt sent to the LLM. Optional.
+          request: The prompt sent to the LLM.
 
           contexts: Optional documents passed to RAG evaluators
 
@@ -449,6 +449,9 @@ class Evaluator(OpenAPISkill):
           variables: Optional variables for the evaluator prompt template
 
         """
+
+        if not response and not request:
+            raise ValueError("Either response or request must be provided")
 
         api_instance = SkillsApi(self._client)
 
@@ -542,7 +545,7 @@ class AEvaluator(AOpenAPISkill):
 
     async def arun(
         self,
-        response: str,
+        response: Optional[str] = None,
         request: Optional[str] = None,
         contexts: Optional[List[str]] = None,
         functions: Optional[List[AEvaluatorExecutionFunctionsRequest]] = None,
@@ -555,7 +558,7 @@ class AEvaluator(AOpenAPISkill):
 
           response: LLM output.
 
-          request: The prompt sent to the LLM. Optional.
+          request: The prompt sent to the LLM.
 
           contexts: Optional documents passed to RAG evaluators
 
@@ -564,6 +567,9 @@ class AEvaluator(AOpenAPISkill):
           expected_output: Optional expected output for the evaluator.
 
         """
+
+        if not response and not request:
+            raise ValueError("Either response or request must be provided")
 
         api_instance = ASkillsApi(await self._client())  # type: ignore[operator]
 
@@ -647,7 +653,7 @@ class PresetEvaluatorRunner:
 
     def __call__(
         self,
-        response: str,
+        response: Optional[str] = None,
         request: Optional[str] = None,
         contexts: Optional[List[str]] = None,
         functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
@@ -660,7 +666,7 @@ class PresetEvaluatorRunner:
 
           response: LLM output.
 
-          request: The prompt sent to the LLM. Optional.
+          request: The prompt sent to the LLM.
 
           contexts: Optional documents passed to RAG evaluators
 
@@ -669,6 +675,9 @@ class PresetEvaluatorRunner:
           expected_output: Optional expected output for the evaluator.
 
         """
+
+        if not response and not request:
+            raise ValueError("Either response or request must be provided")
 
         api_instance = SkillsApi(self._client)
 
@@ -699,7 +708,7 @@ class APresetEvaluatorRunner:
 
     async def __call__(
         self,
-        response: str,
+        response: Optional[str] = None,
         request: Optional[str] = None,
         contexts: Optional[List[str]] = None,
         functions: Optional[List[AEvaluatorExecutionFunctionsRequest]] = None,
@@ -712,7 +721,7 @@ class APresetEvaluatorRunner:
 
           response: LLM output.
 
-          request: The prompt sent to the LLM. Optional.
+          request: The prompt sent to the LLM.
 
           contexts: Optional documents passed to RAG evaluators
 
@@ -1709,8 +1718,8 @@ class Evaluators:
         self,
         evaluator_id: str,
         *,
-        request: str,
-        response: str,
+        request: Optional[str] = None,
+        response: Optional[str] = None,
         contexts: Optional[List[str]] = None,
         functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
         expected_output: Optional[str] = None,
@@ -1720,13 +1729,13 @@ class Evaluators:
         """
         Run an evaluator using its id and an optional version id .
         If no evaluator version id is given, the latest version of the evaluator will be used.
-
-        Returns a dictionary with the following keys:
-        - score: a value between 0 and 1 representing the score of the evaluator
         """
 
         if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
             raise Exception("This method is not available in asynchronous mode")
+
+        if not response and not request:
+            raise ValueError("Either response or request must be provided")
 
         api_instance = SkillsApi(self.client)
         evaluator_execution_request = EvaluatorExecutionRequest(
@@ -1747,8 +1756,8 @@ class Evaluators:
         self,
         evaluator_id: str,
         *,
-        request: str,
-        response: str,
+        request: Optional[str] = None,
+        response: Optional[str] = None,
         contexts: Optional[List[str]] = None,
         functions: Optional[List[AEvaluatorExecutionFunctionsRequest]] = None,
         expected_output: Optional[str] = None,
@@ -1759,12 +1768,13 @@ class Evaluators:
         Asynchronously run an evaluator using its id and an optional version id .
         If no evaluator version id is given, the latest version of the evaluator will be used.
 
-        Returns a dictionary with the following keys:
-        - score: a value between 0 and 1 representing the score of the evaluator
         """
 
         if isinstance(self.client, ApiClient):
             raise Exception("This method is not available in synchronous mode")
+
+        if not response and not request:
+            raise ValueError("Either response or request must be provided")
 
         api_instance = ASkillsApi(await self.client())  # type: ignore[operator]
         evaluator_execution_request = AEvaluatorExecutionRequest(
