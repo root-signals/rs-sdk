@@ -2,7 +2,6 @@ from unittest import mock
 from unittest.mock import MagicMock
 
 import pytest
-
 from root.client import RootSignals
 from root.generated.openapi_aclient.models.evaluator_calibration_output import EvaluatorCalibrationOutput
 from root.generated.openapi_aclient.models.evaluator_calibration_result import EvaluatorCalibrationResult
