@@ -1,5 +1,4 @@
 import pytest
-
 from root.client import RootSignals
 from root.skills import CalibrateBatchParameters
 
