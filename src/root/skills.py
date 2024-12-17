@@ -1483,9 +1483,9 @@ class Skills:
         - llm_output: the LLM response of the skill run
         - validation: the result of the skill validation
         """
-
+        exc = Exception("This method is not available in asynchronous mode")
         if not isinstance(self.client, ApiClient) and self.client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
-            raise Exception("This method is not available in asynchronous mode")
+            raise exc
 
         api_instance = SkillsApi(self.client)
         skill_execution_request = SkillExecutionRequest(
