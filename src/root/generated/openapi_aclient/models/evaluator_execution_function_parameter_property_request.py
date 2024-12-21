@@ -29,7 +29,8 @@ class EvaluatorExecutionFunctionParameterPropertyRequest(BaseModel):
 
     type: Annotated[str, Field(min_length=1, strict=True)]
     description: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
-    __properties: ClassVar[List[str]] = ["type", "description"]
+    items: Optional[Dict[str, Any]] = None
+    __properties: ClassVar[List[str]] = ["type", "description", "items"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -79,5 +80,7 @@ class EvaluatorExecutionFunctionParameterPropertyRequest(BaseModel):
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
 
-        _obj = cls.model_validate({"type": obj.get("type"), "description": obj.get("description")})
+        _obj = cls.model_validate(
+            {"type": obj.get("type"), "description": obj.get("description"), "items": obj.get("items")}
+        )
         return _obj

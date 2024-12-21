@@ -2173,6 +2173,9 @@ components:
         description:
           type: string
           minLength: 1
+        items:
+          type: object
+          additionalProperties: {}
       required:
       - type
     EvaluatorExecutionFunctionParameterRequest:
