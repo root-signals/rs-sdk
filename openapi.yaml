@@ -940,6 +940,12 @@ paths:
           default: false
         description: Return only evaluator skills.
       - in: query
+        name: is_root_evaluator
+        schema:
+          type: boolean
+          default: false
+        description: Return only Root Signals defined evaluator skills.
+      - in: query
         name: name
         schema:
           type: string

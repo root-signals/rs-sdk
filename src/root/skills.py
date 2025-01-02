@@ -1124,6 +1124,7 @@ class Skills:
         limit: int = 100,
         name: Optional[str] = None,
         only_evaluators: bool = False,
+        only_root_evaluators: bool = False,
     ) -> Iterator[SkillListOutput]:
         """Iterate through the skills.
 
@@ -1138,6 +1139,8 @@ class Skills:
 
           only_evaluators: Match only Skills with is_evaluator=True.
 
+          only_root_evaluators: Match only Root Signals defined evaluator skills.
+
           search_term: Can be used to limit returned skills.
         """
 
@@ -1147,7 +1150,11 @@ class Skills:
         api_instance = SkillsApi(self.client)
         yield from iterate_cursor_list(
             partial(
-                api_instance.skills_list, name=name, search=search_term, is_evaluator=True if only_evaluators else None
+                api_instance.skills_list,
+                name=name,
+                search=search_term,
+                is_evaluator=True if only_evaluators else None,
+                is_root_evaluator=True if only_root_evaluators else None,
             ),
             limit=limit,
         )
@@ -1159,6 +1166,7 @@ class Skills:
         limit: int = 100,
         name: Optional[str] = None,
         only_evaluators: bool = False,
+        only_root_evaluators: bool = False,
     ) -> AsyncIterator[ASkillListOutput]:
         """Asynchronously iterate through the skills.
 
@@ -1173,6 +1181,8 @@ class Skills:
 
           only_evaluators: Match only Skills with is_evaluator=True.
 
+          only_root_evaluators: Match only Root Signals defined evaluator skills.
+
           search_term: Can be used to limit returned skills.
         """
 
@@ -1181,7 +1191,11 @@ class Skills:
 
         api_instance = ASkillsApi(await self.client())  # type: ignore[operator]
         partial_list = partial(
-            api_instance.skills_list, name=name, search=search_term, is_evaluator=True if only_evaluators else None
+            api_instance.skills_list,
+            name=name,
+            search=search_term,
+            is_evaluator=True if only_evaluators else None,
+            is_root_evaluator=True if only_root_evaluators else None,
         )
 
         cursor: Optional[StrictStr] = None

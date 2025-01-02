@@ -1,4 +1,4 @@
 # SPDX-FileCopyrightText: 2024-present juho.ylikyla <juho.ylikyla@rootsignals.ai>
 #
 # SPDX-License-Identifier: MIT
-__version__ = "1.3.1"
+__version__ = "1.3.2"

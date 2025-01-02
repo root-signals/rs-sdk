@@ -2195,6 +2195,9 @@ class SkillsApi:
         self,
         cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
         is_evaluator: Annotated[Optional[StrictBool], Field(description="Return only evaluator skills.")] = None,
+        is_root_evaluator: Annotated[
+            Optional[StrictBool], Field(description="Return only Root Signals defined evaluator skills.")
+        ] = None,
         name: Annotated[Optional[StrictStr], Field(description="Search for skills by name (exact match).")] = None,
         ordering: Annotated[
             Optional[StrictStr], Field(description="Which field to use when ordering the results.")
@@ -2225,6 +2228,8 @@ class SkillsApi:
         :type cursor: str
         :param is_evaluator: Return only evaluator skills.
         :type is_evaluator: bool
+        :param is_root_evaluator: Return only Root Signals defined evaluator skills.
+        :type is_root_evaluator: bool
         :param name: Search for skills by name (exact match).
         :type name: str
         :param ordering: Which field to use when ordering the results.
@@ -2260,6 +2265,7 @@ class SkillsApi:
         _param = self._skills_list_serialize(
             cursor=cursor,
             is_evaluator=is_evaluator,
+            is_root_evaluator=is_root_evaluator,
             name=name,
             ordering=ordering,
             page_size=page_size,
@@ -2286,6 +2292,9 @@ class SkillsApi:
         self,
         cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
         is_evaluator: Annotated[Optional[StrictBool], Field(description="Return only evaluator skills.")] = None,
+        is_root_evaluator: Annotated[
+            Optional[StrictBool], Field(description="Return only Root Signals defined evaluator skills.")
+        ] = None,
         name: Annotated[Optional[StrictStr], Field(description="Search for skills by name (exact match).")] = None,
         ordering: Annotated[
             Optional[StrictStr], Field(description="Which field to use when ordering the results.")
@@ -2316,6 +2325,8 @@ class SkillsApi:
         :type cursor: str
         :param is_evaluator: Return only evaluator skills.
         :type is_evaluator: bool
+        :param is_root_evaluator: Return only Root Signals defined evaluator skills.
+        :type is_root_evaluator: bool
         :param name: Search for skills by name (exact match).
         :type name: str
         :param ordering: Which field to use when ordering the results.
@@ -2351,6 +2362,7 @@ class SkillsApi:
         _param = self._skills_list_serialize(
             cursor=cursor,
             is_evaluator=is_evaluator,
+            is_root_evaluator=is_root_evaluator,
             name=name,
             ordering=ordering,
             page_size=page_size,
@@ -2377,6 +2389,9 @@ class SkillsApi:
         self,
         cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
         is_evaluator: Annotated[Optional[StrictBool], Field(description="Return only evaluator skills.")] = None,
+        is_root_evaluator: Annotated[
+            Optional[StrictBool], Field(description="Return only Root Signals defined evaluator skills.")
+        ] = None,
         name: Annotated[Optional[StrictStr], Field(description="Search for skills by name (exact match).")] = None,
         ordering: Annotated[
             Optional[StrictStr], Field(description="Which field to use when ordering the results.")
@@ -2407,6 +2422,8 @@ class SkillsApi:
         :type cursor: str
         :param is_evaluator: Return only evaluator skills.
         :type is_evaluator: bool
+        :param is_root_evaluator: Return only Root Signals defined evaluator skills.
+        :type is_root_evaluator: bool
         :param name: Search for skills by name (exact match).
         :type name: str
         :param ordering: Which field to use when ordering the results.
@@ -2442,6 +2459,7 @@ class SkillsApi:
         _param = self._skills_list_serialize(
             cursor=cursor,
             is_evaluator=is_evaluator,
+            is_root_evaluator=is_root_evaluator,
             name=name,
             ordering=ordering,
             page_size=page_size,
@@ -2463,6 +2481,7 @@ class SkillsApi:
         self,
         cursor,
         is_evaluator,
+        is_root_evaluator,
         name,
         ordering,
         page_size,
@@ -2491,6 +2510,9 @@ class SkillsApi:
 
         if is_evaluator is not None:
             _query_params.append(("is_evaluator", is_evaluator))
+
+        if is_root_evaluator is not None:
+            _query_params.append(("is_root_evaluator", is_root_evaluator))
 
         if name is not None:
             _query_params.append(("name", name))
