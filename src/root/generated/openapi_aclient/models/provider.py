@@ -18,7 +18,7 @@ import pprint
 import re  # noqa: F401
 from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
 from typing_extensions import Self
 
 
@@ -31,7 +31,8 @@ class Provider(BaseModel):
     name: StrictStr
     logo_light: Optional[StrictStr] = None
     logo_dark: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["id", "name", "logo_light", "logo_dark"]
+    is_gdpr_compliant: Optional[StrictBool] = None
+    __properties: ClassVar[List[str]] = ["id", "name", "logo_light", "logo_dark", "is_gdpr_compliant"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -92,6 +93,7 @@ class Provider(BaseModel):
                 "name": obj.get("name"),
                 "logo_light": obj.get("logo_light"),
                 "logo_dark": obj.get("logo_dark"),
+                "is_gdpr_compliant": obj.get("is_gdpr_compliant"),
             }
         )
         return _obj

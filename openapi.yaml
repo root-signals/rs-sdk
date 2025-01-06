@@ -3127,6 +3127,8 @@ components:
         logo_dark:
           type: string
           format: uri
+        is_gdpr_compliant:
+          type: boolean
       required:
       - id
       - name
