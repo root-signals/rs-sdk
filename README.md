@@ -1,25 +1,13 @@
 <!-- the image cannot be within pypi, so we get it from the sdk website -->
 <h1 align="center">
-  <img style="vertical-align:middle" height="200" src="https://cdn.prod.website-files.com/660f4bb4fb990316f902c545/66d83dd0ca040ea331127908_Logo%20-%20Blue%20-%20Root%20Signals%20(1).png">
+  <img width="600" alt="Root Signals logo" src="https://app.rootsignals.ai/images/root-signals-color.svg" loading="lazy">
 </h1>
 
   <!-- This is commented so it is easier to sync with the docs/index.rst -->
 
-  <p align="center">
-    <i>Control and Measurement for LLM automations</i>
-  </p>
-
-  <p align="center">
-      <a href="https://github.com/root-signals/root-python-sdk/releases">
-          <img alt="GitHub release"   src="https://img.shields.io/github/release/root-signals/root-python-sdk.svg">
-      </a>
-      <a href="https://www.python.org/">
-              <img alt="Build"   src="https://img.shields.io/badge/Made%20with-Python-1f425f.svg?color=purple">
-      </a>
-      <a   href="https://github.com/root-signals/root-python-sdk/blob/master/LICENSE">
-          <img alt="License"   src="https://img.shields.io/github/license/rootsignals/roots.svg?color=green">
-      </a>
-  </p>
+<p align="center">
+  <i>Control and Measurement for LLM automations</i>
+</p>
 
 
 Root Signals SDK streamlines the evaluation of your LLM pipelines, to yield insights about their effectiveness. While many tools exist for building the pipelines themselves, quantifying their performance can be challenging.
@@ -30,65 +18,46 @@ Easily integrate with your CI/CD process for continuous monitoring to ensure the
 
 ## Install
 
-### From pypi
-
-The preferrable way of installing the SDK is from [PyPI](https://pypi.org). With pip:
-
 ```bash
 pip install root-signals
 ```
 
 ## Quickstart
 
-Please set your API key to environment variable `ROOTSIGNALS_API_KEY`, or to local .env file.
+Before you begin, you'll need to set up your API key. You can either:
+1. Set it as an environment variable `ROOTSIGNALS_API_KEY`
+2. Add it to a local `.env` file
 
-Retrieve an API key from https://app.rootsignals.ai/settings/api-keys
+Get your API key from:
+- https://app.rootsignals.ai/settings/api-keys
+- Or [create a temporary key](https://app.rootsignals.ai/demo-user)
 
-For example:
+Example setup:
 
 ```bash
+# Option 1: Environment variable
 export ROOTSIGNALS_API_KEY=your-Root-API-key
-```
 
-or, if you prefer using .env file:
-
-```bash
+# Option 2: .env file
 echo ROOTSIGNALS_API_KEY=your-Root-API-key >> .env
 ```
 
-### Minimal skill
+### Run a Root evaluator
 ```python
 from root import RootSignals
 
 # Connect to the Root Signals API
 client = RootSignals()
 
-# Create a skill
-skill = client.skills.create(
-    """
-    Classify this text into one of the following: {{categories}}
-    Text: {{text}}
-    """
+# Run a politeness evaluator
+response = client.evaluators.Politeness(
+    response="You can find the instructions from our Careers page."
 )
-
-# Execute it
-response = skill.run(
-    {
-        "text": "The expectation for rate cuts has been steadily declining.",
-        "categories": "Finance, Sports, Politics",
-    }
-)
-
 print(response)
-
-# "llm_output": "Finance",
-# "validation": Validation(is_valid=True, validator_results=[]),
-# "model": "gpt-4o",
-# "execution_log_id": "9b3c713d-7bdc-4f7d-a85c-ed7d92ff4a56",
-# "rendered_prompt": "Classify this text into ...",
-# "cost": 5.6e-05,
-
+# {score=0.7, justification='The response is st...', execution_log_id=...}
 ```
+
+Check the full list of Root evaluators from the [Root evaluators documentation](https://docs.rootsignals.ai/quick-start/usage/evaluators#list-of-evaluators-maintained-by-root-signals). You can also [add your own evaluators](https://sdk.rootsignals.ai/en/latest/examples.html#custom-evaluator).
 
 # Documentation
 

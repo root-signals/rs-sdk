@@ -3,8 +3,19 @@ from __future__ import annotations
 import os
 import re
 import textwrap
+from contextlib import asynccontextmanager, contextmanager
 from functools import cached_property
-from typing import TYPE_CHECKING, Awaitable, Optional, Union
+from typing import (
+    TYPE_CHECKING,
+    AsyncContextManager,
+    AsyncGenerator,
+    Callable,
+    ContextManager,
+    Generator,
+    Optional,
+    Type,
+    Union,
+)
 
 from .__about__ import __version__
 from .generated import openapi_aclient, openapi_client
@@ -42,22 +53,22 @@ class RootSignals:
 
     The API key must be provided via one of the following methods - the code uses the first one that is found:
 
-    1. as an argument to RootSignals constructor    ,
+    1. as an argument to RootSignals constructor,
     2. environment variable `ROOTSIGNALS_API_KEY`, or
     3. .env file containing `ROOTSIGNALS_API_KEY=`
 
     Args:
         api_key: Root Signals API Key (if not provided from environment)
-        base_url: Root Signals base URL to use (default is fine)
+        run_async: Whether to run the API client asynchronously
     """
 
     def __init__(
         self,
         api_key: Optional[str] = None,
         *,
-        base_url: Optional[str] = None,
         run_async: bool = False,
-        _api_client: Union[Optional[Awaitable[openapi_aclient.ApiClient]], Optional[openapi_client.ApiClient]] = None,
+        _api_client: Union[Optional[openapi_aclient.ApiClient], Optional[openapi_client.ApiClient]] = None,
+        base_url: Optional[str] = None,
     ):
         self.run_async = run_async
         if api_key is None:
@@ -69,87 +80,102 @@ class RootSignals:
         self._api_client_arg = _api_client
 
     @cached_property
-    def get_api_client(self) -> Union[openapi_client.ApiClient, openapi_aclient.ApiClient]:
+    def get_client_context(
+        self,
+    ) -> Union[
+        Callable[[], AsyncContextManager[openapi_aclient.ApiClient]],
+        Callable[[], ContextManager[openapi_client.ApiClient]],
+    ]:
         if self._api_client_arg is not None:
-            return self._api_client_arg  # type: ignore[return-value]
+            if isinstance(self._api_client_arg, openapi_aclient.ApiClient):
+
+                @asynccontextmanager
+                async def async_client_context() -> AsyncGenerator[openapi_aclient.ApiClient, None]:
+                    assert isinstance(self._api_client_arg, openapi_aclient.ApiClient)
+                    yield self._api_client_arg
+
+                return async_client_context
+            else:
+
+                @contextmanager
+                def sync_client_context() -> Generator[openapi_client.ApiClient, None, None]:
+                    assert isinstance(self._api_client_arg, openapi_client.ApiClient)
+                    yield self._api_client_arg
+
+                return sync_client_context
 
         if self.run_async:
-            return self._aapi_client  # type: ignore[return-value]
+            return self._configure_client_context(openapi_aclient.ApiClient, _AConfiguration)
+        return self._configure_client_context(openapi_client.ApiClient, _Configuration)
 
-        return self._api_client
+    def _configure_client_context(
+        self,
+        client_cls: Union[Type[openapi_client.ApiClient], Type[openapi_aclient.ApiClient]],
+        config_cls: Union[Type[_Configuration], Type[_AConfiguration]],
+    ) -> Union[
+        Callable[[], ContextManager[openapi_client.ApiClient]],
+        Callable[[], AsyncContextManager[openapi_aclient.ApiClient]],
+    ]:
+        config = config_cls(host=self.base_url)
+        config.api_key["publicApiKey"] = f"Api-Key {self.api_key}"
 
-    @property
-    def _api_client(self) -> openapi_client.ApiClient:
-        """Get the OpenAPI client
+        if issubclass(client_cls, openapi_aclient.ApiClient):
 
-        End users should not need to inheract with OpenAPI directly.
+            @asynccontextmanager
+            async def async_client_context() -> AsyncGenerator[openapi_aclient.ApiClient, None]:
+                async with client_cls(config) as client:
+                    client.user_agent = f"rs-python-sdk/{__version__}"
+                    yield client
 
-        Note that this call is cached for duration of the RootSignals
-        instance; later calls will return the same instance.
-        """
+            return async_client_context
+        else:
 
-        api_client_configuration = _Configuration(host=self.base_url)
-        api_client_configuration.api_key["publicApiKey"] = f"Api-Key {self.api_key}"
-        return openapi_client.ApiClient(
-            api_client_configuration, header_name="x-root-python-version", header_value=__version__
-        )
+            @contextmanager
+            def sync_client_context() -> Generator[openapi_client.ApiClient, None, None]:
+                with client_cls(config) as client:
+                    client.user_agent = f"rs-python-sdk/{__version__}"
+                    yield client
 
-    async def _aapi_client(self) -> openapi_aclient.ApiClient:
-        """Get the OpenAPI client
-
-        End users should not need to inheract with OpenAPI directly.
-
-        Note that this call is cached for duration of the RootSignals
-        instance; later calls will return the same instance.
-        """
-
-        api_client_configuration = _AConfiguration(host=self.base_url)
-        api_client_configuration.api_key["publicApiKey"] = f"Api-Key {self.api_key}"
-
-        return openapi_aclient.ApiClient(
-            api_client_configuration, header_name="x-root-python-version", header_value=__version__
-        )
+            return sync_client_context
 
     @cached_property
     def datasets(self) -> DataSets:
         """Get DataSets API"""
-
         from .datasets import DataSets
 
-        return DataSets(self.get_api_client, self.base_url, self.api_key)  # type: ignore[arg-type]
+        return DataSets(self.get_client_context, self.base_url, self.api_key)
 
     @cached_property
     def evaluators(self) -> Evaluators:
         """Get Evaluators API"""
-
         from .skills import Evaluators
 
-        return Evaluators(self.get_api_client)  # type: ignore[arg-type]
+        return Evaluators(self.get_client_context)
 
     @cached_property
     def execution_logs(self) -> ExecutionLogs:
         """Get Execution Logs API"""
         from .execution_logs import ExecutionLogs
 
-        return ExecutionLogs(self.get_api_client)  # type: ignore[arg-type]
+        return ExecutionLogs(self.get_client_context)
 
     @cached_property
     def models(self) -> Models:
         """Get Models API"""
         from .models import Models
 
-        return Models(self.get_api_client)  # type: ignore[arg-type]
+        return Models(self.get_client_context)
 
     @cached_property
     def objectives(self) -> Objectives:
         """Get Objectives API"""
         from .objectives import Objectives
 
-        return Objectives(self.get_api_client)  # type: ignore[arg-type]
+        return Objectives(self.get_client_context)
 
     @cached_property
     def skills(self) -> Skills:
         """Get Skills API"""
         from .skills import Skills
 
-        return Skills(self.get_api_client)  # type: ignore[arg-type]
+        return Skills(self.get_client_context)

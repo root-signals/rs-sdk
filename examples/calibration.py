@@ -23,8 +23,8 @@ test_result = client.evaluators.calibrate_existing(
 print(test_result[0].result)
 
 # Improve the evaluator with demonstrations, penalize the "probably" weasel word
-client.skills.update(
-    skill_id=direct_language_evaluator.id,
+client.evaluators.update(
+    evaluator_id=direct_language_evaluator.id,
     evaluator_demonstrations=[
         EvaluatorDemonstration(
             output="The project will probably be completed on time.",

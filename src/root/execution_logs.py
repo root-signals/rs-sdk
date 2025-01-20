@@ -1,7 +1,8 @@
 from __future__ import annotations
 
+from contextlib import AbstractAsyncContextManager
 from functools import partial
-from typing import TYPE_CHECKING, AsyncIterator, Awaitable, Iterator, Optional, Protocol, Union
+from typing import TYPE_CHECKING, AsyncIterator, Iterator, Optional, Protocol
 
 from pydantic import StrictStr
 
@@ -16,7 +17,7 @@ from .generated.openapi_client import ApiClient
 from .generated.openapi_client.api.execution_logs_api import ExecutionLogsApi
 from .generated.openapi_client.models.execution_log_details import ExecutionLogDetails
 from .generated.openapi_client.models.execution_log_list import ExecutionLogList
-from .utils import iterate_cursor_list
+from .utils import ClientContextCallable, iterate_cursor_list, with_async_client, with_sync_client
 
 if TYPE_CHECKING:
 
@@ -27,28 +28,26 @@ if TYPE_CHECKING:
 class ExecutionLogs:
     """Execution logs API"""
 
-    def __init__(self, client: Union[Awaitable[AApiClient], ApiClient]):
-        self._client = client
+    def __init__(self, client_context: ClientContextCallable):
+        self.client_context = client_context
 
+    @with_sync_client
     def list(
         self,
         *,
         limit: int = 100,
         search_term: Optional[str] = None,
         _request_timeout: Optional[int] = None,
+        _client: ApiClient,
     ) -> Iterator[ExecutionLogList]:
-        """List execution logs
+        """
+        List execution logs
 
         Args:
           limit: Number of entries to iterate through at most.
-
           search_term: Can be used to limit returned logs. For example, a skill id or name.
         """
-
-        if not isinstance(self._client, ApiClient) and self._client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
-            raise Exception("This method is not available in asynchronous mode")
-
-        api_instance = ExecutionLogsApi(self._client)
+        api_instance = ExecutionLogsApi(_client)
         yield from iterate_cursor_list(
             partial(
                 api_instance.execution_logs_list,
@@ -65,46 +64,50 @@ class ExecutionLogs:
         search_term: Optional[str] = None,
         _request_timeout: Optional[int] = None,
     ) -> AsyncIterator[AExecutionLogList]:
-        """Asynchronously list execution logs
+        """
+        Asynchronously list execution logs
 
         Args:
           limit: Number of entries to iterate through at most.
-
           search_term: Can be used to limit returned logs. For example, a skill id or name.
         """
 
-        if self._client is ApiClient:
-            raise Exception("This method is not available in synchronous mode")
+        context = self.client_context()
+        assert isinstance(context, AbstractAsyncContextManager), "This method is not available in synchronous mode"
+        async with context as client:
+            api_instance = AExecutionLogsApi(client)
+            partial_list = partial(
+                api_instance.execution_logs_list,
+                search=search_term,
+                _request_timeout=_request_timeout,
+            )
 
-        api_instance = AExecutionLogsApi(await self._client())  # type: ignore[operator]
-        partial_list = partial(
-            api_instance.execution_logs_list,
-            search=search_term,
-            _request_timeout=_request_timeout,
-        )
+            cursor: Optional[StrictStr] = None
+            while limit > 0:
+                result: APaginatedExecutionLogListList = await partial_list(page_size=limit, cursor=cursor)
+                if not result.results:
+                    return
 
-        cursor: Optional[StrictStr] = None
-        while limit > 0:
-            result: APaginatedExecutionLogListList = await partial_list(page_size=limit, cursor=cursor)
-            if not result.results:
-                return
-
-            used_results = result.results[:limit]
-            for used_result in used_results:
-                yield used_result
-
+                used_results = result.results[:limit]
                 limit -= len(used_results)
+
+                for used_result in used_results:
+                    yield used_result
+
                 if not (cursor := result.next):
                     return
 
+    @with_sync_client
     def get(
         self,
         *,
         log_id: Optional[str] = None,
         execution_result: Optional[ExecutionResult] = None,
         _request_timeout: Optional[int] = None,
+        _client: ApiClient,
     ) -> ExecutionLogDetails:
-        """Get a specific execution log details
+        """
+        Get a specific execution log details
 
         Args:
           log_id: The log to be fetched
@@ -114,23 +117,23 @@ class ExecutionLogs:
           ValueError: If both log_id and execution_result are None.
         """
 
-        if not isinstance(self._client, ApiClient) and self._client.__name__ == "_aapi_client":  # type: ignore[attr-defined]
-            raise Exception("This method is not available in asynchronous mode")
-
-        api_instance = ExecutionLogsApi(self._client)
+        api_instance = ExecutionLogsApi(_client)
         _log_id = execution_result.execution_log_id if execution_result else log_id
         if _log_id is None:
             raise ValueError("Either log_id or execution_result must be provided")
         return api_instance.execution_logs_retrieve(_log_id, _request_timeout=_request_timeout)
 
+    @with_async_client
     async def aget(
         self,
         *,
         log_id: Optional[str] = None,
         execution_result: Optional[ExecutionResult] = None,
         _request_timeout: Optional[int] = None,
+        _client: AApiClient,
     ) -> AExecutionLogDetails:
-        """Asynchronously get a specific execution log details
+        """
+        Asynchronously get a specific execution log details
 
         Args:
           log_id: The log to be fetched
@@ -140,10 +143,7 @@ class ExecutionLogs:
           ValueError: If both log_id and execution_result are None.
         """
 
-        if self._client is ApiClient:
-            raise Exception("This method is not available in synchronous mode")
-
-        api_instance = AExecutionLogsApi(await self._client())  # type: ignore[operator]
+        api_instance = AExecutionLogsApi(_client)
         _log_id = execution_result.execution_log_id if execution_result else log_id
         if _log_id is None:
             raise ValueError("Either log_id or execution_result must be provided")

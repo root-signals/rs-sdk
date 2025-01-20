@@ -10,6 +10,20 @@ Root Signals provides [over 30 ready-made](https://docs.rootsignals.ai/quick-sta
 ```{literalinclude} ../examples/preset_evaluator.py
 ```
 
+## Custom evaluator
+
+We can also create a custom evaluator. Evaluators return only floating point values between 0 and 1, based on how well the received text matches what the evaluator is described to look for.
+
+```{literalinclude} ../examples/evaluator_skill.py
+```
+```json
+// print(response.score)
+"0.6",
+
+// print(response.justification)
+"The phrase 'It will probably rain tomorrow' lacks clarity due to...",
+```
+
 ## Adjust evaluator behavior
 
 An evaluator can be calibrated to adjust its behavior
@@ -157,30 +171,9 @@ home:\n\n1. Traditional Napa Cabbage Kimchi:\n\nIngredients:..."
 ```
 
 
-## Evaluator *Skill* and minimal version of it
+## **Skill** with a custom evaluator
 
-We can also create an evaluator skill. Evaluator skills return only floating point values between 0 and 1, based on how well the received output (of a skill) matches what the evaluator is described to look for.
-
-```{literalinclude} ../examples/evaluator_skill.py
-```
-```json
-// print(response.validation)
-
-{
-  "validator_results": [
-    {
-      "evaluator_name": "Cooking recipe evaluator",
-      "evaluator_id": "...",
-      "threshold": "0.1",
-      "is_valid": "True",
-      "result": "0.9",
-      "status": "finished"
-    }
-  ],
-  "is_valid": "True"}
-```
-
-The evaluator skill can be also created implicitly by supplying evaluator_name and a prompt:
+The evaluator can be created implicitly by supplying evaluator_name and a prompt:
 
 ```{literalinclude} ../examples/evaluator_skill_minimal.py
 ```

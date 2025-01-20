@@ -1,8 +1,29 @@
-from typing import Any, AsyncIterator, Generic, Iterator, List, Optional, TypeVar
+from contextlib import AbstractAsyncContextManager, AbstractContextManager
+from typing import (
+    Any,
+    AsyncContextManager,
+    AsyncIterator,
+    Callable,
+    ContextManager,
+    Generic,
+    Iterator,
+    List,
+    Optional,
+    TypeVar,
+    Union,
+)
 
 from pydantic import StrictStr
+from typing_extensions import TypeAlias
+
+from .generated import openapi_aclient, openapi_client
 
 T = TypeVar("T")
+
+
+ClientContextCallable: TypeAlias = Union[
+    Callable[[], ContextManager[openapi_client.ApiClient]], Callable[[], AsyncContextManager[openapi_aclient.ApiClient]]
+]
 
 
 # This is internal generic class only to handle duck typing of the
@@ -47,3 +68,23 @@ def iterate_cursor_list(partial_list: Any, *, limit: int) -> Iterator[T]:
         limit -= len(used_results)
         if not (cursor := result.next):
             return
+
+
+def with_sync_client(func: Callable) -> Callable:
+    def wrapper(self: Any, *args: Any, **kwargs: Any) -> Any:
+        context = self.client_context()
+        assert isinstance(context, AbstractContextManager), "This method is not available in asynchronous mode"
+        with context as client:
+            return func(self, *args, _client=client, **kwargs)
+
+    return wrapper
+
+
+def with_async_client(func: Callable) -> Callable:
+    async def wrapper(self: Any, *args: Any, **kwargs: Any) -> Any:
+        context = self.client_context()
+        assert isinstance(context, AbstractAsyncContextManager), "This method is not available in synchronous mode"
+        async with context as client:
+            return await func(self, *args, _client=client, **kwargs)
+
+    return wrapper

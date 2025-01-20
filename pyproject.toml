@@ -4,13 +4,13 @@ build-backend = "hatchling.build"
 
 [project]
 name = "root-signals"
-description = 'The Python SDK for API of Root Signals'
+description = "The Python SDK for API of Root Signals"
 maintainers = [
-  {name = "Markus Stenberg", email="markus.stenberg@rootsignals.ai"}
+  {name = "Ari Heljakka", email="ari.heljakka@rootsignals.ai"}
 ]
 license = {file = "LICENSE"}
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 dynamic = ["version"]
 dependencies = [
   "aioitertools",
@@ -22,8 +22,8 @@ dependencies = [
   "requests",
   "typing-extensions",
   "validators",
-  "commitizen",
 ]
+
 classifiers = [
   "Development Status :: 4 - Beta",
   "Intended Audience :: Developers",
@@ -36,8 +36,7 @@ classifiers = [
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
-  "Programming Language :: Python :: 3.8",
-  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.13",
   "Topic :: Scientific/Engineering :: Artificial Intelligence",
   "Topic :: Software Development :: Libraries :: Python Modules",
   "Typing :: Typed",
@@ -46,17 +45,18 @@ classifiers = [
 [project.optional-dependencies]
 # These are essentially development dependencies (hatch installs ^ + these)
 dev = [
+  "commitizen",
   "furo", # sphinx theme
   "hatch",
-  "mypy==1.9.0",
+  "mypy==1.14.1",
   "myst_parser",
   "pre-commit",
-  "pytest",
   "pytest-asyncio",
+  "pytest",
   "ruff",
-  "sphinx",
   "sphinx-autoapi",
   "sphinx-markdown-builder",
+  "sphinx",
   "twine", # for pypi uploads ( it has more convenient test/nontest handling than hatch)
   "types-requests",
   "validators",
@@ -110,15 +110,12 @@ line-length = 120
 
 [tool.ruff.lint]
 select = ["A", "B", "C", "E", "F", "G", "I", "N", "Q", "S", "T", "W", "T20"]
-ignore = ["A002"]
+ignore = ["A002", "S101"]
 
 [tool.ruff.lint.per-file-ignores]
 
 # openapi generator doesn't produce particularly good output
-"src/root/generated/**/*.py" = ["B904", "C", "E", "F", "N", "S101", "S110"]
-
-"**/tests/**/*.py" = ["S101"]
-# S101 = asserts, they're fine in tests
+"src/root/generated/**/*.py" = ["B904", "C", "E", "F", "N", "S110"]
 
 # T201 = print statement, we use it intentionally
 "examples/*.py" =  ["T201"]
@@ -126,10 +123,17 @@ ignore = ["A002"]
 
 [tool.commitizen]
 name = "cz_conventional_commits"
-version = "1.3.1"
+version = "1.3.2"
 tag_format = "$version"
 version_scheme = "semver2"
 version_files = [
     "src/root/__about__.py",
     "pyproject.toml:version"
+]
+
+
+[tool.pytest.ini_options]
+pythonpath = [
+    "src",
+    "tests",
 ]
