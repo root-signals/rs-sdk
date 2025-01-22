@@ -30,7 +30,7 @@ class Model(BaseModel):
     default_key: Optional[Annotated[str, Field(strict=True, max_length=4000)]] = None
     id: StrictStr
     max_output_token_count: Optional[Annotated[int, Field(strict=True, ge=800)]] = None
-    max_token_count: Optional[Annotated[int, Field(le=2147483647, strict=True, ge=800)]] = None
+    max_token_count: Optional[Annotated[int, Field(le=2147483647, strict=True, ge=0)]] = None
     model: Optional[StrictStr] = None
     name: Annotated[str, Field(strict=True, max_length=100)]
     url: Optional[Annotated[str, Field(strict=True, max_length=1024)]] = None

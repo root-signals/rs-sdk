@@ -11,7 +11,7 @@ result = client.evaluators.Truthfulness(
     Sautee in a small sauce pan with oil on medium heat.
     Keep a lid on it but stir often.""",
     contexts=[
-        "This is a cookbook with many cookies recipes such as: " "1) Recipe for a tomato sauce",
+        "This is a cookbook with many cookies recipes such as: 1) Recipe for a tomato sauce",
     ],
 )
 

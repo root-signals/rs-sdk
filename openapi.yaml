@@ -2527,7 +2527,7 @@ components:
         max_token_count:
           type: integer
           maximum: 2147483647
-          minimum: 800
+          minimum: 0
           nullable: true
         model:
           type: string
@@ -2594,7 +2594,7 @@ components:
         max_token_count:
           type: integer
           maximum: 2147483647
-          minimum: 800
+          minimum: 0
           nullable: true
         model:
           type: string
@@ -3023,7 +3023,7 @@ components:
         max_token_count:
           type: integer
           maximum: 2147483647
-          minimum: 800
+          minimum: 0
           nullable: true
         model:
           type: string

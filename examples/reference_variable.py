@@ -19,6 +19,6 @@ skill = client.skills.create(
 )
 
 response = skill.run(
-    {"email_dataset": ("Which email has the longest non-domain part?" "Respond with just the email address.")},
+    {"email_dataset": ("Which email has the longest non-domain part? Respond with just the email address.")},
 )
 print(response.llm_output)
