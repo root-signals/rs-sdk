@@ -16,27 +16,20 @@ from __future__ import annotations
 import json
 import pprint
 import re  # noqa: F401
-from typing import Any, ClassVar, Dict, List, Optional, Set, Union
+from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictBytes, StrictStr
+from pydantic import BaseModel, ConfigDict, Field
 from typing_extensions import Annotated, Self
 
-from root.generated.openapi_client.models.data_set_type import DataSetType
 
-
-class DataSetCreateRequest(BaseModel):
+class SkillTestDataRequestDatasetRange(BaseModel):
     """
-    DataSetCreateRequest
+    Specifies the range of dataset rows to use
     """  # noqa: E501
 
-    name: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
-    file: Optional[Union[StrictBytes, StrictStr]] = None
-    draft_id: Optional[StrictStr] = None
-    type: Optional[DataSetType] = None
-    url: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
-    tags: Optional[List[StrictStr]] = None
-    has_header: Optional[StrictBool] = False
-    __properties: ClassVar[List[str]] = ["name", "file", "draft_id", "type", "url", "tags", "has_header"]
+    start: Optional[Annotated[int, Field(strict=True, ge=0)]]
+    end: Optional[Annotated[int, Field(strict=True, ge=0)]]
+    __properties: ClassVar[List[str]] = ["start", "end"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -55,7 +48,7 @@ class DataSetCreateRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of DataSetCreateRequest from a JSON string"""
+        """Create an instance of SkillTestDataRequestDatasetRange from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -75,31 +68,26 @@ class DataSetCreateRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if name (nullable) is None
+        # set to None if start (nullable) is None
         # and model_fields_set contains the field
-        if self.name is None and "name" in self.model_fields_set:
-            _dict["name"] = None
+        if self.start is None and "start" in self.model_fields_set:
+            _dict["start"] = None
+
+        # set to None if end (nullable) is None
+        # and model_fields_set contains the field
+        if self.end is None and "end" in self.model_fields_set:
+            _dict["end"] = None
 
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of DataSetCreateRequest from a dict"""
+        """Create an instance of SkillTestDataRequestDatasetRange from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
 
-        _obj = cls.model_validate(
-            {
-                "name": obj.get("name"),
-                "file": obj.get("file"),
-                "draft_id": obj.get("draft_id"),
-                "type": obj.get("type"),
-                "url": obj.get("url"),
-                "tags": obj.get("tags"),
-                "has_header": obj.get("has_header") if obj.get("has_header") is not None else False,
-            }
-        )
+        _obj = cls.model_validate({"start": obj.get("start"), "end": obj.get("end")})
         return _obj

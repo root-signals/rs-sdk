@@ -18,7 +18,7 @@ import pprint
 import re  # noqa: F401
 from typing import Any, ClassVar, Dict, List, Optional, Set, Union
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBytes, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictBytes, StrictStr
 from typing_extensions import Annotated, Self
 
 from root.generated.openapi_aclient.models.data_set_type import DataSetType
@@ -35,7 +35,8 @@ class DataSetCreateRequest(BaseModel):
     type: Optional[DataSetType] = None
     url: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
     tags: Optional[List[StrictStr]] = None
-    __properties: ClassVar[List[str]] = ["name", "file", "draft_id", "type", "url", "tags"]
+    has_header: Optional[StrictBool] = False
+    __properties: ClassVar[List[str]] = ["name", "file", "draft_id", "type", "url", "tags", "has_header"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -98,6 +99,7 @@ class DataSetCreateRequest(BaseModel):
                 "type": obj.get("type"),
                 "url": obj.get("url"),
                 "tags": obj.get("tags"),
+                "has_header": obj.get("has_header") if obj.get("has_header") is not None else False,
             }
         )
         return _obj

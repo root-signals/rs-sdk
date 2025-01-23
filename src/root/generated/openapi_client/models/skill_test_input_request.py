@@ -25,6 +25,7 @@ from root.generated.openapi_client.models.data_loader_request import DataLoaderR
 from root.generated.openapi_client.models.input_variable_request import InputVariableRequest
 from root.generated.openapi_client.models.objective_request import ObjectiveRequest
 from root.generated.openapi_client.models.reference_variable_request import ReferenceVariableRequest
+from root.generated.openapi_client.models.skill_test_data_request_dataset_range import SkillTestDataRequestDatasetRange
 
 
 class SkillTestInputRequest(BaseModel):
@@ -34,6 +35,7 @@ class SkillTestInputRequest(BaseModel):
 
     test_data: Optional[List[List[Annotated[str, Field(min_length=1, strict=True)]]]] = None
     test_dataset_id: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
+    dataset_range: Optional[SkillTestDataRequestDatasetRange] = None
     prompt: Annotated[str, Field(min_length=1, strict=True)]
     reference_variables: Optional[List[ReferenceVariableRequest]] = None
     data_loaders: Optional[List[DataLoaderRequest]] = None
@@ -46,6 +48,7 @@ class SkillTestInputRequest(BaseModel):
     __properties: ClassVar[List[str]] = [
         "test_data",
         "test_dataset_id",
+        "dataset_range",
         "prompt",
         "reference_variables",
         "data_loaders",
@@ -94,6 +97,9 @@ class SkillTestInputRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of dataset_range
+        if self.dataset_range:
+            _dict["dataset_range"] = self.dataset_range.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in reference_variables (list)
         _items = []
         if self.reference_variables:
@@ -123,6 +129,11 @@ class SkillTestInputRequest(BaseModel):
         if self.test_data is None and "test_data" in self.model_fields_set:
             _dict["test_data"] = None
 
+        # set to None if dataset_range (nullable) is None
+        # and model_fields_set contains the field
+        if self.dataset_range is None and "dataset_range" in self.model_fields_set:
+            _dict["dataset_range"] = None
+
         # set to None if name (nullable) is None
         # and model_fields_set contains the field
         if self.name is None and "name" in self.model_fields_set:
@@ -148,6 +159,9 @@ class SkillTestInputRequest(BaseModel):
             {
                 "test_data": obj.get("test_data"),
                 "test_dataset_id": obj.get("test_dataset_id"),
+                "dataset_range": SkillTestDataRequestDatasetRange.from_dict(obj["dataset_range"])
+                if obj.get("dataset_range") is not None
+                else None,
                 "prompt": obj.get("prompt"),
                 "reference_variables": [
                     ReferenceVariableRequest.from_dict(_item) for _item in obj["reference_variables"]

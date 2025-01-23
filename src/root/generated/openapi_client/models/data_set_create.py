@@ -18,7 +18,7 @@ import pprint
 import re  # noqa: F401
 from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
 from typing_extensions import Self
 
 from root.generated.openapi_client.models.data_set_type import DataSetType
@@ -37,7 +37,8 @@ class DataSetCreate(BaseModel):
     url: Optional[StrictStr] = None
     tags: Optional[List[StrictStr]] = None
     owner: NestedUserDetails
-    __properties: ClassVar[List[str]] = ["id", "name", "file", "type", "url", "tags", "owner"]
+    has_header: Optional[StrictBool] = False
+    __properties: ClassVar[List[str]] = ["id", "name", "file", "type", "url", "tags", "owner", "has_header"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -111,6 +112,7 @@ class DataSetCreate(BaseModel):
                 "url": obj.get("url"),
                 "tags": obj.get("tags"),
                 "owner": NestedUserDetails.from_dict(obj["owner"]) if obj.get("owner") is not None else None,
+                "has_header": obj.get("has_header") if obj.get("has_header") is not None else False,
             }
         )
         return _obj

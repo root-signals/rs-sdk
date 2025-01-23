@@ -1884,6 +1884,9 @@ components:
           allOf:
           - $ref: '#/components/schemas/NestedUserDetails'
           readOnly: true
+        has_header:
+          type: boolean
+          default: false
       required:
       - id
       - owner
@@ -1912,6 +1915,9 @@ components:
           items:
             type: string
             format: uuid
+        has_header:
+          type: boolean
+          default: false
     DataSetList:
       type: object
       properties:
@@ -1955,6 +1961,20 @@ components:
       description: |-
         * `reference` - REFERENCE
         * `test` - TEST
+    DatasetRangeRequest:
+      type: object
+      properties:
+        start:
+          type: integer
+          minimum: 0
+          nullable: true
+        end:
+          type: integer
+          minimum: 0
+          nullable: true
+      required:
+      - end
+      - start
     DocumentParseRequestRequest:
       type: object
       properties:
@@ -3563,6 +3583,11 @@ components:
           type: string
           writeOnly: true
           minLength: 1
+        dataset_range:
+          allOf:
+          - $ref: '#/components/schemas/DatasetRangeRequest'
+          nullable: true
+          description: Specifies the range of dataset rows to use
     SkillTestInputRequest:
       type: object
       properties:
@@ -3579,6 +3604,11 @@ components:
           type: string
           writeOnly: true
           minLength: 1
+        dataset_range:
+          allOf:
+          - $ref: '#/components/schemas/DatasetRangeRequest'
+          nullable: true
+          description: Specifies the range of dataset rows to use
         prompt:
           type: string
           minLength: 1

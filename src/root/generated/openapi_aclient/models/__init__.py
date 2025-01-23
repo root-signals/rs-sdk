@@ -26,6 +26,7 @@ from root.generated.openapi_aclient.models.data_set_create import DataSetCreate
 from root.generated.openapi_aclient.models.data_set_create_request import DataSetCreateRequest
 from root.generated.openapi_aclient.models.data_set_list import DataSetList
 from root.generated.openapi_aclient.models.data_set_type import DataSetType
+from root.generated.openapi_aclient.models.dataset_range_request import DatasetRangeRequest
 from root.generated.openapi_aclient.models.document_parse_request_request import DocumentParseRequestRequest
 from root.generated.openapi_aclient.models.document_parse_response import DocumentParseResponse
 from root.generated.openapi_aclient.models.document_type_enum import DocumentTypeEnum
@@ -102,6 +103,7 @@ from root.generated.openapi_aclient.models.skill_execution_validator_result impo
 from root.generated.openapi_aclient.models.skill_list_output import SkillListOutput
 from root.generated.openapi_aclient.models.skill_request import SkillRequest
 from root.generated.openapi_aclient.models.skill_test_data_request import SkillTestDataRequest
+from root.generated.openapi_aclient.models.skill_test_data_request_dataset_range import SkillTestDataRequestDatasetRange
 from root.generated.openapi_aclient.models.skill_test_input_request import SkillTestInputRequest
 from root.generated.openapi_aclient.models.skill_test_output import SkillTestOutput
 from root.generated.openapi_aclient.models.skill_type_enum import SkillTypeEnum
