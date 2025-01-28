@@ -9,6 +9,24 @@
   <i>Control and Measurement for LLM automations</i>
 </p>
 
+<p align="center">
+    <a href="https://www.python.org/">
+            <img alt="Build" src="https://img.shields.io/badge/Made%20with-Python-1f425f.svg?color=purple">
+    </a>
+    <a href="https://discord.gg/EhazTQsFnj">
+        <img alt="discord-invite" src="https://img.shields.io/discord/1249308892681343067">
+    </a>
+</p>
+
+<div align="center">
+    <p>
+        <a href="https://docs.rootsignals.ai/">Documentation</a> |
+        <a href="https://discord.gg/EhazTQsFnj">Join Discord</a> |
+        <a href="https://app.rootsignals.ai/login">Login</a> |
+        <a href="https://app.rootsignals.ai/demo-user">Get a temporary API key</a>
+    <p>
+</div>
+
 
 Root Signals SDK streamlines the evaluation of your LLM pipelines, to yield insights about their effectiveness. While many tools exist for building the pipelines themselves, quantifying their performance can be challenging.
 
@@ -29,7 +47,7 @@ Before you begin, you'll need to set up your API key. You can either:
 2. Add it to a local `.env` file
 
 Get your API key from:
-- https://app.rootsignals.ai/settings/api-keys
+- Sign up at [Root Signals app](https://app.rootsignals.ai/) and create a key in [settings](https://app.rootsignals.ai/settings/api-keys)
 - Or [create a temporary key](https://app.rootsignals.ai/demo-user)
 
 Example setup:
@@ -59,14 +77,10 @@ print(response)
 
 Check the full list of Root evaluators from the [Root evaluators documentation](https://docs.rootsignals.ai/quick-start/usage/evaluators#list-of-evaluators-maintained-by-root-signals). You can also [add your own evaluators](https://sdk.rootsignals.ai/en/latest/examples.html#custom-evaluator).
 
-# Documentation
+## Documentation
 
-For more details, please see [the main SDK documentation](https://sdk.docs.rootsignals.ai).
+For more details, please see [the main SDK documentation](https://sdk.rootsignals.ai).
 
-# Miscellaneous notes
+## Community
 
-## Versioning policy
-
-We follow [semantic versioning](https://semver.org); to
-point, major versions are not guaranteed to be backwards compatible, minor
-versions are, and patch versions only fix bugs.
+Check out our [discord server](https://discord.gg/EhazTQsFnj). It's a good place to ask questions, get help, and discuss ideas.

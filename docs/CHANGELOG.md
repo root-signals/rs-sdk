@@ -1,3 +1,10 @@
+## 1.3.3
+
+### Added
+
+- Evaluators list and get methods
+- Improved docstrings for the SDK
+
 ## 1.3.2
 
 ### Added
