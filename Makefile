@@ -135,7 +135,4 @@ upload-main: dist
 upload-test: dist
 	$(IN_VENV) twine upload -r testpypi dist/*
 
-# bump SDK version and tag commit
-.PHONY: bump
-bump:
-	$(IN_VENV) cz bump
+
