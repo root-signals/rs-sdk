@@ -1,0 +1,17 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.9.3
+    hooks:
+      - id: ruff
+        args:
+          - --fix
+      - id: ruff-format
+
+  - repo: local
+    hooks:
+      - id: check-sdk-python
+        name: "Run checks"
+        language: system
+        types_or: [markdown, python]
+        pass_filenames: false
+        entry: make pre-commit

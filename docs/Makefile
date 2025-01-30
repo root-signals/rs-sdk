@@ -20,13 +20,3 @@ help:
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
 %: Makefile
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
-
-# generate changelog
-.PHONY: changelog
-changelog:
-	$(IN_VENV) cz changelog
-
-# generate changelog to stdout
-.PHONY: changelog-dry
-changelog-dry:
-	$(IN_VENV) cz changelog --dry-run
