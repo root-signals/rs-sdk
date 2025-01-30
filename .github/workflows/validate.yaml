@@ -53,3 +53,22 @@ jobs:
         if: |
           !(github.event_name == 'push' && github.ref_name == 'main')
         run: make dist
+
+  trigger-integration-tests:
+    needs: ci-sdk-python
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+      - name: Trigger downstream workflow
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.WORKFLOW_PAT }}
+          repository: ${{ secrets.DOWNSTREAM_REPO }}
+          event-type: python-sdk-integration-tests
+          client-payload: |
+            {
+              "ref": "${{ github.event.pull_request.head.sha }}",
+              "branch": "${{ github.event.pull_request.head.ref }}",
+              "pr_number": "${{ github.event.pull_request.number }}"
+            }
