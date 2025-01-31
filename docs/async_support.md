@@ -62,25 +62,3 @@ This sets the SDK in an asynchronous-ready environment, allowing you to benefit 
 }
 ```
 
-### Asynchronous *Evaluator Skill*
-
-The asynchronous version of a [Evaluator Skill](./examples.md#evaluator-skill-and-minimal-version-of-it) example would look like this:
-
-```{literalinclude} ../examples/async_evaluator_skill.py
-```
-```json
-// print(response.validation)
-
-{
-  "validator_results": [
-    {
-      "evaluator_name": "Cooking recipe evaluator",
-      "evaluator_id": "...",
-      "threshold": "0.1",
-      "is_valid": "True",
-      "result": "0.9",
-      "status": "finished"
-    }
-  ],
-  "is_valid": "True"}
-```
