@@ -17,17 +17,6 @@
     <i>Control and Measurement for LLM automations</i>
   </p>
 
-  <p align="center">
-      <a href="https://github.com/root-signals/root-python-sdk/releases">
-          <img alt="GitHub release"   src="https://img.shields.io/github/release/root-signals/root-python-sdk.svg">
-      </a>
-      <a href="https://www.python.org/">
-              <img alt="Build"   src="https://img.shields.io/badge/Made%20with-Python-1f425f.svg?color=purple">
-      </a>
-      <a   href="https://github.com/root-signals/root-python-sdk/blob/master/LICENSE">
-          <img alt="License"   src="https://img.shields.io/github/license/rootsignals/roots.svg?color=green">
-      </a>
-  </p>
 
 The Root Signals SDK streamlines the evaluation of your LLM pipelines, to yield insights about their effectiveness. While many tools exist for building the pipelines themselves, quantifying their performance can be challenging.
 
@@ -43,7 +32,7 @@ Easily integrate with your CI/CD process for continuous monitoring to ensure the
    examples
    async_support
    setup
-   Release notes <CHANGELOG.md>
+   release_notes
 
 
 Indices and tables
