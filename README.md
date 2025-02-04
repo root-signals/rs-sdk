@@ -16,6 +16,9 @@
     <a href="https://discord.gg/EhazTQsFnj">
         <img alt="discord-invite" src="https://img.shields.io/discord/1249308892681343067">
     </a>
+    <a href="https://colab.research.google.com/drive/1ztDFIItKGEruDD2SOiixatm4klxpT6Of?usp=sharing">
+        <img alt="Open in Colab" src="https://colab.research.google.com/assets/colab-badge.svg">
+    </a>
 </p>
 
 <div align="center">
