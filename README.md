@@ -29,7 +29,7 @@
     <img src="https://img.shields.io/badge/Get_Started-2E6AFB?style=for-the-badge&logo=rocket&logoColor=white&scale=2" />
   </a>
 
-  <a href="https://github.com/root-signals/rs-python-sdk">
+  <a href="https://huggingface.co/root-signals">
     <img src="https://img.shields.io/badge/HuggingFace-FF9D00?style=for-the-badge&logo=huggingface&logoColor=white&scale=2" />
   </a>
 
@@ -37,7 +37,7 @@
     <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white&scale=2" />
   </a>
 
-  <a href="https://docs.rootsignals.ai/">
+  <a href="https://sdk.rootsignals.ai/en/latest/">
     <img src="https://img.shields.io/badge/Documentation-E53935?style=for-the-badge&logo=readthedocs&logoColor=white&scale=2" />
   </a>
 
@@ -51,13 +51,14 @@
 
 With Root Signals you can develop your LLM application reliably, deploy them in confidence, and ensure optimal performance with continuous monitoring.
 
-## Install
+## 📦 Install
 
 ```bash
 pip install root-signals
 ```
 
-## Quickstart
+
+## ⚡ Quickstart
 
 </p>
     <a href="https://colab.research.google.com/drive/1ztDFIItKGEruDD2SOiixatm4klxpT6Of?usp=sharing">
@@ -65,21 +66,19 @@ pip install root-signals
     </a>
 </p>
 
-Before you begin, you'll need to set up your API key. You can either:
-1. Set it as an environment variable `ROOTSIGNALS_API_KEY`
-2. Add it to a local `.env` file
 
-Get your API key from:
-- Sign up at [Root Signals app](https://app.rootsignals.ai/) and create a key in [settings](https://app.rootsignals.ai/settings/api-keys)
-- Or [create a temporary key](https://app.rootsignals.ai/demo-user)
 
-Example setup:
+#### 🔑 Get Your API Key  
+- [Sign up & create a key](https://app.rootsignals.ai/settings/api-keys)  
+- Or [generate a temporary key](https://app.rootsignals.ai/demo-user)  
 
+**Setup Option 1: Environment Variable**  
 ```bash
-# Option 1: Environment variable
 export ROOTSIGNALS_API_KEY=your-Root-API-key
+```
 
-# Option 2: .env file
+**Setup Option 2: `.env` File**  
+```bash
 echo ROOTSIGNALS_API_KEY=your-Root-API-key >> .env
 ```
 
@@ -100,10 +99,16 @@ print(response)
 
 Check the full list of Root evaluators from the [Root evaluators documentation](https://docs.rootsignals.ai/quick-start/usage/evaluators#list-of-evaluators-maintained-by-root-signals). You can also [add your own evaluators](https://sdk.rootsignals.ai/en/latest/examples.html#custom-evaluator).
 
-## Documentation
 
-For more details, please see [the main SDK documentation](https://sdk.rootsignals.ai).
+## 📖 Documentation
 
-## Community
+| Resource | Link |
+|----------|------|
+| 🐍 Python SDK | [View Documentation](https://sdk.rootsignals.ai) |
+| 📘 Product Docs | [View Documentation](https://docs.rootsignals.ai) |
 
-Check out our [discord server](https://discord.gg/EhazTQsFnj). It's a good place to ask questions, get help, and discuss ideas.
+
+## 🌍 Community
+
+💬 Join our [Discord Server](https://discord.gg/EhazTQsFnj)! It's a great place to ask questions, get help, and discuss ideas.
+
