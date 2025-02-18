@@ -9,6 +9,14 @@ Root Signals provides [over 30 ready-made](https://docs.rootsignals.ai/quick-sta
 
 ```{literalinclude} ../examples/preset_evaluator.py
 ```
+```shell
+# Score: 0.1 / 1.0
+
+# Clarity:
+# The response is very brief and lacks detail. It simply directs the reader to another source without providing any specific information.
+# The phrase "instructions from our Careers page" is vague and does not specify...
+```
+
 
 ## Custom evaluator
 
@@ -16,45 +24,28 @@ We can also create a custom evaluator. Evaluators return only floating point val
 
 ```{literalinclude} ../examples/custom_evaluator.py
 ```
-```json
-// print(response.score)
-"0.6",
+```shell
+# Score: 0.3
 
-// print(response.justification)
-"The phrase 'It will probably rain tomorrow' lacks clarity due to...",
+# METRIC: Technical Accuracy and Appropriateness
+# 
+# 1.  Relevance: The initial response is generic and lacks...
 ```
+
 
 ## Adjust evaluator behavior
 
-An evaluator can be calibrated to adjust its behavior
+An evaluator behaviour can be adjusted by providing demonstrations.
 
 ```{literalinclude} ../examples/calibration.py
 ```
-```json
-// print(test_result[0].result)
-
-"score": "0.5",
-"expected_score": "0.1",
-```
-```json
-// print(test_result[0].result)
-
-"score": "0.1",
-"expected_score": "0.1",
-```
-
 
 
 ## Retrieval Augmented Generation (RAG) evaluation
 
-For RAG, there are special evaluators that can separately measure the different intermediate components of a RAG pipeline, in addition to the final output.
+For RAG, there are special evaluators that can separately measure the different intermediate components of a RAG pipeline, in addition to the final output. 
 
 ```{literalinclude} ../examples/run_rag.py
-```
-```json
-// print(result.score)
-
-"0.0"
 ```
 
 ## Use OpenAI client for chat completions

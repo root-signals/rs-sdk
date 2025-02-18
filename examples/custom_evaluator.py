@@ -2,14 +2,28 @@ from root import RootSignals
 
 client = RootSignals()
 
-direct_communication_evaluator = client.evaluators.create(
-    name="Direct communication",
-    predicate="Is the following text clear and has no weasel words: {{response}}",
-    intent="Is the language direct and unambiguous",
-    model="gpt-4o",
+network_troubleshooting_evaluator = client.evaluators.create(
+    name="Network Troubleshooting",
+    predicate="""Assess the response for technical accuracy and appropriateness in the context of network troubleshooting.
+            Is the advice technically sound and relevant to the user's question?
+            Does the troubleshooting process effectively address the likely causes of the issue?
+            Is the proposed solution valid and safe to implement?
+
+            User question: {{request}}
+
+            Chatbot response: {{response}}
+            """,
+    intent="To measure the technical accuracy and appropriateness of network troubleshooting responses",
+    model="gemini-2.0-flash",  # Check client.models.list() for all available models. You can also add your own model.
 )
 
-response = direct_communication_evaluator.run(response="It will probably rain tomorrow.")
+response = network_troubleshooting_evaluator.run(
+    request="My internet is not working.",
+    response="""
+    I'm sorry to hear that your internet isn't working.
+    Let's troubleshoot this step by step.
+    """,
+)
 
 print(response.score)
 print(response.justification)

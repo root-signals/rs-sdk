@@ -68,16 +68,16 @@ pip install root-signals
 
 
 
-#### 🔑 Get Your API Key  
-- [Sign up & create a key](https://app.rootsignals.ai/settings/api-keys)  
-- Or [generate a temporary key](https://app.rootsignals.ai/demo-user)  
+#### 🔑 Get Your API Key
+- [Sign up & create a key](https://app.rootsignals.ai/settings/api-keys)
+- Or [generate a temporary key](https://app.rootsignals.ai/demo-user)
 
-**Setup Option 1: Environment Variable**  
+**Setup Option 1: Environment Variable**
 ```bash
 export ROOTSIGNALS_API_KEY=your-Root-API-key
 ```
 
-**Setup Option 2: `.env` File**  
+**Setup Option 2: `.env` File**
 ```bash
 echo ROOTSIGNALS_API_KEY=your-Root-API-key >> .env
 ```
