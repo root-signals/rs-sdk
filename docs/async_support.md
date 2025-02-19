@@ -40,7 +40,7 @@ This sets the SDK in an asynchronous-ready environment, allowing you to benefit 
 ```
 
 ### Evaluator with Asyncio
-```{literalinclude} ../examples/asyncio.py
+```{literalinclude} ../examples/async_evaluation.py
 ```
 ```json
 // print(f"Evaluation result for {eval}: {future.get(eval)}")

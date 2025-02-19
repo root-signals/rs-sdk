@@ -117,8 +117,8 @@ ignore = ["A002", "S101"]
 "src/root/generated/**/*.py" = ["B904", "C", "E", "F", "N", "S110"]
 
 # T201 = print statement, we use it intentionally
-"examples/*.py" =  ["T201"]
-"examples.py" =  ["T201"]
+"examples/*.py" =  ["T201", "E501"]
+"examples.py" =  ["T201", "E501"]
 
 
 [tool.pytest.ini_options]
