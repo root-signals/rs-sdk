@@ -1344,7 +1344,9 @@ class Skills:
             test_dataset_id=test_dataset_id,
             test_data=test_data,
         )
-        return await api_instance.v1_skills_test_create2(skill_id, skill_test_request, _request_timeout=_request_timeout)
+        return await api_instance.v1_skills_test_create2(
+            skill_id, skill_test_request, _request_timeout=_request_timeout
+        )
 
     @with_sync_client
     def delete(self, skill_id: str, *, _client: ApiClient) -> None:

@@ -247,7 +247,7 @@ class Judges:
           limit: Number of entries to iterate through at most.
         """
         api_instance = BetaApi(_client)
-        for judge_list in iterate_cursor_list(api_instance.beta_judges_list, limit=limit):
+        for judge_list in iterate_cursor_list(api_instance.beta_judges_list, limit=limit):  # type: ignore
             for judge in judge_list.results:
                 yield Judge._wrap(judge, client_context=self.client_context)
 
