@@ -12,9 +12,6 @@
     <a href="https://pypi.org/project/root-signals/">
       <img alt="Supported Python versions" src="https://img.shields.io/badge/Python-3.10%20to%203.13-yellow?style=for-the-badge&logo=python&logoColor=yellow">
     </a>
-    <a href="https://colab.research.google.com/drive/1ztDFIItKGEruDD2SOiixatm4klxpT6Of?usp=sharing">
-        <img alt="Open in Colab" src="https://colab.research.google.com/assets/colab-badge.svg">
-    </a>
 </p>
 
 <p align="center">
@@ -63,17 +60,8 @@ pip install root-signals
 
 ## ⚡ Quickstart
 
-</p>
-    <a href="https://colab.research.google.com/drive/1ztDFIItKGEruDD2SOiixatm4klxpT6Of?usp=sharing">
-        <img alt="Quickstart in Colab" src="https://colab.research.google.com/assets/colab-badge.svg">
-    </a>
-</p>
-
-
-
 #### 🔑 Get Your API Key
-- [Sign up & create a key](https://app.rootsignals.ai/settings/api-keys)
-- Or [generate a temporary key](https://app.rootsignals.ai/demo-user)
+[Sign up & create a key](https://app.rootsignals.ai/settings/api-keys) or [generate a temporary key](https://app.rootsignals.ai/demo-user)
 
 **Setup Option 1: Environment Variable**
 ```bash
@@ -109,9 +97,46 @@ Check the full list of Root evaluators from the [Root evaluators documentation](
 |----------|------|
 | 🐍 Python SDK | [View Documentation](https://sdk.rootsignals.ai) |
 | 📘 Product Docs | [View Documentation](https://docs.rootsignals.ai) |
+| 📑 API Docs | [View Documentation](https://api.docs.rootsignals.ai/) |
+
+<table>
+  <thead>
+    <tr>
+      <th>Tutorial</th>
+      <th>Link</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: right;"><em>Quickstart</em></td>
+      <td>
+        <a href="https://colab.research.google.com/drive/1ztDFIItKGEruDD2SOiixatm4klxpT6Of?usp=sharing">
+          <img alt="Quickstart in Colab" src="https://colab.research.google.com/assets/colab-badge.svg">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: right;"><em>Tuning a Custom Judge</em></td>
+      <td>
+        <a href="https://colab.research.google.com/drive/1Rz6h9wWFK97g08RTQGyi6JV1bJLk5Dwf?usp=sharing">
+          <img alt="Tuning a Custom Judge in Colab" src="https://colab.research.google.com/assets/colab-badge.svg">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: right;"><em>RAG Hallucination Detection with Root Judge</em></td>
+      <td>
+        <a href="https://colab.research.google.com/drive/1A1mmE2jHVntSJiXzBIpMpDjxrtgWC8uq?usp=sharing">
+          <img alt="RAG Hallucination Detection in Colab" src="https://colab.research.google.com/assets/colab-badge.svg">
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 
 
 ## 🌍 Community
 
-💬 Join our [Discord Server](https://discord.gg/EhazTQsFnj)! It's a great place to ask questions, get help, and discuss ideas.
+💬 Welcome to our [Discord Server](https://discord.gg/EhazTQsFnj)! It's a great place to ask questions, get help, and discuss ideas.
 

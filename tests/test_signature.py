@@ -2,6 +2,7 @@ import inspect
 from functools import partial
 
 import pytest
+
 from root.execution_logs import ExecutionLogs
 from root.models import Models
 from root.objectives import AObjective, Objective, Objectives
@@ -71,9 +72,9 @@ def test_sync_async_methods_match(class_type):
         assert sync_doc
         assert async_doc
 
-        assert (
-            sync_doc == async_doc
-        ), f"Docstrings don't match for {sync_method}/{async_method}:\nSync: {sync_doc}\nAsync: {async_doc}"
+        assert sync_doc == async_doc, (
+            f"Docstrings don't match for {sync_method}/{async_method}:\nSync: {sync_doc}\nAsync: {async_doc}"
+        )
 
 
 @pytest.mark.parametrize(
@@ -111,6 +112,6 @@ def test_wrapper_classes_sync_async_methods_match(sync_class, async_class):
         assert sync_doc
         assert async_doc
 
-        assert (
-            sync_doc == async_doc
-        ), f"Docstrings don't match for {method_name}/{async_name}:\nSync: {sync_doc}\nAsync: {async_doc}"
+        assert sync_doc == async_doc, (
+            f"Docstrings don't match for {method_name}/{async_name}:\nSync: {sync_doc}\nAsync: {async_doc}"
+        )

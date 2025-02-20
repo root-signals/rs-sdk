@@ -1,4 +1,5 @@
 from openai import OpenAI
+
 from root import RootSignals
 from root.validators import Validator
 
