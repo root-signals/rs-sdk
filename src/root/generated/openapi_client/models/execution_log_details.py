@@ -46,6 +46,7 @@ class ExecutionLogDetails(BaseModel):
     objective: ExecutionLogDetailsObjective
     owner: NestedUserDetails
     rendered_prompt: StrictStr
+    score: Union[StrictFloat, StrictInt]
     skill: ExecutionLogDetailsSkill
     validation_results: List[SkillExecutionValidatorResult]
     variables: Optional[Any]
@@ -62,6 +63,7 @@ class ExecutionLogDetails(BaseModel):
         "objective",
         "owner",
         "rendered_prompt",
+        "score",
         "skill",
         "validation_results",
         "variables",
@@ -107,6 +109,7 @@ class ExecutionLogDetails(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
@@ -119,6 +122,7 @@ class ExecutionLogDetails(BaseModel):
                 "model",
                 "owner",
                 "rendered_prompt",
+                "score",
                 "validation_results",
                 "variables",
             ]
@@ -202,6 +206,7 @@ class ExecutionLogDetails(BaseModel):
                 else None,
                 "owner": NestedUserDetails.from_dict(obj["owner"]) if obj.get("owner") is not None else None,
                 "rendered_prompt": obj.get("rendered_prompt"),
+                "score": obj.get("score"),
                 "skill": ExecutionLogDetailsSkill.from_dict(obj["skill"]) if obj.get("skill") is not None else None,
                 "validation_results": [
                     SkillExecutionValidatorResult.from_dict(_item) for _item in obj["validation_results"]
