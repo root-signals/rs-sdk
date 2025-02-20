@@ -13,8 +13,8 @@ from pydantic import BaseModel, StrictStr
 
 from .data_loader import ADataLoader, DataLoader
 from .generated.openapi_aclient import ApiClient as AApiClient
-from .generated.openapi_aclient.api.objectives_api import ObjectivesApi as AObjectivesApi
-from .generated.openapi_aclient.api.skills_api import SkillsApi as ASkillsApi
+from .generated.openapi_aclient.api.v1_api import V1Api as AObjectivesApi
+from .generated.openapi_aclient.api.v1_api import V1Api as ASkillsApi
 from .generated.openapi_aclient.models import (
     EvaluatorDemonstrationsRequest as AEvaluatorDemonstrationsRequest,
 )
@@ -62,9 +62,9 @@ from .generated.openapi_aclient.models.skill_validator_execution_request import 
 from .generated.openapi_aclient.models.validator_execution_result import (
     ValidatorExecutionResult as AValidatorExecutionResult,
 )
-from .generated.openapi_client.api.objectives_api import ObjectivesApi
-from .generated.openapi_client.api.skills_api import SkillsApi
-from .generated.openapi_client.api_client import ApiClient
+from .generated.openapi_client.api.v1_api import ApiClient
+from .generated.openapi_client.api.v1_api import V1Api as ObjectivesApi
+from .generated.openapi_client.api.v1_api import V1Api as SkillsApi
 from .generated.openapi_client.models.data_loader_request import DataLoaderRequest
 from .generated.openapi_client.models.evaluator_calibration_output import EvaluatorCalibrationOutput
 from .generated.openapi_client.models.evaluator_demonstrations_request import (
@@ -224,7 +224,7 @@ class Versions:
         """
 
         api_instance = SkillsApi(_client)
-        return api_instance.get_a_list_of_all_versions_of_a_skill(id=skill_id)
+        return api_instance.list_skill_versions(id=skill_id)
 
     async def alist(self, skill_id: str) -> APaginatedSkillList:
         """
@@ -235,7 +235,7 @@ class Versions:
         assert isinstance(context, AbstractAsyncContextManager), "This method is not available in synchronous mode"
         async with context as client:
             api_instance = ASkillsApi(client)
-            return await api_instance.get_a_list_of_all_versions_of_a_skill(id=skill_id)
+            return await api_instance.list_skill_versions(id=skill_id)
 
 
 class Skill(OpenAPISkill):
@@ -307,7 +307,7 @@ class Skill(OpenAPISkill):
             skill_version_id=self.version_id,
             model_params=_to_model_params(model_params),
         )
-        return api_instance.skills_execute_create(id=self.id, skill_execution_request=skill_execution_request)
+        return api_instance.v1_skills_execute_create(id=self.id, skill_execution_request=skill_execution_request)
 
     @with_sync_client
     def evaluate(
@@ -346,7 +346,7 @@ class Skill(OpenAPISkill):
             expected_output=expected_output,
             variables=variables,
         )
-        return api_instance.skills_execute_validators_create(
+        return api_instance.v1_skills_execute_validators_create(
             id=self.id,
             skill_validator_execution_request=skill_execution_request,
             _request_timeout=_request_timeout,
@@ -396,7 +396,7 @@ class ASkill(AOpenAPISkill):
             skill_version_id=self.version_id,
             model_params=_ato_model_params(model_params),
         )
-        return await api_instance.skills_execute_create(id=self.id, skill_execution_request=skill_execution_request)
+        return await api_instance.v1_skills_execute_create(id=self.id, skill_execution_request=skill_execution_request)
 
     @with_async_client
     async def aevaluate(
@@ -435,7 +435,7 @@ class ASkill(AOpenAPISkill):
             variables=variables,
             expected_output=expected_output,
         )
-        return await api_instance.skills_execute_validators_create(
+        return await api_instance.v1_skills_execute_validators_create(
             id=self.id,
             skill_validator_execution_request=skill_execution_request,
             _request_timeout=_request_timeout,
@@ -501,7 +501,7 @@ class Evaluator(OpenAPISkill):
             expected_output=expected_output,
             variables=variables,
         )
-        return api_instance.skills_evaluator_execute_create(
+        return api_instance.v1_skills_evaluator_execute_create(
             skill_id=self.id,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
@@ -567,7 +567,7 @@ class AEvaluator(AOpenAPISkill):
             expected_output=expected_output,
             variables=variables,
         )
-        return await api_instance.skills_evaluator_execute_create(
+        return await api_instance.v1_skills_evaluator_execute_create(
             skill_id=self.id,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
@@ -739,7 +739,7 @@ class PresetEvaluatorRunner:
             expected_output=expected_output,
             variables=variables,
         )
-        return api_instance.skills_evaluator_execute_create(
+        return api_instance.v1_skills_evaluator_execute_create(
             skill_id=self.skill_id,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
@@ -801,7 +801,7 @@ class APresetEvaluatorRunner:
             expected_output=expected_output,
             variables=variables,
         )
-        return await api_instance.skills_evaluator_execute_create(
+        return await api_instance.v1_skills_evaluator_execute_create(
             skill_id=self.skill_id,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
@@ -906,7 +906,7 @@ class Skills:
                 intent = name
             objective = self._to_objective_request(intent=intent, validators=validators)
             objectives_api_instance = ObjectivesApi(_client)
-            objective_id = objectives_api_instance.objectives_create(objective_request=objective).id
+            objective_id = objectives_api_instance.v1_objectives_create(objective_request=objective).id
 
         skill_request = SkillRequest(
             name=name,
@@ -924,7 +924,7 @@ class Skills:
             overwrite=overwrite,
         )
 
-        skill = api_instance.skills_create(skill_request=skill_request, _request_timeout=_request_timeout)
+        skill = api_instance.v1_skills_create(skill_request=skill_request, _request_timeout=_request_timeout)
         return Skill._wrap(skill, self.client_context)
 
     @with_async_client
@@ -984,7 +984,7 @@ class Skills:
                 intent = name
             objective = await self._ato_objective_request(intent=intent, avalidators=validators)
             objectives_api_instance = AObjectivesApi(_client)
-            new_objective = await objectives_api_instance.objectives_create(objective_request=objective)
+            new_objective = await objectives_api_instance.v1_objectives_create(objective_request=objective)
             objective_id = new_objective.id
 
         skill_request = ASkillRequest(
@@ -1003,7 +1003,7 @@ class Skills:
             overwrite=overwrite,
         )
 
-        skill = await api_instance.skills_create(skill_request=skill_request, _request_timeout=_request_timeout)
+        skill = await api_instance.v1_skills_create(skill_request=skill_request, _request_timeout=_request_timeout)
         return await ASkill._awrap(skill, self.client_context)
 
     @with_sync_client
@@ -1049,7 +1049,7 @@ class Skills:
             evaluator_demonstrations=_to_evaluator_demonstrations(evaluator_demonstrations),
             objective_id=objective_id,
         )
-        api_response = api_instance.skills_partial_update(
+        api_response = api_instance.v1_skills_partial_update(
             id=skill_id, patched_skill_request=request, _request_timeout=_request_timeout
         )
         return Skill._wrap(api_response, self.client_context)
@@ -1097,7 +1097,7 @@ class Skills:
             evaluator_demonstrations=_ato_evaluator_demonstrations(evaluator_demonstrations),
             objective_id=objective_id,
         )
-        api_response = await api_instance.skills_partial_update(
+        api_response = await api_instance.v1_skills_partial_update(
             id=skill_id, patched_skill_request=request, _request_timeout=_request_timeout
         )
         return await ASkill._awrap(api_response, self.client_context)
@@ -1114,7 +1114,7 @@ class Skills:
         """
 
         api_instance = SkillsApi(_client)
-        api_response = api_instance.skills_retrieve(id=skill_id, _request_timeout=_request_timeout)
+        api_response = api_instance.v1_skills_retrieve(id=skill_id, _request_timeout=_request_timeout)
         return Skill._wrap(api_response, self.client_context)
 
     @with_async_client
@@ -1129,7 +1129,7 @@ class Skills:
         """
 
         api_instance = ASkillsApi(_client)
-        api_response = await api_instance.skills_retrieve(id=skill_id, _request_timeout=_request_timeout)
+        api_response = await api_instance.v1_skills_retrieve(id=skill_id, _request_timeout=_request_timeout)
         return await ASkill._awrap(api_response, self.client_context)
 
     @with_sync_client
@@ -1157,7 +1157,7 @@ class Skills:
         api_instance = SkillsApi(_client)
         yield from iterate_cursor_list(
             partial(
-                api_instance.skills_list,
+                api_instance.v1_skills_list,
                 name=name,
                 search=search_term,
                 is_evaluator=True if only_evaluators else None,
@@ -1191,7 +1191,7 @@ class Skills:
         async with context as client:
             api_instance = ASkillsApi(client)
             partial_list = partial(
-                api_instance.skills_list,
+                api_instance.v1_skills_list,
                 name=name,
                 search=search_term,
                 is_evaluator=True if only_evaluators else None,
@@ -1246,7 +1246,7 @@ class Skills:
             input_variables=_to_input_variables(input_variables),
             data_loaders=_to_data_loaders(data_loaders),
         )
-        return api_instance.skills_test_create(skill_test_request, _request_timeout=_request_timeout)
+        return api_instance.v1_skills_test_create(skill_test_request, _request_timeout=_request_timeout)
 
     @with_async_client
     async def atest(
@@ -1282,7 +1282,7 @@ class Skills:
             input_variables=_ato_input_variables(input_variables),
             data_loaders=_ato_data_loaders(data_loaders),
         )
-        return await api_instance.skills_test_create(skill_test_request, _request_timeout=_request_timeout)
+        return await api_instance.v1_skills_test_create(skill_test_request, _request_timeout=_request_timeout)
 
     @with_sync_client
     def test_existing(
@@ -1313,7 +1313,7 @@ class Skills:
             test_dataset_id=test_dataset_id,
             test_data=test_data,
         )
-        return api_instance.skills_test_create2(skill_id, skill_test_request, _request_timeout=_request_timeout)
+        return api_instance.v1_skills_test_create2(skill_id, skill_test_request, _request_timeout=_request_timeout)
 
     @with_async_client
     async def atest_existing(
@@ -1344,7 +1344,7 @@ class Skills:
             test_dataset_id=test_dataset_id,
             test_data=test_data,
         )
-        return await api_instance.skills_test_create2(skill_id, skill_test_request, _request_timeout=_request_timeout)
+        return await api_instance.v1_skills_test_create2(skill_id, skill_test_request, _request_timeout=_request_timeout)
 
     @with_sync_client
     def delete(self, skill_id: str, *, _client: ApiClient) -> None:
@@ -1353,7 +1353,7 @@ class Skills:
         """
 
         api_instance = SkillsApi(_client)
-        return api_instance.skills_destroy(id=skill_id)
+        return api_instance.v1_skills_destroy(id=skill_id)
 
     @with_async_client
     async def adelete(self, skill_id: str, *, _client: AApiClient) -> None:
@@ -1362,7 +1362,7 @@ class Skills:
         """
 
         api_instance = ASkillsApi(_client)
-        return await api_instance.skills_destroy(id=skill_id)
+        return await api_instance.v1_skills_destroy(id=skill_id)
 
     @with_sync_client
     def run(
@@ -1393,7 +1393,7 @@ class Skills:
             skill_version_id=skill_version_id,
             model_params=_to_model_params(model_params),
         )
-        return api_instance.skills_execute_create(
+        return api_instance.v1_skills_execute_create(
             id=skill_id,
             skill_execution_request=skill_execution_request,
             _request_timeout=_request_timeout,
@@ -1429,7 +1429,7 @@ class Skills:
             model_params=_ato_model_params(model_params),
         )
 
-        return await api_instance.skills_execute_create(
+        return await api_instance.v1_skills_execute_create(
             id=skill_id,
             skill_execution_request=skill_execution_request,
             _request_timeout=_request_timeout,
@@ -1474,7 +1474,7 @@ class Skills:
             variables=variables,
             expected_output=expected_output,
         )
-        return api_instance.skills_execute_validators_create(
+        return api_instance.v1_skills_execute_validators_create(
             id=skill_id,
             skill_validator_execution_request=skill_execution_request,
             _request_timeout=_request_timeout,
@@ -1519,7 +1519,7 @@ class Skills:
             variables=variables,
             expected_output=expected_output,
         )
-        return await api_instance.skills_execute_validators_create(
+        return await api_instance.v1_skills_execute_validators_create(
             id=skill_id,
             skill_validator_execution_request=skill_execution_request,
             _request_timeout=_request_timeout,
@@ -1658,7 +1658,7 @@ class Evaluators:
             expected_output=expected_output,
             variables=variables,
         )
-        return api_instance.skills_evaluator_execute_create(
+        return api_instance.v1_skills_evaluator_execute_create(
             skill_id=evaluator_id,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
@@ -1708,7 +1708,7 @@ class Evaluators:
             expected_output=expected_output,
             variables=variables,
         )
-        return await api_instance.skills_evaluator_execute_create(
+        return await api_instance.v1_skills_evaluator_execute_create(
             skill_id=evaluator_id,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
@@ -1737,7 +1737,7 @@ class Evaluators:
             test_dataset_id=test_dataset_id,
             test_data=test_data,
         )
-        return api_instance.skills_calibrate_create2(
+        return api_instance.v1_skills_calibrate_create2(
             evaluator_id, skill_test_request, _request_timeout=_request_timeout
         )
 
@@ -1764,7 +1764,7 @@ class Evaluators:
             test_dataset_id=test_dataset_id,
             test_data=test_data,
         )
-        return await api_instance.skills_calibrate_create2(
+        return await api_instance.v1_skills_calibrate_create2(
             evaluator_id, skill_test_request, _request_timeout=_request_timeout
         )
 
@@ -1807,7 +1807,7 @@ class Evaluators:
             input_variables=_to_input_variables(input_variables),
             data_loaders=_to_data_loaders(data_loaders),
         )
-        return api_instance.skills_calibrate_create(skill_test_request, _request_timeout=_request_timeout)
+        return api_instance.v1_skills_calibrate_create(skill_test_request, _request_timeout=_request_timeout)
 
     @with_async_client
     async def acalibrate(
@@ -1848,7 +1848,7 @@ class Evaluators:
             input_variables=_ato_input_variables(input_variables),
             data_loaders=_ato_data_loaders(data_loaders),
         )
-        return await api_instance.skills_calibrate_create(skill_test_request, _request_timeout=_request_timeout)
+        return await api_instance.v1_skills_calibrate_create(skill_test_request, _request_timeout=_request_timeout)
 
     def calibrate_batch(
         self,
@@ -2093,7 +2093,7 @@ class Evaluators:
 
         evaluator_list: List[SkillListOutput] = list(
             iterate_cursor_list(
-                partial(api_instance.skills_list, name=name, is_evaluator=True),
+                partial(api_instance.v1_skills_list, name=name, is_evaluator=True),
                 limit=1,
             )
         )
@@ -2102,7 +2102,7 @@ class Evaluators:
             raise ValueError(f"No evaluator found with name '{name}'")
 
         evaluator = evaluator_list[0]
-        api_response = api_instance.skills_retrieve(id=evaluator.id)
+        api_response = api_instance.v1_skills_retrieve(id=evaluator.id)
 
         return Evaluator._wrap(api_response, self.client_context)
 
@@ -2125,7 +2125,7 @@ class Evaluators:
 
             evaluator_list: List[ASkillListOutput] = []
             async for skill in aiterate_cursor_list(  # type: ignore[var-annotated]
-                partial(api_instance.skills_list, name=name, is_evaluator=True),
+                partial(api_instance.v1_skills_list, name=name, is_evaluator=True),
                 limit=1,
             ):
                 evaluator_list.extend(skill)
@@ -2134,7 +2134,7 @@ class Evaluators:
                 raise ValueError(f"No evaluator found with name '{name}'")
 
             evaluator = evaluator_list[0]
-            api_response = await api_instance.skills_retrieve(id=evaluator.id)
+            api_response = await api_instance.v1_skills_retrieve(id=evaluator.id)
 
             return await AEvaluator._awrap(api_response, self.client_context)
 
@@ -2380,7 +2380,7 @@ class Evaluators:
         """
 
         api_instance = SkillsApi(_client)
-        api_response = api_instance.skills_retrieve(id=skill_id, _request_timeout=_request_timeout)
+        api_response = api_instance.v1_skills_retrieve(id=skill_id, _request_timeout=_request_timeout)
         if not api_response.is_evaluator:
             raise ValueError(f"Skill with id {skill_id} is not an evaluator")
         return Evaluator._wrap(api_response, self.client_context)
@@ -2398,7 +2398,7 @@ class Evaluators:
         """
 
         api_instance = ASkillsApi(_client)
-        api_response = await api_instance.skills_retrieve(id=skill_id, _request_timeout=_request_timeout)
+        api_response = await api_instance.v1_skills_retrieve(id=skill_id, _request_timeout=_request_timeout)
         if not api_response.is_evaluator:
             raise ValueError(f"Skill with id {skill_id} is not an evaluator")
         return await AEvaluator._awrap(api_response, self.client_context)

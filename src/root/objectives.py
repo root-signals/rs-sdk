@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, AsyncIterator, Iterator, List, Optional, cast
 from pydantic import StrictStr
 
 from .generated.openapi_aclient import ApiClient as AApiClient
-from .generated.openapi_aclient.api.objectives_api import ObjectivesApi as AObjectivesApi
+from .generated.openapi_aclient.api.v1_api import V1Api as AObjectivesApi
 from .generated.openapi_aclient.models.evaluator_execution_functions_request import (
     EvaluatorExecutionFunctionsRequest as AEvaluatorExecutionFunctionsRequest,
 )
@@ -30,7 +30,7 @@ from .generated.openapi_aclient.models.validator_execution_result import (
     ValidatorExecutionResult as AValidatorExecutionResult,
 )
 from .generated.openapi_client import ApiClient
-from .generated.openapi_client.api.objectives_api import ObjectivesApi
+from .generated.openapi_client.api.v1_api import V1Api as ObjectivesApi
 from .generated.openapi_client.models.evaluator_execution_functions_request import (
     EvaluatorExecutionFunctionsRequest,
 )
@@ -132,7 +132,7 @@ class Objective(OpenApiObjective):
             functions=functions,
             expected_output=expected_output,
         )
-        return api_instance.objectives_objectives_execute_create(
+        return api_instance.v1_objectives_objectives_execute_create(
             objective_id=self.id,
             objective_execution_request=skill_execution_request,
             _request_timeout=_request_timeout,
@@ -189,7 +189,7 @@ class AObjective(AOpenApiObjective):
             functions=functions,
             expected_output=expected_output,
         )
-        return await api_instance.objectives_objectives_execute_create(
+        return await api_instance.v1_objectives_objectives_execute_create(
             objective_id=self.id,
             objective_execution_request=skill_execution_request,
             _request_timeout=_request_timeout,
@@ -236,7 +236,7 @@ class Objectives:
             test_dataset_id=test_dataset_id,
         )
         api_instance = ObjectivesApi(_client)
-        objective = api_instance.objectives_create(objective_request=request)
+        objective = api_instance.v1_objectives_create(objective_request=request)
         return self.get(objective.id, _request_timeout=_request_timeout)
 
     @with_async_client
@@ -265,7 +265,7 @@ class Objectives:
             test_dataset_id=test_dataset_id,
         )
         api_instance = AObjectivesApi(_client)
-        objective = await api_instance.objectives_create(objective_request=request)
+        objective = await api_instance.v1_objectives_create(objective_request=request)
         return await self.aget(objective.id, _request_timeout=_request_timeout)
 
     @with_sync_client
@@ -285,7 +285,7 @@ class Objectives:
 
         api_instance = ObjectivesApi(_client)
         return Objective._wrap(
-            api_instance.objectives_retrieve(id=objective_id, _request_timeout=_request_timeout),
+            api_instance.v1_objectives_retrieve(id=objective_id, _request_timeout=_request_timeout),
             client_context=self.client_context,
         )
 
@@ -306,7 +306,7 @@ class Objectives:
 
         api_instance = AObjectivesApi(_client)
         return await AObjective._awrap(
-            await api_instance.objectives_retrieve(id=objective_id, _request_timeout=_request_timeout),
+            await api_instance.v1_objectives_retrieve(id=objective_id, _request_timeout=_request_timeout),
             client_context=self.client_context,
         )
 
@@ -320,7 +320,7 @@ class Objectives:
         """
 
         api_instance = ObjectivesApi(_client)
-        return api_instance.objectives_destroy(id=objective_id, _request_timeout=_request_timeout)
+        return api_instance.v1_objectives_destroy(id=objective_id, _request_timeout=_request_timeout)
 
     @with_async_client
     async def adelete(self, objective_id: str, *, _request_timeout: Optional[int] = None, _client: AApiClient) -> None:
@@ -332,7 +332,7 @@ class Objectives:
         """
 
         api_instance = AObjectivesApi(_client)
-        return await api_instance.objectives_destroy(id=objective_id, _request_timeout=_request_timeout)
+        return await api_instance.v1_objectives_destroy(id=objective_id, _request_timeout=_request_timeout)
 
     @with_sync_client
     def list(self, *, intent: Optional[str] = None, limit: int = 100, _client: ApiClient) -> Iterator[ObjectiveList]:
@@ -345,7 +345,7 @@ class Objectives:
         """
 
         api_instance = ObjectivesApi(_client)
-        yield from iterate_cursor_list(partial(api_instance.objectives_list, intent=intent), limit=limit)
+        yield from iterate_cursor_list(partial(api_instance.v1_objectives_list, intent=intent), limit=limit)
 
     @with_async_client
     async def alist(self, *, intent: Optional[str] = None, limit: int = 100) -> AsyncIterator[AObjectiveList]:
@@ -362,7 +362,7 @@ class Objectives:
         assert isinstance(context, AbstractAsyncContextManager), "This method is not available in synchronous mode"
         async with context as client:
             api_instance = AObjectivesApi(client)
-            partial_list = partial(api_instance.objectives_list, intent=intent)
+            partial_list = partial(api_instance.v1_objectives_list, intent=intent)
 
             cursor: Optional[StrictStr] = None
             while limit > 0:
@@ -387,6 +387,7 @@ class Objectives:
         request: Optional[str] = None,
         contexts: Optional[List[str]] = None,
         functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
+        expected_output: Optional[str] = None,
         _request_timeout: Optional[int] = None,
         _client: ApiClient,
     ) -> ValidatorExecutionResult:
@@ -405,8 +406,9 @@ class Objectives:
             response=response,
             contexts=contexts,
             functions=functions,
+            expected_output=expected_output,
         )
-        return api_instance.objectives_objectives_execute_create(
+        return api_instance.v1_objectives_objectives_execute_create(
             objective_id=objective_id,
             objective_execution_request=skill_execution_request,
             _request_timeout=_request_timeout,
@@ -422,6 +424,7 @@ class Objectives:
         request: Optional[str] = None,
         contexts: Optional[List[str]] = None,
         functions: Optional[List[AEvaluatorExecutionFunctionsRequest]] = None,
+        expected_output: Optional[str] = None,
         _request_timeout: Optional[int] = None,
     ) -> AValidatorExecutionResult:
         """
@@ -439,8 +442,9 @@ class Objectives:
             response=response,
             contexts=contexts,
             functions=functions,
+            expected_output=expected_output,
         )
-        return await api_instance.objectives_objectives_execute_create(
+        return await api_instance.v1_objectives_objectives_execute_create(
             objective_id=objective_id,
             objective_execution_request=skill_execution_request,
             _request_timeout=_request_timeout,
@@ -474,7 +478,7 @@ class Objectives:
         )
         api_instance = ObjectivesApi(_client)
         return Objective._wrap(
-            api_instance.objectives_partial_update(
+            api_instance.v1_objectives_partial_update(
                 id=objective_id,
                 patched_objective_request=request,
                 _request_timeout=_request_timeout,
@@ -510,7 +514,7 @@ class Objectives:
         )
         api_instance = AObjectivesApi(_client)
         return await AObjective._awrap(
-            await api_instance.objectives_partial_update(
+            await api_instance.v1_objectives_partial_update(
                 id=objective_id,
                 patched_objective_request=request,
                 _request_timeout=_request_timeout,
