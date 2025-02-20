@@ -7,6 +7,9 @@ from pydantic import StrictStr
 
 from .generated.openapi_aclient import ApiClient as AApiClient
 from .generated.openapi_aclient.api.beta_api import BetaApi as ABetaApi
+from .generated.openapi_aclient.models.evaluator_execution_functions_request import (
+    EvaluatorExecutionFunctionsRequest as AEvaluatorExecutionFunctionsRequest,
+)
 from .generated.openapi_aclient.models.evaluator_reference_request import (
     EvaluatorReferenceRequest as AEvaluatorReferenceRequest,
 )
@@ -26,6 +29,9 @@ from .generated.openapi_aclient.models.patched_judge_request import (
 )
 from .generated.openapi_client import ApiClient
 from .generated.openapi_client.api.beta_api import BetaApi
+from .generated.openapi_client.models.evaluator_execution_functions_request import (
+    EvaluatorExecutionFunctionsRequest,
+)
 from .generated.openapi_client.models.evaluator_reference_request import EvaluatorReferenceRequest
 from .generated.openapi_client.models.judge import Judge as OpenApiJudge
 from .generated.openapi_client.models.judge_execution_request import JudgeExecutionRequest
@@ -59,6 +65,9 @@ class Judge(OpenApiJudge):
         *,
         response: str,
         request: Optional[str] = None,
+        contexts: Optional[List[str]] = None,
+        functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
+        expected_output: Optional[str] = None,
         _request_timeout: Optional[int] = None,
         _client: ApiClient,
     ) -> JudgeExecutionResponse:
@@ -73,6 +82,9 @@ class Judge(OpenApiJudge):
         execution_request = JudgeExecutionRequest(
             request=request,
             response=response,
+            contexts=contexts,
+            functions=functions,
+            expected_output=expected_output,
         )
         return api_instance.beta_judges_execute_create(
             judge_id=self.id,
@@ -106,6 +118,9 @@ class AJudge(AOpenApiJudge):
         *,
         response: str,
         request: Optional[str] = None,
+        contexts: Optional[List[str]] = None,
+        functions: Optional[List[AEvaluatorExecutionFunctionsRequest]] = None,
+        expected_output: Optional[str] = None,
         _request_timeout: Optional[int] = None,
         _client: AApiClient,
     ) -> AJudgeExecutionResponse:
@@ -118,6 +133,9 @@ class AJudge(AOpenApiJudge):
         """
         api_instance = ABetaApi(_client)
         execution_request = AJudgeExecutionRequest(
+            contexts=contexts,
+            functions=functions,
+            expected_output=expected_output,
             request=request,
             response=response,
         )
