@@ -64,7 +64,7 @@ dev = [
 
 [project.urls]
 Homepage = "https://rootsignals.ai/"
-Repository = "https://github.com/root-signals/root-sdk.git"
+Repository = "https://github.com/root-signals/rs-python-sdk"
 CHANGELOG = "https://sdk.rootsignals.ai/en/latest/CHANGELOG.html"
 
 [tool.hatch.build.targets.wheel]
