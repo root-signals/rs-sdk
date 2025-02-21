@@ -10,7 +10,7 @@ from root.skills import CalibrateBatchParameters
 
 @pytest.fixture
 def mock_skills_calibrate_api():
-    with patch("root.generated.openapi_client.api.skills_api.SkillsApi.skills_calibrate_create") as mock:
+    with patch("root.generated.openapi_client.api.v1_api.V1Api.v1_skills_calibrate_create") as mock:
         yield mock
 
 
