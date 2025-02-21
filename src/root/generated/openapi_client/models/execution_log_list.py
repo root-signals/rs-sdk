@@ -35,7 +35,7 @@ class ExecutionLogList(BaseModel):
     created_at: Optional[datetime]
     id: StrictStr
     owner: NestedUserDetails
-    score: Union[StrictFloat, StrictInt]
+    score: Optional[Union[StrictFloat, StrictInt]]
     skill: ExecutionLogListSkill
     validation_result_average: Optional[Union[StrictFloat, StrictInt]]
     __properties: ClassVar[List[str]] = [
@@ -115,6 +115,11 @@ class ExecutionLogList(BaseModel):
         # and model_fields_set contains the field
         if self.created_at is None and "created_at" in self.model_fields_set:
             _dict["created_at"] = None
+
+        # set to None if score (nullable) is None
+        # and model_fields_set contains the field
+        if self.score is None and "score" in self.model_fields_set:
+            _dict["score"] = None
 
         # set to None if validation_result_average (nullable) is None
         # and model_fields_set contains the field

@@ -46,7 +46,7 @@ class ExecutionLogDetails(BaseModel):
     objective: ExecutionLogDetailsObjective
     owner: NestedUserDetails
     rendered_prompt: StrictStr
-    score: Union[StrictFloat, StrictInt]
+    score: Optional[Union[StrictFloat, StrictInt]]
     skill: ExecutionLogDetailsSkill
     validation_results: List[SkillExecutionValidatorResult]
     variables: Optional[Any]
@@ -171,6 +171,11 @@ class ExecutionLogDetails(BaseModel):
         # and model_fields_set contains the field
         if self.model_params is None and "model_params" in self.model_fields_set:
             _dict["model_params"] = None
+
+        # set to None if score (nullable) is None
+        # and model_fields_set contains the field
+        if self.score is None and "score" in self.model_fields_set:
+            _dict["score"] = None
 
         # set to None if variables (nullable) is None
         # and model_fields_set contains the field
