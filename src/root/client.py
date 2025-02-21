@@ -25,6 +25,7 @@ from .generated.openapi_client.configuration import Configuration as _Configurat
 if TYPE_CHECKING:
     from .datasets import DataSets
     from .execution_logs import ExecutionLogs
+    from .judges import Judges
     from .models import Models
     from .objectives import Objectives
     from .skills import Evaluators, Skills
@@ -46,6 +47,26 @@ def _get_api_key(*, dot_env: str = ".env") -> str:
     It can be provided in client invocation, using ROOTSIGNALS_API_KEY environment variable or .env file line
     """)
     )
+
+
+class Beta:
+    """Beta API features namespace"""
+
+    def __init__(
+        self,
+        get_client_context: Union[
+            Callable[[], AsyncContextManager[openapi_aclient.ApiClient]],
+            Callable[[], ContextManager[openapi_client.ApiClient]],
+        ],
+    ) -> None:
+        self._get_client_context = get_client_context
+
+    @cached_property
+    def judges(self) -> Judges:
+        """Get Judges API (Beta)"""
+        from .judges import Judges
+
+        return Judges(self._get_client_context)
 
 
 class RootSignals:
@@ -179,3 +200,8 @@ class RootSignals:
         from .skills import Skills
 
         return Skills(self.get_client_context)
+
+    @cached_property
+    def beta(self) -> Beta:
+        """Get Beta API features"""
+        return Beta(self.get_client_context)

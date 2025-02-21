@@ -7,14 +7,14 @@ from typing import TYPE_CHECKING, AsyncIterator, Iterator, Optional, Protocol
 from pydantic import StrictStr
 
 from .generated.openapi_aclient import ApiClient as AApiClient
-from .generated.openapi_aclient.api.execution_logs_api import ExecutionLogsApi as AExecutionLogsApi
+from .generated.openapi_aclient.api.v1_api import V1Api as AExecutionLogsApi
 from .generated.openapi_aclient.models.execution_log_details import ExecutionLogDetails as AExecutionLogDetails
 from .generated.openapi_aclient.models.execution_log_list import ExecutionLogList as AExecutionLogList
 from .generated.openapi_aclient.models.paginated_execution_log_list_list import (
     PaginatedExecutionLogListList as APaginatedExecutionLogListList,
 )
 from .generated.openapi_client import ApiClient
-from .generated.openapi_client.api.execution_logs_api import ExecutionLogsApi
+from .generated.openapi_client.api.v1_api import V1Api as ExecutionLogsApi
 from .generated.openapi_client.models.execution_log_details import ExecutionLogDetails
 from .generated.openapi_client.models.execution_log_list import ExecutionLogList
 from .utils import ClientContextCallable, iterate_cursor_list, with_async_client, with_sync_client
@@ -50,7 +50,7 @@ class ExecutionLogs:
         api_instance = ExecutionLogsApi(_client)
         yield from iterate_cursor_list(
             partial(
-                api_instance.execution_logs_list,
+                api_instance.v1_execution_logs_list,
                 search=search_term,
                 _request_timeout=_request_timeout,
             ),
@@ -77,7 +77,7 @@ class ExecutionLogs:
         async with context as client:
             api_instance = AExecutionLogsApi(client)
             partial_list = partial(
-                api_instance.execution_logs_list,
+                api_instance.v1_execution_logs_list,
                 search=search_term,
                 _request_timeout=_request_timeout,
             )
@@ -121,7 +121,7 @@ class ExecutionLogs:
         _log_id = execution_result.execution_log_id if execution_result else log_id
         if _log_id is None:
             raise ValueError("Either log_id or execution_result must be provided")
-        return api_instance.execution_logs_retrieve(_log_id, _request_timeout=_request_timeout)
+        return api_instance.v1_execution_logs_retrieve(_log_id, _request_timeout=_request_timeout)
 
     @with_async_client
     async def aget(
@@ -147,4 +147,4 @@ class ExecutionLogs:
         _log_id = execution_result.execution_log_id if execution_result else log_id
         if _log_id is None:
             raise ValueError("Either log_id or execution_result must be provided")
-        return await api_instance.execution_logs_retrieve(_log_id, _request_timeout=_request_timeout)
+        return await api_instance.v1_execution_logs_retrieve(_log_id, _request_timeout=_request_timeout)

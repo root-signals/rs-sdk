@@ -35,9 +35,18 @@ class ExecutionLogList(BaseModel):
     created_at: Optional[datetime]
     id: StrictStr
     owner: NestedUserDetails
+    score: Optional[Union[StrictFloat, StrictInt]]
     skill: ExecutionLogListSkill
     validation_result_average: Optional[Union[StrictFloat, StrictInt]]
-    __properties: ClassVar[List[str]] = ["cost", "created_at", "id", "owner", "skill", "validation_result_average"]
+    __properties: ClassVar[List[str]] = [
+        "cost",
+        "created_at",
+        "id",
+        "owner",
+        "score",
+        "skill",
+        "validation_result_average",
+    ]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -73,6 +82,7 @@ class ExecutionLogList(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
@@ -80,6 +90,7 @@ class ExecutionLogList(BaseModel):
                 "created_at",
                 "id",
                 "owner",
+                "score",
                 "validation_result_average",
             ]
         )
@@ -105,6 +116,11 @@ class ExecutionLogList(BaseModel):
         if self.created_at is None and "created_at" in self.model_fields_set:
             _dict["created_at"] = None
 
+        # set to None if score (nullable) is None
+        # and model_fields_set contains the field
+        if self.score is None and "score" in self.model_fields_set:
+            _dict["score"] = None
+
         # set to None if validation_result_average (nullable) is None
         # and model_fields_set contains the field
         if self.validation_result_average is None and "validation_result_average" in self.model_fields_set:
@@ -127,6 +143,7 @@ class ExecutionLogList(BaseModel):
                 "created_at": obj.get("created_at"),
                 "id": obj.get("id"),
                 "owner": NestedUserDetails.from_dict(obj["owner"]) if obj.get("owner") is not None else None,
+                "score": obj.get("score"),
                 "skill": ExecutionLogListSkill.from_dict(obj["skill"]) if obj.get("skill") is not None else None,
                 "validation_result_average": obj.get("validation_result_average"),
             }

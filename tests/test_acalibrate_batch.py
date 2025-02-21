@@ -1,3 +1,4 @@
+from typing import Any
 from unittest import mock
 from unittest.mock import MagicMock
 
@@ -10,15 +11,13 @@ from root.skills import CalibrateBatchParameters
 
 
 class AsynchronousMock(MagicMock):
-    async def __call__(self, *args, **kwargs):
+    async def __call__(self, *args: Any, **kwargs: Any) -> Any:
         return super(AsynchronousMock, self).__call__(*args, **kwargs)
 
 
 @pytest.mark.asyncio
-@mock.patch(
-    "root.generated.openapi_aclient.api.skills_api.SkillsApi.skills_calibrate_create", new_callable=AsynchronousMock
-)
-async def test_acalibrate_evaluator_batch(mock_skills_calibrate_api):
+@mock.patch("root.generated.openapi_aclient.api.v1_api.V1Api.v1_skills_calibrate_create", new_callable=AsynchronousMock)
+async def test_acalibrate_evaluator_batch(mock_skills_calibrate_api: AsynchronousMock) -> None:
     mock_skills_calibrate_api.return_value = [
         EvaluatorCalibrationOutput(
             result=EvaluatorCalibrationResult(

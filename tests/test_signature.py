@@ -4,6 +4,7 @@ from functools import partial
 import pytest
 
 from root.execution_logs import ExecutionLogs
+from root.judges import AJudge, Judge, Judges
 from root.models import Models
 from root.objectives import AObjective, Objective, Objectives
 from root.skills import AEvaluator, ASkill, Evaluator, Skill, Skills
@@ -35,7 +36,7 @@ def _get_method_info(method):
 
 @pytest.mark.parametrize(
     "class_type",
-    [Models, ExecutionLogs, Objectives, Skills],
+    [Models, ExecutionLogs, Objectives, Skills, Judges],
 )
 def test_sync_async_methods_match(class_type):
     """Test that sync and async versions of methods have matching signatures and docs."""
@@ -83,6 +84,7 @@ def test_sync_async_methods_match(class_type):
         (Objective, AObjective),
         (Skill, ASkill),
         (Evaluator, AEvaluator),
+        (Judge, AJudge),
     ],
 )
 def test_wrapper_classes_sync_async_methods_match(sync_class, async_class):

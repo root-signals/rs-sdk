@@ -5,9 +5,226 @@ info:
   description: Root Signals JSON API provides a way to access Root Signals using provisioned
     API token
 paths:
+  /beta/judges/:
+    get:
+      operationId: beta_judges_list
+      parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - beta
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedJudgeListList'
+          description: ''
+    post:
+      operationId: beta_judges_create
+      tags:
+      - beta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JudgeRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/JudgeRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/JudgeRequest'
+        required: true
+      security:
+      - publicApiKey: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Judge'
+          description: ''
+  /beta/judges/{judge_id}/execute/:
+    post:
+      operationId: beta_judges_execute_create
+      description: Execute a Judge
+      parameters:
+      - in: path
+        name: judge_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - beta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JudgeExecutionRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/JudgeExecutionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/JudgeExecutionRequest'
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JudgeExecutionResponse'
+          description: ''
+  /beta/judges/{id}/:
+    get:
+      operationId: beta_judges_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this judge.
+        required: true
+      tags:
+      - beta
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Judge'
+          description: ''
+    put:
+      operationId: beta_judges_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this judge.
+        required: true
+      tags:
+      - beta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JudgeRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/JudgeRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/JudgeRequest'
+        required: true
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Judge'
+          description: ''
+    patch:
+      operationId: beta_judges_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this judge.
+        required: true
+      tags:
+      - beta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedJudgeRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedJudgeRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedJudgeRequest'
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Judge'
+          description: ''
+    delete:
+      operationId: beta_judges_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this judge.
+        required: true
+      tags:
+      - beta
+      security:
+      - publicApiKey: []
+      responses:
+        '204':
+          description: No response body
+  /beta/judges/{id}/duplicate/:
+    post:
+      operationId: beta_judges_duplicate_create
+      description: Copy a judge to user
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this judge.
+        required: true
+      tags:
+      - beta
+      security:
+      - publicApiKey: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Judge'
+          description: ''
   /v1/chats/:
     get:
-      operationId: chats_list
+      operationId: v1_chats_list
       parameters:
       - name: cursor
         required: false
@@ -22,7 +239,7 @@ paths:
         schema:
           type: integer
       tags:
-      - chats
+      - v1
       security:
       - publicApiKey: []
       responses:
@@ -34,7 +251,7 @@ paths:
           description: ''
   /v1/chats/{chat_id}/:
     get:
-      operationId: chats_retrieve
+      operationId: v1_chats_retrieve
       parameters:
       - in: path
         name: chat_id
@@ -42,7 +259,7 @@ paths:
           type: string
         required: true
       tags:
-      - chats
+      - v1
       security:
       - publicApiKey: []
       responses:
@@ -54,7 +271,7 @@ paths:
           description: ''
   /v1/chats/{chat_id}/execute/:
     post:
-      operationId: chats_execute_create
+      operationId: v1_chats_execute_create
       description: Execute a chat.
       parameters:
       - in: path
@@ -63,7 +280,7 @@ paths:
           type: string
         required: true
       tags:
-      - chats
+      - v1
       requestBody:
         content:
           application/json:
@@ -103,7 +320,7 @@ paths:
           description: ''
   /v1/chats/{chat_id}/initiate/:
     post:
-      operationId: chats_initiate_create_2
+      operationId: v1_chats_initiate_create_2
       parameters:
       - in: path
         name: chat_id
@@ -111,7 +328,7 @@ paths:
           type: string
         required: true
       tags:
-      - chats
+      - v1
       requestBody:
         content:
           application/json:
@@ -145,7 +362,7 @@ paths:
           description: ''
   /v1/chats/{chat_id}/messages/{correlation_id}/status/:
     get:
-      operationId: chats_messages_status_retrieve
+      operationId: v1_chats_messages_status_retrieve
       description: 'Get status of a given chat message. Returns a dictionary with
         a single key ''status''. Status can be one of: ''initial'', ''processing'',
         ''completed'', ''error''.'
@@ -161,7 +378,7 @@ paths:
           type: string
         required: true
       tags:
-      - chats
+      - v1
       security:
       - publicApiKey: []
       responses:
@@ -169,9 +386,9 @@ paths:
           description: No response body
   /v1/chats/initiate/:
     post:
-      operationId: chats_initiate_create
+      operationId: v1_chats_initiate_create
       tags:
-      - chats
+      - v1
       requestBody:
         content:
           application/json:
@@ -205,7 +422,7 @@ paths:
           description: ''
   /v1/datasets/:
     get:
-      operationId: datasets_list
+      operationId: v1_datasets_list
       description: List datasets.
       parameters:
       - name: cursor
@@ -239,7 +456,7 @@ paths:
           default: ''
         description: 'Filter by type. Possible values: reference, test'
       tags:
-      - datasets
+      - v1
       security:
       - publicApiKey: []
       responses:
@@ -250,10 +467,10 @@ paths:
                 $ref: '#/components/schemas/PaginatedDataSetListList'
           description: ''
     post:
-      operationId: datasets_create
+      operationId: v1_datasets_create
       description: Create a new dataset.
       tags:
-      - datasets
+      - v1
       requestBody:
         content:
           application/json:
@@ -296,7 +513,7 @@ paths:
           description: ''
   /v1/datasets/{id}/:
     get:
-      operationId: datasets_retrieve
+      operationId: v1_datasets_retrieve
       description: Get dataset details or download the dataset file.
       parameters:
       - in: query
@@ -311,7 +528,7 @@ paths:
           type: string
         required: true
       tags:
-      - datasets
+      - v1
       security:
       - publicApiKey: []
       responses:
@@ -322,7 +539,7 @@ paths:
                 $ref: '#/components/schemas/DataSetList'
           description: ''
     delete:
-      operationId: datasets_destroy
+      operationId: v1_datasets_destroy
       description: Delete a dataset.
       parameters:
       - in: path
@@ -331,7 +548,7 @@ paths:
           type: string
         required: true
       tags:
-      - datasets
+      - v1
       security:
       - publicApiKey: []
       responses:
@@ -339,7 +556,7 @@ paths:
           description: No response body
   /v1/datasets/status/{id}/:
     put:
-      operationId: datasets_status_update
+      operationId: v1_datasets_status_update
       description: Change the status of a dataset
       parameters:
       - in: path
@@ -348,7 +565,7 @@ paths:
           type: string
         required: true
       tags:
-      - datasets
+      - v1
       requestBody:
         content:
           application/json:
@@ -382,10 +599,10 @@ paths:
           description: ''
   /v1/document-parsing/:
     post:
-      operationId: document_parsing_create
+      operationId: v1_document_parsing_create
       description: Parse document contents encoded as base64 strings
       tags:
-      - document-parsing
+      - v1
       requestBody:
         content:
           application/json:
@@ -407,9 +624,523 @@ paths:
               schema:
                 $ref: '#/components/schemas/DocumentParseResponse'
           description: ''
+  /v1/evaluators/:
+    get:
+      operationId: list_evaluators
+      description: List all evaluators.
+      parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
+      - in: query
+        name: is_evaluator
+        schema:
+          type: boolean
+          default: false
+        description: Return only evaluator skills.
+      - in: query
+        name: is_root_evaluator
+        schema:
+          type: boolean
+          default: false
+        description: Return only Root Signals defined evaluators.
+      - in: query
+        name: name
+        schema:
+          type: string
+          default: ''
+        description: Search for evaluators by name (exact match).
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: search
+        schema:
+          type: string
+          default: ''
+        description: Search for evaluators by name, prompt or description.
+      - in: query
+        name: skill_type
+        schema:
+          type: string
+          default: false
+        description: Return only skills that are of the specified type. Options are
+          'native' or 'managed'
+      tags:
+      - v1
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEvaluatorListOutputList'
+          description: ''
+    post:
+      operationId: create_evaluator
+      description: Create a new evaluator.
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EvaluatorRequest'
+            examples:
+              CreateAnEvaluator:
+                value:
+                  prompt: Does the {{response}} contain ambiguous language?
+                  name: Direct language
+                  pii_filter: false
+                  objective:
+                    intent: Does the response contain ambiguous language?
+                  models:
+                  - gpt-4-turbo
+                summary: Create an Evaluator
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EvaluatorRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EvaluatorRequest'
+      security:
+      - publicApiKey: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Evaluator'
+          description: ''
+  /v1/evaluators/{id}/:
+    get:
+      operationId: get_evaluator_details
+      description: Get evaluator details.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: include_last_n_validator_results
+        schema:
+          type: integer
+          default: 0
+        description: Include the last N validator results for each validator in the
+          response.
+      - in: query
+        name: version_id
+        schema:
+          type: string
+          default: ''
+        description: Get a specific version of the evaluator
+      tags:
+      - v1
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Evaluator'
+          description: ''
+    put:
+      operationId: update_evaluator
+      description: Update an evaluator.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EvaluatorRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EvaluatorRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EvaluatorRequest'
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Evaluator'
+          description: ''
+    patch:
+      operationId: partial_update_evaluator
+      description: Update an evaluator. All fields are optional.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedEvaluatorRequest'
+            examples:
+              UpdateASkillPrompt:
+                value:
+                  prompt: 'Please answer this {{question}}. Your answer here:'
+                  input_variables:
+                  - name: question
+                summary: Update a skill prompt
+              UpdateAnEvaluatorPrompt:
+                value:
+                  prompt: Does the {{response}} contain ambiguous language? Explain
+                    your reasoning.
+                  input_variables:
+                  - name: response
+                summary: Update an evaluator prompt
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedEvaluatorRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedEvaluatorRequest'
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Evaluator'
+          description: ''
+    delete:
+      operationId: delete_evaluator
+      description: Delete an evaluator.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      security:
+      - publicApiKey: []
+      responses:
+        '204':
+          description: No response body
+  /v1/evaluators/calibrate/:
+    post:
+      operationId: v1_evaluators_calibrate_create
+      description: Test an evaluator definition using calibration data
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SkillTestInputRequest'
+            examples:
+              TestWithCalibrationData.:
+                value:
+                  test_data:
+                  - - '1.0'
+                    - '2'
+                    - What is 1+1. Respond with a single digit number.
+                  - - '0.34'
+                    - The primary colors are red, blue, and green.
+                    - What are the primary colors?
+                  objective:
+                    intent: 'Is the output relevant to the prompt? Evaluate for the
+                      following criteria: accuracy, completeness, adherence to the
+                      prompt, and logical consistency.'
+                  prompt: Evaluate how well the {{response}} adheres to instructions
+                    given in {{request}}.
+                  name: Relevancy
+                  models:
+                  - gpt-4-turbo
+                  is_evaluator: true
+                summary: Test with calibration data.
+                description: 'Calibration test_data must have columns in this order:
+                  ''expected score'', ''text to evaluate (output)'', ''input''. Input
+                  is optional.'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SkillTestInputRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SkillTestInputRequest'
+        required: true
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EvaluatorCalibrationOutput'
+          description: ''
+  /v1/evaluators/calibrate/{id}:
+    post:
+      operationId: v1_evaluators_calibrate_create_2
+      description: Test an existing evaluator using calibration data
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SkillTestDataRequest'
+            examples:
+              TestWithCalibrationData.:
+                value:
+                  test_data:
+                  - - '1.0'
+                    - '2'
+                    - What is 1+1. Respond with a single digit number.
+                  - - '0.34'
+                    - The primary colors are red, blue, and green.
+                    - What are the primary colors?
+                summary: Test with calibration data.
+                description: 'Calibration test_data must have columns in this order:
+                  ''expected score'', ''text to evaluate (output)'', ''input''. Input
+                  is optional.'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SkillTestDataRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SkillTestDataRequest'
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EvaluatorCalibrationOutput'
+          description: ''
+  /v1/evaluators/duplicate/{id}/:
+    post:
+      operationId: duplicate_evaluator
+      description: Duplicate an evaluator
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EvaluatorRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EvaluatorRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EvaluatorRequest'
+      security:
+      - publicApiKey: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Evaluator'
+          description: ''
+  /v1/evaluators/execute/{id}/:
+    post:
+      operationId: v1_evaluators_execute_create
+      description: Execute an evaluator
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EvaluatorExecutionRequest'
+            examples:
+              ExecuteASimpleEvaluator(forExample,Precision):
+                value:
+                  request: Tell me a random fact
+                  response: The reason the sky is blue is because of Rayleigh scattering.
+                summary: Execute a simple evaluator (for example, Precision)
+              ExecuteARAGEvaluator(forExample,AnswerCorrectness):
+                value:
+                  request: What was the revenue in Q1?
+                  response: The revenue in Q1 was $1,000,000.
+                  contexts:
+                  - List of documents
+                  - containing the company's financial reports
+                summary: Execute a RAG evaluator (for example, Answer Correctness)
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EvaluatorExecutionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EvaluatorExecutionRequest'
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EvaluatorExecutionResult'
+          description: ''
+  /v1/evaluators/status/{id}/:
+    post:
+      operationId: change_evaluator_status
+      description: Change the status of an evaluator
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatusChangeRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StatusChangeRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StatusChangeRequest'
+        required: true
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusChange'
+          description: ''
+    put:
+      operationId: change_evaluator_status_2
+      description: Change the status of an evaluator
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatusChangeRequest'
+            examples:
+              ChangeStatus:
+                value:
+                  status: unlisted | listed
+                summary: Change status
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StatusChangeRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StatusChangeRequest'
+        required: true
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusChange'
+              examples:
+                ChangeStatus:
+                  value:
+                    status: unlisted | listed
+                  summary: Change status
+          description: ''
+  /v1/evaluators/versions/{id}/:
+    get:
+      operationId: list_evaluator_versions
+      description: Get a list of all versions of an evaluator
+      parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.
+        schema:
+          type: string
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - v1
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEvaluatorList'
+          description: ''
   /v1/execution-logs/:
     get:
-      operationId: execution_logs_list
+      operationId: v1_execution_logs_list
       description: Get a list of execution logs. An execution log is created every
         time a skill or an evaluator is executed.
       parameters:
@@ -444,7 +1175,7 @@ paths:
           default: false
         description: Return only unique skills
       tags:
-      - execution-logs
+      - v1
       security:
       - publicApiKey: []
       responses:
@@ -456,7 +1187,7 @@ paths:
           description: ''
   /v1/execution-logs/{log_id}/:
     get:
-      operationId: execution_logs_retrieve
+      operationId: v1_execution_logs_retrieve
       description: Get the full details of a single execution log.
       parameters:
       - in: path
@@ -465,7 +1196,7 @@ paths:
           type: string
         required: true
       tags:
-      - execution-logs
+      - v1
       security:
       - publicApiKey: []
       responses:
@@ -477,7 +1208,7 @@ paths:
           description: ''
   /v1/models/:
     get:
-      operationId: models_list
+      operationId: v1_models_list
       description: Get all available LLM models.
       parameters:
       - in: query
@@ -508,7 +1239,7 @@ paths:
         schema:
           type: integer
       tags:
-      - models
+      - v1
       security:
       - publicApiKey: []
       responses:
@@ -519,10 +1250,10 @@ paths:
                 $ref: '#/components/schemas/PaginatedModelListList'
           description: ''
     post:
-      operationId: models_create
+      operationId: v1_models_create
       description: Create a custom LLM model.
       tags:
-      - models
+      - v1
       requestBody:
         content:
           application/json:
@@ -563,7 +1294,7 @@ paths:
           description: ''
   /v1/models/{id}/:
     get:
-      operationId: models_retrieve
+      operationId: v1_models_retrieve
       description: Get model details.
       parameters:
       - in: path
@@ -572,7 +1303,7 @@ paths:
           type: string
         required: true
       tags:
-      - models
+      - v1
       security:
       - publicApiKey: []
       responses:
@@ -583,7 +1314,7 @@ paths:
                 $ref: '#/components/schemas/Model'
           description: ''
     put:
-      operationId: models_update
+      operationId: v1_models_update
       description: Update a custom LLM model.
       parameters:
       - in: path
@@ -592,7 +1323,7 @@ paths:
           type: string
         required: true
       tags:
-      - models
+      - v1
       requestBody:
         content:
           application/json:
@@ -615,7 +1346,7 @@ paths:
                 $ref: '#/components/schemas/Model'
           description: ''
     patch:
-      operationId: models_partial_update
+      operationId: v1_models_partial_update
       parameters:
       - in: path
         name: id
@@ -623,7 +1354,7 @@ paths:
           type: string
         required: true
       tags:
-      - models
+      - v1
       requestBody:
         content:
           application/json:
@@ -645,7 +1376,7 @@ paths:
                 $ref: '#/components/schemas/Model'
           description: ''
     delete:
-      operationId: models_destroy
+      operationId: v1_models_destroy
       parameters:
       - in: path
         name: id
@@ -653,7 +1384,7 @@ paths:
           type: string
         required: true
       tags:
-      - models
+      - v1
       security:
       - publicApiKey: []
       responses:
@@ -661,7 +1392,7 @@ paths:
           description: No response body
   /v1/objectives/:
     get:
-      operationId: objectives_list
+      operationId: v1_objectives_list
       description: List Objective definitions.
       parameters:
       - name: cursor
@@ -700,7 +1431,7 @@ paths:
           default: ''
         description: Search for objectives by intent.
       tags:
-      - objectives
+      - v1
       security:
       - publicApiKey: []
       responses:
@@ -711,10 +1442,10 @@ paths:
                 $ref: '#/components/schemas/PaginatedObjectiveListList'
           description: ''
     post:
-      operationId: objectives_create
+      operationId: v1_objectives_create
       description: Create an Objective definition.
       tags:
-      - objectives
+      - v1
       requestBody:
         content:
           application/json:
@@ -751,7 +1482,7 @@ paths:
           description: ''
   /v1/objectives/{id}/:
     get:
-      operationId: objectives_retrieve
+      operationId: v1_objectives_retrieve
       description: Get an Objective definition details.
       parameters:
       - in: path
@@ -761,7 +1492,7 @@ paths:
           format: uuid
         required: true
       tags:
-      - objectives
+      - v1
       security:
       - publicApiKey: []
       responses:
@@ -772,7 +1503,7 @@ paths:
                 $ref: '#/components/schemas/Objective'
           description: ''
     put:
-      operationId: objectives_update
+      operationId: v1_objectives_update
       description: Update an Objective definition.
       parameters:
       - in: path
@@ -782,7 +1513,7 @@ paths:
           format: uuid
         required: true
       tags:
-      - objectives
+      - v1
       requestBody:
         content:
           application/json:
@@ -804,7 +1535,7 @@ paths:
                 $ref: '#/components/schemas/Objective'
           description: ''
     patch:
-      operationId: objectives_partial_update
+      operationId: v1_objectives_partial_update
       parameters:
       - in: path
         name: id
@@ -813,7 +1544,7 @@ paths:
           format: uuid
         required: true
       tags:
-      - objectives
+      - v1
       requestBody:
         content:
           application/json:
@@ -835,7 +1566,7 @@ paths:
                 $ref: '#/components/schemas/Objective'
           description: ''
     delete:
-      operationId: objectives_destroy
+      operationId: v1_objectives_destroy
       description: Delete an Objective definition.
       parameters:
       - in: path
@@ -845,7 +1576,7 @@ paths:
           format: uuid
         required: true
       tags:
-      - objectives
+      - v1
       security:
       - publicApiKey: []
       responses:
@@ -853,7 +1584,7 @@ paths:
           description: No response body
   /v1/objectives/objectives/{objective_id}/execute/:
     post:
-      operationId: objectives_objectives_execute_create
+      operationId: v1_objectives_objectives_execute_create
       description: Execute all objective validators.
       parameters:
       - in: path
@@ -862,7 +1593,7 @@ paths:
           type: string
         required: true
       tags:
-      - objectives
+      - v1
       requestBody:
         content:
           application/json:
@@ -912,7 +1643,7 @@ paths:
         schema:
           type: integer
       tags:
-      - objectives
+      - v1
       security:
       - publicApiKey: []
       responses:
@@ -924,7 +1655,7 @@ paths:
           description: ''
   /v1/skills/:
     get:
-      operationId: skills_list
+      operationId: v1_skills_list
       description: List skills.
       parameters:
       - name: cursor
@@ -977,7 +1708,7 @@ paths:
         description: Return only skills that are of the specified type. Options are
           'native' or 'managed'
       tags:
-      - skills
+      - v1
       security:
       - publicApiKey: []
       responses:
@@ -988,10 +1719,10 @@ paths:
                 $ref: '#/components/schemas/PaginatedSkillListOutputList'
           description: ''
     post:
-      operationId: skills_create
+      operationId: v1_skills_create
       description: Create a skill or an evaluator.
       tags:
-      - skills
+      - v1
       requestBody:
         content:
           application/json:
@@ -1014,11 +1745,12 @@ paths:
                 summary: Create a simple skill
               CreateAnEvaluator:
                 value:
-                  prompt: Does the {{output}} contain ambiguous language?
+                  prompt: 'Is the response clear and does not contain ambiguous language:
+                    {{response}?'
                   name: Direct language
                   pii_filter: false
                   objective:
-                    intent: Does the output contain ambiguous language?
+                    intent: Does the response contain ambiguous language?
                   is_evaluator: true
                   models:
                   - gpt-4-turbo
@@ -1040,7 +1772,7 @@ paths:
           description: ''
   /v1/skills/{id}/:
     get:
-      operationId: skills_retrieve
+      operationId: v1_skills_retrieve
       description: Get skill details.
       parameters:
       - in: path
@@ -1062,7 +1794,7 @@ paths:
           default: ''
         description: Get a specific version of the skill
       tags:
-      - skills
+      - v1
       security:
       - publicApiKey: []
       responses:
@@ -1073,7 +1805,7 @@ paths:
                 $ref: '#/components/schemas/Skill'
           description: ''
     put:
-      operationId: skills_update
+      operationId: v1_skills_update
       description: Update a skill.
       parameters:
       - in: path
@@ -1082,7 +1814,7 @@ paths:
           type: string
         required: true
       tags:
-      - skills
+      - v1
       requestBody:
         content:
           application/json:
@@ -1104,7 +1836,7 @@ paths:
                 $ref: '#/components/schemas/Skill'
           description: ''
     patch:
-      operationId: skills_partial_update
+      operationId: v1_skills_partial_update
       description: Update a skill. All fields are optional.
       parameters:
       - in: path
@@ -1113,7 +1845,7 @@ paths:
           type: string
         required: true
       tags:
-      - skills
+      - v1
       requestBody:
         content:
           application/json:
@@ -1142,7 +1874,7 @@ paths:
                 $ref: '#/components/schemas/Skill'
           description: ''
     delete:
-      operationId: skills_destroy
+      operationId: v1_skills_destroy
       description: Delete a skill.
       parameters:
       - in: path
@@ -1151,7 +1883,7 @@ paths:
           type: string
         required: true
       tags:
-      - skills
+      - v1
       security:
       - publicApiKey: []
       responses:
@@ -1159,10 +1891,10 @@ paths:
           description: No response body
   /v1/skills/calibrate/:
     post:
-      operationId: skills_calibrate_create
+      operationId: v1_skills_calibrate_create
       description: Test an evaluator definition using calibration data
       tags:
-      - skills
+      - v1
       requestBody:
         content:
           application/json:
@@ -1182,8 +1914,8 @@ paths:
                     intent: 'Is the output relevant to the prompt? Evaluate for the
                       following criteria: accuracy, completeness, adherence to the
                       prompt, and logical consistency.'
-                  prompt: Evaluate how well the {{output}} adheres to instructions
-                    given in {{input}}.
+                  prompt: Evaluate how well the {{response}} adheres to instructions
+                    given in {{request}}.
                   name: Relevancy
                   models:
                   - gpt-4-turbo
@@ -1212,7 +1944,7 @@ paths:
           description: ''
   /v1/skills/calibrate/{id}:
     post:
-      operationId: skills_calibrate_create_2
+      operationId: v1_skills_calibrate_create_2
       description: Test an existing evaluator using calibration data
       parameters:
       - in: path
@@ -1221,7 +1953,7 @@ paths:
           type: string
         required: true
       tags:
-      - skills
+      - v1
       requestBody:
         content:
           application/json:
@@ -1260,7 +1992,7 @@ paths:
           description: ''
   /v1/skills/duplicate/{id}/:
     post:
-      operationId: skills_duplicate_create
+      operationId: duplicate_skill
       description: Duplicate a skill
       parameters:
       - in: path
@@ -1269,7 +2001,18 @@ paths:
           type: string
         required: true
       tags:
-      - skills
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SkillRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SkillRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SkillRequest'
       security:
       - publicApiKey: []
       responses:
@@ -1281,7 +2024,7 @@ paths:
           description: ''
   /v1/skills/evaluator/execute/{skill_id}/:
     post:
-      operationId: skills_evaluator_execute_create
+      operationId: v1_skills_evaluator_execute_create
       description: Execute an evaluator
       parameters:
       - in: path
@@ -1291,7 +2034,7 @@ paths:
           format: uuid
         required: true
       tags:
-      - skills
+      - v1
       requestBody:
         content:
           application/json:
@@ -1328,7 +2071,7 @@ paths:
           description: ''
   /v1/skills/execute-validators/{id}/:
     post:
-      operationId: skills_execute_validators_create
+      operationId: v1_skills_execute_validators_create
       description: Execute all skill validators.
       parameters:
       - in: path
@@ -1337,7 +2080,7 @@ paths:
           type: string
         required: true
       tags:
-      - skills
+      - v1
       requestBody:
         content:
           application/json:
@@ -1367,7 +2110,7 @@ paths:
           description: ''
   /v1/skills/execute/{id}/:
     post:
-      operationId: skills_execute_create
+      operationId: v1_skills_execute_create
       description: Execute a skill.
       parameters:
       - in: path
@@ -1376,7 +2119,7 @@ paths:
           type: string
         required: true
       tags:
-      - skills
+      - v1
       requestBody:
         content:
           application/json:
@@ -1426,7 +2169,7 @@ paths:
           description: ''
   /v1/skills/openai/{skill_id}/chat/completions:
     post:
-      operationId: skills_openai_chat_completions_create
+      operationId: v1_skills_openai_chat_completions_create
       description: Execute a skill with OpenAI's chat completion compatible endpoint.
       parameters:
       - in: path
@@ -1436,7 +2179,7 @@ paths:
           format: uuid
         required: true
       tags:
-      - skills
+      - v1
       requestBody:
         content:
           application/json:
@@ -1454,7 +2197,7 @@ paths:
           description: No response body
   /v1/skills/status/{id}/:
     post:
-      operationId: skills_status_create
+      operationId: v1_skills_status_create
       parameters:
       - in: path
         name: id
@@ -1462,7 +2205,7 @@ paths:
           type: string
         required: true
       tags:
-      - skills
+      - v1
       requestBody:
         content:
           application/json:
@@ -1485,8 +2228,8 @@ paths:
                 $ref: '#/components/schemas/StatusChange'
           description: ''
     put:
-      operationId: skills_status_update
-      description: Change the status of a skill
+      operationId: v1_skills_status_update
+      description: Change the status
       parameters:
       - in: path
         name: id
@@ -1494,17 +2237,17 @@ paths:
           type: string
         required: true
       tags:
-      - skills
+      - v1
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/StatusChangeRequest'
             examples:
-              ChangeSkillStatus:
+              ChangeStatus:
                 value:
                   status: unlisted | listed
-                summary: Change skill status
+                summary: Change status
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/StatusChangeRequest'
@@ -1521,17 +2264,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/StatusChange'
               examples:
-                ChangeSkillStatus:
+                ChangeStatus:
                   value:
                     status: unlisted | listed
-                  summary: Change skill status
+                  summary: Change status
           description: ''
   /v1/skills/test/:
     post:
-      operationId: skills_test_create
+      operationId: v1_skills_test_create
       description: Test a skill definition using a dataset
       tags:
-      - skills
+      - v1
       requestBody:
         content:
           application/json:
@@ -1580,7 +2323,7 @@ paths:
           description: ''
   /v1/skills/test/{id}:
     post:
-      operationId: skills_test_create_2
+      operationId: v1_skills_test_create_2
       description: Test an existing skill using a dataset. The dataset can be predefined
         or provided in the request.
       parameters:
@@ -1590,7 +2333,7 @@ paths:
           type: string
         required: true
       tags:
-      - skills
+      - v1
       requestBody:
         content:
           application/json:
@@ -1628,7 +2371,8 @@ paths:
           description: ''
   /v1/skills/versions/{id}/:
     get:
-      operationId: Get a list of all versions of a skill
+      operationId: list_skill_versions
+      description: Get a list of all versions of a skill
       parameters:
       - name: cursor
         required: false
@@ -1648,7 +2392,7 @@ paths:
         schema:
           type: integer
       tags:
-      - skills
+      - v1
       security:
       - publicApiKey: []
       responses:
@@ -2095,6 +2839,94 @@ components:
         * `xml` - XML
         * `eml` - EML
         * `epub` - EPUB
+    Evaluator:
+      type: object
+      properties:
+        change_note:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        evaluator_demonstrations:
+          type: array
+          items:
+            $ref: '#/components/schemas/EvaluatorDemonstrations'
+          nullable: true
+        evaluator_only_offline:
+          type: boolean
+          description: Do not run the evaluator if used as an Objective validator.
+        evaluator_require_reference_variables:
+          type: boolean
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        input_variables:
+          type: array
+          items:
+            $ref: '#/components/schemas/InputVariable'
+        model_params:
+          allOf:
+          - $ref: '#/components/schemas/ModelParams'
+          nullable: true
+        models:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
+          maxLength: 1000
+        objective:
+          allOf:
+          - $ref: '#/components/schemas/Objective'
+          nullable: true
+        owner:
+          allOf:
+          - $ref: '#/components/schemas/NestedUserDetails'
+          readOnly: true
+        prompt:
+          type: string
+        reference_variables:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReferenceVariable'
+        skill_type:
+          allOf:
+          - $ref: '#/components/schemas/SkillTypeEnum'
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        system_message:
+          type: string
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        updated_by:
+          allOf:
+          - $ref: '#/components/schemas/NestedUserDetails'
+          readOnly: true
+          nullable: true
+        version_id:
+          type: string
+          format: uuid
+          readOnly: true
+        _meta:
+          readOnly: true
+          title: ' meta'
+      required:
+      - _meta
+      - created_at
+      - id
+      - owner
+      - skill_type
+      - updated_at
+      - updated_by
+      - version_id
     EvaluatorCalibrationOutput:
       type: object
       properties:
@@ -2315,6 +3147,188 @@ components:
       - execution_log_id
       - justification
       - score
+    EvaluatorListOutput:
+      type: object
+      properties:
+        _meta:
+          readOnly: true
+          title: ' meta'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        models:
+          type: array
+          items:
+            type: string
+          readOnly: true
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        objective:
+          allOf:
+          - $ref: '#/components/schemas/NestedObjectiveList'
+          readOnly: true
+        owner:
+          allOf:
+          - $ref: '#/components/schemas/NestedUserDetails'
+          readOnly: true
+        prompt:
+          type: string
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusEnum'
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        updated_by:
+          allOf:
+          - $ref: '#/components/schemas/NestedUserDetails'
+          readOnly: true
+          nullable: true
+        version_id:
+          type: string
+          readOnly: true
+      required:
+      - _meta
+      - created_at
+      - id
+      - models
+      - name
+      - objective
+      - owner
+      - prompt
+      - status
+      - updated_at
+      - updated_by
+      - version_id
+    EvaluatorReference:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        version_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: Optional version ID. If not provided, the latest version will
+            be tracked.
+      required:
+      - id
+    EvaluatorReferenceRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        version_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: Optional version ID. If not provided, the latest version will
+            be tracked.
+      required:
+      - id
+    EvaluatorRequest:
+      type: object
+      properties:
+        change_note:
+          type: string
+          nullable: true
+        evaluator_demonstrations:
+          type: array
+          items:
+            $ref: '#/components/schemas/EvaluatorDemonstrationsRequest'
+          nullable: true
+        evaluator_only_offline:
+          type: boolean
+          description: Do not run the evaluator if used as an Objective validator.
+        evaluator_require_reference_variables:
+          type: boolean
+        input_variables:
+          type: array
+          items:
+            $ref: '#/components/schemas/InputVariableRequest'
+        model_params:
+          allOf:
+          - $ref: '#/components/schemas/ModelParamsRequest'
+          nullable: true
+        models:
+          type: array
+          items:
+            type: string
+            minLength: 1
+        name:
+          type: string
+          minLength: 1
+          maxLength: 1000
+        objective:
+          allOf:
+          - $ref: '#/components/schemas/ObjectiveRequest'
+          nullable: true
+        objective_id:
+          type: string
+          format: uuid
+          writeOnly: true
+          nullable: true
+        objective_version_id:
+          type: string
+          format: uuid
+          writeOnly: true
+          nullable: true
+          description: Optionally pin the Skill to a specific version of an Objective.
+            If not provided, the latest version of the objective will be used and
+            followed.
+        overwrite:
+          type: boolean
+          writeOnly: true
+          default: false
+          description: Overwrite existing skill with the same name. Only for POST
+            requests.
+        prompt:
+          type: string
+        reference_variables:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReferenceVariableRequest'
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        system_message:
+          type: string
+    EvaluatorResult:
+      type: object
+      properties:
+        evaluator_name:
+          type: string
+        score:
+          type: number
+          format: double
+          nullable: true
+        justification:
+          type: string
+          nullable: true
+        evaluator_id:
+          type: string
+          format: uuid
+        evaluator_version_id:
+          type: string
+          format: uuid
+      required:
+      - evaluator_id
+      - evaluator_name
+      - evaluator_version_id
+      - justification
+      - score
     ExecutionLogDetails:
       type: object
       properties:
@@ -2368,6 +3382,11 @@ components:
         rendered_prompt:
           type: string
           readOnly: true
+        score:
+          type: number
+          format: double
+          readOnly: true
+          nullable: true
         skill:
           type: object
           properties:
@@ -2411,6 +3430,7 @@ components:
       - objective
       - owner
       - rendered_prompt
+      - score
       - skill
       - validation_results
       - variables
@@ -2435,6 +3455,11 @@ components:
           allOf:
           - $ref: '#/components/schemas/NestedUserDetails'
           readOnly: true
+        score:
+          type: number
+          format: double
+          readOnly: true
+          nullable: true
         skill:
           type: object
           properties:
@@ -2460,6 +3485,7 @@ components:
       - created_at
       - id
       - owner
+      - score
       - skill
       - validation_result_average
     ID:
@@ -2511,6 +3537,131 @@ components:
           maxLength: 1000
       required:
       - name
+    Judge:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 512
+        evaluators:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedEvaluator'
+          readOnly: true
+        prototype:
+          allOf:
+          - $ref: '#/components/schemas/NestedVectorObjective'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        owner:
+          type: object
+          properties:
+            is_my_organization:
+              type: boolean
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/JudgeStatusEnum'
+          readOnly: true
+      required:
+      - created_at
+      - evaluators
+      - id
+      - name
+      - owner
+      - prototype
+      - status
+    JudgeExecutionRequest:
+      type: object
+      properties:
+        request:
+          type: string
+          default: ''
+          maxLength: 1000000
+        response:
+          type: string
+          default: ''
+          maxLength: 1000000
+        contexts:
+          type: array
+          items:
+            type: string
+            minLength: 1
+        functions:
+          type: array
+          items:
+            $ref: '#/components/schemas/EvaluatorExecutionFunctionsRequest'
+        expected_output:
+          type: string
+          nullable: true
+          maxLength: 1000000
+    JudgeExecutionResponse:
+      type: object
+      properties:
+        evaluator_results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EvaluatorResult'
+          description: List of results from each evaluator
+      required:
+      - evaluator_results
+    JudgeList:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/JudgeStatusEnum'
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - name
+      - status
+    JudgeRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 512
+        evaluator_references:
+          type: array
+          items:
+            $ref: '#/components/schemas/EvaluatorReferenceRequest'
+          writeOnly: true
+      required:
+      - name
+    JudgeStatusEnum:
+      enum:
+      - unlisted
+      - listed
+      - public
+      - global
+      type: string
+      description: |-
+        * `unlisted` - unlisted
+        * `listed` - listed
+        * `public` - public
+        * `global` - global
     Model:
       type: object
       properties:
@@ -2609,6 +3760,39 @@ components:
           maxLength: 1024
       required:
       - name
+    NestedEvaluator:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        intent:
+          type: string
+          readOnly: true
+        name:
+          type: string
+        is_root_evaluator:
+          type: boolean
+      required:
+      - id
+      - intent
+      - is_root_evaluator
+      - name
+    NestedEvaluatorRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+        is_root_evaluator:
+          type: boolean
+      required:
+      - id
+      - is_root_evaluator
+      - name
     NestedObjectiveEvaluator:
       type: object
       properties:
@@ -2666,6 +3850,26 @@ components:
       required:
       - email
       - full_name
+    NestedVectorObjective:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        intent:
+          type: string
+      required:
+      - id
+      - intent
+    NestedVectorObjectiveRequest:
+      type: object
+      properties:
+        intent:
+          type: string
+          minLength: 1
+      required:
+      - intent
     Objective:
       type: object
       properties:
@@ -2896,6 +4100,44 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DataSetList'
+    PaginatedEvaluatorList:
+      type: object
+      required:
+      - results
+      properties:
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Evaluator'
+    PaginatedEvaluatorListOutputList:
+      type: object
+      required:
+      - results
+      properties:
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EvaluatorListOutput'
     PaginatedExecutionLogListList:
       type: object
       required:
@@ -2915,6 +4157,25 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ExecutionLogList'
+    PaginatedJudgeListList:
+      type: object
+      required:
+      - results
+      properties:
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cD00ODY%3D"
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/JudgeList'
     PaginatedModelListList:
       type: object
       required:
@@ -3010,6 +4271,84 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SkillListOutput'
+    PatchedEvaluatorRequest:
+      type: object
+      properties:
+        change_note:
+          type: string
+          nullable: true
+        evaluator_demonstrations:
+          type: array
+          items:
+            $ref: '#/components/schemas/EvaluatorDemonstrationsRequest'
+          nullable: true
+        evaluator_only_offline:
+          type: boolean
+          description: Do not run the evaluator if used as an Objective validator.
+        evaluator_require_reference_variables:
+          type: boolean
+        input_variables:
+          type: array
+          items:
+            $ref: '#/components/schemas/InputVariableRequest'
+        model_params:
+          allOf:
+          - $ref: '#/components/schemas/ModelParamsRequest'
+          nullable: true
+        models:
+          type: array
+          items:
+            type: string
+            minLength: 1
+        name:
+          type: string
+          minLength: 1
+          maxLength: 1000
+        objective:
+          allOf:
+          - $ref: '#/components/schemas/ObjectiveRequest'
+          nullable: true
+        objective_id:
+          type: string
+          format: uuid
+          writeOnly: true
+          nullable: true
+        objective_version_id:
+          type: string
+          format: uuid
+          writeOnly: true
+          nullable: true
+          description: Optionally pin the Skill to a specific version of an Objective.
+            If not provided, the latest version of the objective will be used and
+            followed.
+        overwrite:
+          type: boolean
+          writeOnly: true
+          default: false
+          description: Overwrite existing skill with the same name. Only for POST
+            requests.
+        prompt:
+          type: string
+        reference_variables:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReferenceVariableRequest'
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        system_message:
+          type: string
+    PatchedJudgeRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 512
+        evaluator_references:
+          type: array
+          items:
+            $ref: '#/components/schemas/EvaluatorReferenceRequest'
+          writeOnly: true
     PatchedModelRequest:
       type: object
       properties:
