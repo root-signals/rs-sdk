@@ -27,11 +27,11 @@ class EvaluatorDemonstrationsRequest(BaseModel):
     EvaluatorDemonstrationsRequest
     """  # noqa: E501
 
-    prompt: Optional[StrictStr] = None
-    output: Annotated[str, Field(min_length=1, strict=True)]
+    request: Optional[StrictStr] = None
+    response: Optional[StrictStr] = None
     score: Union[Annotated[float, Field(le=1, strict=True, ge=0)], Annotated[int, Field(le=1, strict=True, ge=0)]]
     justification: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["prompt", "output", "score", "justification"]
+    __properties: ClassVar[List[str]] = ["request", "response", "score", "justification"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -70,10 +70,15 @@ class EvaluatorDemonstrationsRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if prompt (nullable) is None
+        # set to None if request (nullable) is None
         # and model_fields_set contains the field
-        if self.prompt is None and "prompt" in self.model_fields_set:
-            _dict["prompt"] = None
+        if self.request is None and "request" in self.model_fields_set:
+            _dict["request"] = None
+
+        # set to None if response (nullable) is None
+        # and model_fields_set contains the field
+        if self.response is None and "response" in self.model_fields_set:
+            _dict["response"] = None
 
         # set to None if justification (nullable) is None
         # and model_fields_set contains the field
@@ -93,8 +98,8 @@ class EvaluatorDemonstrationsRequest(BaseModel):
 
         _obj = cls.model_validate(
             {
-                "prompt": obj.get("prompt"),
-                "output": obj.get("output"),
+                "request": obj.get("request"),
+                "response": obj.get("response"),
                 "score": obj.get("score"),
                 "justification": obj.get("justification"),
             }

@@ -180,6 +180,7 @@ Class | Method | HTTP request | Description
  - [EvaluatorRequest](root/generated/openapi_aclient/docs/EvaluatorRequest.md)
  - [EvaluatorResult](root/generated/openapi_aclient/docs/EvaluatorResult.md)
  - [ExecutionLogDetails](root/generated/openapi_aclient/docs/ExecutionLogDetails.md)
+ - [ExecutionLogDetailsJudge](root/generated/openapi_aclient/docs/ExecutionLogDetailsJudge.md)
  - [ExecutionLogDetailsObjective](root/generated/openapi_aclient/docs/ExecutionLogDetailsObjective.md)
  - [ExecutionLogDetailsSkill](root/generated/openapi_aclient/docs/ExecutionLogDetailsSkill.md)
  - [ExecutionLogList](root/generated/openapi_aclient/docs/ExecutionLogList.md)

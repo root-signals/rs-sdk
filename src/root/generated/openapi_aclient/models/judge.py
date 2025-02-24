@@ -40,7 +40,17 @@ class Judge(BaseModel):
     created_at: Optional[datetime]
     owner: JudgeOwner
     status: JudgeStatusEnum
-    __properties: ClassVar[List[str]] = ["id", "name", "evaluators", "prototype", "created_at", "owner", "status"]
+    meta: Dict[str, Any] = Field(alias="_meta")
+    __properties: ClassVar[List[str]] = [
+        "id",
+        "name",
+        "evaluators",
+        "prototype",
+        "created_at",
+        "owner",
+        "status",
+        "_meta",
+    ]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -76,6 +86,7 @@ class Judge(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
@@ -84,6 +95,7 @@ class Judge(BaseModel):
                 "prototype",
                 "created_at",
                 "status",
+                "meta",
             ]
         )
 
@@ -134,6 +146,7 @@ class Judge(BaseModel):
                 "created_at": obj.get("created_at"),
                 "owner": JudgeOwner.from_dict(obj["owner"]) if obj.get("owner") is not None else None,
                 "status": obj.get("status"),
+                "_meta": obj.get("_meta"),
             }
         )
         return _obj

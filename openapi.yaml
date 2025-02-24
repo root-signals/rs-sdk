@@ -2986,11 +2986,12 @@ components:
     EvaluatorDemonstrations:
       type: object
       properties:
-        prompt:
+        request:
           type: string
           nullable: true
-        output:
+        response:
           type: string
+          nullable: true
         score:
           type: number
           format: double
@@ -3000,17 +3001,16 @@ components:
           type: string
           nullable: true
       required:
-      - output
       - score
     EvaluatorDemonstrationsRequest:
       type: object
       properties:
-        prompt:
+        request:
           type: string
           nullable: true
-        output:
+        response:
           type: string
-          minLength: 1
+          nullable: true
         score:
           type: number
           format: double
@@ -3020,7 +3020,6 @@ components:
           type: string
           nullable: true
       required:
-      - output
       - score
     EvaluatorExecutionFunctionParameterPropertyRequest:
       type: object
@@ -3350,13 +3349,17 @@ components:
           type: string
           format: uuid
           readOnly: true
+        judge:
+          type: object
+          properties:
+            name:
+              type: string
+          readOnly: true
+          nullable: true
         justification:
           type: string
           readOnly: true
         llm_output:
-          type: string
-          readOnly: true
-        model:
           type: string
           readOnly: true
         model_call_duration:
@@ -3366,6 +3369,9 @@ components:
           allOf:
           - $ref: '#/components/schemas/ModelParams'
           nullable: true
+        model:
+          type: string
+          readOnly: true
         objective:
           type: object
           properties:
@@ -3423,6 +3429,7 @@ components:
       - cost
       - created_at
       - id
+      - judge
       - justification
       - llm_output
       - model
@@ -3451,6 +3458,13 @@ components:
           type: string
           format: uuid
           readOnly: true
+        judge:
+          type: object
+          properties:
+            name:
+              type: string
+          readOnly: true
+          nullable: true
         owner:
           allOf:
           - $ref: '#/components/schemas/NestedUserDetails'
@@ -3484,6 +3498,7 @@ components:
       - cost
       - created_at
       - id
+      - judge
       - owner
       - score
       - skill
@@ -3571,7 +3586,13 @@ components:
           allOf:
           - $ref: '#/components/schemas/JudgeStatusEnum'
           readOnly: true
+        _meta:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+          title: ' meta'
       required:
+      - _meta
       - created_at
       - evaluators
       - id
@@ -5076,11 +5097,13 @@ components:
       - unlisted
       - listed
       - public
+      - public_unlisted
       type: string
       description: |-
         * `unlisted` - unlisted
         * `listed` - listed
         * `public` - public
+        * `public_unlisted` - public_unlisted
     Validation:
       type: object
       properties:
