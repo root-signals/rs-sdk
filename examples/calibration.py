@@ -47,8 +47,8 @@ client.evaluators.update(
     evaluator_id=network_troubleshooting_evaluator.id,
     evaluator_demonstrations=[
         EvaluatorDemonstration(
-            output="I'm sorry to hear that your internet isn't working. Let's troubleshoot this step by step.",
-            prompt="My internet is not working.",
+            response="I'm sorry to hear that your internet isn't working. Let's troubleshoot this step by step.",
+            request="My internet is not working.",
             score=0.1,
         ),
     ],
