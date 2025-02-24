@@ -1,3 +1,15 @@
+## 1.4.0  
+### Added
+  - Introduced beta namespace for the client.  
+  - Judges functionality for improved AI evaluation.  
+  - Score field is now optional in `ExecutionLogList`.  
+  - Colab example links for better accessibility.  
+  - Refined example code formatting.  
+  - Enhanced async usage documentation.  
+  - Renamed custom evaluator for clarity.  
+
+
+
 ## 1.3.3
 
 ### Added
