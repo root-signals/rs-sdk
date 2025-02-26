@@ -36,7 +36,8 @@ class JudgeExecutionRequest(BaseModel):
     contexts: Optional[List[Annotated[str, Field(min_length=1, strict=True)]]] = None
     functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None
     expected_output: Optional[Annotated[str, Field(strict=True, max_length=1000000)]] = None
-    __properties: ClassVar[List[str]] = ["request", "response", "contexts", "functions", "expected_output"]
+    tags: Optional[List[Annotated[str, Field(min_length=1, strict=True, max_length=1000)]]] = None
+    __properties: ClassVar[List[str]] = ["request", "response", "contexts", "functions", "expected_output", "tags"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -107,6 +108,7 @@ class JudgeExecutionRequest(BaseModel):
                 if obj.get("functions") is not None
                 else None,
                 "expected_output": obj.get("expected_output"),
+                "tags": obj.get("tags"),
             }
         )
         return _obj

@@ -50,6 +50,7 @@ class ExecutionLogDetails(BaseModel):
     rendered_prompt: StrictStr
     score: Optional[Union[StrictFloat, StrictInt]]
     skill: ExecutionLogDetailsSkill
+    tags: List[StrictStr]
     validation_results: List[SkillExecutionValidatorResult]
     variables: Optional[Any]
     __properties: ClassVar[List[str]] = [
@@ -68,6 +69,7 @@ class ExecutionLogDetails(BaseModel):
         "rendered_prompt",
         "score",
         "skill",
+        "tags",
         "validation_results",
         "variables",
     ]
@@ -113,6 +115,7 @@ class ExecutionLogDetails(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
@@ -126,6 +129,7 @@ class ExecutionLogDetails(BaseModel):
                 "owner",
                 "rendered_prompt",
                 "score",
+                "tags",
                 "validation_results",
                 "variables",
             ]
@@ -225,6 +229,7 @@ class ExecutionLogDetails(BaseModel):
                 "rendered_prompt": obj.get("rendered_prompt"),
                 "score": obj.get("score"),
                 "skill": ExecutionLogDetailsSkill.from_dict(obj["skill"]) if obj.get("skill") is not None else None,
+                "tags": obj.get("tags"),
                 "validation_results": [
                     SkillExecutionValidatorResult.from_dict(_item) for _item in obj["validation_results"]
                 ]

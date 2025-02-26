@@ -39,6 +39,7 @@ class ExecutionLogList(BaseModel):
     owner: NestedUserDetails
     score: Optional[Union[StrictFloat, StrictInt]]
     skill: ExecutionLogListSkill
+    tags: List[StrictStr]
     validation_result_average: Optional[Union[StrictFloat, StrictInt]]
     __properties: ClassVar[List[str]] = [
         "cost",
@@ -48,6 +49,7 @@ class ExecutionLogList(BaseModel):
         "owner",
         "score",
         "skill",
+        "tags",
         "validation_result_average",
     ]
 
@@ -86,6 +88,7 @@ class ExecutionLogList(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
@@ -94,6 +97,7 @@ class ExecutionLogList(BaseModel):
                 "id",
                 "owner",
                 "score",
+                "tags",
                 "validation_result_average",
             ]
         )
@@ -157,6 +161,7 @@ class ExecutionLogList(BaseModel):
                 "owner": NestedUserDetails.from_dict(obj["owner"]) if obj.get("owner") is not None else None,
                 "score": obj.get("score"),
                 "skill": ExecutionLogListSkill.from_dict(obj["skill"]) if obj.get("skill") is not None else None,
+                "tags": obj.get("tags"),
                 "validation_result_average": obj.get("validation_result_average"),
             }
         )

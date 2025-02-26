@@ -7041,6 +7041,7 @@ class V1Api:
         ] = None,
         page_size: Annotated[Optional[StrictInt], Field(description="Number of results to return per page.")] = None,
         search: Annotated[Optional[StrictStr], Field(description="Filter with skill name or id")] = None,
+        tags: Annotated[Optional[StrictStr], Field(description="Filter logs by tag names (comma-separated)")] = None,
         unique_skills: Annotated[Optional[StrictBool], Field(description="Return only unique skills")] = None,
         _request_timeout: Union[
             None,
@@ -7064,6 +7065,8 @@ class V1Api:
         :type page_size: int
         :param search: Filter with skill name or id
         :type search: str
+        :param tags: Filter logs by tag names (comma-separated)
+        :type tags: str
         :param unique_skills: Return only unique skills
         :type unique_skills: bool
         :param _request_timeout: timeout setting for this request. If one
@@ -7093,6 +7096,7 @@ class V1Api:
             ordering=ordering,
             page_size=page_size,
             search=search,
+            tags=tags,
             unique_skills=unique_skills,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -7119,6 +7123,7 @@ class V1Api:
         ] = None,
         page_size: Annotated[Optional[StrictInt], Field(description="Number of results to return per page.")] = None,
         search: Annotated[Optional[StrictStr], Field(description="Filter with skill name or id")] = None,
+        tags: Annotated[Optional[StrictStr], Field(description="Filter logs by tag names (comma-separated)")] = None,
         unique_skills: Annotated[Optional[StrictBool], Field(description="Return only unique skills")] = None,
         _request_timeout: Union[
             None,
@@ -7142,6 +7147,8 @@ class V1Api:
         :type page_size: int
         :param search: Filter with skill name or id
         :type search: str
+        :param tags: Filter logs by tag names (comma-separated)
+        :type tags: str
         :param unique_skills: Return only unique skills
         :type unique_skills: bool
         :param _request_timeout: timeout setting for this request. If one
@@ -7171,6 +7178,7 @@ class V1Api:
             ordering=ordering,
             page_size=page_size,
             search=search,
+            tags=tags,
             unique_skills=unique_skills,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -7197,6 +7205,7 @@ class V1Api:
         ] = None,
         page_size: Annotated[Optional[StrictInt], Field(description="Number of results to return per page.")] = None,
         search: Annotated[Optional[StrictStr], Field(description="Filter with skill name or id")] = None,
+        tags: Annotated[Optional[StrictStr], Field(description="Filter logs by tag names (comma-separated)")] = None,
         unique_skills: Annotated[Optional[StrictBool], Field(description="Return only unique skills")] = None,
         _request_timeout: Union[
             None,
@@ -7220,6 +7229,8 @@ class V1Api:
         :type page_size: int
         :param search: Filter with skill name or id
         :type search: str
+        :param tags: Filter logs by tag names (comma-separated)
+        :type tags: str
         :param unique_skills: Return only unique skills
         :type unique_skills: bool
         :param _request_timeout: timeout setting for this request. If one
@@ -7249,6 +7260,7 @@ class V1Api:
             ordering=ordering,
             page_size=page_size,
             search=search,
+            tags=tags,
             unique_skills=unique_skills,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -7268,6 +7280,7 @@ class V1Api:
         ordering,
         page_size,
         search,
+        tags,
         unique_skills,
         _request_auth,
         _content_type,
@@ -7298,6 +7311,9 @@ class V1Api:
 
         if search is not None:
             _query_params.append(("search", search))
+
+        if tags is not None:
+            _query_params.append(("tags", tags))
 
         if unique_skills is not None:
             _query_params.append(("unique_skills", unique_skills))
