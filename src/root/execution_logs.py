@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from contextlib import AbstractAsyncContextManager
 from functools import partial
-from typing import TYPE_CHECKING, AsyncIterator, Iterator, Optional, Protocol
+from typing import TYPE_CHECKING, AsyncIterator, Iterator, List, Optional, Protocol
 
 from pydantic import StrictStr
 
@@ -37,6 +37,7 @@ class ExecutionLogs:
         *,
         limit: int = 100,
         search_term: Optional[str] = None,
+        tags: Optional[List[str]] = None,
         _request_timeout: Optional[int] = None,
         _client: ApiClient,
     ) -> Iterator[ExecutionLogList]:
@@ -46,12 +47,14 @@ class ExecutionLogs:
         Args:
           limit: Number of entries to iterate through at most.
           search_term: Can be used to limit returned logs. For example, a skill id or name.
+          tags: Optional tags to filter the logs by.
         """
         api_instance = ExecutionLogsApi(_client)
         yield from iterate_cursor_list(
             partial(
                 api_instance.v1_execution_logs_list,
                 search=search_term,
+                tags=",".join(tags) if tags else None,
                 _request_timeout=_request_timeout,
             ),
             limit=limit,
@@ -62,6 +65,7 @@ class ExecutionLogs:
         *,
         limit: int = 100,
         search_term: Optional[str] = None,
+        tags: Optional[List[str]] = None,
         _request_timeout: Optional[int] = None,
     ) -> AsyncIterator[AExecutionLogList]:
         """
@@ -70,6 +74,7 @@ class ExecutionLogs:
         Args:
           limit: Number of entries to iterate through at most.
           search_term: Can be used to limit returned logs. For example, a skill id or name.
+          tags: Optional tags to filter the logs by.
         """
 
         context = self.client_context()
@@ -79,6 +84,7 @@ class ExecutionLogs:
             partial_list = partial(
                 api_instance.v1_execution_logs_list,
                 search=search_term,
+                tags=",".join(tags) if tags else None,
                 _request_timeout=_request_timeout,
             )
 
