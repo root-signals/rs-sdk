@@ -1,4 +1,16 @@
+## 1.5.0
+
+### Added
+
+- Added tags to evaluator and judge runs
+- Added tag filtering to execution logs
+
+### Changed
+
+- Renamed the evaluator demonstration output and prompt parameters
+
 ## 1.4.0  
+
 ### Added
   - Introduced beta namespace for the client.  
   - Judges functionality for improved AI evaluation.  
