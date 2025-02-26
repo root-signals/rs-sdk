@@ -10,7 +10,7 @@ result = client.evaluators.Clarity(
 )
 
 # Get the execution log for the evaluator run.
-log = client.execution_logs.get(result)
+log = client.execution_logs.get(execution_result=result)
 print(log)
 
 
