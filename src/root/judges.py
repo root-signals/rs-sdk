@@ -71,6 +71,7 @@ class Judge(OpenApiJudge):
         contexts: Optional[List[str]] = None,
         functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
         expected_output: Optional[str] = None,
+        tags: Optional[List[str]] = None,
         _request_timeout: Optional[int] = None,
         _client: ApiClient,
     ) -> JudgeExecutionResponse:
@@ -83,6 +84,7 @@ class Judge(OpenApiJudge):
           contexts: Optional documents passed to RAG evaluators
           functions: Optional functions to execute
           expected_output: Optional expected output
+          tags: Optional tags to add to the judge execution
           _request_timeout: Optional timeout for the request
         """
         api_instance = BetaApi(_client)
@@ -92,6 +94,7 @@ class Judge(OpenApiJudge):
             contexts=contexts,
             functions=functions,
             expected_output=expected_output,
+            tags=tags,
         )
         return api_instance.beta_judges_execute_create(
             judge_id=self.id,
@@ -128,6 +131,7 @@ class AJudge(AOpenApiJudge):
         contexts: Optional[List[str]] = None,
         functions: Optional[List[AEvaluatorExecutionFunctionsRequest]] = None,
         expected_output: Optional[str] = None,
+        tags: Optional[List[str]] = None,
         _request_timeout: Optional[int] = None,
         _client: AApiClient,
     ) -> AJudgeExecutionResponse:
@@ -140,6 +144,7 @@ class AJudge(AOpenApiJudge):
           contexts: Optional documents passed to RAG evaluators
           functions: Optional functions to execute
           expected_output: Optional expected output
+          tags: Optional tags to add to the judge execution
           _request_timeout: Optional timeout for the request
         """
         api_instance = ABetaApi(_client)
@@ -149,6 +154,7 @@ class AJudge(AOpenApiJudge):
             expected_output=expected_output,
             request=request,
             response=response,
+            tags=tags,
         )
         return await api_instance.beta_judges_execute_create(
             judge_id=self.id,
@@ -343,6 +349,7 @@ class Judges:
         contexts: Optional[List[str]] = None,
         functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
         expected_output: Optional[str] = None,
+        tags: Optional[List[str]] = None,
         _request_timeout: Optional[int] = None,
         _client: ApiClient,
     ) -> JudgeExecutionResponse:
@@ -356,6 +363,7 @@ class Judges:
           contexts: Optional documents passed to RAG evaluators
           functions: Optional functions to execute
           expected_output: Optional expected output
+          tags: Optional tags to add to the judge execution
           _request_timeout: Optional timeout for the request
         """
         api_instance = BetaApi(_client)
@@ -365,6 +373,7 @@ class Judges:
             contexts=contexts,
             functions=functions,
             expected_output=expected_output,
+            tags=tags,
         )
         return api_instance.beta_judges_execute_create(
             judge_id=judge_id,
@@ -382,6 +391,7 @@ class Judges:
         contexts: Optional[List[str]] = None,
         functions: Optional[List[AEvaluatorExecutionFunctionsRequest]] = None,
         expected_output: Optional[str] = None,
+        tags: Optional[List[str]] = None,
         _request_timeout: Optional[int] = None,
         _client: AApiClient,
     ) -> AJudgeExecutionResponse:
@@ -395,6 +405,7 @@ class Judges:
           contexts: Optional documents passed to RAG evaluators
           functions: Optional functions to execute
           expected_output: Optional expected output
+          tags: Optional tags to add to the judge execution
           _request_timeout: Optional timeout for the request
         """
         api_instance = ABetaApi(_client)
@@ -404,6 +415,7 @@ class Judges:
             expected_output=expected_output,
             request=request,
             response=response,
+            tags=tags,
         )
         return await api_instance.beta_judges_execute_create(
             judge_id=judge_id,

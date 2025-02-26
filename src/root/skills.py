@@ -470,6 +470,7 @@ class Evaluator(OpenAPISkill):
         functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
         expected_output: Optional[str] = None,
         variables: Optional[dict[str, str]] = None,
+        tags: Optional[List[str]] = None,
         *,
         _client: ApiClient,
         _request_timeout: Optional[int] = None,
@@ -485,6 +486,7 @@ class Evaluator(OpenAPISkill):
           expected_output: Optional expected output for the evaluator.
           variables: Optional additional variable mappings for the evaluator. For example, if the evaluator
             predicate is "evaluate the output based on {subject}: {output}", then variables={"subject": "clarity"}.
+          tags: Optional tags to add to the evaluator execution
         """
 
         if not response and not request:
@@ -500,6 +502,7 @@ class Evaluator(OpenAPISkill):
             functions=functions,
             expected_output=expected_output,
             variables=variables,
+            tags=tags,
         )
         return api_instance.v1_skills_evaluator_execute_create(
             skill_id=self.id,
@@ -536,6 +539,7 @@ class AEvaluator(AOpenAPISkill):
         functions: Optional[List[AEvaluatorExecutionFunctionsRequest]] = None,
         expected_output: Optional[str] = None,
         variables: Optional[dict[str, str]] = None,
+        tags: Optional[List[str]] = None,
         *,
         _client: AApiClient,
         _request_timeout: Optional[int] = None,
@@ -551,6 +555,7 @@ class AEvaluator(AOpenAPISkill):
           expected_output: Optional expected output for the evaluator.
           variables: Optional additional variable mappings for the evaluator. For example, if the evaluator
             predicate is "evaluate the output based on {subject}: {output}", then variables={"subject": "clarity"}.
+          tags: Optional tags to add to the evaluator execution
         """
 
         if not response and not request:
@@ -566,6 +571,7 @@ class AEvaluator(AOpenAPISkill):
             functions=functions,
             expected_output=expected_output,
             variables=variables,
+            tags=tags,
         )
         return await api_instance.v1_skills_evaluator_execute_create(
             skill_id=self.id,
@@ -708,6 +714,7 @@ class PresetEvaluatorRunner:
         functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
         expected_output: Optional[str] = None,
         variables: Optional[dict[str, str]] = None,
+        tags: Optional[List[str]] = None,
         *,
         _client: ApiClient,
         _request_timeout: Optional[int] = None,
@@ -723,6 +730,7 @@ class PresetEvaluatorRunner:
             expected_output: Optional expected output for the evaluator.
             variables: Optional additional variable mappings for the evaluator. For example, if the evaluator
                 predicate is "evaluate the output based on {subject}: {output}", then variables={"subject": "clarity"}.
+            tags: Optional tags to add to the evaluator execution
         """
 
         if not response and not request:
@@ -738,6 +746,7 @@ class PresetEvaluatorRunner:
             functions=functions,
             expected_output=expected_output,
             variables=variables,
+            tags=tags,
         )
         return api_instance.v1_skills_evaluator_execute_create(
             skill_id=self.skill_id,
@@ -770,6 +779,7 @@ class APresetEvaluatorRunner:
         functions: Optional[List[AEvaluatorExecutionFunctionsRequest]] = None,
         expected_output: Optional[str] = None,
         variables: Optional[dict[str, str]] = None,
+        tags: Optional[List[str]] = None,
         *,
         _client: AApiClient,
         _request_timeout: Optional[int] = None,
@@ -785,6 +795,7 @@ class APresetEvaluatorRunner:
             expected_output: Optional expected output for the evaluator.
             variables: Optional additional variable mappings for the evaluator. For example, if the evaluator
                 predicate is "evaluate the output based on {subject}: {output}", then variables={"subject": "clarity"}.
+            tags: Optional tags to add to the evaluator execution
         """
 
         if not response and not request:
@@ -800,6 +811,7 @@ class APresetEvaluatorRunner:
             functions=functions,
             expected_output=expected_output,
             variables=variables,
+            tags=tags,
         )
         return await api_instance.v1_skills_evaluator_execute_create(
             skill_id=self.skill_id,
@@ -1628,6 +1640,7 @@ class Evaluators:
         expected_output: Optional[str] = None,
         evaluator_version_id: Optional[str] = None,
         variables: Optional[dict[str, str]] = None,
+        tags: Optional[List[str]] = None,
         _request_timeout: Optional[int] = None,
         _client: ApiClient,
     ) -> EvaluatorExecutionResult:
@@ -1644,6 +1657,7 @@ class Evaluators:
             evaluator_version_id: Version ID of the evaluator to run. If omitted, the latest version is used.
             variables: Optional additional variable mappings for the evaluator. For example, if the evaluator
                 predicate is "evaluate the output based on {subject}: {output}", then variables={"subject": "clarity"}.
+            tags: Optional tags to add to the evaluator execution
             _request_timeout: Optional timeout for the request.
         """
 
@@ -1659,6 +1673,7 @@ class Evaluators:
             functions=functions,
             expected_output=expected_output,
             variables=variables,
+            tags=tags,
         )
         return api_instance.v1_skills_evaluator_execute_create(
             skill_id=evaluator_id,
@@ -1678,6 +1693,7 @@ class Evaluators:
         expected_output: Optional[str] = None,
         evaluator_version_id: Optional[str] = None,
         variables: Optional[dict[str, str]] = None,
+        tags: Optional[List[str]] = None,
         _request_timeout: Optional[int] = None,
         _client: AApiClient,
     ) -> AEvaluatorExecutionResult:
@@ -1694,6 +1710,7 @@ class Evaluators:
             evaluator_version_id: Version ID of the evaluator to run. If omitted, the latest version is used.
             variables: Optional additional variable mappings for the evaluator. For example, if the evaluator
                 predicate is "evaluate the output based on {subject}: {output}", then variables={"subject": "clarity"}.
+            tags: Optional tags to add to the evaluator execution
             _request_timeout: Optional timeout for the request.
         """
 
@@ -1709,6 +1726,7 @@ class Evaluators:
             functions=functions,
             expected_output=expected_output,
             variables=variables,
+            tags=tags,
         )
         return await api_instance.v1_skills_evaluator_execute_create(
             skill_id=evaluator_id,
