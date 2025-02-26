@@ -1169,6 +1169,12 @@ paths:
           default: ''
         description: Filter with skill name or id
       - in: query
+        name: tags
+        schema:
+          type: string
+          default: ''
+        description: Filter logs by tag names (comma-separated)
+      - in: query
         name: unique_skills
         schema:
           type: boolean
@@ -3113,6 +3119,12 @@ components:
           type: string
           nullable: true
           maxLength: 1000000
+        tags:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 1000
         variables:
           type: object
           additionalProperties:
@@ -3417,6 +3429,11 @@ components:
             type: skill
             id: dfd76dd3-1415-4339-9b20-3bc2bbe3e8ce
           readOnly: true
+        tags:
+          type: array
+          items:
+            type: string
+          readOnly: true
         validation_results:
           type: array
           items:
@@ -3439,6 +3456,7 @@ components:
       - rendered_prompt
       - score
       - skill
+      - tags
       - validation_results
       - variables
     ExecutionLogList:
@@ -3489,6 +3507,11 @@ components:
             type: skill
             id: dfd76dd3-1415-4339-9b20-3bc2bbe3e8ce
           readOnly: true
+        tags:
+          type: array
+          items:
+            type: string
+          readOnly: true
         validation_result_average:
           type: number
           format: double
@@ -3502,6 +3525,7 @@ components:
       - owner
       - score
       - skill
+      - tags
       - validation_result_average
     ID:
       type: object
@@ -3624,6 +3648,12 @@ components:
           type: string
           nullable: true
           maxLength: 1000000
+        tags:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 1000
     JudgeExecutionResponse:
       type: object
       properties:
@@ -3969,6 +3999,12 @@ components:
           type: string
           nullable: true
           maxLength: 1000000
+        tags:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 1000
     ObjectiveList:
       type: object
       properties:
@@ -5062,6 +5098,12 @@ components:
           type: string
           nullable: true
           maxLength: 1000000
+        tags:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 1000
         variables:
           type: object
           additionalProperties:

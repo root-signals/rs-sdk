@@ -48,6 +48,15 @@ For RAG, there are special evaluators that can separately measure the different 
 ```{literalinclude} ../examples/run_rag.py
 ```
 
+
+## Monitoring LLM pipelines with tags
+
+Evaluator runs can be tagged with free-form tags.
+
+```{literalinclude} ../examples/run_tagging.py
+```
+
+
 ## Use OpenAI client for chat completions
 
 Evaluators and monitoring can be added to your existing codebase using OpenAI client. To do this, retrieve `base_url` from the Root Signals SDK Skill, and then use the normal `openai` API client with it. There are two ways to do it:

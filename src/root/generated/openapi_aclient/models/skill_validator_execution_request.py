@@ -37,6 +37,7 @@ class SkillValidatorExecutionRequest(BaseModel):
     contexts: Optional[List[Annotated[str, Field(min_length=1, strict=True)]]] = None
     functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None
     expected_output: Optional[Annotated[str, Field(strict=True, max_length=1000000)]] = None
+    tags: Optional[List[Annotated[str, Field(min_length=1, strict=True, max_length=1000)]]] = None
     variables: Optional[Dict[str, Annotated[str, Field(min_length=1, strict=True)]]] = Field(
         default=None, description="Extra variables to be used in the execution of the evaluator. Optional."
     )
@@ -47,6 +48,7 @@ class SkillValidatorExecutionRequest(BaseModel):
         "contexts",
         "functions",
         "expected_output",
+        "tags",
         "variables",
     ]
 
@@ -125,6 +127,7 @@ class SkillValidatorExecutionRequest(BaseModel):
                 if obj.get("functions") is not None
                 else None,
                 "expected_output": obj.get("expected_output"),
+                "tags": obj.get("tags"),
                 "variables": obj.get("variables"),
             }
         )
