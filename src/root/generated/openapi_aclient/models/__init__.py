@@ -59,6 +59,7 @@ from root.generated.openapi_aclient.models.evaluator_reference_request import Ev
 from root.generated.openapi_aclient.models.evaluator_request import EvaluatorRequest
 from root.generated.openapi_aclient.models.evaluator_result import EvaluatorResult
 from root.generated.openapi_aclient.models.execution_log_details import ExecutionLogDetails
+from root.generated.openapi_aclient.models.execution_log_details_judge import ExecutionLogDetailsJudge
 from root.generated.openapi_aclient.models.execution_log_details_objective import ExecutionLogDetailsObjective
 from root.generated.openapi_aclient.models.execution_log_details_skill import ExecutionLogDetailsSkill
 from root.generated.openapi_aclient.models.execution_log_list import ExecutionLogList

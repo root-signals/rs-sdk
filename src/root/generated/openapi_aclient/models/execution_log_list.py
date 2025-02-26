@@ -22,6 +22,7 @@ from typing import Any, ClassVar, Dict, List, Optional, Set, Union
 from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
 from typing_extensions import Self
 
+from root.generated.openapi_aclient.models.execution_log_details_judge import ExecutionLogDetailsJudge
 from root.generated.openapi_aclient.models.execution_log_list_skill import ExecutionLogListSkill
 from root.generated.openapi_aclient.models.nested_user_details import NestedUserDetails
 
@@ -34,6 +35,7 @@ class ExecutionLogList(BaseModel):
     cost: Optional[Union[StrictFloat, StrictInt]]
     created_at: Optional[datetime]
     id: StrictStr
+    judge: Optional[ExecutionLogDetailsJudge]
     owner: NestedUserDetails
     score: Optional[Union[StrictFloat, StrictInt]]
     skill: ExecutionLogListSkill
@@ -42,6 +44,7 @@ class ExecutionLogList(BaseModel):
         "cost",
         "created_at",
         "id",
+        "judge",
         "owner",
         "score",
         "skill",
@@ -100,6 +103,9 @@ class ExecutionLogList(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of judge
+        if self.judge:
+            _dict["judge"] = self.judge.to_dict()
         # override the default output from pydantic by calling `to_dict()` of owner
         if self.owner:
             _dict["owner"] = self.owner.to_dict()
@@ -115,6 +121,11 @@ class ExecutionLogList(BaseModel):
         # and model_fields_set contains the field
         if self.created_at is None and "created_at" in self.model_fields_set:
             _dict["created_at"] = None
+
+        # set to None if judge (nullable) is None
+        # and model_fields_set contains the field
+        if self.judge is None and "judge" in self.model_fields_set:
+            _dict["judge"] = None
 
         # set to None if score (nullable) is None
         # and model_fields_set contains the field
@@ -142,6 +153,7 @@ class ExecutionLogList(BaseModel):
                 "cost": obj.get("cost"),
                 "created_at": obj.get("created_at"),
                 "id": obj.get("id"),
+                "judge": ExecutionLogDetailsJudge.from_dict(obj["judge"]) if obj.get("judge") is not None else None,
                 "owner": NestedUserDetails.from_dict(obj["owner"]) if obj.get("owner") is not None else None,
                 "score": obj.get("score"),
                 "skill": ExecutionLogListSkill.from_dict(obj["skill"]) if obj.get("skill") is not None else None,

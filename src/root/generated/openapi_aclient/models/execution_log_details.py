@@ -22,6 +22,7 @@ from typing import Any, ClassVar, Dict, List, Optional, Set, Union
 from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
 from typing_extensions import Self
 
+from root.generated.openapi_aclient.models.execution_log_details_judge import ExecutionLogDetailsJudge
 from root.generated.openapi_aclient.models.execution_log_details_objective import ExecutionLogDetailsObjective
 from root.generated.openapi_aclient.models.execution_log_details_skill import ExecutionLogDetailsSkill
 from root.generated.openapi_aclient.models.model_params import ModelParams
@@ -38,11 +39,12 @@ class ExecutionLogDetails(BaseModel):
     cost: Optional[Union[StrictFloat, StrictInt]]
     created_at: Optional[datetime]
     id: StrictStr
+    judge: Optional[ExecutionLogDetailsJudge]
     justification: StrictStr
     llm_output: StrictStr
-    model: StrictStr
     model_call_duration: Union[StrictFloat, StrictInt]
     model_params: Optional[ModelParams] = None
+    model: StrictStr
     objective: ExecutionLogDetailsObjective
     owner: NestedUserDetails
     rendered_prompt: StrictStr
@@ -55,11 +57,12 @@ class ExecutionLogDetails(BaseModel):
         "cost",
         "created_at",
         "id",
+        "judge",
         "justification",
         "llm_output",
-        "model",
         "model_call_duration",
         "model_params",
+        "model",
         "objective",
         "owner",
         "rendered_prompt",
@@ -133,6 +136,9 @@ class ExecutionLogDetails(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of judge
+        if self.judge:
+            _dict["judge"] = self.judge.to_dict()
         # override the default output from pydantic by calling `to_dict()` of model_params
         if self.model_params:
             _dict["model_params"] = self.model_params.to_dict()
@@ -167,6 +173,11 @@ class ExecutionLogDetails(BaseModel):
         if self.created_at is None and "created_at" in self.model_fields_set:
             _dict["created_at"] = None
 
+        # set to None if judge (nullable) is None
+        # and model_fields_set contains the field
+        if self.judge is None and "judge" in self.model_fields_set:
+            _dict["judge"] = None
+
         # set to None if model_params (nullable) is None
         # and model_fields_set contains the field
         if self.model_params is None and "model_params" in self.model_fields_set:
@@ -199,13 +210,14 @@ class ExecutionLogDetails(BaseModel):
                 "cost": obj.get("cost"),
                 "created_at": obj.get("created_at"),
                 "id": obj.get("id"),
+                "judge": ExecutionLogDetailsJudge.from_dict(obj["judge"]) if obj.get("judge") is not None else None,
                 "justification": obj.get("justification"),
                 "llm_output": obj.get("llm_output"),
-                "model": obj.get("model"),
                 "model_call_duration": obj.get("model_call_duration"),
                 "model_params": ModelParams.from_dict(obj["model_params"])
                 if obj.get("model_params") is not None
                 else None,
+                "model": obj.get("model"),
                 "objective": ExecutionLogDetailsObjective.from_dict(obj["objective"])
                 if obj.get("objective") is not None
                 else None,

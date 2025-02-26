@@ -145,8 +145,8 @@ class EvaluatorDemonstration(BaseModel):
     Demonstrations are used to train an evaluator to adjust its behavior.
     """
 
-    prompt: Optional[str] = None
-    output: str
+    request: Optional[str] = None
+    response: str
     score: float
     justification: Optional[str] = None
 
@@ -620,8 +620,8 @@ def _to_evaluator_demonstrations(
         if not isinstance(entry, EvaluatorDemonstrationsRequest):
             return EvaluatorDemonstrationsRequest(
                 score=entry.score,
-                prompt=entry.prompt,
-                output=entry.output,
+                request=entry.request,
+                response=entry.response,
                 justification=entry.justification,
             )
         return entry
@@ -675,8 +675,8 @@ def _ato_evaluator_demonstrations(
         if not isinstance(entry, AEvaluatorDemonstrationsRequest):
             return AEvaluatorDemonstrationsRequest(
                 score=entry.score,
-                prompt=entry.prompt,
-                output=entry.output,
+                request=entry.request,
+                response=entry.response,
                 justification=entry.justification,
             )
         return entry
