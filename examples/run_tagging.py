@@ -4,8 +4,18 @@ from root import RootSignals
 client = RootSignals()
 
 # Run an evaluator with tags to track the execution.
-result = client.evaluators.Clarity(
-    response="Sure, let me help you to fix your issue with your network connection. Start by...",
+result = client.evaluators.Faithfulness(
+    request="What is your return policy for electronics?",
+    response="""
+    You can return electronics within 30 days of purchase, provided the item is unused and in its original packaging.
+    A receipt or proof of purchase is required.",
+    """,
+    contexts=[
+        """Our returns policy for electronics allows returns within 30 days of purchase.
+        The item must be unused, in its original packaging, and accompanied by a valid receipt or proof of purchase.
+        Refunds will be issued to the original payment method.""",
+        """A receipt or proof of purchase is required.""",
+    ],
     tags=["production", "v1.23"],
 )
 
@@ -15,6 +25,8 @@ print(log)
 
 
 # And get all the logs with the same tags.
-logs = client.execution_logs.list(tags=["production"])
+# Also include the evaluation context field in the response which by default is not included.
+logs = client.execution_logs.list(tags=["production"], include=["evaluation_context"])
 for log in logs:
     print(log.score)
+    print(log.evaluation_context.contexts)
