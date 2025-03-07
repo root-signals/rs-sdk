@@ -993,6 +993,7 @@ paths:
         name: id
         schema:
           type: string
+          format: uuid
         required: true
       tags:
       - v1
@@ -1150,6 +1151,13 @@ paths:
         description: The pagination cursor value.
         schema:
           type: string
+      - in: query
+        name: include
+        schema:
+          type: string
+          default: ''
+        description: 'Comma-separated list of additional fields to include in the
+          response. Supports: llm_output, variables, evaluation_context'
       - name: ordering
         required: false
         in: query
@@ -2028,13 +2036,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Skill'
           description: ''
-  /v1/skills/evaluator/execute/{skill_id}/:
+  /v1/skills/evaluator/execute/{id}/:
     post:
       operationId: v1_skills_evaluator_execute_create
       description: Execute an evaluator
       parameters:
       - in: path
-        name: skill_id
+        name: id
         schema:
           type: string
           format: uuid
@@ -3357,6 +3365,16 @@ components:
           format: date-time
           readOnly: true
           nullable: true
+        evaluation_context:
+          type: object
+          properties:
+            contexts:
+              type: array
+              items:
+                type: string
+            expected_output:
+              type: string
+          readOnly: true
         id:
           type: string
           format: uuid
@@ -3397,6 +3415,10 @@ components:
           allOf:
           - $ref: '#/components/schemas/NestedUserDetails'
           readOnly: true
+        parent_execution_log_id:
+          type: string
+          format: uuid
+          nullable: true
         rendered_prompt:
           type: string
           readOnly: true
@@ -3440,11 +3462,16 @@ components:
             $ref: '#/components/schemas/SkillExecutionValidatorResult'
           readOnly: true
         variables:
+          type: object
+          additionalProperties:
+            type: string
           readOnly: true
+          nullable: true
       required:
       - chat_id
       - cost
       - created_at
+      - evaluation_context
       - id
       - judge
       - justification
@@ -3487,6 +3514,10 @@ components:
           allOf:
           - $ref: '#/components/schemas/NestedUserDetails'
           readOnly: true
+        parent_execution_log_id:
+          type: string
+          format: uuid
+          nullable: true
         score:
           type: number
           format: double
@@ -3517,16 +3548,40 @@ components:
           format: double
           readOnly: true
           nullable: true
+        llm_output:
+          type: string
+          nullable: true
+          readOnly: true
+        variables:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          readOnly: true
+        evaluation_context:
+          type: object
+          properties:
+            contexts:
+              type: array
+              items:
+                type: string
+            expected_output:
+              type: string
+          nullable: true
+          readOnly: true
       required:
       - cost
       - created_at
+      - evaluation_context
       - id
       - judge
+      - llm_output
       - owner
       - score
       - skill
       - tags
       - validation_result_average
+      - variables
     ID:
       type: object
       properties:
@@ -3673,6 +3728,9 @@ components:
           readOnly: true
         name:
           type: string
+        intent:
+          type: string
+          readOnly: true
         created_at:
           type: string
           format: date-time
@@ -3685,6 +3743,7 @@ components:
       required:
       - created_at
       - id
+      - intent
       - name
       - status
     JudgeRequest:
@@ -3876,7 +3935,7 @@ components:
           readOnly: true
         intent:
           type: string
-          maxLength: 10000
+          maxLength: 100000
         status:
           $ref: '#/components/schemas/StatusEnum'
         validators:
@@ -3930,7 +3989,7 @@ components:
           readOnly: true
         intent:
           type: string
-          maxLength: 10000
+          maxLength: 100000
         status:
           $ref: '#/components/schemas/StatusEnum'
         test_set:
@@ -4014,7 +4073,7 @@ components:
           readOnly: true
         intent:
           type: string
-          maxLength: 10000
+          maxLength: 100000
         status:
           $ref: '#/components/schemas/StatusEnum'
         owner:
@@ -4048,7 +4107,7 @@ components:
         intent:
           type: string
           minLength: 1
-          maxLength: 10000
+          maxLength: 100000
         status:
           $ref: '#/components/schemas/StatusEnum'
         validators:
@@ -4438,7 +4497,7 @@ components:
         intent:
           type: string
           minLength: 1
-          maxLength: 10000
+          maxLength: 100000
         status:
           $ref: '#/components/schemas/StatusEnum'
         validators:

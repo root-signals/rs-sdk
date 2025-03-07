@@ -30,7 +30,7 @@ class ObjectiveRequest(BaseModel):
     ObjectiveRequest
     """  # noqa: E501
 
-    intent: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=10000)]] = None
+    intent: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=100000)]] = None
     status: Optional[StatusEnum] = None
     validators: Optional[List[ObjectiveValidatorRequest]] = None
     force_create: Optional[StrictBool] = Field(

@@ -33,7 +33,7 @@ class Objective(BaseModel):
     """  # noqa: E501
 
     id: StrictStr
-    intent: Optional[Annotated[str, Field(strict=True, max_length=10000)]] = None
+    intent: Optional[Annotated[str, Field(strict=True, max_length=100000)]] = None
     status: Optional[StatusEnum] = None
     test_set: Optional[List[List[StrictStr]]] = Field(description="Deprecated: Use test_dataset_id instead.")
     validators: Optional[List[ObjectiveValidator]] = None

@@ -127,7 +127,7 @@ Class | Method | HTTP request | Description
 *V1Api* | [**v1_skills_calibrate_create2**](root/generated/openapi_client/docs/V1Api.md#v1_skills_calibrate_create2) | **POST** /v1/skills/calibrate/{id} | 
 *V1Api* | [**v1_skills_create**](root/generated/openapi_client/docs/V1Api.md#v1_skills_create) | **POST** /v1/skills/ | 
 *V1Api* | [**v1_skills_destroy**](root/generated/openapi_client/docs/V1Api.md#v1_skills_destroy) | **DELETE** /v1/skills/{id}/ | 
-*V1Api* | [**v1_skills_evaluator_execute_create**](root/generated/openapi_client/docs/V1Api.md#v1_skills_evaluator_execute_create) | **POST** /v1/skills/evaluator/execute/{skill_id}/ | 
+*V1Api* | [**v1_skills_evaluator_execute_create**](root/generated/openapi_client/docs/V1Api.md#v1_skills_evaluator_execute_create) | **POST** /v1/skills/evaluator/execute/{id}/ | 
 *V1Api* | [**v1_skills_execute_create**](root/generated/openapi_client/docs/V1Api.md#v1_skills_execute_create) | **POST** /v1/skills/execute/{id}/ | 
 *V1Api* | [**v1_skills_execute_validators_create**](root/generated/openapi_client/docs/V1Api.md#v1_skills_execute_validators_create) | **POST** /v1/skills/execute-validators/{id}/ | 
 *V1Api* | [**v1_skills_list**](root/generated/openapi_client/docs/V1Api.md#v1_skills_list) | **GET** /v1/skills/ | 
@@ -179,10 +179,12 @@ Class | Method | HTTP request | Description
  - [EvaluatorRequest](root/generated/openapi_client/docs/EvaluatorRequest.md)
  - [EvaluatorResult](root/generated/openapi_client/docs/EvaluatorResult.md)
  - [ExecutionLogDetails](root/generated/openapi_client/docs/ExecutionLogDetails.md)
+ - [ExecutionLogDetailsEvaluationContext](root/generated/openapi_client/docs/ExecutionLogDetailsEvaluationContext.md)
  - [ExecutionLogDetailsJudge](root/generated/openapi_client/docs/ExecutionLogDetailsJudge.md)
  - [ExecutionLogDetailsObjective](root/generated/openapi_client/docs/ExecutionLogDetailsObjective.md)
  - [ExecutionLogDetailsSkill](root/generated/openapi_client/docs/ExecutionLogDetailsSkill.md)
  - [ExecutionLogList](root/generated/openapi_client/docs/ExecutionLogList.md)
+ - [ExecutionLogListEvaluationContext](root/generated/openapi_client/docs/ExecutionLogListEvaluationContext.md)
  - [ExecutionLogListSkill](root/generated/openapi_client/docs/ExecutionLogListSkill.md)
  - [ID](root/generated/openapi_client/docs/ID.md)
  - [InputVariable](root/generated/openapi_client/docs/InputVariable.md)

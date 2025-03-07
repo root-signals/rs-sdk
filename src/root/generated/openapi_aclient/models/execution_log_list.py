@@ -23,6 +23,9 @@ from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
 from typing_extensions import Self
 
 from root.generated.openapi_aclient.models.execution_log_details_judge import ExecutionLogDetailsJudge
+from root.generated.openapi_aclient.models.execution_log_list_evaluation_context import (
+    ExecutionLogListEvaluationContext,
+)
 from root.generated.openapi_aclient.models.execution_log_list_skill import ExecutionLogListSkill
 from root.generated.openapi_aclient.models.nested_user_details import NestedUserDetails
 
@@ -37,20 +40,28 @@ class ExecutionLogList(BaseModel):
     id: StrictStr
     judge: Optional[ExecutionLogDetailsJudge]
     owner: NestedUserDetails
+    parent_execution_log_id: Optional[StrictStr] = None
     score: Optional[Union[StrictFloat, StrictInt]]
     skill: ExecutionLogListSkill
     tags: List[StrictStr]
     validation_result_average: Optional[Union[StrictFloat, StrictInt]]
+    llm_output: Optional[StrictStr]
+    variables: Optional[Dict[str, StrictStr]]
+    evaluation_context: Optional[ExecutionLogListEvaluationContext]
     __properties: ClassVar[List[str]] = [
         "cost",
         "created_at",
         "id",
         "judge",
         "owner",
+        "parent_execution_log_id",
         "score",
         "skill",
         "tags",
         "validation_result_average",
+        "llm_output",
+        "variables",
+        "evaluation_context",
     ]
 
     model_config = ConfigDict(
@@ -89,6 +100,8 @@ class ExecutionLogList(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
@@ -99,6 +112,8 @@ class ExecutionLogList(BaseModel):
                 "score",
                 "tags",
                 "validation_result_average",
+                "llm_output",
+                "variables",
             ]
         )
 
@@ -116,6 +131,9 @@ class ExecutionLogList(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of skill
         if self.skill:
             _dict["skill"] = self.skill.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of evaluation_context
+        if self.evaluation_context:
+            _dict["evaluation_context"] = self.evaluation_context.to_dict()
         # set to None if cost (nullable) is None
         # and model_fields_set contains the field
         if self.cost is None and "cost" in self.model_fields_set:
@@ -131,6 +149,11 @@ class ExecutionLogList(BaseModel):
         if self.judge is None and "judge" in self.model_fields_set:
             _dict["judge"] = None
 
+        # set to None if parent_execution_log_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.parent_execution_log_id is None and "parent_execution_log_id" in self.model_fields_set:
+            _dict["parent_execution_log_id"] = None
+
         # set to None if score (nullable) is None
         # and model_fields_set contains the field
         if self.score is None and "score" in self.model_fields_set:
@@ -140,6 +163,21 @@ class ExecutionLogList(BaseModel):
         # and model_fields_set contains the field
         if self.validation_result_average is None and "validation_result_average" in self.model_fields_set:
             _dict["validation_result_average"] = None
+
+        # set to None if llm_output (nullable) is None
+        # and model_fields_set contains the field
+        if self.llm_output is None and "llm_output" in self.model_fields_set:
+            _dict["llm_output"] = None
+
+        # set to None if variables (nullable) is None
+        # and model_fields_set contains the field
+        if self.variables is None and "variables" in self.model_fields_set:
+            _dict["variables"] = None
+
+        # set to None if evaluation_context (nullable) is None
+        # and model_fields_set contains the field
+        if self.evaluation_context is None and "evaluation_context" in self.model_fields_set:
+            _dict["evaluation_context"] = None
 
         return _dict
 
@@ -159,10 +197,16 @@ class ExecutionLogList(BaseModel):
                 "id": obj.get("id"),
                 "judge": ExecutionLogDetailsJudge.from_dict(obj["judge"]) if obj.get("judge") is not None else None,
                 "owner": NestedUserDetails.from_dict(obj["owner"]) if obj.get("owner") is not None else None,
+                "parent_execution_log_id": obj.get("parent_execution_log_id"),
                 "score": obj.get("score"),
                 "skill": ExecutionLogListSkill.from_dict(obj["skill"]) if obj.get("skill") is not None else None,
                 "tags": obj.get("tags"),
                 "validation_result_average": obj.get("validation_result_average"),
+                "llm_output": obj.get("llm_output"),
+                "variables": obj.get("variables"),
+                "evaluation_context": ExecutionLogListEvaluationContext.from_dict(obj["evaluation_context"])
+                if obj.get("evaluation_context") is not None
+                else None,
             }
         )
         return _obj
