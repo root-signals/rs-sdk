@@ -56,12 +56,6 @@ from .generated.openapi_aclient.models.skill_test_input_request import (
     SkillTestInputRequest as ASkillTestInputRequest,
 )
 from .generated.openapi_aclient.models.skill_test_output import SkillTestOutput as ASkillTestOutput
-from .generated.openapi_aclient.models.skill_validator_execution_request import (
-    SkillValidatorExecutionRequest as ASkillValidatorExecutionRequest,
-)
-from .generated.openapi_aclient.models.validator_execution_result import (
-    ValidatorExecutionResult as AValidatorExecutionResult,
-)
 from .generated.openapi_client.api.v1_api import ApiClient
 from .generated.openapi_client.api.v1_api import V1Api as ObjectivesApi
 from .generated.openapi_client.api.v1_api import V1Api as SkillsApi
@@ -89,10 +83,6 @@ from .generated.openapi_client.models.skill_request import SkillRequest
 from .generated.openapi_client.models.skill_test_data_request import SkillTestDataRequest
 from .generated.openapi_client.models.skill_test_input_request import SkillTestInputRequest
 from .generated.openapi_client.models.skill_test_output import SkillTestOutput
-from .generated.openapi_client.models.skill_validator_execution_request import (
-    SkillValidatorExecutionRequest,
-)
-from .generated.openapi_client.models.validator_execution_result import ValidatorExecutionResult
 from .utils import ClientContextCallable, aiterate_cursor_list, iterate_cursor_list, with_async_client, with_sync_client
 
 if TYPE_CHECKING:
@@ -309,49 +299,6 @@ class Skill(OpenAPISkill):
         )
         return api_instance.v1_skills_execute_create(id=self.id, skill_execution_request=skill_execution_request)
 
-    @with_sync_client
-    def evaluate(
-        self,
-        *,
-        response: str,
-        request: Optional[str] = None,
-        contexts: Optional[List[str]] = None,
-        functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
-        expected_output: Optional[str] = None,
-        variables: Optional[dict[str, str]] = None,
-        _request_timeout: Optional[int] = None,
-        _client: ApiClient,
-    ) -> ValidatorExecutionResult:
-        """
-        Run all validators attached to a skill.
-
-        Args:
-          response: LLM output.
-          request: The prompt sent to the LLM. Optional.
-          contexts: Optional documents passed to RAG evaluators
-          functions: Optional function definitions to LLM tool call validation
-          expected_output: Optional expected output for the evaluator
-          variables: Optional additional variable mappings for evaluators. For example, if the evaluator
-            predicate is "evaluate the output based on {subject}: {output}", then variables={"subject": "clarity"}.
-          _request_timeout: Optional timeout for the request in seconds.
-        """
-
-        api_instance = SkillsApi(_client)
-        skill_execution_request = SkillValidatorExecutionRequest(
-            skill_version_id=None,
-            request=request,
-            response=response,
-            contexts=contexts,
-            functions=functions,
-            expected_output=expected_output,
-            variables=variables,
-        )
-        return api_instance.v1_skills_execute_validators_create(
-            id=self.id,
-            skill_validator_execution_request=skill_execution_request,
-            _request_timeout=_request_timeout,
-        )
-
 
 class ASkill(AOpenAPISkill):
     """
@@ -397,49 +344,6 @@ class ASkill(AOpenAPISkill):
             model_params=_ato_model_params(model_params),
         )
         return await api_instance.v1_skills_execute_create(id=self.id, skill_execution_request=skill_execution_request)
-
-    @with_async_client
-    async def aevaluate(
-        self,
-        *,
-        response: str,
-        request: Optional[str] = None,
-        contexts: Optional[List[str]] = None,
-        functions: Optional[List[AEvaluatorExecutionFunctionsRequest]] = None,
-        expected_output: Optional[str] = None,
-        variables: Optional[dict[str, str]] = None,
-        _request_timeout: Optional[int] = None,
-        _client: AApiClient,
-    ) -> AValidatorExecutionResult:
-        """
-        Asynchronously run all validators attached to a skill.
-
-        Args:
-          response: LLM output.
-          request: The prompt sent to the LLM. Optional.
-          contexts: Optional documents passed to RAG evaluators
-          functions: Optional function definitions to LLM tool call validation
-          expected_output: Optional expected output for the evaluator
-          variables: Optional additional variable mappings for evaluators. For example, if the evaluator
-            predicate is "evaluate the output based on {subject}: {output}", then variables={"subject": "clarity"}.
-          _request_timeout: Optional timeout for the request in seconds.
-        """
-
-        api_instance = ASkillsApi(_client)
-        skill_execution_request = ASkillValidatorExecutionRequest(
-            skill_version_id=None,
-            request=request,
-            response=response,
-            contexts=contexts,
-            functions=functions,
-            variables=variables,
-            expected_output=expected_output,
-        )
-        return await api_instance.v1_skills_execute_validators_create(
-            id=self.id,
-            skill_validator_execution_request=skill_execution_request,
-            _request_timeout=_request_timeout,
-        )
 
 
 class Evaluator(OpenAPISkill):
@@ -1446,96 +1350,6 @@ class Skills:
         return await api_instance.v1_skills_execute_create(
             id=skill_id,
             skill_execution_request=skill_execution_request,
-            _request_timeout=_request_timeout,
-        )
-
-    @with_sync_client
-    def evaluate(
-        self,
-        skill_id: str,
-        *,
-        response: str,
-        request: Optional[str] = None,
-        contexts: Optional[List[str]] = None,
-        functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
-        expected_output: Optional[str] = None,
-        variables: Optional[dict[str, str]] = None,
-        skill_version_id: Optional[str] = None,
-        _request_timeout: Optional[int] = None,
-        _client: ApiClient,
-    ) -> ValidatorExecutionResult:
-        """
-        Run all validators attached to a skill.
-
-        Args:
-          response: LLM output.
-          request: The prompt sent to the LLM. Optional.
-          contexts: Optional documents passed to RAG evaluators
-          functions: Optional function definitions to LLM tool call validation
-          expected_output: Optional expected output for the evaluator
-          variables: Optional variables for the evaluator prompt template
-          skill_version_id: Skill version id. If omitted, the latest version is used.
-          _request_timeout: Optional timeout for the request in seconds.
-        """
-
-        api_instance = SkillsApi(_client)
-        skill_execution_request = SkillValidatorExecutionRequest(
-            skill_version_id=skill_version_id,
-            request=request,
-            response=response,
-            contexts=contexts,
-            functions=functions,
-            variables=variables,
-            expected_output=expected_output,
-        )
-        return api_instance.v1_skills_execute_validators_create(
-            id=skill_id,
-            skill_validator_execution_request=skill_execution_request,
-            _request_timeout=_request_timeout,
-        )
-
-    @with_async_client
-    async def aevaluate(
-        self,
-        skill_id: str,
-        *,
-        response: str,
-        request: Optional[str] = None,
-        contexts: Optional[List[str]] = None,
-        functions: Optional[List[AEvaluatorExecutionFunctionsRequest]] = None,
-        expected_output: Optional[str] = None,
-        variables: Optional[dict[str, str]] = None,
-        skill_version_id: Optional[str] = None,
-        _request_timeout: Optional[int] = None,
-        _client: AApiClient,
-    ) -> AValidatorExecutionResult:
-        """
-        Asynchronously run all validators attached to a skill.
-
-        Args:
-          response: LLM output.
-          request: The prompt sent to the LLM. Optional.
-          contexts: Optional documents passed to RAG evaluators
-          functions: Optional function definitions to LLM tool call validation
-          expected_output: Optional expected output for the evaluator
-          variables: Optional variables for the evaluator prompt template
-          skill_version_id: Skill version id. If omitted, the latest version is used.
-          _request_timeout: Optional timeout for the request in seconds.
-        """
-
-        api_instance = ASkillsApi(_client)
-        skill_execution_request = ASkillValidatorExecutionRequest(
-            skill_version_id=skill_version_id,
-            request=request,
-            response=response,
-            contexts=contexts,
-            functions=functions,
-            variables=variables,
-            expected_output=expected_output,
-        )
-        return await api_instance.v1_skills_execute_validators_create(
-            id=skill_id,
-            skill_validator_execution_request=skill_execution_request,
             _request_timeout=_request_timeout,
         )
 
