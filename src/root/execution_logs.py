@@ -38,6 +38,7 @@ class ExecutionLogs:
         limit: int = 100,
         search_term: Optional[str] = None,
         tags: Optional[List[str]] = None,
+        include: Optional[List[str]] = None,
         _request_timeout: Optional[int] = None,
         _client: ApiClient,
     ) -> Iterator[ExecutionLogList]:
@@ -48,6 +49,7 @@ class ExecutionLogs:
           limit: Number of entries to iterate through at most.
           search_term: Can be used to limit returned logs. For example, a skill id or name.
           tags: Optional tags to filter the logs by.
+          include: Optional fields to include in the response.
         """
         api_instance = ExecutionLogsApi(_client)
         yield from iterate_cursor_list(
@@ -55,6 +57,7 @@ class ExecutionLogs:
                 api_instance.v1_execution_logs_list,
                 search=search_term,
                 tags=",".join(tags) if tags else None,
+                include=",".join(include) if include else None,
                 _request_timeout=_request_timeout,
             ),
             limit=limit,
@@ -66,6 +69,7 @@ class ExecutionLogs:
         limit: int = 100,
         search_term: Optional[str] = None,
         tags: Optional[List[str]] = None,
+        include: Optional[List[str]] = None,
         _request_timeout: Optional[int] = None,
     ) -> AsyncIterator[AExecutionLogList]:
         """
@@ -75,6 +79,7 @@ class ExecutionLogs:
           limit: Number of entries to iterate through at most.
           search_term: Can be used to limit returned logs. For example, a skill id or name.
           tags: Optional tags to filter the logs by.
+          include: Optional fields to include in the response.
         """
 
         context = self.client_context()
@@ -85,6 +90,7 @@ class ExecutionLogs:
                 api_instance.v1_execution_logs_list,
                 search=search_term,
                 tags=",".join(tags) if tags else None,
+                include=",".join(include) if include else None,
                 _request_timeout=_request_timeout,
             )
 
