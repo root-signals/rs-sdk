@@ -505,7 +505,7 @@ class Evaluator(OpenAPISkill):
             tags=tags,
         )
         return api_instance.v1_skills_evaluator_execute_create(
-            skill_id=self.id,
+            id=self.id,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
         )
@@ -574,7 +574,7 @@ class AEvaluator(AOpenAPISkill):
             tags=tags,
         )
         return await api_instance.v1_skills_evaluator_execute_create(
-            skill_id=self.id,
+            id=self.id,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
         )
@@ -749,7 +749,7 @@ class PresetEvaluatorRunner:
             tags=tags,
         )
         return api_instance.v1_skills_evaluator_execute_create(
-            skill_id=self.skill_id,
+            id=self.skill_id,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
         )
@@ -814,7 +814,7 @@ class APresetEvaluatorRunner:
             tags=tags,
         )
         return await api_instance.v1_skills_evaluator_execute_create(
-            skill_id=self.skill_id,
+            id=self.skill_id,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
         )
@@ -1676,7 +1676,7 @@ class Evaluators:
             tags=tags,
         )
         return api_instance.v1_skills_evaluator_execute_create(
-            skill_id=evaluator_id,
+            id=evaluator_id,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
         )
@@ -1729,7 +1729,7 @@ class Evaluators:
             tags=tags,
         )
         return await api_instance.v1_skills_evaluator_execute_create(
-            skill_id=evaluator_id,
+            id=evaluator_id,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
         )

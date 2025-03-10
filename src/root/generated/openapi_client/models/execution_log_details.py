@@ -22,6 +22,9 @@ from typing import Any, ClassVar, Dict, List, Optional, Set, Union
 from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
 from typing_extensions import Self
 
+from root.generated.openapi_client.models.execution_log_details_evaluation_context import (
+    ExecutionLogDetailsEvaluationContext,
+)
 from root.generated.openapi_client.models.execution_log_details_judge import ExecutionLogDetailsJudge
 from root.generated.openapi_client.models.execution_log_details_objective import ExecutionLogDetailsObjective
 from root.generated.openapi_client.models.execution_log_details_skill import ExecutionLogDetailsSkill
@@ -38,6 +41,7 @@ class ExecutionLogDetails(BaseModel):
     chat_id: Optional[StrictStr]
     cost: Optional[Union[StrictFloat, StrictInt]]
     created_at: Optional[datetime]
+    evaluation_context: ExecutionLogDetailsEvaluationContext
     id: StrictStr
     judge: Optional[ExecutionLogDetailsJudge]
     justification: StrictStr
@@ -47,16 +51,18 @@ class ExecutionLogDetails(BaseModel):
     model: StrictStr
     objective: ExecutionLogDetailsObjective
     owner: NestedUserDetails
+    parent_execution_log_id: Optional[StrictStr] = None
     rendered_prompt: StrictStr
     score: Optional[Union[StrictFloat, StrictInt]]
     skill: ExecutionLogDetailsSkill
     tags: List[StrictStr]
     validation_results: List[SkillExecutionValidatorResult]
-    variables: Optional[Any]
+    variables: Optional[Dict[str, StrictStr]]
     __properties: ClassVar[List[str]] = [
         "chat_id",
         "cost",
         "created_at",
+        "evaluation_context",
         "id",
         "judge",
         "justification",
@@ -66,6 +72,7 @@ class ExecutionLogDetails(BaseModel):
         "model",
         "objective",
         "owner",
+        "parent_execution_log_id",
         "rendered_prompt",
         "score",
         "skill",
@@ -140,6 +147,9 @@ class ExecutionLogDetails(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of evaluation_context
+        if self.evaluation_context:
+            _dict["evaluation_context"] = self.evaluation_context.to_dict()
         # override the default output from pydantic by calling `to_dict()` of judge
         if self.judge:
             _dict["judge"] = self.judge.to_dict()
@@ -187,6 +197,11 @@ class ExecutionLogDetails(BaseModel):
         if self.model_params is None and "model_params" in self.model_fields_set:
             _dict["model_params"] = None
 
+        # set to None if parent_execution_log_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.parent_execution_log_id is None and "parent_execution_log_id" in self.model_fields_set:
+            _dict["parent_execution_log_id"] = None
+
         # set to None if score (nullable) is None
         # and model_fields_set contains the field
         if self.score is None and "score" in self.model_fields_set:
@@ -213,6 +228,9 @@ class ExecutionLogDetails(BaseModel):
                 "chat_id": obj.get("chat_id"),
                 "cost": obj.get("cost"),
                 "created_at": obj.get("created_at"),
+                "evaluation_context": ExecutionLogDetailsEvaluationContext.from_dict(obj["evaluation_context"])
+                if obj.get("evaluation_context") is not None
+                else None,
                 "id": obj.get("id"),
                 "judge": ExecutionLogDetailsJudge.from_dict(obj["judge"]) if obj.get("judge") is not None else None,
                 "justification": obj.get("justification"),
@@ -226,6 +244,7 @@ class ExecutionLogDetails(BaseModel):
                 if obj.get("objective") is not None
                 else None,
                 "owner": NestedUserDetails.from_dict(obj["owner"]) if obj.get("owner") is not None else None,
+                "parent_execution_log_id": obj.get("parent_execution_log_id"),
                 "rendered_prompt": obj.get("rendered_prompt"),
                 "score": obj.get("score"),
                 "skill": ExecutionLogDetailsSkill.from_dict(obj["skill"]) if obj.get("skill") is not None else None,

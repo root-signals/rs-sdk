@@ -33,7 +33,7 @@ class ObjectiveList(BaseModel):
     """  # noqa: E501
 
     id: StrictStr
-    intent: Optional[Annotated[str, Field(strict=True, max_length=10000)]] = None
+    intent: Optional[Annotated[str, Field(strict=True, max_length=100000)]] = None
     status: Optional[StatusEnum] = None
     owner: NestedUserDetails
     created_at: Optional[datetime]

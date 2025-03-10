@@ -18,23 +18,18 @@ import pprint
 import re  # noqa: F401
 from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing_extensions import Annotated, Self
-
-from root.generated.openapi_client.models.objective_validator import ObjectiveValidator
-from root.generated.openapi_client.models.status_enum import StatusEnum
+from pydantic import BaseModel, ConfigDict, StrictStr
+from typing_extensions import Self
 
 
-class NestedObjectiveList(BaseModel):
+class ExecutionLogListEvaluationContext(BaseModel):
     """
-    NestedObjectiveList
+    ExecutionLogListEvaluationContext
     """  # noqa: E501
 
-    id: StrictStr
-    intent: Optional[Annotated[str, Field(strict=True, max_length=100000)]] = None
-    status: Optional[StatusEnum] = None
-    validators: List[ObjectiveValidator]
-    __properties: ClassVar[List[str]] = ["id", "intent", "status", "validators"]
+    contexts: Optional[List[StrictStr]] = None
+    expected_output: Optional[StrictStr] = None
+    __properties: ClassVar[List[str]] = ["contexts", "expected_output"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -53,7 +48,7 @@ class NestedObjectiveList(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of NestedObjectiveList from a JSON string"""
+        """Create an instance of ExecutionLogListEvaluationContext from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -65,47 +60,24 @@ class NestedObjectiveList(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
-        * OpenAPI `readOnly` fields are excluded.
-        * OpenAPI `readOnly` fields are excluded.
         """
-        excluded_fields: Set[str] = set(
-            [
-                "id",
-                "validators",
-            ]
-        )
+        excluded_fields: Set[str] = set([])
 
         _dict = self.model_dump(
             by_alias=True,
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in validators (list)
-        _items = []
-        if self.validators:
-            for _item in self.validators:
-                if _item:
-                    _items.append(_item.to_dict())
-            _dict["validators"] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of NestedObjectiveList from a dict"""
+        """Create an instance of ExecutionLogListEvaluationContext from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
 
-        _obj = cls.model_validate(
-            {
-                "id": obj.get("id"),
-                "intent": obj.get("intent"),
-                "status": obj.get("status"),
-                "validators": [ObjectiveValidator.from_dict(_item) for _item in obj["validators"]]
-                if obj.get("validators") is not None
-                else None,
-            }
-        )
+        _obj = cls.model_validate({"contexts": obj.get("contexts"), "expected_output": obj.get("expected_output")})
         return _obj

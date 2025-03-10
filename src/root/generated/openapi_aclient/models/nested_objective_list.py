@@ -31,7 +31,7 @@ class NestedObjectiveList(BaseModel):
     """  # noqa: E501
 
     id: StrictStr
-    intent: Optional[Annotated[str, Field(strict=True, max_length=10000)]] = None
+    intent: Optional[Annotated[str, Field(strict=True, max_length=100000)]] = None
     status: Optional[StatusEnum] = None
     validators: List[ObjectiveValidator]
     __properties: ClassVar[List[str]] = ["id", "intent", "status", "validators"]

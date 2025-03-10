@@ -32,9 +32,10 @@ class JudgeList(BaseModel):
 
     id: StrictStr
     name: StrictStr
+    intent: StrictStr
     created_at: Optional[datetime]
     status: JudgeStatusEnum
-    __properties: ClassVar[List[str]] = ["id", "name", "created_at", "status"]
+    __properties: ClassVar[List[str]] = ["id", "name", "intent", "created_at", "status"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -68,10 +69,12 @@ class JudgeList(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
                 "id",
+                "intent",
                 "created_at",
                 "status",
             ]
@@ -102,6 +105,7 @@ class JudgeList(BaseModel):
             {
                 "id": obj.get("id"),
                 "name": obj.get("name"),
+                "intent": obj.get("intent"),
                 "created_at": obj.get("created_at"),
                 "status": obj.get("status"),
             }

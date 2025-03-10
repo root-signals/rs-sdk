@@ -7036,6 +7036,12 @@ class V1Api:
     async def v1_execution_logs_list(
         self,
         cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
+        include: Annotated[
+            Optional[StrictStr],
+            Field(
+                description="Comma-separated list of additional fields to include in the response. Supports: llm_output, variables, evaluation_context"
+            ),
+        ] = None,
         ordering: Annotated[
             Optional[StrictStr], Field(description="Which field to use when ordering the results.")
         ] = None,
@@ -7059,6 +7065,8 @@ class V1Api:
 
         :param cursor: The pagination cursor value.
         :type cursor: str
+        :param include: Comma-separated list of additional fields to include in the response. Supports: llm_output, variables, evaluation_context
+        :type include: str
         :param ordering: Which field to use when ordering the results.
         :type ordering: str
         :param page_size: Number of results to return per page.
@@ -7093,6 +7101,7 @@ class V1Api:
 
         _param = self._v1_execution_logs_list_serialize(
             cursor=cursor,
+            include=include,
             ordering=ordering,
             page_size=page_size,
             search=search,
@@ -7118,6 +7127,12 @@ class V1Api:
     async def v1_execution_logs_list_with_http_info(
         self,
         cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
+        include: Annotated[
+            Optional[StrictStr],
+            Field(
+                description="Comma-separated list of additional fields to include in the response. Supports: llm_output, variables, evaluation_context"
+            ),
+        ] = None,
         ordering: Annotated[
             Optional[StrictStr], Field(description="Which field to use when ordering the results.")
         ] = None,
@@ -7141,6 +7156,8 @@ class V1Api:
 
         :param cursor: The pagination cursor value.
         :type cursor: str
+        :param include: Comma-separated list of additional fields to include in the response. Supports: llm_output, variables, evaluation_context
+        :type include: str
         :param ordering: Which field to use when ordering the results.
         :type ordering: str
         :param page_size: Number of results to return per page.
@@ -7175,6 +7192,7 @@ class V1Api:
 
         _param = self._v1_execution_logs_list_serialize(
             cursor=cursor,
+            include=include,
             ordering=ordering,
             page_size=page_size,
             search=search,
@@ -7200,6 +7218,12 @@ class V1Api:
     async def v1_execution_logs_list_without_preload_content(
         self,
         cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
+        include: Annotated[
+            Optional[StrictStr],
+            Field(
+                description="Comma-separated list of additional fields to include in the response. Supports: llm_output, variables, evaluation_context"
+            ),
+        ] = None,
         ordering: Annotated[
             Optional[StrictStr], Field(description="Which field to use when ordering the results.")
         ] = None,
@@ -7223,6 +7247,8 @@ class V1Api:
 
         :param cursor: The pagination cursor value.
         :type cursor: str
+        :param include: Comma-separated list of additional fields to include in the response. Supports: llm_output, variables, evaluation_context
+        :type include: str
         :param ordering: Which field to use when ordering the results.
         :type ordering: str
         :param page_size: Number of results to return per page.
@@ -7257,6 +7283,7 @@ class V1Api:
 
         _param = self._v1_execution_logs_list_serialize(
             cursor=cursor,
+            include=include,
             ordering=ordering,
             page_size=page_size,
             search=search,
@@ -7277,6 +7304,7 @@ class V1Api:
     def _v1_execution_logs_list_serialize(
         self,
         cursor,
+        include,
         ordering,
         page_size,
         search,
@@ -7302,6 +7330,9 @@ class V1Api:
         # process the query parameters
         if cursor is not None:
             _query_params.append(("cursor", cursor))
+
+        if include is not None:
+            _query_params.append(("include", include))
 
         if ordering is not None:
             _query_params.append(("ordering", ordering))
@@ -11652,7 +11683,7 @@ class V1Api:
     @validate_call
     async def v1_skills_evaluator_execute_create(
         self,
-        skill_id: StrictStr,
+        id: StrictStr,
         evaluator_execution_request: Optional[EvaluatorExecutionRequest] = None,
         _request_timeout: Union[
             None,
@@ -11668,8 +11699,8 @@ class V1Api:
 
         Execute an evaluator
 
-        :param skill_id: (required)
-        :type skill_id: str
+        :param id: (required)
+        :type id: str
         :param evaluator_execution_request:
         :type evaluator_execution_request: EvaluatorExecutionRequest
         :param _request_timeout: timeout setting for this request. If one
@@ -11695,7 +11726,7 @@ class V1Api:
         """  # noqa: E501
 
         _param = self._v1_skills_evaluator_execute_create_serialize(
-            skill_id=skill_id,
+            id=id,
             evaluator_execution_request=evaluator_execution_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -11716,7 +11747,7 @@ class V1Api:
     @validate_call
     async def v1_skills_evaluator_execute_create_with_http_info(
         self,
-        skill_id: StrictStr,
+        id: StrictStr,
         evaluator_execution_request: Optional[EvaluatorExecutionRequest] = None,
         _request_timeout: Union[
             None,
@@ -11732,8 +11763,8 @@ class V1Api:
 
         Execute an evaluator
 
-        :param skill_id: (required)
-        :type skill_id: str
+        :param id: (required)
+        :type id: str
         :param evaluator_execution_request:
         :type evaluator_execution_request: EvaluatorExecutionRequest
         :param _request_timeout: timeout setting for this request. If one
@@ -11759,7 +11790,7 @@ class V1Api:
         """  # noqa: E501
 
         _param = self._v1_skills_evaluator_execute_create_serialize(
-            skill_id=skill_id,
+            id=id,
             evaluator_execution_request=evaluator_execution_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -11780,7 +11811,7 @@ class V1Api:
     @validate_call
     async def v1_skills_evaluator_execute_create_without_preload_content(
         self,
-        skill_id: StrictStr,
+        id: StrictStr,
         evaluator_execution_request: Optional[EvaluatorExecutionRequest] = None,
         _request_timeout: Union[
             None,
@@ -11796,8 +11827,8 @@ class V1Api:
 
         Execute an evaluator
 
-        :param skill_id: (required)
-        :type skill_id: str
+        :param id: (required)
+        :type id: str
         :param evaluator_execution_request:
         :type evaluator_execution_request: EvaluatorExecutionRequest
         :param _request_timeout: timeout setting for this request. If one
@@ -11823,7 +11854,7 @@ class V1Api:
         """  # noqa: E501
 
         _param = self._v1_skills_evaluator_execute_create_serialize(
-            skill_id=skill_id,
+            id=id,
             evaluator_execution_request=evaluator_execution_request,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -11839,7 +11870,7 @@ class V1Api:
 
     def _v1_skills_evaluator_execute_create_serialize(
         self,
-        skill_id,
+        id,
         evaluator_execution_request,
         _request_auth,
         _content_type,
@@ -11858,8 +11889,8 @@ class V1Api:
         _body_params: Optional[bytes] = None
 
         # process the path parameters
-        if skill_id is not None:
-            _path_params["skill_id"] = skill_id
+        if id is not None:
+            _path_params["id"] = id
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -11885,7 +11916,7 @@ class V1Api:
 
         return self.api_client.param_serialize(
             method="POST",
-            resource_path="/v1/skills/evaluator/execute/{skill_id}/",
+            resource_path="/v1/skills/evaluator/execute/{id}/",
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
