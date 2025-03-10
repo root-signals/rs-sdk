@@ -19,7 +19,7 @@ import re  # noqa: F401
 from datetime import datetime
 from typing import Any, ClassVar, Dict, List, Optional, Set, Union
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing_extensions import Self
 
 from root.generated.openapi_aclient.models.execution_log_details_judge import ExecutionLogDetailsJudge
@@ -45,8 +45,12 @@ class ExecutionLogList(BaseModel):
     skill: ExecutionLogListSkill
     tags: List[StrictStr]
     validation_result_average: Optional[Union[StrictFloat, StrictInt]]
-    llm_output: Optional[StrictStr]
-    variables: Optional[Dict[str, StrictStr]]
+    llm_output: Optional[StrictStr] = Field(
+        description="The raw output from the LLM model. Only included when explicitly requested with include=llm_output parameter."
+    )
+    variables: Optional[Dict[str, StrictStr]] = Field(
+        description="The variables used in the execution. Only included when explicitly requested with include=variables parameter."
+    )
     evaluation_context: Optional[ExecutionLogListEvaluationContext]
     __properties: ClassVar[List[str]] = [
         "cost",

@@ -24,7 +24,7 @@ from typing_extensions import Self
 
 class ExecutionLogListEvaluationContext(BaseModel):
     """
-    ExecutionLogListEvaluationContext
+    The evaluation context used in the execution. Only included when explicitly requested with include=evaluation_context parameter.
     """  # noqa: E501
 
     contexts: Optional[List[StrictStr]] = None

@@ -108,6 +108,7 @@ Class | Method | HTTP request | Description
 *V1Api* | [**v1_document_parsing_create**](root/generated/openapi_aclient/docs/V1Api.md#v1_document_parsing_create) | **POST** /v1/document-parsing/ | 
 *V1Api* | [**v1_evaluators_calibrate_create**](root/generated/openapi_aclient/docs/V1Api.md#v1_evaluators_calibrate_create) | **POST** /v1/evaluators/calibrate/ | 
 *V1Api* | [**v1_evaluators_calibrate_create2**](root/generated/openapi_aclient/docs/V1Api.md#v1_evaluators_calibrate_create2) | **POST** /v1/evaluators/calibrate/{id} | 
+*V1Api* | [**v1_evaluators_execute_by_name_create**](root/generated/openapi_aclient/docs/V1Api.md#v1_evaluators_execute_by_name_create) | **POST** /v1/evaluators/execute/by-name/ | 
 *V1Api* | [**v1_evaluators_execute_create**](root/generated/openapi_aclient/docs/V1Api.md#v1_evaluators_execute_create) | **POST** /v1/evaluators/execute/{id}/ | 
 *V1Api* | [**v1_execution_logs_list**](root/generated/openapi_aclient/docs/V1Api.md#v1_execution_logs_list) | **GET** /v1/execution-logs/ | 
 *V1Api* | [**v1_execution_logs_retrieve**](root/generated/openapi_aclient/docs/V1Api.md#v1_execution_logs_retrieve) | **GET** /v1/execution-logs/{log_id}/ | 

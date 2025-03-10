@@ -1031,6 +1031,53 @@ paths:
               schema:
                 $ref: '#/components/schemas/EvaluatorExecutionResult'
           description: ''
+  /v1/evaluators/execute/by-name/:
+    post:
+      operationId: v1_evaluators_execute_by_name_create
+      description: Execute an evaluator by name
+      parameters:
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: The name of the evaluator to execute
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EvaluatorExecutionRequest'
+            examples:
+              ExecuteASimpleEvaluatorByName:
+                value:
+                  request: Tell me a random fact
+                  response: The reason the sky is blue is because of Rayleigh scattering.
+                summary: Execute a simple evaluator by name
+              ExecuteARAGEvaluatorByName:
+                value:
+                  request: What was the revenue in Q1?
+                  response: The revenue in Q1 was $1,000,000.
+                  contexts:
+                  - List of documents
+                  - containing the company's financial reports
+                summary: Execute a RAG evaluator by name
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EvaluatorExecutionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EvaluatorExecutionRequest'
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EvaluatorExecutionResult'
+          description: ''
   /v1/evaluators/status/{id}/:
     post:
       operationId: change_evaluator_status
@@ -3551,12 +3598,16 @@ components:
         llm_output:
           type: string
           nullable: true
+          description: The raw output from the LLM model. Only included when explicitly
+            requested with include=llm_output parameter.
           readOnly: true
         variables:
           type: object
           additionalProperties:
             type: string
           nullable: true
+          description: The variables used in the execution. Only included when explicitly
+            requested with include=variables parameter.
           readOnly: true
         evaluation_context:
           type: object
@@ -3567,6 +3618,8 @@ components:
                 type: string
             expected_output:
               type: string
+          description: The evaluation context used in the execution. Only included
+            when explicitly requested with include=evaluation_context parameter.
           nullable: true
           readOnly: true
       required:
