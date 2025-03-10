@@ -408,7 +408,7 @@ class Evaluator(OpenAPISkill):
             variables=variables,
             tags=tags,
         )
-        return api_instance.v1_skills_evaluator_execute_create(
+        return api_instance.v1_evaluators_execute_create(
             id=self.id,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
@@ -477,7 +477,7 @@ class AEvaluator(AOpenAPISkill):
             variables=variables,
             tags=tags,
         )
-        return await api_instance.v1_skills_evaluator_execute_create(
+        return await api_instance.v1_evaluators_execute_create(
             id=self.id,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
@@ -652,7 +652,7 @@ class PresetEvaluatorRunner:
             variables=variables,
             tags=tags,
         )
-        return api_instance.v1_skills_evaluator_execute_create(
+        return api_instance.v1_evaluators_execute_create(
             id=self.skill_id,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
@@ -717,7 +717,7 @@ class APresetEvaluatorRunner:
             variables=variables,
             tags=tags,
         )
-        return await api_instance.v1_skills_evaluator_execute_create(
+        return await api_instance.v1_evaluators_execute_create(
             id=self.skill_id,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
@@ -1489,7 +1489,7 @@ class Evaluators:
             variables=variables,
             tags=tags,
         )
-        return api_instance.v1_skills_evaluator_execute_create(
+        return api_instance.v1_evaluators_execute_create(
             id=evaluator_id,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
@@ -1542,7 +1542,7 @@ class Evaluators:
             variables=variables,
             tags=tags,
         )
-        return await api_instance.v1_skills_evaluator_execute_create(
+        return await api_instance.v1_evaluators_execute_create(
             id=evaluator_id,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
