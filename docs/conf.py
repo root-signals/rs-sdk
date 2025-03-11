@@ -53,6 +53,8 @@ autoapi_options = [
 
 autoapi_member_order = "groupwise"
 
+github_url = "https://github.com/root-signals/rs-python-sdk"
+
 # Useful for debugging
 # autoapi_keep_files = True
 
