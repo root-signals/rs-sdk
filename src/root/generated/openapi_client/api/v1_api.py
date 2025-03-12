@@ -1794,7 +1794,7 @@ class V1Api:
     ) -> Evaluator:
         """get_evaluator_details
 
-        Get evaluator details.
+        Get evaluator details. The response includes a 'requirements' field that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables.
 
         :param id: (required)
         :type id: str
@@ -1865,7 +1865,7 @@ class V1Api:
     ) -> ApiResponse[Evaluator]:
         """get_evaluator_details
 
-        Get evaluator details.
+        Get evaluator details. The response includes a 'requirements' field that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables.
 
         :param id: (required)
         :type id: str
@@ -1936,7 +1936,7 @@ class V1Api:
     ) -> RESTResponseType:
         """get_evaluator_details
 
-        Get evaluator details.
+        Get evaluator details. The response includes a 'requirements' field that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables.
 
         :param id: (required)
         :type id: str
@@ -2326,7 +2326,7 @@ class V1Api:
     ) -> PaginatedEvaluatorListOutputList:
         """list_evaluators
 
-        List all evaluators.
+        List all evaluators. The response includes a 'requirements' field for each evaluator that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables.
 
         :param cursor: The pagination cursor value.
         :type cursor: str
@@ -2423,7 +2423,7 @@ class V1Api:
     ) -> ApiResponse[PaginatedEvaluatorListOutputList]:
         """list_evaluators
 
-        List all evaluators.
+        List all evaluators. The response includes a 'requirements' field for each evaluator that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables.
 
         :param cursor: The pagination cursor value.
         :type cursor: str
@@ -2520,7 +2520,7 @@ class V1Api:
     ) -> RESTResponseType:
         """list_evaluators
 
-        List all evaluators.
+        List all evaluators. The response includes a 'requirements' field for each evaluator that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables.
 
         :param cursor: The pagination cursor value.
         :type cursor: str
@@ -6784,6 +6784,256 @@ class V1Api:
         )
 
     @validate_call
+    def v1_evaluators_execute_by_name_create(
+        self,
+        name: Annotated[StrictStr, Field(description="The name of the evaluator to execute")],
+        evaluator_execution_request: Optional[EvaluatorExecutionRequest] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> EvaluatorExecutionResult:
+        """v1_evaluators_execute_by_name_create
+
+        Execute an evaluator by name. Check the evaluator's requirements to know which parameters are needed for execution.
+
+        :param name: The name of the evaluator to execute (required)
+        :type name: str
+        :param evaluator_execution_request:
+        :type evaluator_execution_request: EvaluatorExecutionRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """  # noqa: E501
+
+        _param = self._v1_evaluators_execute_by_name_create_serialize(
+            name=name,
+            evaluator_execution_request=evaluator_execution_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            "200": "EvaluatorExecutionResult",
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+    @validate_call
+    def v1_evaluators_execute_by_name_create_with_http_info(
+        self,
+        name: Annotated[StrictStr, Field(description="The name of the evaluator to execute")],
+        evaluator_execution_request: Optional[EvaluatorExecutionRequest] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[EvaluatorExecutionResult]:
+        """v1_evaluators_execute_by_name_create
+
+        Execute an evaluator by name. Check the evaluator's requirements to know which parameters are needed for execution.
+
+        :param name: The name of the evaluator to execute (required)
+        :type name: str
+        :param evaluator_execution_request:
+        :type evaluator_execution_request: EvaluatorExecutionRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """  # noqa: E501
+
+        _param = self._v1_evaluators_execute_by_name_create_serialize(
+            name=name,
+            evaluator_execution_request=evaluator_execution_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            "200": "EvaluatorExecutionResult",
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+    @validate_call
+    def v1_evaluators_execute_by_name_create_without_preload_content(
+        self,
+        name: Annotated[StrictStr, Field(description="The name of the evaluator to execute")],
+        evaluator_execution_request: Optional[EvaluatorExecutionRequest] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """v1_evaluators_execute_by_name_create
+
+        Execute an evaluator by name. Check the evaluator's requirements to know which parameters are needed for execution.
+
+        :param name: The name of the evaluator to execute (required)
+        :type name: str
+        :param evaluator_execution_request:
+        :type evaluator_execution_request: EvaluatorExecutionRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """  # noqa: E501
+
+        _param = self._v1_evaluators_execute_by_name_create_serialize(
+            name=name,
+            evaluator_execution_request=evaluator_execution_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            "200": "EvaluatorExecutionResult",
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        return response_data.response
+
+    def _v1_evaluators_execute_by_name_create_serialize(
+        self,
+        name,
+        evaluator_execution_request,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+        _host = None
+
+        _collection_formats: Dict[str, str] = {}
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, str] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        if name is not None:
+            _query_params.append(("name", name))
+
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if evaluator_execution_request is not None:
+            _body_params = evaluator_execution_request
+
+        # set the HTTP header `Accept`
+        _header_params["Accept"] = self.api_client.select_header_accept(["application/json"])
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params["Content-Type"] = _content_type
+        else:
+            _default_content_type = self.api_client.select_header_content_type(
+                ["application/json", "application/x-www-form-urlencoded", "multipart/form-data"]
+            )
+            if _default_content_type is not None:
+                _header_params["Content-Type"] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = ["publicApiKey"]
+
+        return self.api_client.param_serialize(
+            method="POST",
+            resource_path="/v1/evaluators/execute/by-name/",
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth,
+        )
+
+    @validate_call
     def v1_evaluators_execute_create(
         self,
         id: StrictStr,
@@ -6800,7 +7050,7 @@ class V1Api:
     ) -> EvaluatorExecutionResult:
         """v1_evaluators_execute_create
 
-        Execute an evaluator
+        Execute an evaluator. Check the evaluator's requirements to know which parameters are needed for execution.
 
         :param id: (required)
         :type id: str
@@ -6864,7 +7114,7 @@ class V1Api:
     ) -> ApiResponse[EvaluatorExecutionResult]:
         """v1_evaluators_execute_create
 
-        Execute an evaluator
+        Execute an evaluator. Check the evaluator's requirements to know which parameters are needed for execution.
 
         :param id: (required)
         :type id: str
@@ -6928,7 +7178,7 @@ class V1Api:
     ) -> RESTResponseType:
         """v1_evaluators_execute_create
 
-        Execute an evaluator
+        Execute an evaluator. Check the evaluator's requirements to know which parameters are needed for execution.
 
         :param id: (required)
         :type id: str
@@ -11697,7 +11947,7 @@ class V1Api:
     ) -> EvaluatorExecutionResult:
         """v1_skills_evaluator_execute_create
 
-        Execute an evaluator
+        Execute an evaluator. Check the evaluator's requirements to know which parameters are needed for execution.
 
         :param id: (required)
         :type id: str
@@ -11761,7 +12011,7 @@ class V1Api:
     ) -> ApiResponse[EvaluatorExecutionResult]:
         """v1_skills_evaluator_execute_create
 
-        Execute an evaluator
+        Execute an evaluator. Check the evaluator's requirements to know which parameters are needed for execution.
 
         :param id: (required)
         :type id: str
@@ -11825,7 +12075,7 @@ class V1Api:
     ) -> RESTResponseType:
         """v1_skills_evaluator_execute_create
 
-        Execute an evaluator
+        Execute an evaluator. Check the evaluator's requirements to know which parameters are needed for execution.
 
         :param id: (required)
         :type id: str

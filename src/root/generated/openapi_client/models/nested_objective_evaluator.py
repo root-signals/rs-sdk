@@ -29,8 +29,8 @@ class NestedObjectiveEvaluator(BaseModel):
 
     id: StrictStr
     name: Optional[Annotated[str, Field(strict=True, max_length=1000)]] = None
-    evaluator_only_offline: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["id", "name", "evaluator_only_offline"]
+    requires_expected_output: Optional[StrictBool] = None
+    __properties: ClassVar[List[str]] = ["id", "name", "requires_expected_output"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -86,6 +86,10 @@ class NestedObjectiveEvaluator(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate(
-            {"id": obj.get("id"), "name": obj.get("name"), "evaluator_only_offline": obj.get("evaluator_only_offline")}
+            {
+                "id": obj.get("id"),
+                "name": obj.get("name"),
+                "requires_expected_output": obj.get("requires_expected_output"),
+            }
         )
         return _obj

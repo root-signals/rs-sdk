@@ -15,6 +15,7 @@ from .data_loader import ADataLoader, DataLoader
 from .generated.openapi_aclient import ApiClient as AApiClient
 from .generated.openapi_aclient.api.v1_api import V1Api as AObjectivesApi
 from .generated.openapi_aclient.api.v1_api import V1Api as ASkillsApi
+from .generated.openapi_aclient.api.v1_api import V1Api as AV1Api
 from .generated.openapi_aclient.models import (
     EvaluatorDemonstrationsRequest as AEvaluatorDemonstrationsRequest,
 )
@@ -56,7 +57,7 @@ from .generated.openapi_aclient.models.skill_test_input_request import (
     SkillTestInputRequest as ASkillTestInputRequest,
 )
 from .generated.openapi_aclient.models.skill_test_output import SkillTestOutput as ASkillTestOutput
-from .generated.openapi_client.api.v1_api import ApiClient
+from .generated.openapi_client.api.v1_api import ApiClient, V1Api
 from .generated.openapi_client.api.v1_api import V1Api as ObjectivesApi
 from .generated.openapi_client.api.v1_api import V1Api as SkillsApi
 from .generated.openapi_client.models.data_loader_request import DataLoaderRequest
@@ -396,7 +397,7 @@ class Evaluator(OpenAPISkill):
         if not response and not request:
             raise ValueError("Either response or request must be provided")
 
-        api_instance = SkillsApi(_client)
+        api_instance = V1Api(_client)
 
         evaluator_execution_request = EvaluatorExecutionRequest(
             skill_version_id=self.version_id,
@@ -408,7 +409,7 @@ class Evaluator(OpenAPISkill):
             variables=variables,
             tags=tags,
         )
-        return api_instance.v1_skills_evaluator_execute_create(
+        return api_instance.v1_evaluators_execute_create(
             id=self.id,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
@@ -465,7 +466,7 @@ class AEvaluator(AOpenAPISkill):
         if not response and not request:
             raise ValueError("Either response or request must be provided")
 
-        api_instance = ASkillsApi(_client)
+        api_instance = AV1Api(_client)
 
         evaluator_execution_request = AEvaluatorExecutionRequest(
             skill_version_id=self.version_id,
@@ -477,7 +478,7 @@ class AEvaluator(AOpenAPISkill):
             variables=variables,
             tags=tags,
         )
-        return await api_instance.v1_skills_evaluator_execute_create(
+        return await api_instance.v1_evaluators_execute_create(
             id=self.id,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
@@ -640,7 +641,7 @@ class PresetEvaluatorRunner:
         if not response and not request:
             raise ValueError("Either response or request must be provided")
 
-        api_instance = SkillsApi(_client)
+        api_instance = V1Api(_client)
 
         evaluator_execution_request = EvaluatorExecutionRequest(
             skill_version_id=self.evaluator_version_id,
@@ -652,7 +653,7 @@ class PresetEvaluatorRunner:
             variables=variables,
             tags=tags,
         )
-        return api_instance.v1_skills_evaluator_execute_create(
+        return api_instance.v1_evaluators_execute_create(
             id=self.skill_id,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
@@ -717,7 +718,7 @@ class APresetEvaluatorRunner:
             variables=variables,
             tags=tags,
         )
-        return await api_instance.v1_skills_evaluator_execute_create(
+        return await api_instance.v1_evaluators_execute_create(
             id=self.skill_id,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
@@ -1478,7 +1479,8 @@ class Evaluators:
         if not response and not request:
             raise ValueError("Either response or request must be provided")
 
-        api_instance = SkillsApi(_client)
+        api_instance = V1Api(_client)
+
         evaluator_execution_request = EvaluatorExecutionRequest(
             skill_version_id=evaluator_version_id,
             request=request,
@@ -1489,7 +1491,7 @@ class Evaluators:
             variables=variables,
             tags=tags,
         )
-        return api_instance.v1_skills_evaluator_execute_create(
+        return api_instance.v1_evaluators_execute_create(
             id=evaluator_id,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
@@ -1531,7 +1533,7 @@ class Evaluators:
         if not response and not request:
             raise ValueError("Either response or request must be provided")
 
-        api_instance = ASkillsApi(_client)
+        api_instance = AV1Api(_client)
         evaluator_execution_request = AEvaluatorExecutionRequest(
             skill_version_id=evaluator_version_id,
             request=request,
@@ -1542,7 +1544,7 @@ class Evaluators:
             variables=variables,
             tags=tags,
         )
-        return await api_instance.v1_skills_evaluator_execute_create(
+        return await api_instance.v1_evaluators_execute_create(
             id=evaluator_id,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
@@ -1571,7 +1573,7 @@ class Evaluators:
             test_dataset_id=test_dataset_id,
             test_data=test_data,
         )
-        return api_instance.v1_skills_calibrate_create2(
+        return api_instance.v1_evaluators_calibrate_create2(
             evaluator_id, skill_test_request, _request_timeout=_request_timeout
         )
 
@@ -1598,7 +1600,7 @@ class Evaluators:
             test_dataset_id=test_dataset_id,
             test_data=test_data,
         )
-        return await api_instance.v1_skills_calibrate_create2(
+        return await api_instance.v1_evaluators_calibrate_create2(
             evaluator_id, skill_test_request, _request_timeout=_request_timeout
         )
 
@@ -1641,7 +1643,7 @@ class Evaluators:
             input_variables=_to_input_variables(input_variables),
             data_loaders=_to_data_loaders(data_loaders),
         )
-        return api_instance.v1_skills_calibrate_create(skill_test_request, _request_timeout=_request_timeout)
+        return api_instance.v1_evaluators_calibrate_create(skill_test_request, _request_timeout=_request_timeout)
 
     @with_async_client
     async def acalibrate(
@@ -1682,7 +1684,7 @@ class Evaluators:
             input_variables=_ato_input_variables(input_variables),
             data_loaders=_ato_data_loaders(data_loaders),
         )
-        return await api_instance.v1_skills_calibrate_create(skill_test_request, _request_timeout=_request_timeout)
+        return await api_instance.v1_evaluators_calibrate_create(skill_test_request, _request_timeout=_request_timeout)
 
     def calibrate_batch(
         self,
@@ -2287,4 +2289,111 @@ class Evaluators:
             name=name,
             only_root_evaluators=only_root_evaluators,
             only_evaluators=True,
+        )
+
+    @with_sync_client
+    def run_by_name(
+        self,
+        name: str,
+        *,
+        request: Optional[str] = None,
+        response: Optional[str] = None,
+        contexts: Optional[List[str]] = None,
+        functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
+        expected_output: Optional[str] = None,
+        evaluator_version_id: Optional[str] = None,
+        variables: Optional[dict[str, str]] = None,
+        tags: Optional[List[str]] = None,
+        _request_timeout: Optional[int] = None,
+        _client: ApiClient,
+    ) -> EvaluatorExecutionResult:
+        """
+        Run an evaluator by name.
+
+        Args:
+            name: The name of the evaluator to run.
+            request: The prompt sent to the LLM.
+            response: LLM output.
+            contexts: Optional documents passed to RAG evaluators.
+            functions: Optional function definitions to LLM tool call validation.
+            expected_output: Optional expected output for the evaluator.
+            evaluator_version_id: Version ID of the evaluator to run. If omitted, the latest version is used.
+            variables: Optional additional variable mappings for the evaluator. For example, if the evaluator
+                predicate is "evaluate the output based on {subject}: {output}", then variables={"subject": "clarity"}.
+            tags: Optional tags to add to the evaluator execution
+            _request_timeout: Optional timeout for the request.
+        """
+
+        if not response and not request:
+            raise ValueError("Either response or request must be provided")
+
+        api_instance = V1Api(_client)
+
+        evaluator_execution_request = EvaluatorExecutionRequest(
+            skill_version_id=evaluator_version_id,
+            request=request,
+            response=response,
+            contexts=contexts,
+            functions=functions,
+            expected_output=expected_output,
+            variables=variables,
+            tags=tags,
+        )
+        return api_instance.v1_evaluators_execute_by_name_create(
+            name=name,
+            evaluator_execution_request=evaluator_execution_request,
+            _request_timeout=_request_timeout,
+        )
+
+    @with_async_client
+    async def arun_by_name(
+        self,
+        name: str,
+        *,
+        request: Optional[str] = None,
+        response: Optional[str] = None,
+        contexts: Optional[List[str]] = None,
+        functions: Optional[List[AEvaluatorExecutionFunctionsRequest]] = None,
+        expected_output: Optional[str] = None,
+        evaluator_version_id: Optional[str] = None,
+        variables: Optional[dict[str, str]] = None,
+        tags: Optional[List[str]] = None,
+        _request_timeout: Optional[int] = None,
+        _client: AApiClient,
+    ) -> AEvaluatorExecutionResult:
+        """
+        Asynchronously run an evaluator by name.
+
+        Args:
+            name: The name of the evaluator to run.
+            request: The prompt sent to the LLM.
+            response: LLM output.
+            contexts: Optional documents passed to RAG evaluators.
+            functions: Optional function definitions to LLM tool call validation.
+            expected_output: Optional expected output for the evaluator.
+            evaluator_version_id: Version ID of the evaluator to run. If omitted, the latest version is used.
+            variables: Optional additional variable mappings for the evaluator. For example, if the evaluator
+                predicate is "evaluate the output based on {subject}: {output}", then variables={"subject": "clarity"}.
+            tags: Optional tags to add to the evaluator execution
+            _request_timeout: Optional timeout for the request.
+        """
+
+        if not response and not request:
+            raise ValueError("Either response or request must be provided")
+
+        api_instance = AV1Api(_client)
+        evaluator_execution_request = AEvaluatorExecutionRequest(
+            skill_version_id=evaluator_version_id,
+            request=request,
+            response=response,
+            contexts=contexts,
+            functions=functions,
+            expected_output=expected_output,
+            variables=variables,
+            tags=tags,
+        )
+        return await api_instance.v1_evaluators_execute_by_name_create(
+            name=name,
+            evaluator_execution_request=evaluator_execution_request,
+            _request_timeout=_request_timeout,
         )

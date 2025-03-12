@@ -1,4 +1,5 @@
-from unittest.mock import patch
+from typing import Generator
+from unittest.mock import MagicMock, patch
 
 import pytest
 
@@ -9,12 +10,12 @@ from root.skills import CalibrateBatchParameters
 
 
 @pytest.fixture
-def mock_skills_calibrate_api():
-    with patch("root.generated.openapi_client.api.v1_api.V1Api.v1_skills_calibrate_create") as mock:
+def mock_skills_calibrate_api() -> Generator[MagicMock, None, None]:
+    with patch("root.generated.openapi_client.api.v1_api.V1Api.v1_evaluators_calibrate_create") as mock:
         yield mock
 
 
-def test_calibrate_evaluator_batch(mock_skills_calibrate_api):
+def test_calibrate_evaluator_batch(mock_skills_calibrate_api: MagicMock) -> None:
     mock_skills_calibrate_api.return_value = [
         EvaluatorCalibrationOutput(
             result=EvaluatorCalibrationResult(
