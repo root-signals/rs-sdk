@@ -1,3 +1,13 @@
+## 1.5.1
+
+### Added
+
+- Added 'include' parameter to listing execution logs to include optional fields
+
+### Changed
+
+- Dropped support for running only skill validators
+
 ## 1.5.0
 
 ### Added
