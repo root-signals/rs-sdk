@@ -7,7 +7,7 @@ import pytest
 from root.client import RootSignals
 from root.generated.openapi_aclient.models.evaluator_calibration_output import EvaluatorCalibrationOutput
 from root.generated.openapi_aclient.models.evaluator_calibration_result import EvaluatorCalibrationResult
-from root.skills import CalibrateBatchParameters
+from root.skills import ACalibrateBatchParameters
 
 
 class AsynchronousMock(MagicMock):
@@ -16,7 +16,9 @@ class AsynchronousMock(MagicMock):
 
 
 @pytest.mark.asyncio
-@mock.patch("root.generated.openapi_aclient.api.v1_api.V1Api.v1_skills_calibrate_create", new_callable=AsynchronousMock)
+@mock.patch(
+    "root.generated.openapi_aclient.api.v1_api.V1Api.v1_evaluators_calibrate_create", new_callable=AsynchronousMock
+)
 async def test_acalibrate_evaluator_batch(mock_skills_calibrate_api: AsynchronousMock) -> None:
     mock_skills_calibrate_api.return_value = [
         EvaluatorCalibrationOutput(
@@ -50,7 +52,7 @@ async def test_acalibrate_evaluator_batch(mock_skills_calibrate_api: Asynchronou
     client = RootSignals(api_key="fake", run_async=True)
 
     params = [
-        CalibrateBatchParameters(
+        ACalibrateBatchParameters(
             name="With gpt-4",
             prompt="What is the weather today?",
             model="gpt-4",
@@ -59,7 +61,7 @@ async def test_acalibrate_evaluator_batch(mock_skills_calibrate_api: Asynchronou
             input_variables=None,
             data_loaders=None,
         ),
-        CalibrateBatchParameters(
+        ACalibrateBatchParameters(
             name="With gpt-4-turbo",
             prompt="What is the weather today?",
             model="gpt-4-turbo",
