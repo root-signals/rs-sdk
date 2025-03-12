@@ -42,10 +42,11 @@ class Skill(BaseModel):
     created_at: Optional[datetime]
     data_loaders: Optional[List[DataLoader]] = None
     evaluator_demonstrations: Optional[List[EvaluatorDemonstrations]] = None
-    evaluator_only_offline: Optional[StrictBool] = Field(
-        default=None, description="Do not run the evaluator if used as an Objective validator."
+    requires_expected_output: Optional[StrictBool] = Field(
+        default=None, description="Expected output to the request from the LLM."
     )
-    evaluator_require_reference_variables: Optional[StrictBool] = None
+    requires_contexts: Optional[StrictBool] = None
+    requires_functions: Optional[StrictBool] = None
     id: StrictStr
     input_variables: Optional[List[InputVariable]] = None
     is_evaluator: Optional[StrictBool] = None
@@ -71,8 +72,9 @@ class Skill(BaseModel):
         "created_at",
         "data_loaders",
         "evaluator_demonstrations",
-        "evaluator_only_offline",
-        "evaluator_require_reference_variables",
+        "requires_expected_output",
+        "requires_contexts",
+        "requires_functions",
         "id",
         "input_variables",
         "is_evaluator",
@@ -252,8 +254,9 @@ class Skill(BaseModel):
                 ]
                 if obj.get("evaluator_demonstrations") is not None
                 else None,
-                "evaluator_only_offline": obj.get("evaluator_only_offline"),
-                "evaluator_require_reference_variables": obj.get("evaluator_require_reference_variables"),
+                "requires_expected_output": obj.get("requires_expected_output"),
+                "requires_contexts": obj.get("requires_contexts"),
+                "requires_functions": obj.get("requires_functions"),
                 "id": obj.get("id"),
                 "input_variables": [InputVariable.from_dict(_item) for _item in obj["input_variables"]]
                 if obj.get("input_variables") is not None

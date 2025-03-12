@@ -627,7 +627,10 @@ paths:
   /v1/evaluators/:
     get:
       operationId: list_evaluators
-      description: List all evaluators.
+      description: List all evaluators. The response includes a 'requirements' field
+        for each evaluator that specifies what parameters are required for execution.
+        The requirements field indicates whether the evaluator requires request, response,
+        contexts, functions, expected_output, or reference variables.
       parameters:
       - name: cursor
         required: false
@@ -688,7 +691,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedEvaluatorListOutputList'
-          description: ''
+          description: List of evaluators with their requirements
     post:
       operationId: create_evaluator
       description: Create a new evaluator.
@@ -728,7 +731,10 @@ paths:
   /v1/evaluators/{id}/:
     get:
       operationId: get_evaluator_details
-      description: Get evaluator details.
+      description: Get evaluator details. The response includes a 'requirements' field
+        that specifies what parameters are required for execution. The requirements
+        field indicates whether the evaluator requires request, response, contexts,
+        functions, expected_output, or reference variables.
       parameters:
       - in: path
         name: id
@@ -758,7 +764,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Evaluator'
-          description: ''
+          description: Evaluator details with requirements information
     put:
       operationId: update_evaluator
       description: Update an evaluator.
@@ -987,7 +993,8 @@ paths:
   /v1/evaluators/execute/{id}/:
     post:
       operationId: v1_evaluators_execute_create
-      description: Execute an evaluator
+      description: Execute an evaluator. Check the evaluator's requirements to know
+        which parameters are needed for execution.
       parameters:
       - in: path
         name: id
@@ -1034,7 +1041,8 @@ paths:
   /v1/evaluators/execute/by-name/:
     post:
       operationId: v1_evaluators_execute_by_name_create
-      description: Execute an evaluator by name
+      description: Execute an evaluator by name. Check the evaluator's requirements
+        to know which parameters are needed for execution.
       parameters:
       - in: query
         name: name
@@ -2086,7 +2094,8 @@ paths:
   /v1/skills/evaluator/execute/{id}/:
     post:
       operationId: v1_skills_evaluator_execute_create
-      description: Execute an evaluator
+      description: Execute an evaluator. Check the evaluator's requirements to know
+        which parameters are needed for execution.
       parameters:
       - in: path
         name: id
@@ -2916,10 +2925,12 @@ components:
           items:
             $ref: '#/components/schemas/EvaluatorDemonstrations'
           nullable: true
-        evaluator_only_offline:
+        requires_expected_output:
           type: boolean
-          description: Do not run the evaluator if used as an Objective validator.
-        evaluator_require_reference_variables:
+          description: Expected output to the request from the LLM.
+        requires_contexts:
+          type: boolean
+        requires_functions:
           type: boolean
         id:
           type: string
@@ -3316,10 +3327,12 @@ components:
           items:
             $ref: '#/components/schemas/EvaluatorDemonstrationsRequest'
           nullable: true
-        evaluator_only_offline:
+        requires_expected_output:
           type: boolean
-          description: Do not run the evaluator if used as an Objective validator.
-        evaluator_require_reference_variables:
+          description: Expected output to the request from the LLM.
+        requires_contexts:
+          type: boolean
+        requires_functions:
           type: boolean
         input_variables:
           type: array
@@ -3966,7 +3979,7 @@ components:
         name:
           type: string
           maxLength: 1000
-        evaluator_only_offline:
+        requires_expected_output:
           type: boolean
       required:
       - id
@@ -3977,7 +3990,7 @@ components:
           type: string
           minLength: 1
           maxLength: 1000
-        evaluator_only_offline:
+        requires_expected_output:
           type: boolean
     NestedObjectiveList:
       type: object
@@ -4451,10 +4464,12 @@ components:
           items:
             $ref: '#/components/schemas/EvaluatorDemonstrationsRequest'
           nullable: true
-        evaluator_only_offline:
+        requires_expected_output:
           type: boolean
-          description: Do not run the evaluator if used as an Objective validator.
-        evaluator_require_reference_variables:
+          description: Expected output to the request from the LLM.
+        requires_contexts:
+          type: boolean
+        requires_functions:
           type: boolean
         input_variables:
           type: array
@@ -4580,10 +4595,12 @@ components:
           items:
             $ref: '#/components/schemas/EvaluatorDemonstrationsRequest'
           nullable: true
-        evaluator_only_offline:
+        requires_expected_output:
           type: boolean
-          description: Do not run the evaluator if used as an Objective validator.
-        evaluator_require_reference_variables:
+          description: Expected output to the request from the LLM.
+        requires_contexts:
+          type: boolean
+        requires_functions:
           type: boolean
         input_variables:
           type: array
@@ -4758,10 +4775,12 @@ components:
           items:
             $ref: '#/components/schemas/EvaluatorDemonstrations'
           nullable: true
-        evaluator_only_offline:
+        requires_expected_output:
           type: boolean
-          description: Do not run the evaluator if used as an Objective validator.
-        evaluator_require_reference_variables:
+          description: Expected output to the request from the LLM.
+        requires_contexts:
+          type: boolean
+        requires_functions:
           type: boolean
         id:
           type: string
@@ -5014,10 +5033,12 @@ components:
           items:
             $ref: '#/components/schemas/EvaluatorDemonstrationsRequest'
           nullable: true
-        evaluator_only_offline:
+        requires_expected_output:
           type: boolean
-          description: Do not run the evaluator if used as an Objective validator.
-        evaluator_require_reference_variables:
+          description: Expected output to the request from the LLM.
+        requires_contexts:
+          type: boolean
+        requires_functions:
           type: boolean
         input_variables:
           type: array

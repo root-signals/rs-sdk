@@ -1794,7 +1794,7 @@ class V1Api:
     ) -> Evaluator:
         """get_evaluator_details
 
-        Get evaluator details.
+        Get evaluator details. The response includes a 'requirements' field that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables.
 
         :param id: (required)
         :type id: str
@@ -1865,7 +1865,7 @@ class V1Api:
     ) -> ApiResponse[Evaluator]:
         """get_evaluator_details
 
-        Get evaluator details.
+        Get evaluator details. The response includes a 'requirements' field that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables.
 
         :param id: (required)
         :type id: str
@@ -1936,7 +1936,7 @@ class V1Api:
     ) -> RESTResponseType:
         """get_evaluator_details
 
-        Get evaluator details.
+        Get evaluator details. The response includes a 'requirements' field that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables.
 
         :param id: (required)
         :type id: str
@@ -2326,7 +2326,7 @@ class V1Api:
     ) -> PaginatedEvaluatorListOutputList:
         """list_evaluators
 
-        List all evaluators.
+        List all evaluators. The response includes a 'requirements' field for each evaluator that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables.
 
         :param cursor: The pagination cursor value.
         :type cursor: str
@@ -2423,7 +2423,7 @@ class V1Api:
     ) -> ApiResponse[PaginatedEvaluatorListOutputList]:
         """list_evaluators
 
-        List all evaluators.
+        List all evaluators. The response includes a 'requirements' field for each evaluator that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables.
 
         :param cursor: The pagination cursor value.
         :type cursor: str
@@ -2520,7 +2520,7 @@ class V1Api:
     ) -> RESTResponseType:
         """list_evaluators
 
-        List all evaluators.
+        List all evaluators. The response includes a 'requirements' field for each evaluator that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables.
 
         :param cursor: The pagination cursor value.
         :type cursor: str
@@ -6800,7 +6800,7 @@ class V1Api:
     ) -> EvaluatorExecutionResult:
         """v1_evaluators_execute_by_name_create
 
-        Execute an evaluator by name
+        Execute an evaluator by name. Check the evaluator's requirements to know which parameters are needed for execution.
 
         :param name: The name of the evaluator to execute (required)
         :type name: str
@@ -6864,7 +6864,7 @@ class V1Api:
     ) -> ApiResponse[EvaluatorExecutionResult]:
         """v1_evaluators_execute_by_name_create
 
-        Execute an evaluator by name
+        Execute an evaluator by name. Check the evaluator's requirements to know which parameters are needed for execution.
 
         :param name: The name of the evaluator to execute (required)
         :type name: str
@@ -6928,7 +6928,7 @@ class V1Api:
     ) -> RESTResponseType:
         """v1_evaluators_execute_by_name_create
 
-        Execute an evaluator by name
+        Execute an evaluator by name. Check the evaluator's requirements to know which parameters are needed for execution.
 
         :param name: The name of the evaluator to execute (required)
         :type name: str
@@ -7050,7 +7050,7 @@ class V1Api:
     ) -> EvaluatorExecutionResult:
         """v1_evaluators_execute_create
 
-        Execute an evaluator
+        Execute an evaluator. Check the evaluator's requirements to know which parameters are needed for execution.
 
         :param id: (required)
         :type id: str
@@ -7114,7 +7114,7 @@ class V1Api:
     ) -> ApiResponse[EvaluatorExecutionResult]:
         """v1_evaluators_execute_create
 
-        Execute an evaluator
+        Execute an evaluator. Check the evaluator's requirements to know which parameters are needed for execution.
 
         :param id: (required)
         :type id: str
@@ -7178,7 +7178,7 @@ class V1Api:
     ) -> RESTResponseType:
         """v1_evaluators_execute_create
 
-        Execute an evaluator
+        Execute an evaluator. Check the evaluator's requirements to know which parameters are needed for execution.
 
         :param id: (required)
         :type id: str
@@ -11947,7 +11947,7 @@ class V1Api:
     ) -> EvaluatorExecutionResult:
         """v1_skills_evaluator_execute_create
 
-        Execute an evaluator
+        Execute an evaluator. Check the evaluator's requirements to know which parameters are needed for execution.
 
         :param id: (required)
         :type id: str
@@ -12011,7 +12011,7 @@ class V1Api:
     ) -> ApiResponse[EvaluatorExecutionResult]:
         """v1_skills_evaluator_execute_create
 
-        Execute an evaluator
+        Execute an evaluator. Check the evaluator's requirements to know which parameters are needed for execution.
 
         :param id: (required)
         :type id: str
@@ -12075,7 +12075,7 @@ class V1Api:
     ) -> RESTResponseType:
         """v1_skills_evaluator_execute_create
 
-        Execute an evaluator
+        Execute an evaluator. Check the evaluator's requirements to know which parameters are needed for execution.
 
         :param id: (required)
         :type id: str
