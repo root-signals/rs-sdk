@@ -1,3 +1,13 @@
+## 1.5.2
+
+### Added
+
+- Added evaluator execution by name
+
+### Changed
+
+- Evaluator uses new endpoints instead of deprecated ones in all functions
+
 ## 1.5.1
 
 ### Added
