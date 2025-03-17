@@ -35,14 +35,3 @@ except Exception as e:
     print(
         "Note: This example requires that you have previously created a custom evaluator named 'Network Troubleshooting'"
     )
-
-result_with_context = client.evaluators.run_by_name(
-    name="Context_Precision",
-    response="The capital of France is Paris, which is known for the Eiffel Tower.",
-    request="What is the capital of France?",
-    contexts=["France is a country in Western Europe with a population of about 67 million people."],
-    variables={"criteria": "geographical accuracy"},
-)
-
-print(f"Score: {result_with_context.score} / 1.0")
-print(f"Justification: {result_with_context.justification}")
