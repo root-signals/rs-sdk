@@ -369,13 +369,11 @@ class Evaluator(OpenAPISkill):
     """
 
     client_context: ClientContextCallable
-    is_evaluator: Optional[bool] = True
 
     @classmethod
     def _wrap(
         cls, apiobj: Union[OpenAPISkill, "SyncGeneratedEvaluator"], client_context: ClientContextCallable
     ) -> "Evaluator":  # noqa: E501
-        # The API client returns an "Evaluator" type, but we need to handle it as OpenAPISkill
         obj = cast(Evaluator, apiobj)
         obj.__class__ = cls
         obj.client_context = client_context
@@ -441,13 +439,11 @@ class AEvaluator(AOpenAPISkill):
     """
 
     client_context: ClientContextCallable
-    is_evaluator: Optional[bool] = True  # Add this attribute with default value True
 
     @classmethod
     async def _awrap(
         cls, apiobj: Union[AOpenAPISkill, "GeneratedEvaluator"], client_context: ClientContextCallable
     ) -> "AEvaluator":  # noqa: E501
-        # The API client returns an "Evaluator" type, but we need to handle it as AOpenAPISkill
         obj = cast(AEvaluator, apiobj)
         obj.__class__ = cls
         obj.client_context = client_context
@@ -2153,8 +2149,7 @@ class Evaluators:
         model: Optional[ModelName] = None,
         name: Optional[str] = None,
         pii_filter: Optional[bool] = None,
-        prompt: Optional[str] = None,
-        is_evaluator: Optional[bool] = None,
+        predicate: Optional[str] = None,
         reference_variables: Optional[Union[List[ReferenceVariable], List[ReferenceVariableRequest]]] = None,
         model_params: Optional[Union[ModelParams, ModelParamsRequest]] = None,
         evaluator_demonstrations: Optional[List[EvaluatorDemonstration]] = None,
