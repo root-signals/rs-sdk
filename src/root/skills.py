@@ -11,7 +11,6 @@ from typing import TYPE_CHECKING, AsyncIterator, Dict, Iterator, List, Literal, 
 
 from pydantic import BaseModel, StrictStr
 
-from .data_loader import ADataLoader, DataLoader
 from .generated.openapi_aclient import ApiClient as AApiClient
 from .generated.openapi_aclient.api.v1_api import V1Api as AEvaluatorsApi
 from .generated.openapi_aclient.api.v1_api import V1Api as AObjectivesApi
@@ -32,7 +31,6 @@ from .generated.openapi_aclient.models import (
 from .generated.openapi_aclient.models import (
     ModelParamsRequest as AModelParamsRequest,
 )
-from .generated.openapi_aclient.models.data_loader_request import DataLoaderRequest as ADataLoaderRequest
 from .generated.openapi_aclient.models.evaluator_calibration_output import (
     EvaluatorCalibrationOutput as AEvaluatorCalibrationOutput,
 )
@@ -69,7 +67,6 @@ from .generated.openapi_client.api.v1_api import ApiClient, V1Api
 from .generated.openapi_client.api.v1_api import V1Api as EvaluatorsApi
 from .generated.openapi_client.api.v1_api import V1Api as ObjectivesApi
 from .generated.openapi_client.api.v1_api import V1Api as SkillsApi
-from .generated.openapi_client.models.data_loader_request import DataLoaderRequest
 from .generated.openapi_client.models.evaluator_calibration_output import EvaluatorCalibrationOutput
 from .generated.openapi_client.models.evaluator_demonstrations_request import (
     EvaluatorDemonstrationsRequest,
@@ -164,7 +161,6 @@ class ACalibrateBatchParameters:
         pii_filter: bool = False,
         reference_variables: Optional[Union[List["ReferenceVariable"], List["AReferenceVariableRequest"]]] = None,
         input_variables: Optional[Union[List["InputVariable"], List["AInputVariableRequest"]]] = None,
-        data_loaders: Optional[List["ADataLoader"]] = None,
     ):
         self.name = name
         self.prompt = prompt
@@ -172,7 +168,6 @@ class ACalibrateBatchParameters:
         self.pii_filter = pii_filter
         self.reference_variables = reference_variables
         self.input_variables = input_variables
-        self.data_loaders = data_loaders
 
 
 class ACalibrateBatchResult(BaseModel):
@@ -192,7 +187,6 @@ class CalibrateBatchParameters:
         pii_filter: bool = False,
         reference_variables: Optional[Union[List["ReferenceVariable"], List["ReferenceVariableRequest"]]] = None,
         input_variables: Optional[Union[List["InputVariable"], List["InputVariableRequest"]]] = None,
-        data_loaders: Optional[List["DataLoader"]] = None,
     ):
         self.name = name
         self.prompt = prompt
@@ -200,7 +194,6 @@ class CalibrateBatchParameters:
         self.pii_filter = pii_filter
         self.reference_variables = reference_variables
         self.input_variables = input_variables
-        self.data_loaders = data_loaders
 
 
 class CalibrateBatchResult(BaseModel):
@@ -500,13 +493,6 @@ class AEvaluator(AOpenAPISkill):
         )
 
 
-def _to_data_loaders(data_loaders: Optional[List[DataLoader]]) -> List[DataLoaderRequest]:
-    return [
-        DataLoaderRequest(name=data_loader.name, type=data_loader.type, parameters=data_loader.get_parameters())
-        for data_loader in (data_loaders or [])
-    ]
-
-
 def _to_input_variables(
     input_variables: Optional[Union[List[InputVariable], List[InputVariableRequest]]],
 ) -> List[InputVariableRequest]:
@@ -553,13 +539,6 @@ def _to_evaluator_demonstrations(
         return entry
 
     return [_convert_dict(entry) for entry in input_variables or {}]
-
-
-def _ato_data_loaders(data_loaders: Optional[List[ADataLoader]]) -> List[ADataLoaderRequest]:
-    return [
-        ADataLoaderRequest(name=data_loader.name, type=data_loader.type, parameters=data_loader.get_parameters())
-        for data_loader in (data_loaders or [])
-    ]
 
 
 def _ato_input_variables(
@@ -798,7 +777,6 @@ class Skills:
         reference_variables: Optional[Union[List[ReferenceVariable], List[ReferenceVariableRequest]]] = None,
         input_variables: Optional[Union[List[InputVariable], List[InputVariableRequest]]] = None,
         is_evaluator: Optional[bool] = None,
-        data_loaders: Optional[List[DataLoader]] = None,
         model_params: Optional[Union[ModelParams, ModelParamsRequest]] = None,
         evaluator_demonstrations: Optional[List[EvaluatorDemonstration]] = None,
         objective_id: Optional[str] = None,
@@ -822,7 +800,6 @@ class Skills:
             reference_variables: An optional list of reference variables for the skill
             input_variables: An optional list of input variables for the skill
             is_evaluator: Whether this skill is an evaluator skill
-            data_loaders: An optional list of data loaders.
             model_params: An optional set of additional parameters to the model (e.g., temperature)
             evaluator_demonstrations: Optional list of demonstrations for evaluator skills
             objective_id: Optional pre-existing objective id to assign to the skill
@@ -850,7 +827,6 @@ class Skills:
             is_evaluator=is_evaluator,
             reference_variables=_to_reference_variables(reference_variables),
             input_variables=_to_input_variables(input_variables),
-            data_loaders=_to_data_loaders(data_loaders),
             model_params=_to_model_params(model_params),
             evaluator_demonstrations=_to_evaluator_demonstrations(evaluator_demonstrations),
             overwrite=overwrite,
@@ -875,7 +851,6 @@ class Skills:
         reference_variables: Optional[Union[List[ReferenceVariable], List[AReferenceVariableRequest]]] = None,
         input_variables: Optional[Union[List[InputVariable], List[AInputVariableRequest]]] = None,
         is_evaluator: Optional[bool] = None,
-        data_loaders: Optional[List[ADataLoader]] = None,
         model_params: Optional[Union[ModelParams, AModelParamsRequest]] = None,
         evaluator_demonstrations: Optional[List[EvaluatorDemonstration]] = None,
         objective_id: Optional[str] = None,
@@ -899,7 +874,6 @@ class Skills:
             reference_variables: An optional list of reference variables for the skill
             input_variables: An optional list of input variables for the skill
             is_evaluator: Whether this skill is an evaluator skill
-            data_loaders: An optional list of data loaders.
             model_params: An optional set of additional parameters to the model (e.g., temperature)
             evaluator_demonstrations: Optional list of demonstrations for evaluator skills
             objective_id: Optional pre-existing objective id to assign to the skill
@@ -929,7 +903,6 @@ class Skills:
             is_evaluator=is_evaluator,
             reference_variables=_ato_reference_variables(reference_variables),
             input_variables=_ato_input_variables(input_variables),
-            data_loaders=_ato_data_loaders(data_loaders),
             model_params=_ato_model_params(model_params),
             evaluator_demonstrations=_ato_evaluator_demonstrations(evaluator_demonstrations),
             overwrite=overwrite,
@@ -945,7 +918,6 @@ class Skills:
         *,
         change_note: Optional[str] = None,
         _client: ApiClient,
-        data_loaders: Optional[List[DataLoader]] = None,
         fallback_models: Optional[List[ModelName]] = None,
         input_variables: Optional[Union[List[InputVariable], List[InputVariableRequest]]] = None,
         model: Optional[ModelName] = None,
@@ -975,7 +947,6 @@ class Skills:
             is_evaluator=is_evaluator,
             reference_variables=_to_reference_variables(reference_variables),
             input_variables=_to_input_variables(input_variables),
-            data_loaders=_to_data_loaders(data_loaders),
             change_note=change_note or "",
             model_params=_to_model_params(model_params),
             evaluator_demonstrations=_to_evaluator_demonstrations(evaluator_demonstrations),
@@ -993,7 +964,6 @@ class Skills:
         *,
         change_note: Optional[str] = None,
         _client: AApiClient,
-        data_loaders: Optional[List[ADataLoader]] = None,
         fallback_models: Optional[List[ModelName]] = None,
         input_variables: Optional[Union[List[InputVariable], List[AInputVariableRequest]]] = None,
         model: Optional[ModelName] = None,
@@ -1023,7 +993,6 @@ class Skills:
             is_evaluator=is_evaluator,
             reference_variables=_ato_reference_variables(reference_variables),
             input_variables=_ato_input_variables(input_variables),
-            data_loaders=_ato_data_loaders(data_loaders),
             change_note=change_note or "",
             model_params=_ato_model_params(model_params),
             evaluator_demonstrations=_ato_evaluator_demonstrations(evaluator_demonstrations),
@@ -1157,7 +1126,6 @@ class Skills:
         validators: Optional[List[Validator]] = None,
         reference_variables: Optional[Union[List[ReferenceVariable], List[ReferenceVariableRequest]]] = None,
         input_variables: Optional[Union[List[InputVariable], List[InputVariableRequest]]] = None,
-        data_loaders: Optional[List[DataLoader]] = None,
         _request_timeout: Optional[int] = None,
     ) -> List[SkillTestOutput]:
         """
@@ -1176,7 +1144,6 @@ class Skills:
             objective=self._to_objective_request(validators=validators),
             reference_variables=_to_reference_variables(reference_variables),
             input_variables=_to_input_variables(input_variables),
-            data_loaders=_to_data_loaders(data_loaders),
         )
         return api_instance.v1_skills_test_create(skill_test_request, _request_timeout=_request_timeout)
 
@@ -1193,7 +1160,6 @@ class Skills:
         validators: Optional[List[AValidator]] = None,
         reference_variables: Optional[Union[List[ReferenceVariable], List[AReferenceVariableRequest]]] = None,
         input_variables: Optional[Union[List[InputVariable], List[AInputVariableRequest]]] = None,
-        data_loaders: Optional[List[ADataLoader]] = None,
         _request_timeout: Optional[int] = None,
     ) -> List[ASkillTestOutput]:
         """
@@ -1212,7 +1178,6 @@ class Skills:
             objective=await self._ato_objective_request(avalidators=validators),
             reference_variables=_ato_reference_variables(reference_variables),
             input_variables=_ato_input_variables(input_variables),
-            data_loaders=_ato_data_loaders(data_loaders),
         )
         return await api_instance.v1_skills_test_create(skill_test_request, _request_timeout=_request_timeout)
 
@@ -1631,7 +1596,6 @@ class Evaluators:
         pii_filter: bool = False,
         reference_variables: Optional[Union[List[ReferenceVariable], List[ReferenceVariableRequest]]] = None,
         input_variables: Optional[Union[List[InputVariable], List[InputVariableRequest]]] = None,
-        data_loaders: Optional[List[DataLoader]] = None,
         _request_timeout: Optional[int] = None,
         _client: ApiClient,
     ) -> List[EvaluatorCalibrationOutput]:
@@ -1656,7 +1620,6 @@ class Evaluators:
             objective=ObjectiveRequest(intent="Calibration"),
             reference_variables=_to_reference_variables(reference_variables),
             input_variables=_to_input_variables(input_variables),
-            data_loaders=_to_data_loaders(data_loaders),
         )
         return api_instance.v1_evaluators_calibrate_create(skill_test_request, _request_timeout=_request_timeout)
 
@@ -1672,7 +1635,6 @@ class Evaluators:
         pii_filter: bool = False,
         reference_variables: Optional[Union[List[ReferenceVariable], List[AReferenceVariableRequest]]] = None,
         input_variables: Optional[Union[List[InputVariable], List[AInputVariableRequest]]] = None,
-        data_loaders: Optional[List[ADataLoader]] = None,
         _request_timeout: Optional[int] = None,
         _client: AApiClient,
     ) -> List[AEvaluatorCalibrationOutput]:
@@ -1697,7 +1659,6 @@ class Evaluators:
             objective=AObjectiveRequest(intent="Calibration"),
             reference_variables=_ato_reference_variables(reference_variables),
             input_variables=_ato_input_variables(input_variables),
-            data_loaders=_ato_data_loaders(data_loaders),
         )
         return await api_instance.v1_evaluators_calibrate_create(skill_test_request, _request_timeout=_request_timeout)
 
@@ -1766,7 +1727,6 @@ class Evaluators:
                         pii_filter=param.pii_filter,
                         reference_variables=param.reference_variables,
                         input_variables=param.input_variables,
-                        data_loaders=param.data_loaders,
                         _request_timeout=_request_timeout,
                     ): param
                     for param in evaluator_definitions
@@ -1791,7 +1751,6 @@ class Evaluators:
                         pii_filter=param.pii_filter,
                         reference_variables=param.reference_variables,
                         input_variables=param.input_variables,
-                        data_loaders=param.data_loaders,
                         _request_timeout=_request_timeout,
                     )
                     process_results(results, param)
@@ -1890,7 +1849,6 @@ class Evaluators:
                         pii_filter=param.pii_filter,
                         reference_variables=param.reference_variables,
                         input_variables=param.input_variables,
-                        data_loaders=param.data_loaders,
                         _request_timeout=_request_timeout,
                     )
                     await process_results(results, param)
@@ -2003,7 +1961,6 @@ class Evaluators:
         pii_filter: bool = False,
         reference_variables: Optional[Union[List[ReferenceVariable], List[ReferenceVariableRequest]]] = None,
         input_variables: Optional[Union[List[InputVariable], List[InputVariableRequest]]] = None,
-        data_loaders: Optional[List[DataLoader]] = None,
         model_params: Optional[Union[ModelParams, ModelParamsRequest]] = None,
         evaluator_demonstrations: Optional[List[EvaluatorDemonstration]] = None,
         objective_id: Optional[str] = None,
@@ -2034,8 +1991,6 @@ class Evaluators:
           input_variables: An optional list of input variables for
             the skill.
 
-          data_loaders: An optional list of data loaders
-
           model_params: An optional set of additional parameters to the model (e.g., temperature).
 
           An optional list of evaluator demonstrations to guide
@@ -2056,7 +2011,6 @@ class Evaluators:
             reference_variables=reference_variables,
             input_variables=input_variables,
             is_evaluator=True,
-            data_loaders=data_loaders,
             model_params=model_params,
             objective_id=objective_id,
             evaluator_demonstrations=evaluator_demonstrations,
@@ -2075,7 +2029,6 @@ class Evaluators:
         pii_filter: bool = False,
         reference_variables: Optional[Union[List[ReferenceVariable], List[AReferenceVariableRequest]]] = None,
         input_variables: Optional[Union[List[InputVariable], List[AInputVariableRequest]]] = None,
-        data_loaders: Optional[List[ADataLoader]] = None,
         model_params: Optional[Union[ModelParams, AModelParamsRequest]] = None,
         evaluator_demonstrations: Optional[List[EvaluatorDemonstration]] = None,
         objective_id: Optional[str] = None,
@@ -2107,8 +2060,6 @@ class Evaluators:
           input_variables: An optional list of input variables for
             the skill.
 
-          data_loaders: An optional list of data loaders
-
           model_params: An optional set of additional parameters to the model (e.g., temperature).
 
           evaluator_demonstrations: An optional list of evaluator demonstrations to guide
@@ -2129,7 +2080,6 @@ class Evaluators:
             reference_variables=reference_variables,
             input_variables=input_variables,
             is_evaluator=True,
-            data_loaders=data_loaders,
             evaluator_demonstrations=evaluator_demonstrations,
             model_params=model_params,
             objective_id=objective_id,
@@ -2137,24 +2087,23 @@ class Evaluators:
         )
         return await AEvaluator._awrap(_eval_skill, self.client_context)
 
+    @with_sync_client
     def update(
         self,
         evaluator_id: str,
         *,
-        _client: ApiClient,
         change_note: Optional[str] = None,
-        data_loaders: Optional[List[DataLoader]] = None,
         fallback_models: Optional[List[ModelName]] = None,
         input_variables: Optional[Union[List[InputVariable], List[InputVariableRequest]]] = None,
         model: Optional[ModelName] = None,
         name: Optional[str] = None,
-        pii_filter: Optional[bool] = None,
         predicate: Optional[str] = None,
         reference_variables: Optional[Union[List[ReferenceVariable], List[ReferenceVariableRequest]]] = None,
         model_params: Optional[Union[ModelParams, ModelParamsRequest]] = None,
         evaluator_demonstrations: Optional[List[EvaluatorDemonstration]] = None,
         objective_id: Optional[str] = None,
         _request_timeout: Optional[int] = None,
+        _client: ApiClient,
     ) -> Evaluator:
         """
         Update an evaluator and return the result
@@ -2166,8 +2115,9 @@ class Evaluators:
         request = PatchedEvaluatorRequest(
             change_note=change_note,
             input_variables=_to_input_variables(input_variables),
-            models=[model] if model is not None else None,
+            models=[model for model in [model] + (fallback_models or []) if model is not None],
             name=name,
+            prompt=predicate,
             reference_variables=_to_reference_variables(reference_variables),
             model_params=_to_model_params(model_params),
             objective_id=objective_id,
@@ -2181,24 +2131,23 @@ class Evaluators:
         )
         return Evaluator._wrap(api_response, self.client_context)
 
+    @with_async_client
     async def aupdate(
         self,
         evaluator_id: str,
         *,
         change_note: Optional[str] = None,
-        _client: AApiClient,
-        data_loaders: Optional[List[ADataLoader]] = None,
         fallback_models: Optional[List[ModelName]] = None,
         input_variables: Optional[Union[List[InputVariable], List[AInputVariableRequest]]] = None,
         model: Optional[ModelName] = None,
         name: Optional[str] = None,
-        pii_filter: Optional[bool] = None,
         predicate: Optional[str] = None,
         reference_variables: Optional[Union[List[ReferenceVariable], List[AReferenceVariableRequest]]] = None,
         model_params: Optional[Union[ModelParams, AModelParamsRequest]] = None,
         evaluator_demonstrations: Optional[List[EvaluatorDemonstration]] = None,
         objective_id: Optional[str] = None,
         _request_timeout: Optional[int] = None,
+        _client: AApiClient,
     ) -> AEvaluator:
         """
         Asynchronously update an evaluator and return the result
@@ -2210,16 +2159,18 @@ class Evaluators:
         request = APatchedEvaluatorRequest(
             change_note=change_note,
             input_variables=_ato_input_variables(input_variables),
-            models=[model] if model is not None else None,
+            models=[model for model in [model] + (fallback_models or []) if model is not None],
             name=name,
             reference_variables=_ato_reference_variables(reference_variables),
             model_params=_ato_model_params(model_params),
             objective_id=objective_id,
+            prompt=predicate,
             evaluator_demonstrations=_ato_evaluator_demonstrations(evaluator_demonstrations),
         )
         api_response = await api_instance.partial_update_evaluator(
             id=evaluator_id,
             patched_evaluator_request=request,
+            _request_timeout=_request_timeout,
         )
         return await AEvaluator._awrap(api_response, self.client_context)
 

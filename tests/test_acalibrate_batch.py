@@ -59,7 +59,6 @@ async def test_acalibrate_evaluator_batch(mock_skills_calibrate_api: Asynchronou
             pii_filter=False,
             reference_variables=None,
             input_variables=None,
-            data_loaders=None,
         ),
         ACalibrateBatchParameters(
             name="With gpt-4-turbo",
@@ -68,7 +67,6 @@ async def test_acalibrate_evaluator_batch(mock_skills_calibrate_api: Asynchronou
             pii_filter=False,
             reference_variables=None,
             input_variables=None,
-            data_loaders=None,
         ),
     ]
 
