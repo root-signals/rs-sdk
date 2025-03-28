@@ -13,6 +13,7 @@ from pydantic import BaseModel, StrictStr
 
 from .data_loader import ADataLoader, DataLoader
 from .generated.openapi_aclient import ApiClient as AApiClient
+from .generated.openapi_aclient.api.v1_api import V1Api as AEvaluatorsApi
 from .generated.openapi_aclient.api.v1_api import V1Api as AObjectivesApi
 from .generated.openapi_aclient.api.v1_api import V1Api as ASkillsApi
 from .generated.openapi_aclient.api.v1_api import V1Api as AV1Api
@@ -35,11 +36,18 @@ from .generated.openapi_aclient.models.data_loader_request import DataLoaderRequ
 from .generated.openapi_aclient.models.evaluator_calibration_output import (
     EvaluatorCalibrationOutput as AEvaluatorCalibrationOutput,
 )
+from .generated.openapi_aclient.models.evaluator_list_output import EvaluatorListOutput as AEvaluatorListOutput
 from .generated.openapi_aclient.models.input_variable_request import InputVariableRequest as AInputVariableRequest
 from .generated.openapi_aclient.models.objective_request import ObjectiveRequest as AObjectiveRequest
+from .generated.openapi_aclient.models.paginated_evaluator_list_output_list import (
+    PaginatedEvaluatorListOutputList as APaginatedEvaluatorListOutputList,
+)
 from .generated.openapi_aclient.models.paginated_skill_list import PaginatedSkillList as APaginatedSkillList
 from .generated.openapi_aclient.models.paginated_skill_list_output_list import (
     PaginatedSkillListOutputList as APaginatedSkillListOutputList,
+)
+from .generated.openapi_aclient.models.patched_evaluator_request import (
+    PatchedEvaluatorRequest as APatchedEvaluatorRequest,
 )
 from .generated.openapi_aclient.models.patched_skill_request import PatchedSkillRequest as APatchedSkillRequest
 from .generated.openapi_aclient.models.reference_variable_request import (
@@ -58,6 +66,7 @@ from .generated.openapi_aclient.models.skill_test_input_request import (
 )
 from .generated.openapi_aclient.models.skill_test_output import SkillTestOutput as ASkillTestOutput
 from .generated.openapi_client.api.v1_api import ApiClient, V1Api
+from .generated.openapi_client.api.v1_api import V1Api as EvaluatorsApi
 from .generated.openapi_client.api.v1_api import V1Api as ObjectivesApi
 from .generated.openapi_client.api.v1_api import V1Api as SkillsApi
 from .generated.openapi_client.models.data_loader_request import DataLoaderRequest
@@ -70,10 +79,12 @@ from .generated.openapi_client.models.evaluator_execution_functions_request impo
 )
 from .generated.openapi_client.models.evaluator_execution_request import EvaluatorExecutionRequest
 from .generated.openapi_client.models.evaluator_execution_result import EvaluatorExecutionResult
+from .generated.openapi_client.models.evaluator_list_output import EvaluatorListOutput
 from .generated.openapi_client.models.input_variable_request import InputVariableRequest
 from .generated.openapi_client.models.model_params_request import ModelParamsRequest
 from .generated.openapi_client.models.objective_request import ObjectiveRequest
 from .generated.openapi_client.models.paginated_skill_list import PaginatedSkillList
+from .generated.openapi_client.models.patched_evaluator_request import PatchedEvaluatorRequest
 from .generated.openapi_client.models.patched_skill_request import PatchedSkillRequest
 from .generated.openapi_client.models.reference_variable_request import ReferenceVariableRequest
 from .generated.openapi_client.models.skill import Skill as OpenAPISkill
@@ -87,6 +98,8 @@ from .generated.openapi_client.models.skill_test_output import SkillTestOutput
 from .utils import ClientContextCallable, aiterate_cursor_list, iterate_cursor_list, with_async_client, with_sync_client
 
 if TYPE_CHECKING:
+    from .generated.openapi_aclient.models.evaluator import Evaluator as GeneratedEvaluator
+    from .generated.openapi_client.models.evaluator import Evaluator as SyncGeneratedEvaluator
     from .validators import AValidator, Validator
 
 
@@ -358,12 +371,13 @@ class Evaluator(OpenAPISkill):
     client_context: ClientContextCallable
 
     @classmethod
-    def _wrap(cls, apiobj: OpenAPISkill, client_context: ClientContextCallable) -> "Evaluator":
-        if not isinstance(apiobj, OpenAPISkill):
-            raise ValueError(f"Wrong instance in _wrap: {apiobj!r}")
+    def _wrap(
+        cls, apiobj: Union[OpenAPISkill, "SyncGeneratedEvaluator"], client_context: ClientContextCallable
+    ) -> "Evaluator":  # noqa: E501
         obj = cast(Evaluator, apiobj)
         obj.__class__ = cls
         obj.client_context = client_context
+        obj.is_evaluator = True
         return obj
 
     @with_sync_client
@@ -427,12 +441,13 @@ class AEvaluator(AOpenAPISkill):
     client_context: ClientContextCallable
 
     @classmethod
-    async def _awrap(cls, apiobj: AOpenAPISkill, client_context: ClientContextCallable) -> "AEvaluator":
-        if not isinstance(apiobj, AOpenAPISkill):
-            raise ValueError(f"Wrong instance in _wrap: {apiobj!r}")
+    async def _awrap(
+        cls, apiobj: Union[AOpenAPISkill, "GeneratedEvaluator"], client_context: ClientContextCallable
+    ) -> "AEvaluator":  # noqa: E501
         obj = cast(AEvaluator, apiobj)
         obj.__class__ = cls
         obj.client_context = client_context
+        obj.is_evaluator = True
         return obj
 
     @with_async_client
@@ -1629,7 +1644,7 @@ class Evaluators:
             raise ValueError("Either test_dataset_id or test_data must be provided")
         if test_dataset_id and test_data:
             raise ValueError("Only one of test_dataset_id or test_data must be provided")
-        api_instance = SkillsApi(_client)
+        api_instance = EvaluatorsApi(_client)
         skill_test_request = SkillTestInputRequest(
             name=name,
             test_dataset_id=test_dataset_id,
@@ -1670,7 +1685,7 @@ class Evaluators:
             raise ValueError("Either test_dataset_id or test_data must be provided")
         if test_dataset_id and test_data:
             raise ValueError("Only one of test_dataset_id or test_data must be provided")
-        api_instance = ASkillsApi(_client)
+        api_instance = AEvaluatorsApi(_client)
         skill_test_request = ASkillTestInputRequest(
             name=name,
             test_dataset_id=test_dataset_id,
@@ -1925,9 +1940,9 @@ class Evaluators:
         name: The evaluator to be fetched. Note this only works for uniquely named evaluators.
         """
 
-        api_instance = SkillsApi(_client)
+        api_instance = EvaluatorsApi(_client)
 
-        evaluator_list: List[SkillListOutput] = list(
+        evaluator_list: List[EvaluatorListOutput] = list(
             iterate_cursor_list(
                 partial(api_instance.v1_skills_list, name=name, is_evaluator=True),
                 limit=1,
@@ -1938,13 +1953,16 @@ class Evaluators:
             raise ValueError(f"No evaluator found with name '{name}'")
 
         evaluator = evaluator_list[0]
-        api_response = api_instance.v1_skills_retrieve(id=evaluator.id)
+        api_response = api_instance.get_evaluator_details(id=evaluator.id)
 
         return Evaluator._wrap(api_response, self.client_context)
 
+    @with_async_client
     async def aget_by_name(
         self,
         name: str,
+        *,
+        _client: ApiClient,
     ) -> AEvaluator:
         """Asynchronously get an evaluator instance by name.
 
@@ -1957,9 +1975,9 @@ class Evaluators:
         assert isinstance(context, AbstractAsyncContextManager), "This method is not available in synchronous mode"
 
         async with context as client:
-            api_instance = ASkillsApi(client)
+            api_instance = AEvaluatorsApi(client)
 
-            evaluator_list: List[ASkillListOutput] = []
+            evaluator_list: List[AEvaluatorListOutput] = []
             async for skill in aiterate_cursor_list(  # type: ignore[var-annotated]
                 partial(api_instance.v1_skills_list, name=name, is_evaluator=True),
                 limit=1,
@@ -2123,6 +2141,7 @@ class Evaluators:
         self,
         evaluator_id: str,
         *,
+        _client: ApiClient,
         change_note: Optional[str] = None,
         data_loaders: Optional[List[DataLoader]] = None,
         fallback_models: Optional[List[ModelName]] = None,
@@ -2143,29 +2162,31 @@ class Evaluators:
         See the create method for more information on the arguments.
         """
 
-        evaluator = Skills(self.client_context).update(
-            skill_id=evaluator_id,
+        api_instance = EvaluatorsApi(_client)
+        request = PatchedEvaluatorRequest(
             change_note=change_note,
-            data_loaders=data_loaders,
-            fallback_models=fallback_models,
-            input_variables=input_variables,
-            model=model,
+            input_variables=_to_input_variables(input_variables),
+            models=[model] if model is not None else None,
             name=name,
-            pii_filter=pii_filter,
-            prompt=predicate,
-            reference_variables=reference_variables,
-            model_params=model_params,
-            evaluator_demonstrations=evaluator_demonstrations,
+            reference_variables=_to_reference_variables(reference_variables),
+            model_params=_to_model_params(model_params),
             objective_id=objective_id,
+            evaluator_demonstrations=_to_evaluator_demonstrations(evaluator_demonstrations),
+        )
+
+        api_response = api_instance.partial_update_evaluator(
+            id=evaluator_id,
+            patched_evaluator_request=request,
             _request_timeout=_request_timeout,
         )
-        return Evaluator._wrap(evaluator, self.client_context)
+        return Evaluator._wrap(api_response, self.client_context)
 
     async def aupdate(
         self,
         evaluator_id: str,
         *,
         change_note: Optional[str] = None,
+        _client: AApiClient,
         data_loaders: Optional[List[ADataLoader]] = None,
         fallback_models: Optional[List[ModelName]] = None,
         input_variables: Optional[Union[List[InputVariable], List[AInputVariableRequest]]] = None,
@@ -2184,29 +2205,28 @@ class Evaluators:
 
         See the create method for more information on the arguments.
         """
+        api_instance = AEvaluatorsApi(_client)
 
-        evaluator = await Skills(self.client_context).aupdate(
-            skill_id=evaluator_id,
+        request = APatchedEvaluatorRequest(
             change_note=change_note,
-            data_loaders=data_loaders,
-            fallback_models=fallback_models,
-            input_variables=input_variables,
-            model=model,
+            input_variables=_ato_input_variables(input_variables),
+            models=[model] if model is not None else None,
             name=name,
-            pii_filter=pii_filter,
-            prompt=predicate,
-            reference_variables=reference_variables,
-            model_params=model_params,
-            evaluator_demonstrations=evaluator_demonstrations,
+            reference_variables=_ato_reference_variables(reference_variables),
+            model_params=_ato_model_params(model_params),
             objective_id=objective_id,
-            _request_timeout=_request_timeout,
+            evaluator_demonstrations=_ato_evaluator_demonstrations(evaluator_demonstrations),
         )
-        return await AEvaluator._awrap(evaluator, self.client_context)
+        api_response = await api_instance.partial_update_evaluator(
+            id=evaluator_id,
+            patched_evaluator_request=request,
+        )
+        return await AEvaluator._awrap(api_response, self.client_context)
 
     @with_sync_client
     def get(
         self,
-        skill_id: str,
+        evaluator_id: str,
         *,
         _request_timeout: Optional[int] = None,
         _client: ApiClient,
@@ -2215,16 +2235,14 @@ class Evaluators:
         Get a Evaluator instance by ID.
         """
 
-        api_instance = SkillsApi(_client)
-        api_response = api_instance.v1_skills_retrieve(id=skill_id, _request_timeout=_request_timeout)
-        if not api_response.is_evaluator:
-            raise ValueError(f"Skill with id {skill_id} is not an evaluator")
+        api_instance = EvaluatorsApi(_client)
+        api_response = api_instance.get_evaluator_details(id=evaluator_id, _request_timeout=_request_timeout)
         return Evaluator._wrap(api_response, self.client_context)
 
     @with_async_client
     async def aget(
         self,
-        skill_id: str,
+        evaluator_id: str,
         *,
         _request_timeout: Optional[int] = None,
         _client: AApiClient,
@@ -2233,12 +2251,11 @@ class Evaluators:
         Asynchronously get a Evaluator instance by ID.
         """
 
-        api_instance = ASkillsApi(_client)
-        api_response = await api_instance.v1_skills_retrieve(id=skill_id, _request_timeout=_request_timeout)
-        if not api_response.is_evaluator:
-            raise ValueError(f"Skill with id {skill_id} is not an evaluator")
+        api_instance = AEvaluatorsApi(_client)
+        api_response = await api_instance.get_evaluator_details(id=evaluator_id, _request_timeout=_request_timeout)
         return await AEvaluator._awrap(api_response, self.client_context)
 
+    @with_sync_client
     def list(
         self,
         search_term: Optional[str] = None,
@@ -2246,7 +2263,8 @@ class Evaluators:
         limit: int = 100,
         name: Optional[str] = None,
         only_root_evaluators: bool = False,
-    ) -> Iterator[SkillListOutput]:
+        _client: ApiClient,
+    ) -> Iterator[EvaluatorListOutput]:
         """
         Iterate through the evaluators.
 
@@ -2257,12 +2275,15 @@ class Evaluators:
           only_root_evaluators: Returns only Root Signals defined evaluators.
         """
 
-        return Skills(self.client_context).list(
-            search_term=search_term,
+        api_instance = EvaluatorsApi(_client)
+        yield from iterate_cursor_list(
+            partial(
+                api_instance.list_evaluators,
+                name=name,
+                search=search_term,
+                is_root_evaluator=True if only_root_evaluators else None,
+            ),
             limit=limit,
-            name=name,
-            only_root_evaluators=only_root_evaluators,
-            only_evaluators=True,
         )
 
     async def alist(
@@ -2272,7 +2293,7 @@ class Evaluators:
         limit: int = 100,
         name: Optional[str] = None,
         only_root_evaluators: bool = False,
-    ) -> AsyncIterator[ASkillListOutput]:
+    ) -> AsyncIterator[AEvaluatorListOutput]:
         """
         Asynchronously iterate through the evaluators.
 
@@ -2283,13 +2304,30 @@ class Evaluators:
           only_root_evaluators: Returns only Root Signals defined evaluators.
         """
 
-        return Skills(self.client_context).alist(
-            search_term=search_term,
-            limit=limit,
-            name=name,
-            only_root_evaluators=only_root_evaluators,
-            only_evaluators=True,
-        )
+        context = self.client_context()
+        assert isinstance(context, AbstractAsyncContextManager), "This method is not available in synchronous mode"
+        async with context as client:
+            api_instance = AV1Api(client)
+            partial_list = partial(
+                api_instance.list_evaluators,
+                name=name,
+                search=search_term,
+                is_root_evaluator=True if only_root_evaluators else None,
+            )
+
+            cursor: Optional[StrictStr] = None
+            while limit > 0:
+                result: APaginatedEvaluatorListOutputList = await partial_list(page_size=limit, cursor=cursor)
+                if not result.results:
+                    return
+
+                used_results = result.results[:limit]
+                limit -= len(used_results)
+                for used_result in used_results:
+                    yield used_result
+
+                if not (cursor := result.next):
+                    return
 
     @with_sync_client
     def run_by_name(
@@ -2327,7 +2365,7 @@ class Evaluators:
         if not response and not request:
             raise ValueError("Either response or request must be provided")
 
-        api_instance = V1Api(_client)
+        api_instance = EvaluatorsApi(_client)
 
         evaluator_execution_request = EvaluatorExecutionRequest(
             skill_version_id=evaluator_version_id,
@@ -2381,7 +2419,7 @@ class Evaluators:
         if not response and not request:
             raise ValueError("Either response or request must be provided")
 
-        api_instance = AV1Api(_client)
+        api_instance = AEvaluatorsApi(_client)
         evaluator_execution_request = AEvaluatorExecutionRequest(
             skill_version_id=evaluator_version_id,
             request=request,
