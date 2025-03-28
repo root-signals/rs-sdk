@@ -22,7 +22,6 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing_extensions import Annotated, Self
 
-from root.generated.openapi_aclient.models.judge_owner import JudgeOwner
 from root.generated.openapi_aclient.models.judge_status_enum import JudgeStatusEnum
 from root.generated.openapi_aclient.models.nested_evaluator import NestedEvaluator
 from root.generated.openapi_aclient.models.nested_vector_objective import NestedVectorObjective
@@ -38,19 +37,9 @@ class Judge(BaseModel):
     evaluators: List[NestedEvaluator]
     prototype: NestedVectorObjective
     created_at: Optional[datetime]
-    owner: JudgeOwner
     status: JudgeStatusEnum
     meta: Dict[str, Any] = Field(alias="_meta")
-    __properties: ClassVar[List[str]] = [
-        "id",
-        "name",
-        "evaluators",
-        "prototype",
-        "created_at",
-        "owner",
-        "status",
-        "_meta",
-    ]
+    __properties: ClassVar[List[str]] = ["id", "name", "evaluators", "prototype", "created_at", "status", "_meta"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -114,9 +103,6 @@ class Judge(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of prototype
         if self.prototype:
             _dict["prototype"] = self.prototype.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of owner
-        if self.owner:
-            _dict["owner"] = self.owner.to_dict()
         # set to None if created_at (nullable) is None
         # and model_fields_set contains the field
         if self.created_at is None and "created_at" in self.model_fields_set:
@@ -144,7 +130,6 @@ class Judge(BaseModel):
                 if obj.get("prototype") is not None
                 else None,
                 "created_at": obj.get("created_at"),
-                "owner": JudgeOwner.from_dict(obj["owner"]) if obj.get("owner") is not None else None,
                 "status": obj.get("status"),
                 "_meta": obj.get("_meta"),
             }

@@ -131,7 +131,6 @@ Class | Method | HTTP request | Description
 *V1Api* | [**v1_skills_destroy**](root/generated/openapi_aclient/docs/V1Api.md#v1_skills_destroy) | **DELETE** /v1/skills/{id}/ | 
 *V1Api* | [**v1_skills_evaluator_execute_create**](root/generated/openapi_aclient/docs/V1Api.md#v1_skills_evaluator_execute_create) | **POST** /v1/skills/evaluator/execute/{id}/ | 
 *V1Api* | [**v1_skills_execute_create**](root/generated/openapi_aclient/docs/V1Api.md#v1_skills_execute_create) | **POST** /v1/skills/execute/{id}/ | 
-*V1Api* | [**v1_skills_execute_validators_create**](root/generated/openapi_aclient/docs/V1Api.md#v1_skills_execute_validators_create) | **POST** /v1/skills/execute-validators/{id}/ | 
 *V1Api* | [**v1_skills_list**](root/generated/openapi_aclient/docs/V1Api.md#v1_skills_list) | **GET** /v1/skills/ | 
 *V1Api* | [**v1_skills_openai_chat_completions_create**](root/generated/openapi_aclient/docs/V1Api.md#v1_skills_openai_chat_completions_create) | **POST** /v1/skills/openai/{skill_id}/chat/completions | 
 *V1Api* | [**v1_skills_partial_update**](root/generated/openapi_aclient/docs/V1Api.md#v1_skills_partial_update) | **PATCH** /v1/skills/{id}/ | 
@@ -195,7 +194,6 @@ Class | Method | HTTP request | Description
  - [JudgeExecutionRequest](root/generated/openapi_aclient/docs/JudgeExecutionRequest.md)
  - [JudgeExecutionResponse](root/generated/openapi_aclient/docs/JudgeExecutionResponse.md)
  - [JudgeList](root/generated/openapi_aclient/docs/JudgeList.md)
- - [JudgeOwner](root/generated/openapi_aclient/docs/JudgeOwner.md)
  - [JudgeRequest](root/generated/openapi_aclient/docs/JudgeRequest.md)
  - [JudgeStatusEnum](root/generated/openapi_aclient/docs/JudgeStatusEnum.md)
  - [Model](root/generated/openapi_aclient/docs/Model.md)
@@ -252,7 +250,6 @@ Class | Method | HTTP request | Description
  - [SkillTestInputRequest](root/generated/openapi_aclient/docs/SkillTestInputRequest.md)
  - [SkillTestOutput](root/generated/openapi_aclient/docs/SkillTestOutput.md)
  - [SkillTypeEnum](root/generated/openapi_aclient/docs/SkillTypeEnum.md)
- - [SkillValidatorExecutionRequest](root/generated/openapi_aclient/docs/SkillValidatorExecutionRequest.md)
  - [StatusChange](root/generated/openapi_aclient/docs/StatusChange.md)
  - [StatusChangeRequest](root/generated/openapi_aclient/docs/StatusChangeRequest.md)
  - [StatusChangeStatusEnum](root/generated/openapi_aclient/docs/StatusChangeStatusEnum.md)

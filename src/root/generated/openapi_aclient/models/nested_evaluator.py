@@ -31,7 +31,8 @@ class NestedEvaluator(BaseModel):
     intent: StrictStr
     name: StrictStr
     is_root_evaluator: StrictBool
-    __properties: ClassVar[List[str]] = ["id", "intent", "name", "is_root_evaluator"]
+    model: StrictStr
+    __properties: ClassVar[List[str]] = ["id", "intent", "name", "is_root_evaluator", "model"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -63,10 +64,12 @@ class NestedEvaluator(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
                 "intent",
+                "model",
             ]
         )
 
@@ -92,6 +95,7 @@ class NestedEvaluator(BaseModel):
                 "intent": obj.get("intent"),
                 "name": obj.get("name"),
                 "is_root_evaluator": obj.get("is_root_evaluator"),
+                "model": obj.get("model"),
             }
         )
         return _obj

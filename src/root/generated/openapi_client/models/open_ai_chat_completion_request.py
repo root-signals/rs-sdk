@@ -32,7 +32,8 @@ class OpenAIChatCompletionRequest(BaseModel):
     model: Annotated[str, Field(min_length=1, strict=True, max_length=200)]
     messages: List[OpenAIMessageRequest]
     stream: Optional[StrictBool] = False
-    __properties: ClassVar[List[str]] = ["model", "messages", "stream"]
+    extra_body: Optional[Dict[str, Any]] = None
+    __properties: ClassVar[List[str]] = ["model", "messages", "stream", "extra_body"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -96,6 +97,7 @@ class OpenAIChatCompletionRequest(BaseModel):
                 if obj.get("messages") is not None
                 else None,
                 "stream": obj.get("stream") if obj.get("stream") is not None else False,
+                "extra_body": obj.get("extra_body"),
             }
         )
         return _obj

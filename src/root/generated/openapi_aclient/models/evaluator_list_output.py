@@ -19,7 +19,7 @@ import re  # noqa: F401
 from datetime import datetime
 from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing_extensions import Self
 
 from root.generated.openapi_aclient.models.nested_objective_list import NestedObjectiveList
@@ -44,6 +44,9 @@ class EvaluatorListOutput(BaseModel):
     updated_at: Optional[datetime]
     updated_by: Optional[NestedUserDetails]
     version_id: StrictStr
+    requires_contexts: StrictBool
+    requires_functions: StrictBool
+    requires_expected_output: StrictBool
     __properties: ClassVar[List[str]] = [
         "_meta",
         "created_at",
@@ -57,6 +60,9 @@ class EvaluatorListOutput(BaseModel):
         "updated_at",
         "updated_by",
         "version_id",
+        "requires_contexts",
+        "requires_functions",
+        "requires_expected_output",
     ]
 
     model_config = ConfigDict(
@@ -100,6 +106,9 @@ class EvaluatorListOutput(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
@@ -115,6 +124,9 @@ class EvaluatorListOutput(BaseModel):
                 "updated_at",
                 "updated_by",
                 "version_id",
+                "requires_contexts",
+                "requires_functions",
+                "requires_expected_output",
             ]
         )
 
@@ -181,6 +193,9 @@ class EvaluatorListOutput(BaseModel):
                 if obj.get("updated_by") is not None
                 else None,
                 "version_id": obj.get("version_id"),
+                "requires_contexts": obj.get("requires_contexts"),
+                "requires_functions": obj.get("requires_functions"),
+                "requires_expected_output": obj.get("requires_expected_output"),
             }
         )
         return _obj
