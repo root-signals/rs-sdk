@@ -945,11 +945,13 @@ class Skills:
             models=[model] + (fallback_models or []) if model else None,
             pii_filter=pii_filter,
             is_evaluator=is_evaluator,
-            reference_variables=_to_reference_variables(reference_variables),
-            input_variables=_to_input_variables(input_variables),
+            reference_variables=_to_reference_variables(reference_variables) if reference_variables else None,
+            input_variables=_to_input_variables(input_variables) if input_variables else None,
             change_note=change_note or "",
-            model_params=_to_model_params(model_params),
-            evaluator_demonstrations=_to_evaluator_demonstrations(evaluator_demonstrations),
+            model_params=_to_model_params(model_params) if model_params else None,
+            evaluator_demonstrations=_to_evaluator_demonstrations(evaluator_demonstrations)
+            if evaluator_demonstrations
+            else None,
             objective_id=objective_id,
         )
         api_response = api_instance.v1_skills_partial_update(
@@ -991,11 +993,13 @@ class Skills:
             models=[model] + (fallback_models or []) if model else None,
             pii_filter=pii_filter,
             is_evaluator=is_evaluator,
-            reference_variables=_ato_reference_variables(reference_variables),
-            input_variables=_ato_input_variables(input_variables),
+            reference_variables=_ato_reference_variables(reference_variables) if reference_variables else None,
+            input_variables=_ato_input_variables(input_variables) if input_variables else None,
             change_note=change_note or "",
-            model_params=_ato_model_params(model_params),
-            evaluator_demonstrations=_ato_evaluator_demonstrations(evaluator_demonstrations),
+            model_params=_ato_model_params(model_params) if model_params else None,
+            evaluator_demonstrations=_ato_evaluator_demonstrations(evaluator_demonstrations)
+            if evaluator_demonstrations
+            else None,
             objective_id=objective_id,
         )
         api_response = await api_instance.v1_skills_partial_update(
@@ -2113,15 +2117,19 @@ class Evaluators:
 
         api_instance = EvaluatorsApi(_client)
         request = PatchedEvaluatorRequest(
-            change_note=change_note,
-            input_variables=_to_input_variables(input_variables),
-            models=[model for model in [model] + (fallback_models or []) if model is not None],
+            change_note=change_note or "",
+            input_variables=_to_input_variables(input_variables) if input_variables else None,
+            models=[model for model in [model] + (fallback_models or []) if model is not None]
+            if model or fallback_models
+            else None,
             name=name,
             prompt=predicate,
-            reference_variables=_to_reference_variables(reference_variables),
-            model_params=_to_model_params(model_params),
+            reference_variables=_to_reference_variables(reference_variables) if reference_variables else None,
+            model_params=_to_model_params(model_params) if model_params else None,
             objective_id=objective_id,
-            evaluator_demonstrations=_to_evaluator_demonstrations(evaluator_demonstrations),
+            evaluator_demonstrations=_to_evaluator_demonstrations(evaluator_demonstrations)
+            if evaluator_demonstrations
+            else None,
         )
 
         api_response = api_instance.partial_update_evaluator(
@@ -2157,15 +2165,19 @@ class Evaluators:
         api_instance = AEvaluatorsApi(_client)
 
         request = APatchedEvaluatorRequest(
-            change_note=change_note,
-            input_variables=_ato_input_variables(input_variables),
-            models=[model for model in [model] + (fallback_models or []) if model is not None],
+            change_note=change_note or "",
+            input_variables=_ato_input_variables(input_variables) if input_variables else None,
+            models=[model for model in [model] + (fallback_models or []) if model is not None]
+            if model or fallback_models
+            else None,
             name=name,
-            reference_variables=_ato_reference_variables(reference_variables),
-            model_params=_ato_model_params(model_params),
+            reference_variables=_ato_reference_variables(reference_variables) if reference_variables else None,
+            model_params=_ato_model_params(model_params) if model_params else None,
             objective_id=objective_id,
             prompt=predicate,
-            evaluator_demonstrations=_ato_evaluator_demonstrations(evaluator_demonstrations),
+            evaluator_demonstrations=_ato_evaluator_demonstrations(evaluator_demonstrations)
+            if evaluator_demonstrations
+            else None,
         )
         api_response = await api_instance.partial_update_evaluator(
             id=evaluator_id,
