@@ -40,11 +40,6 @@ class Evaluator(BaseModel):
     change_note: Optional[StrictStr] = None
     created_at: Optional[datetime]
     evaluator_demonstrations: Optional[List[EvaluatorDemonstrations]] = None
-    requires_expected_output: Optional[StrictBool] = Field(
-        default=None, description="Expected output to the request from the LLM."
-    )
-    requires_contexts: Optional[StrictBool] = None
-    requires_functions: Optional[StrictBool] = None
     id: StrictStr
     input_variables: Optional[List[InputVariable]] = None
     model_params: Optional[ModelParams] = None
@@ -61,13 +56,13 @@ class Evaluator(BaseModel):
     updated_by: Optional[NestedUserDetails]
     version_id: StrictStr
     meta: Optional[Any] = Field(alias="_meta")
+    requires_contexts: StrictBool
+    requires_functions: StrictBool
+    requires_expected_output: StrictBool = Field(description="Expected output to the request from the LLM.")
     __properties: ClassVar[List[str]] = [
         "change_note",
         "created_at",
         "evaluator_demonstrations",
-        "requires_expected_output",
-        "requires_contexts",
-        "requires_functions",
         "id",
         "input_variables",
         "model_params",
@@ -84,6 +79,9 @@ class Evaluator(BaseModel):
         "updated_by",
         "version_id",
         "_meta",
+        "requires_contexts",
+        "requires_functions",
+        "requires_expected_output",
     ]
 
     model_config = ConfigDict(
@@ -123,6 +121,9 @@ class Evaluator(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
@@ -134,6 +135,9 @@ class Evaluator(BaseModel):
                 "updated_by",
                 "version_id",
                 "meta",
+                "requires_contexts",
+                "requires_functions",
+                "requires_expected_output",
             ]
         )
 
@@ -235,9 +239,6 @@ class Evaluator(BaseModel):
                 ]
                 if obj.get("evaluator_demonstrations") is not None
                 else None,
-                "requires_expected_output": obj.get("requires_expected_output"),
-                "requires_contexts": obj.get("requires_contexts"),
-                "requires_functions": obj.get("requires_functions"),
                 "id": obj.get("id"),
                 "input_variables": [InputVariable.from_dict(_item) for _item in obj["input_variables"]]
                 if obj.get("input_variables") is not None
@@ -262,6 +263,9 @@ class Evaluator(BaseModel):
                 else None,
                 "version_id": obj.get("version_id"),
                 "_meta": obj.get("_meta"),
+                "requires_contexts": obj.get("requires_contexts"),
+                "requires_functions": obj.get("requires_functions"),
+                "requires_expected_output": obj.get("requires_expected_output"),
             }
         )
         return _obj

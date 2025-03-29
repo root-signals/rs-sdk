@@ -77,7 +77,6 @@ from root.generated.openapi_aclient.models.judge import Judge
 from root.generated.openapi_aclient.models.judge_execution_request import JudgeExecutionRequest
 from root.generated.openapi_aclient.models.judge_execution_response import JudgeExecutionResponse
 from root.generated.openapi_aclient.models.judge_list import JudgeList
-from root.generated.openapi_aclient.models.judge_owner import JudgeOwner
 from root.generated.openapi_aclient.models.judge_request import JudgeRequest
 from root.generated.openapi_aclient.models.judge_status_enum import JudgeStatusEnum
 from root.generated.openapi_aclient.models.model import Model
@@ -136,7 +135,6 @@ from root.generated.openapi_aclient.models.skill_test_data_request_dataset_range
 from root.generated.openapi_aclient.models.skill_test_input_request import SkillTestInputRequest
 from root.generated.openapi_aclient.models.skill_test_output import SkillTestOutput
 from root.generated.openapi_aclient.models.skill_type_enum import SkillTypeEnum
-from root.generated.openapi_aclient.models.skill_validator_execution_request import SkillValidatorExecutionRequest
 from root.generated.openapi_aclient.models.status_change import StatusChange
 from root.generated.openapi_aclient.models.status_change_request import StatusChangeRequest
 from root.generated.openapi_aclient.models.status_change_status_enum import StatusChangeStatusEnum

@@ -14,7 +14,7 @@ Do not edit the class manually.
 import warnings
 from typing import Any, Dict, List, Optional, Tuple, Union
 
-from pydantic import Field, StrictFloat, StrictInt, StrictStr, validate_call
+from pydantic import Field, StrictBool, StrictFloat, StrictInt, StrictStr, validate_call
 from typing_extensions import Annotated
 
 from root.generated.openapi_client.api_client import ApiClient, RequestSerialized
@@ -942,10 +942,13 @@ class BetaApi:
     def beta_judges_list(
         self,
         cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
+        name: Optional[StrictStr] = None,
         ordering: Annotated[
             Optional[StrictStr], Field(description="Which field to use when ordering the results.")
         ] = None,
         page_size: Annotated[Optional[StrictInt], Field(description="Number of results to return per page.")] = None,
+        search: Optional[StrictStr] = None,
+        show_global: Optional[StrictBool] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -961,10 +964,16 @@ class BetaApi:
 
         :param cursor: The pagination cursor value.
         :type cursor: str
+        :param name:
+        :type name: str
         :param ordering: Which field to use when ordering the results.
         :type ordering: str
         :param page_size: Number of results to return per page.
         :type page_size: int
+        :param search:
+        :type search: str
+        :param show_global:
+        :type show_global: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -989,8 +998,11 @@ class BetaApi:
 
         _param = self._beta_judges_list_serialize(
             cursor=cursor,
+            name=name,
             ordering=ordering,
             page_size=page_size,
+            search=search,
+            show_global=show_global,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1011,10 +1023,13 @@ class BetaApi:
     def beta_judges_list_with_http_info(
         self,
         cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
+        name: Optional[StrictStr] = None,
         ordering: Annotated[
             Optional[StrictStr], Field(description="Which field to use when ordering the results.")
         ] = None,
         page_size: Annotated[Optional[StrictInt], Field(description="Number of results to return per page.")] = None,
+        search: Optional[StrictStr] = None,
+        show_global: Optional[StrictBool] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1030,10 +1045,16 @@ class BetaApi:
 
         :param cursor: The pagination cursor value.
         :type cursor: str
+        :param name:
+        :type name: str
         :param ordering: Which field to use when ordering the results.
         :type ordering: str
         :param page_size: Number of results to return per page.
         :type page_size: int
+        :param search:
+        :type search: str
+        :param show_global:
+        :type show_global: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1058,8 +1079,11 @@ class BetaApi:
 
         _param = self._beta_judges_list_serialize(
             cursor=cursor,
+            name=name,
             ordering=ordering,
             page_size=page_size,
+            search=search,
+            show_global=show_global,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1080,10 +1104,13 @@ class BetaApi:
     def beta_judges_list_without_preload_content(
         self,
         cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
+        name: Optional[StrictStr] = None,
         ordering: Annotated[
             Optional[StrictStr], Field(description="Which field to use when ordering the results.")
         ] = None,
         page_size: Annotated[Optional[StrictInt], Field(description="Number of results to return per page.")] = None,
+        search: Optional[StrictStr] = None,
+        show_global: Optional[StrictBool] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1099,10 +1126,16 @@ class BetaApi:
 
         :param cursor: The pagination cursor value.
         :type cursor: str
+        :param name:
+        :type name: str
         :param ordering: Which field to use when ordering the results.
         :type ordering: str
         :param page_size: Number of results to return per page.
         :type page_size: int
+        :param search:
+        :type search: str
+        :param show_global:
+        :type show_global: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1127,8 +1160,11 @@ class BetaApi:
 
         _param = self._beta_judges_list_serialize(
             cursor=cursor,
+            name=name,
             ordering=ordering,
             page_size=page_size,
+            search=search,
+            show_global=show_global,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1144,8 +1180,11 @@ class BetaApi:
     def _beta_judges_list_serialize(
         self,
         cursor,
+        name,
         ordering,
         page_size,
+        search,
+        show_global,
         _request_auth,
         _content_type,
         _headers,
@@ -1167,11 +1206,20 @@ class BetaApi:
         if cursor is not None:
             _query_params.append(("cursor", cursor))
 
+        if name is not None:
+            _query_params.append(("name", name))
+
         if ordering is not None:
             _query_params.append(("ordering", ordering))
 
         if page_size is not None:
             _query_params.append(("page_size", page_size))
+
+        if search is not None:
+            _query_params.append(("search", search))
+
+        if show_global is not None:
+            _query_params.append(("show_global", show_global))
 
         # process the header parameters
         # process the form parameters

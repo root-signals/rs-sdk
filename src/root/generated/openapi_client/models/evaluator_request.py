@@ -36,11 +36,6 @@ class EvaluatorRequest(BaseModel):
 
     change_note: Optional[StrictStr] = None
     evaluator_demonstrations: Optional[List[EvaluatorDemonstrationsRequest]] = None
-    requires_expected_output: Optional[StrictBool] = Field(
-        default=None, description="Expected output to the request from the LLM."
-    )
-    requires_contexts: Optional[StrictBool] = None
-    requires_functions: Optional[StrictBool] = None
     input_variables: Optional[List[InputVariableRequest]] = None
     model_params: Optional[ModelParamsRequest] = None
     models: Optional[List[Annotated[str, Field(min_length=1, strict=True)]]] = None
@@ -61,9 +56,6 @@ class EvaluatorRequest(BaseModel):
     __properties: ClassVar[List[str]] = [
         "change_note",
         "evaluator_demonstrations",
-        "requires_expected_output",
-        "requires_contexts",
-        "requires_functions",
         "input_variables",
         "model_params",
         "models",
@@ -191,9 +183,6 @@ class EvaluatorRequest(BaseModel):
                 ]
                 if obj.get("evaluator_demonstrations") is not None
                 else None,
-                "requires_expected_output": obj.get("requires_expected_output"),
-                "requires_contexts": obj.get("requires_contexts"),
-                "requires_functions": obj.get("requires_functions"),
                 "input_variables": [InputVariableRequest.from_dict(_item) for _item in obj["input_variables"]]
                 if obj.get("input_variables") is not None
                 else None,
