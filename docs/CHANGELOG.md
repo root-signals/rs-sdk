@@ -1,3 +1,13 @@
+## 1.5.3
+
+### Added
+
+- Added `requires_contexts`, `requires_functions`, and `requires_expected_output` to evaluator list output
+
+### Removed
+
+- Removed data loaders. Input variables to be used as replacements for data loaders.
+
 ## 1.5.2
 
 ### Added
