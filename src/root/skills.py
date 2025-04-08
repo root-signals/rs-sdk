@@ -1380,6 +1380,10 @@ class Evaluators:
         Truthfulness = "053df10f-b0c7-400b-892e-46ce3aa1e430"
         Context_Precision = "9d1e9a25-7e76-4771-b1e3-40825d7918c5"
         Answer_Relevance = "0907d422-e94f-4c9c-a63d-ec0eefd8a903"
+        Compliance_Preview = "4613f248-b60e-403a-bcdc-157d1c44194a"
+        Faithfulness_Swift = "a3a5e97b-7fcb-441e-92f2-6e59aa473b89"
+        Truthfulness_Swift = "c8c65e61-2dc8-4f29-865a-a5e59127d208"
+        Completeness = "f0832c32-6beb-4383-a1ea-cdeb883d9044"
 
     def __init__(self, client_context: ClientContextCallable):
         self.client_context = client_context
