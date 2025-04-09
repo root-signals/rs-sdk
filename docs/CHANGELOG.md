@@ -1,3 +1,10 @@
+## 1.5.4
+
+### Added
+
+- Added four new root evaluators
+
+
 ## 1.5.3
 
 ### Added
