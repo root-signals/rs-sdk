@@ -46,7 +46,6 @@
   </a>
 </p>
 
-
 **Root Signals** streamlines the evaluation of your LLM and agentic pipelines. We provide a holistic approach to GenAI measurability & observability with **carefully-crafted ready-to-use evaluators** based on cutting-edge LLM research as well as a framework for systematically adding **your own custom evaluators**.
 
 With Root Signals you can develop your LLM application reliably, deploy them in confidence, and ensure optimal performance with continuous monitoring.
@@ -57,10 +56,9 @@ With Root Signals you can develop your LLM application reliably, deploy them in 
 pip install root-signals
 ```
 
-
 ## ⚡ Quickstart
 
-#### 🔑 Get Your API Key
+### 🔑 Get Your API Key
 [Sign up & create a key](https://app.rootsignals.ai/settings/api-keys) or [generate a temporary key](https://app.rootsignals.ai/demo-user)
 
 **Setup Option 1: Environment Variable**
@@ -77,18 +75,22 @@ echo ROOTSIGNALS_API_KEY=your-Root-API-key >> .env
 ```python
 from root import RootSignals
 
-# Connect to the Root Signals API
+# Connect to Root Signals API
 client = RootSignals()
 
-# Run a politeness evaluator
-response = client.evaluators.Politeness(
+# Run any of our ready-made evaluators
+result = client.evaluators.Politeness(
     response="You can find the instructions from our Careers page."
 )
-print(response)
-# {score=0.7, justification='The response is st...', execution_log_id=...}
+# Example result:
+#   {
+#     "score": 0.7, --> a normalized score between [0, 1]
+#     "justification": "The response is st...",
+#     "execution_log_id": "..."
+#   }
 ```
 
-Check the full list of Root evaluators from the [Root evaluators documentation](https://docs.rootsignals.ai/quick-start/usage/evaluators#list-of-evaluators-maintained-by-root-signals). You can also [add your own evaluators](https://sdk.rootsignals.ai/en/latest/examples.html#custom-evaluator).
+Check the full list of *Root* evaluators from the [Root evaluators documentation](https://docs.rootsignals.ai/quick-start/usage/evaluators#list-of-evaluators-maintained-by-root-signals). You can also [add your own custom evaluators](https://sdk.rootsignals.ai/en/latest/examples.html#custom-evaluator).
 
 
 ## 📖 Documentation
@@ -98,6 +100,7 @@ Check the full list of Root evaluators from the [Root evaluators documentation](
 | 🐍 Python SDK | [View Documentation](https://sdk.rootsignals.ai) |
 | 📘 Product Docs | [View Documentation](https://docs.rootsignals.ai) |
 | 📑 API Docs | [View Documentation](https://api.docs.rootsignals.ai/) |
+| 🔌 MCP | [View Repo](https://github.com/root-signals/root-signals-mcp) |
 
 <table>
   <thead>
@@ -134,9 +137,6 @@ Check the full list of Root evaluators from the [Root evaluators documentation](
   </tbody>
 </table>
 
-
-
 ## 🌍 Community
 
 💬 Welcome to our [Discord Server](https://discord.gg/EhazTQsFnj)! It's a great place to ask questions, get help, and discuss ideas.
-
