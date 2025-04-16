@@ -1906,7 +1906,7 @@ class Evaluators:
 
         evaluator_list: List[EvaluatorListOutput] = list(
             iterate_cursor_list(
-                partial(api_instance.v1_skills_list, name=name, is_evaluator=True),
+                partial(api_instance.list_evaluators, name=name),
                 limit=1,
             )
         )
@@ -1941,7 +1941,7 @@ class Evaluators:
 
             evaluator_list: List[AEvaluatorListOutput] = []
             async for skill in aiterate_cursor_list(  # type: ignore[var-annotated]
-                partial(api_instance.v1_skills_list, name=name, is_evaluator=True),
+                partial(api_instance.list_evaluators, name=name),
                 limit=1,
             ):
                 evaluator_list.extend(skill)
