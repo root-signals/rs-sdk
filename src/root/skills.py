@@ -1389,48 +1389,6 @@ class Evaluators:
         self.client_context = client_context
         self.versions = Versions(client_context)
 
-    EvaluatorName = Literal[
-        "Faithfulness",
-        "Relevance",
-        "Clarity",
-        "Non_toxicity",
-        "Helpfulness",
-        "Politeness",
-        "Formality",
-        "Harmlessness",
-        "Confidentiality",
-        "Persuasiveness",
-        "JSON_Empty_Values_Ratio",
-        "JSON_Property_Name_Accuracy",
-        "JSON_Property_Type_Accuracy",
-        "JSON_Property_Completeness",
-        "JSON_Content_Accuracy",
-        "Context_Recall",
-        "Answer_Correctness",
-        "Answer_Semantic_Similarity",
-        "Sentiment_recognition",
-        "Safety_for_Children",
-        "Precision",
-        "Originality",
-        "Engagingness",
-        "Conciseness",
-        "Coherence",
-        "Quality_of_Writing_Professional",
-        "Quality_of_Writing_Creative",
-        "Truthfulness",
-        "Context_Precision",
-        "Answer_Relevance",
-    ]
-
-    def __getattr__(self, name: Union[EvaluatorName, str]) -> Union["PresetEvaluatorRunner", "APresetEvaluatorRunner"]:
-        if name in self.Eval.__members__:
-            context = self.client_context()
-            if isinstance(context, AbstractContextManager):
-                return PresetEvaluatorRunner(self.client_context, self.Eval.__members__[name].value, name)
-            else:
-                return APresetEvaluatorRunner(self.client_context, self.Eval.__members__[name].value, name)
-        raise AttributeError(f"{name} is not a valid attribute")
-
     @with_sync_client
     def run(
         self,
@@ -2402,3 +2360,45 @@ class Evaluators:
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
         )
+
+    EvaluatorName = Literal[
+        "Faithfulness",
+        "Relevance",
+        "Clarity",
+        "Non_toxicity",
+        "Helpfulness",
+        "Politeness",
+        "Formality",
+        "Harmlessness",
+        "Confidentiality",
+        "Persuasiveness",
+        "JSON_Empty_Values_Ratio",
+        "JSON_Property_Name_Accuracy",
+        "JSON_Property_Type_Accuracy",
+        "JSON_Property_Completeness",
+        "JSON_Content_Accuracy",
+        "Context_Recall",
+        "Answer_Correctness",
+        "Answer_Semantic_Similarity",
+        "Sentiment_recognition",
+        "Safety_for_Children",
+        "Precision",
+        "Originality",
+        "Engagingness",
+        "Conciseness",
+        "Coherence",
+        "Quality_of_Writing_Professional",
+        "Quality_of_Writing_Creative",
+        "Truthfulness",
+        "Context_Precision",
+        "Answer_Relevance",
+    ]
+
+    def __getattr__(self, name: Union[EvaluatorName, str]) -> Union["PresetEvaluatorRunner", "APresetEvaluatorRunner"]:
+        if name in self.Eval.__members__:
+            context = self.client_context()
+            if isinstance(context, AbstractContextManager):
+                return PresetEvaluatorRunner(self.client_context, self.Eval.__members__[name].value, name)
+            else:
+                return APresetEvaluatorRunner(self.client_context, self.Eval.__members__[name].value, name)
+        raise AttributeError(f"{name} is not a valid attribute")
