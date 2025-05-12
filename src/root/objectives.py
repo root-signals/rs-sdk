@@ -8,13 +8,7 @@ from pydantic import StrictStr
 
 from .generated.openapi_aclient import ApiClient as AApiClient
 from .generated.openapi_aclient.api.v1_api import V1Api as AObjectivesApi
-from .generated.openapi_aclient.models.evaluator_execution_functions_request import (
-    EvaluatorExecutionFunctionsRequest as AEvaluatorExecutionFunctionsRequest,
-)
 from .generated.openapi_aclient.models.objective import Objective as AOpenApiObjective
-from .generated.openapi_aclient.models.objective_execution_request import (
-    ObjectiveExecutionRequest as AObjectiveExecutionRequest,
-)
 from .generated.openapi_aclient.models.objective_list import ObjectiveList as AObjectiveList
 from .generated.openapi_aclient.models.objective_request import ObjectiveRequest as AObjectiveRequest
 from .generated.openapi_aclient.models.paginated_objective_list import (
@@ -26,21 +20,13 @@ from .generated.openapi_aclient.models.paginated_objective_list_list import (
 from .generated.openapi_aclient.models.patched_objective_request import (
     PatchedObjectiveRequest as APatchedObjectiveRequest,
 )
-from .generated.openapi_aclient.models.validator_execution_result import (
-    ValidatorExecutionResult as AValidatorExecutionResult,
-)
 from .generated.openapi_client import ApiClient
 from .generated.openapi_client.api.v1_api import V1Api as ObjectivesApi
-from .generated.openapi_client.models.evaluator_execution_functions_request import (
-    EvaluatorExecutionFunctionsRequest,
-)
 from .generated.openapi_client.models.objective import Objective as OpenApiObjective
-from .generated.openapi_client.models.objective_execution_request import ObjectiveExecutionRequest
 from .generated.openapi_client.models.objective_list import ObjectiveList
 from .generated.openapi_client.models.objective_request import ObjectiveRequest
 from .generated.openapi_client.models.paginated_objective_list import PaginatedObjectiveList
 from .generated.openapi_client.models.patched_objective_request import PatchedObjectiveRequest
-from .generated.openapi_client.models.validator_execution_result import ValidatorExecutionResult
 from .skills import Skills
 from .utils import ClientContextCallable, iterate_cursor_list, with_async_client, with_sync_client
 from .validators import AValidator
@@ -101,43 +87,6 @@ class Objective(OpenApiObjective):
         obj.client_context = client_context
         return obj
 
-    @with_sync_client
-    def run(
-        self,
-        *,
-        response: str,
-        request: Optional[str] = None,
-        contexts: Optional[List[str]] = None,
-        functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
-        expected_output: Optional[str] = None,
-        _request_timeout: Optional[int] = None,
-        _client: ApiClient,
-    ) -> ValidatorExecutionResult:
-        """
-        Run all validators associated with the objective.
-
-        Args:
-          response: LLM output.
-          request: The prompt sent to the LLM. Optional.
-          contexts: Optional documents passed to RAG evaluators
-          functions: Optional function definitions to LLM tool call validation
-          expected_output: Optional expected output for the evaluators
-        """
-
-        api_instance = ObjectivesApi(_client)
-        skill_execution_request = ObjectiveExecutionRequest(
-            request=request,
-            response=response,
-            contexts=contexts,
-            functions=functions,
-            expected_output=expected_output,
-        )
-        return api_instance.v1_objectives_objectives_execute_create(
-            objective_id=self.id,
-            objective_execution_request=skill_execution_request,
-            _request_timeout=_request_timeout,
-        )
-
 
 class AObjective(AOpenApiObjective):
     """
@@ -157,43 +106,6 @@ class AObjective(AOpenApiObjective):
         obj.__class__ = cls
         obj.client_context = client_context
         return obj
-
-    @with_async_client
-    async def arun(
-        self,
-        *,
-        response: str,
-        request: Optional[str] = None,
-        contexts: Optional[List[str]] = None,
-        functions: Optional[List[AEvaluatorExecutionFunctionsRequest]] = None,
-        expected_output: Optional[str] = None,
-        _request_timeout: Optional[int] = None,
-        _client: AApiClient,
-    ) -> AValidatorExecutionResult:
-        """
-        Asynchronously run all validators associated with the objective.
-
-        Args:
-          response: LLM output.
-          request: The prompt sent to the LLM. Optional.
-          contexts: Optional documents passed to RAG evaluators
-          functions: Optional function definitions to LLM tool call validation
-          expected_output: Optional expected output for the evaluators
-        """
-
-        api_instance = AObjectivesApi(_client)
-        skill_execution_request = AObjectiveExecutionRequest(
-            request=request,
-            response=response,
-            contexts=contexts,
-            functions=functions,
-            expected_output=expected_output,
-        )
-        return await api_instance.v1_objectives_objectives_execute_create(
-            objective_id=self.id,
-            objective_execution_request=skill_execution_request,
-            _request_timeout=_request_timeout,
-        )
 
 
 class Objectives:
@@ -377,78 +289,6 @@ class Objectives:
 
                 if not (cursor := result.next):
                     return
-
-    @with_sync_client
-    def run(
-        self,
-        objective_id: str,
-        *,
-        response: str,
-        request: Optional[str] = None,
-        contexts: Optional[List[str]] = None,
-        functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
-        expected_output: Optional[str] = None,
-        _request_timeout: Optional[int] = None,
-        _client: ApiClient,
-    ) -> ValidatorExecutionResult:
-        """
-        Run all validators associated with an objective.
-
-        Args:
-          response: LLM output.
-          request: The prompt sent to the LLM. Optional.
-          contexts: Optional documents passed to RAG evaluators
-        """
-
-        api_instance = ObjectivesApi(_client)
-        skill_execution_request = ObjectiveExecutionRequest(
-            request=request,
-            response=response,
-            contexts=contexts,
-            functions=functions,
-            expected_output=expected_output,
-        )
-        return api_instance.v1_objectives_objectives_execute_create(
-            objective_id=objective_id,
-            objective_execution_request=skill_execution_request,
-            _request_timeout=_request_timeout,
-        )
-
-    @with_async_client
-    async def arun(
-        self,
-        objective_id: str,
-        *,
-        _client: AApiClient,
-        response: str,
-        request: Optional[str] = None,
-        contexts: Optional[List[str]] = None,
-        functions: Optional[List[AEvaluatorExecutionFunctionsRequest]] = None,
-        expected_output: Optional[str] = None,
-        _request_timeout: Optional[int] = None,
-    ) -> AValidatorExecutionResult:
-        """
-        Asynchronously run all validators associated with an objective.
-
-        Args:
-          response: LLM output.
-          request: The prompt sent to the LLM. Optional.
-          contexts: Optional documents passed to RAG evaluators
-        """
-
-        api_instance = AObjectivesApi(_client)
-        skill_execution_request = AObjectiveExecutionRequest(
-            request=request,
-            response=response,
-            contexts=contexts,
-            functions=functions,
-            expected_output=expected_output,
-        )
-        return await api_instance.v1_objectives_objectives_execute_create(
-            objective_id=objective_id,
-            objective_execution_request=skill_execution_request,
-            _request_timeout=_request_timeout,
-        )
 
     @with_sync_client
     def update(
