@@ -1,0 +1,91 @@
+root.validators
+===============
+
+.. py:module:: root.validators
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   root.validators.AValidator
+   root.validators.Validator
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   root.validators.APredicateValidator
+   root.validators.PredicateValidator
+
+
+Module Contents
+---------------
+
+.. py:class:: AValidator(*, evaluator_id: Optional[str] = None, evaluator_name: Optional[str] = None, prompt: Optional[str] = None, model: Optional[root.skills.ModelName] = None, threshold: float = 0.0)
+
+   .. py:attribute:: evaluator_id
+      :value: None
+
+
+
+   .. py:attribute:: evaluator_name
+      :value: None
+
+
+
+   .. py:attribute:: model
+      :value: None
+
+
+
+   .. py:attribute:: prompt
+      :value: None
+
+
+
+   .. py:attribute:: threshold
+      :value: 0.0
+
+
+
+.. py:class:: Validator(*, evaluator_id: Optional[str] = None, evaluator_name: Optional[str] = None, prompt: Optional[str] = None, model: Optional[root.skills.ModelName] = None, threshold: float = 0.0)
+
+   .. py:attribute:: evaluator_id
+      :value: None
+
+
+
+   .. py:attribute:: evaluator_name
+      :value: None
+
+
+
+   .. py:attribute:: model
+      :value: None
+
+
+
+   .. py:attribute:: prompt
+      :value: None
+
+
+
+   .. py:attribute:: threshold
+      :value: 0.0
+
+
+
+.. py:function:: APredicateValidator(evaluator_id: str, threshold: float) -> AValidator
+
+   Deprecated name for Validator; please use Validator.
+
+
+.. py:function:: PredicateValidator(evaluator_id: str, threshold: float) -> Validator
+
+   Deprecated name for Validator; please use Validator.
+
+

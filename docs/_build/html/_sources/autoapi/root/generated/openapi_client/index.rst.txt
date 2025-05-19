@@ -1,0 +1,16 @@
+root.generated.openapi_client
+=============================
+
+.. py:module:: root.generated.openapi_client
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/root/generated/openapi_client/api/index
+   /autoapi/root/generated/openapi_client/models/index
+
+

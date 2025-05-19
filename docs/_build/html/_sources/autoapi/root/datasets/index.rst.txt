@@ -1,0 +1,101 @@
+root.datasets
+=============
+
+.. py:module:: root.datasets
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   root.datasets.DataSets
+
+
+Module Contents
+---------------
+
+.. py:class:: DataSets(client_context: root.utils.ClientContextCallable, base_url: str, api_key: str)
+
+   DataSets (sub) API
+
+   .. note::
+
+      The construction of the API instance should be handled by
+      accesing an attribute of a :class:`root.client.RootSignals` instance.
+
+
+   .. py:method:: acreate(*, name: Optional[str] = None, path: Optional[str] = None, type: str = 'reference', _request_timeout: Optional[int] = None) -> Optional[root.generated.openapi_aclient.models.data_set_create.DataSetCreate]
+      :async:
+
+
+      Asynchronously create a dataset object with the given parameters to the registry.
+      If the dataset has a path, it will be uploaded to the registry.
+
+
+
+
+   .. py:method:: adelete(dataset_id: str, *, _request_timeout: Optional[int] = None, _client: root.generated.openapi_aclient.ApiClient) -> None
+      :async:
+
+
+      Asynchronously delete a dataset object from the registry.
+
+
+
+   .. py:method:: aget(dataset_id: str, *, _request_timeout: Optional[int] = None, _client: root.generated.openapi_aclient.ApiClient) -> root.generated.openapi_aclient.models.data_set_list.DataSetList
+      :async:
+
+
+      Asynchronously get a dataset object from the registry.
+
+
+
+   .. py:method:: alist(search_term: Optional[str] = None, *, limit: int = 100, _request_timeout: Optional[int] = None) -> AsyncIterator[root.generated.openapi_aclient.models.data_set_list.DataSetList]
+      :async:
+
+
+      Asynchronously iterate through the datasets.
+
+      :param limit: Number of entries to iterate through at most.
+      :param search_term: Can be used to limit returned datasets.
+
+
+
+   .. py:method:: create(*, name: Optional[str] = None, path: Optional[str] = None, type: str = 'reference', _request_timeout: Optional[int] = None) -> Optional[root.generated.openapi_client.models.data_set_create.DataSetCreate]
+
+      Create a dataset object with the given parameters to the registry.
+      If the dataset has a path, it will be uploaded to the registry.
+
+
+
+   .. py:method:: delete(dataset_id: str, *, _request_timeout: Optional[int] = None, _client: root.generated.openapi_client.api_client.ApiClient) -> None
+
+      Delete a dataset object from the registry.
+
+
+
+   .. py:method:: get(dataset_id: str, *, _request_timeout: Optional[int] = None, _client: root.generated.openapi_client.api_client.ApiClient) -> root.generated.openapi_client.models.data_set_list.DataSetList
+
+      Get a dataset object from the registry.
+
+
+
+   .. py:method:: list(search_term: Optional[str] = None, *, limit: int = 100, _request_timeout: Optional[int] = None, _client: root.generated.openapi_client.api_client.ApiClient) -> Iterator[root.generated.openapi_client.models.data_set_list.DataSetList]
+
+      Iterate through the datasets.
+
+      :param limit: Number of entries to iterate through at most.
+      :param search_term: Can be used to limit returned datasets.
+
+
+
+   .. py:attribute:: api_key
+
+
+   .. py:attribute:: base_url
+
+
+   .. py:attribute:: client_context
+
+
