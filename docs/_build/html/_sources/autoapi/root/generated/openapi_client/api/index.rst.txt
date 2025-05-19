@@ -1,6 +1,0 @@
-root.generated.openapi_client.api
-=================================
-
-.. py:module:: root.generated.openapi_client.api
-
-
