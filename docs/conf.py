@@ -7,7 +7,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = "root-signals Python SDK"
-copyright = "2024, Root Signals Ltd"  # noqa: A001
+copyright = "2025, Root Signals Ltd"  # noqa: A001
 author = "Root Signals"
 
 # -- General configuration ---------------------------------------------------
