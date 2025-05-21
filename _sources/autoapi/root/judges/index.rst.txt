@@ -1,0 +1,200 @@
+root.judges
+===========
+
+.. py:module:: root.judges
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   root.judges.AJudge
+   root.judges.Judge
+   root.judges.Judges
+
+
+Module Contents
+---------------
+
+.. py:class:: AJudge
+
+   Bases: :py:obj:`root.generated.openapi_aclient.models.judge.Judge`
+
+
+   Async wrapper for a single Judge.
+
+   For available attributes, please check the (automatically
+   generated) superclass documentation.
+
+
+   .. py:method:: arun(*, response: str, request: Optional[str] = None, contexts: Optional[List[str]] = None, functions: Optional[List[root.generated.openapi_aclient.models.evaluator_execution_functions_request.EvaluatorExecutionFunctionsRequest]] = None, expected_output: Optional[str] = None, tags: Optional[List[str]] = None, _request_timeout: Optional[int] = None, _client: root.generated.openapi_aclient.ApiClient) -> root.generated.openapi_aclient.models.judge_execution_response.JudgeExecutionResponse
+      :async:
+
+
+      Asynchronously run the judge.
+
+      :param response: LLM output to evaluate
+      :param request: The prompt sent to the LLM. Optional.
+      :param contexts: Optional documents passed to RAG evaluators
+      :param functions: Optional functions to execute
+      :param expected_output: Optional expected output
+      :param tags: Optional tags to add to the judge execution
+      :param _request_timeout: Optional timeout for the request
+
+
+
+   .. py:attribute:: client_context
+      :type:  root.utils.ClientContextCallable
+
+
+.. py:class:: Judge
+
+   Bases: :py:obj:`root.generated.openapi_client.models.judge.Judge`
+
+
+   Wrapper for a single Judge.
+
+   For available attributes, please check the (automatically
+   generated) superclass documentation.
+
+
+   .. py:method:: run(*, response: str, request: Optional[str] = None, contexts: Optional[List[str]] = None, functions: Optional[List[root.generated.openapi_client.models.evaluator_execution_functions_request.EvaluatorExecutionFunctionsRequest]] = None, expected_output: Optional[str] = None, tags: Optional[List[str]] = None, _request_timeout: Optional[int] = None, _client: root.generated.openapi_client.ApiClient) -> root.generated.openapi_client.models.judge_execution_response.JudgeExecutionResponse
+
+      Run the judge.
+
+      :param response: LLM output to evaluate
+      :param request: The prompt sent to the LLM. Optional.
+      :param contexts: Optional documents passed to RAG evaluators
+      :param functions: Optional functions to execute
+      :param expected_output: Optional expected output
+      :param tags: Optional tags to add to the judge execution
+      :param _request_timeout: Optional timeout for the request
+
+
+
+   .. py:attribute:: client_context
+      :type:  root.utils.ClientContextCallable
+
+
+.. py:class:: Judges(client_context: root.utils.ClientContextCallable)
+
+   Judges API
+
+   .. note::
+
+      The construction of the API instance should be handled by
+      accessing an attribute of a :class:`root.client.RootSignals` instance.
+
+
+   .. py:method:: adelete(judge_id: str, *, _request_timeout: Optional[int] = None, _client: root.generated.openapi_aclient.ApiClient) -> None
+      :async:
+
+
+      Asynchronously delete the judge.
+
+      :param judge_id: The judge to be deleted.
+
+
+
+   .. py:method:: aget(judge_id: str, *, _request_timeout: Optional[int] = None, _client: root.generated.openapi_aclient.ApiClient) -> AJudge
+      :async:
+
+
+      Asynchronously get a judge by ID.
+
+      :param judge_id: The judge to be fetched.
+
+
+
+   .. py:method:: alist(*, limit: int = 100) -> AsyncIterator[AJudge]
+      :async:
+
+
+      Asynchronously iterate through the judges.
+
+      :param limit: Number of entries to iterate through at most.
+
+
+
+   .. py:method:: arun(judge_id: str, *, response: str, request: Optional[str] = None, contexts: Optional[List[str]] = None, functions: Optional[List[root.generated.openapi_aclient.models.evaluator_execution_functions_request.EvaluatorExecutionFunctionsRequest]] = None, expected_output: Optional[str] = None, tags: Optional[List[str]] = None, _request_timeout: Optional[int] = None, _client: root.generated.openapi_aclient.ApiClient) -> root.generated.openapi_aclient.models.judge_execution_response.JudgeExecutionResponse
+      :async:
+
+
+      Asynchronously run a judge directly by ID.
+
+      :param judge_id: ID of the judge to run
+      :param response: LLM output to evaluate
+      :param request: The prompt sent to the LLM. Optional.
+      :param contexts: Optional documents passed to RAG evaluators
+      :param functions: Optional functions to execute
+      :param expected_output: Optional expected output
+      :param tags: Optional tags to add to the judge execution
+      :param _request_timeout: Optional timeout for the request
+
+
+
+   .. py:method:: aupdate(judge_id: str, *, name: Optional[str] = None, evaluator_references: Optional[List[root.generated.openapi_aclient.models.evaluator_reference_request.EvaluatorReferenceRequest]] = None, _request_timeout: Optional[int] = None, _client: root.generated.openapi_aclient.ApiClient) -> AJudge
+      :async:
+
+
+      Asynchronously update an existing judge.
+
+      :param judge_id: The judge to be updated.
+      :param name: New name for the judge
+      :param evaluator_references: New list of evaluator references
+
+
+
+   .. py:method:: delete(judge_id: str, *, _request_timeout: Optional[int] = None, _client: root.generated.openapi_client.ApiClient) -> None
+
+      Delete the judge.
+
+      :param judge_id: The judge to be deleted.
+
+
+
+   .. py:method:: get(judge_id: str, *, _request_timeout: Optional[int] = None, _client: root.generated.openapi_client.ApiClient) -> Judge
+
+      Get a judge by ID.
+
+      :param judge_id: The judge to be fetched.
+
+
+
+   .. py:method:: list(*, limit: int = 100, _client: root.generated.openapi_client.ApiClient) -> Iterator[Judge]
+
+      Iterate through the judges.
+
+      :param limit: Number of entries to iterate through at most.
+
+
+
+   .. py:method:: run(judge_id: str, *, response: str, request: Optional[str] = None, contexts: Optional[List[str]] = None, functions: Optional[List[root.generated.openapi_client.models.evaluator_execution_functions_request.EvaluatorExecutionFunctionsRequest]] = None, expected_output: Optional[str] = None, tags: Optional[List[str]] = None, _request_timeout: Optional[int] = None, _client: root.generated.openapi_client.ApiClient) -> root.generated.openapi_client.models.judge_execution_response.JudgeExecutionResponse
+
+      Run a judge directly by ID.
+
+      :param judge_id: ID of the judge to run
+      :param response: LLM output to evaluate
+      :param request: The prompt sent to the LLM. Optional.
+      :param contexts: Optional documents passed to RAG evaluators
+      :param functions: Optional functions to execute
+      :param expected_output: Optional expected output
+      :param tags: Optional tags to add to the judge execution
+      :param _request_timeout: Optional timeout for the request
+
+
+
+   .. py:method:: update(judge_id: str, *, name: Optional[str] = None, evaluator_references: Optional[List[root.generated.openapi_client.models.evaluator_reference_request.EvaluatorReferenceRequest]] = None, _request_timeout: Optional[int] = None, _client: root.generated.openapi_client.ApiClient) -> Judge
+
+      Update an existing judge.
+
+      :param judge_id: The judge to be updated.
+      :param name: New name for the judge
+      :param evaluator_references: New list of evaluator references
+
+
+
+   .. py:attribute:: client_context
+
+

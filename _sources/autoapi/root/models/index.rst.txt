@@ -1,0 +1,92 @@
+root.models
+===========
+
+.. py:module:: root.models
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   root.models.Models
+
+
+Module Contents
+---------------
+
+.. py:class:: Models(client_context: root.utils.ClientContextCallable)
+
+   Models (sub) API
+
+   .. note::
+
+      The construction of the API instance should be handled by
+      accesing an attribute of a :class:`root.client.RootSignals` instance.
+
+
+   .. py:method:: acreate(*, name: str, model: Optional[str] = None, default_key: Optional[str] = None, max_output_token_count: Optional[int] = None, max_token_count: Optional[int] = None, url: Optional[str] = None, _request_timeout: Optional[int] = None, _client: root.generated.openapi_aclient.ApiClient) -> str
+      :async:
+
+
+      Asynchronously create a new model and return its ID.
+
+      :param name: The unique identifier for the model instance  (e.g. "google/gemma-2-9b").
+      :param model: The base model name to be used. Defaults to name.
+      :param default_key: The default API key required for the model, if applicable.
+      :param max_output_token_count: The maximum number of tokens to output.
+      :param max_token_count: The maximum number of tokens to process.
+      :param url: Optional URL pointing to the model's endpoint.
+
+
+
+   .. py:method:: adelete(model_id: str, *, _request_timeout: Optional[int] = None, _client: root.generated.openapi_aclient.ApiClient) -> None
+      :async:
+
+
+      Asynchronously delete the model.
+
+
+
+   .. py:method:: alist(*, capable_of: Optional[List[str]] = None, limit: int = 100) -> AsyncIterator[root.generated.openapi_aclient.models.model_list.ModelList]
+      :async:
+
+
+      Asynchronously iterate through the models.
+
+      :param limit: Number of entries to iterate through at most.
+      :param capable_of: List of capabilities to filter the models by.
+
+
+
+   .. py:method:: create(*, name: str, model: Optional[str] = None, default_key: Optional[str] = None, max_output_token_count: Optional[int] = None, max_token_count: Optional[int] = None, url: Optional[str] = None, _request_timeout: Optional[int] = None, _client: root.generated.openapi_client.ApiClient) -> str
+
+      Create a new model and return its ID.
+
+      :param name: The unique identifier for the model instance  (e.g. "google/gemma-2-9b").
+      :param model: The base model name to be used. Defaults to name.
+      :param default_key: The default API key required for the model, if applicable.
+      :param max_output_token_count: The maximum number of tokens to output.
+      :param max_token_count: The maximum number of tokens to process.
+      :param url: Optional URL pointing to the model's endpoint.
+
+
+
+   .. py:method:: delete(model_id: str, *, _request_timeout: Optional[int] = None, _client: root.generated.openapi_client.ApiClient) -> None
+
+      Delete the model.
+
+
+
+   .. py:method:: list(*, capable_of: Optional[List[str]] = None, limit: int = 100, _client: root.generated.openapi_client.ApiClient) -> Iterator[root.generated.openapi_client.models.model_list.ModelList]
+
+      Iterate through the models.
+
+      :param limit: Number of entries to iterate through at most.
+      :param capable_of: List of capabilities to filter the models by.
+
+
+
+   .. py:attribute:: client_context
+
+

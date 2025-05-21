@@ -1,0 +1,113 @@
+root.client
+===========
+
+.. py:module:: root.client
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   root.client.Beta
+   root.client.RootSignals
+
+
+Module Contents
+---------------
+
+.. py:class:: Beta(get_client_context: Union[Callable[[], AsyncContextManager[root.generated.openapi_aclient.ApiClient]], Callable[[], ContextManager[root.generated.openapi_client.ApiClient]]])
+
+   Beta API features namespace
+
+
+   .. py:property:: judges
+      :type: root.judges.Judges
+
+
+      Get Judges API (Beta)
+
+
+.. py:class:: RootSignals(api_key: Optional[str] = None, *, run_async: bool = False, _api_client: Union[Optional[root.generated.openapi_aclient.ApiClient], Optional[root.generated.openapi_client.ApiClient]] = None, base_url: Optional[str] = None)
+
+   Root Signals API Python client.
+
+   The API key must be provided via one of the following methods - the code uses the first one that is found:
+
+   1. as an argument to RootSignals constructor,
+   2. environment variable `ROOTSIGNALS_API_KEY`, or
+   3. .env file containing `ROOTSIGNALS_API_KEY=`
+
+   :param api_key: Root Signals API Key (if not provided from environment)
+   :param run_async: Whether to run the API client asynchronously
+
+
+   .. py:attribute:: api_key
+      :value: None
+
+
+
+   .. py:attribute:: base_url
+      :value: None
+
+
+
+   .. py:property:: beta
+      :type: Beta
+
+
+      Get Beta API features
+
+
+   .. py:property:: datasets
+      :type: root.datasets.DataSets
+
+
+      Get DataSets API
+
+
+   .. py:property:: evaluators
+      :type: root.skills.Evaluators
+
+
+      Get Evaluators API
+
+
+   .. py:property:: execution_logs
+      :type: root.execution_logs.ExecutionLogs
+
+
+      Get Execution Logs API
+
+
+   .. py:property:: get_client_context
+      :type: Union[Callable[[], AsyncContextManager[root.generated.openapi_aclient.ApiClient]], Callable[[], ContextManager[root.generated.openapi_client.ApiClient]]]
+
+
+
+   .. py:property:: models
+      :type: root.models.Models
+
+
+      Get Models API
+
+
+   .. py:property:: objectives
+      :type: root.objectives.Objectives
+
+
+      Get Objectives API
+
+
+   .. py:attribute:: run_async
+      :value: False
+
+
+
+   .. py:property:: skills
+      :type: root.skills.Skills
+
+
+      Get Skills API
+
+

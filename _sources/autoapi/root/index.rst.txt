@@ -1,0 +1,35 @@
+root
+====
+
+.. py:module:: root
+
+.. autoapi-nested-parse::
+
+   Root Signals SDK.
+
+   The use should start by creating a :class:`root.client.RootSignals` instance.
+
+   Example::
+
+     from root import RootSignals
+     client = RootSignals()
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/root/client/index
+   /autoapi/root/datasets/index
+   /autoapi/root/execution_logs/index
+   /autoapi/root/generated/index
+   /autoapi/root/judges/index
+   /autoapi/root/models/index
+   /autoapi/root/objectives/index
+   /autoapi/root/skills/index
+   /autoapi/root/validators/index
+
+
