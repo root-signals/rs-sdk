@@ -30,7 +30,15 @@ class NestedObjectiveEvaluator(BaseModel):
     id: StrictStr
     name: Optional[Annotated[str, Field(strict=True, max_length=1000)]] = None
     requires_expected_output: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["id", "name", "requires_expected_output"]
+    requires_contexts: Optional[StrictBool] = None
+    requires_functions: Optional[StrictBool] = None
+    __properties: ClassVar[List[str]] = [
+        "id",
+        "name",
+        "requires_expected_output",
+        "requires_contexts",
+        "requires_functions",
+    ]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -90,6 +98,8 @@ class NestedObjectiveEvaluator(BaseModel):
                 "id": obj.get("id"),
                 "name": obj.get("name"),
                 "requires_expected_output": obj.get("requires_expected_output"),
+                "requires_contexts": obj.get("requires_contexts"),
+                "requires_functions": obj.get("requires_functions"),
             }
         )
         return _obj

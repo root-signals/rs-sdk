@@ -47,6 +47,7 @@ class EvaluatorListOutput(BaseModel):
     requires_contexts: StrictBool
     requires_functions: StrictBool
     requires_expected_output: StrictBool
+    required_variables: List[StrictStr]
     __properties: ClassVar[List[str]] = [
         "_meta",
         "created_at",
@@ -63,6 +64,7 @@ class EvaluatorListOutput(BaseModel):
         "requires_contexts",
         "requires_functions",
         "requires_expected_output",
+        "required_variables",
     ]
 
     model_config = ConfigDict(
@@ -109,6 +111,7 @@ class EvaluatorListOutput(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
@@ -127,6 +130,7 @@ class EvaluatorListOutput(BaseModel):
                 "requires_contexts",
                 "requires_functions",
                 "requires_expected_output",
+                "required_variables",
             ]
         )
 
@@ -196,6 +200,7 @@ class EvaluatorListOutput(BaseModel):
                 "requires_contexts": obj.get("requires_contexts"),
                 "requires_functions": obj.get("requires_functions"),
                 "requires_expected_output": obj.get("requires_expected_output"),
+                "required_variables": obj.get("required_variables"),
             }
         )
         return _obj

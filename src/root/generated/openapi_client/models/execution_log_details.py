@@ -25,6 +25,9 @@ from typing_extensions import Self
 from root.generated.openapi_client.models.execution_log_details_evaluation_context import (
     ExecutionLogDetailsEvaluationContext,
 )
+from root.generated.openapi_client.models.execution_log_details_evaluator_latencies import (
+    ExecutionLogDetailsEvaluatorLatencies,
+)
 from root.generated.openapi_client.models.execution_log_details_judge import ExecutionLogDetailsJudge
 from root.generated.openapi_client.models.execution_log_details_objective import ExecutionLogDetailsObjective
 from root.generated.openapi_client.models.execution_log_details_skill import ExecutionLogDetailsSkill
@@ -39,9 +42,10 @@ class ExecutionLogDetails(BaseModel):
     """  # noqa: E501
 
     chat_id: Optional[StrictStr]
-    cost: Optional[Union[StrictFloat, StrictInt]]
+    cost: Union[StrictFloat, StrictInt]
     created_at: Optional[datetime]
     evaluation_context: ExecutionLogDetailsEvaluationContext
+    evaluator_latencies: ExecutionLogDetailsEvaluatorLatencies
     id: StrictStr
     judge: Optional[ExecutionLogDetailsJudge]
     justification: StrictStr
@@ -63,6 +67,7 @@ class ExecutionLogDetails(BaseModel):
         "cost",
         "created_at",
         "evaluation_context",
+        "evaluator_latencies",
         "id",
         "judge",
         "justification",
@@ -150,6 +155,9 @@ class ExecutionLogDetails(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of evaluation_context
         if self.evaluation_context:
             _dict["evaluation_context"] = self.evaluation_context.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of evaluator_latencies
+        if self.evaluator_latencies:
+            _dict["evaluator_latencies"] = self.evaluator_latencies.to_dict()
         # override the default output from pydantic by calling `to_dict()` of judge
         if self.judge:
             _dict["judge"] = self.judge.to_dict()
@@ -176,11 +184,6 @@ class ExecutionLogDetails(BaseModel):
         # and model_fields_set contains the field
         if self.chat_id is None and "chat_id" in self.model_fields_set:
             _dict["chat_id"] = None
-
-        # set to None if cost (nullable) is None
-        # and model_fields_set contains the field
-        if self.cost is None and "cost" in self.model_fields_set:
-            _dict["cost"] = None
 
         # set to None if created_at (nullable) is None
         # and model_fields_set contains the field
@@ -230,6 +233,9 @@ class ExecutionLogDetails(BaseModel):
                 "created_at": obj.get("created_at"),
                 "evaluation_context": ExecutionLogDetailsEvaluationContext.from_dict(obj["evaluation_context"])
                 if obj.get("evaluation_context") is not None
+                else None,
+                "evaluator_latencies": ExecutionLogDetailsEvaluatorLatencies.from_dict(obj["evaluator_latencies"])
+                if obj.get("evaluator_latencies") is not None
                 else None,
                 "id": obj.get("id"),
                 "judge": ExecutionLogDetailsJudge.from_dict(obj["judge"]) if obj.get("judge") is not None else None,

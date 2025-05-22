@@ -18,7 +18,7 @@ import pprint
 import re  # noqa: F401
 from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing_extensions import Annotated, Self
 
 from root.generated.openapi_aclient.models.evaluator_execution_functions_request import (
@@ -26,9 +26,9 @@ from root.generated.openapi_aclient.models.evaluator_execution_functions_request
 )
 
 
-class ObjectiveExecutionRequest(BaseModel):
+class JudgeRectifierRequestRequest(BaseModel):
     """
-    ObjectiveExecutionRequest
+    JudgeRectifierRequestRequest
     """  # noqa: E501
 
     request: Optional[Annotated[str, Field(strict=True, max_length=1000000)]] = ""
@@ -37,7 +37,16 @@ class ObjectiveExecutionRequest(BaseModel):
     functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None
     expected_output: Optional[Annotated[str, Field(strict=True, max_length=1000000)]] = None
     tags: Optional[List[Annotated[str, Field(min_length=1, strict=True, max_length=1000)]]] = None
-    __properties: ClassVar[List[str]] = ["request", "response", "contexts", "functions", "expected_output", "tags"]
+    evaluator_version_id: Optional[StrictStr] = None
+    __properties: ClassVar[List[str]] = [
+        "request",
+        "response",
+        "contexts",
+        "functions",
+        "expected_output",
+        "tags",
+        "evaluator_version_id",
+    ]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -56,7 +65,7 @@ class ObjectiveExecutionRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ObjectiveExecutionRequest from a JSON string"""
+        """Create an instance of JudgeRectifierRequestRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -88,11 +97,16 @@ class ObjectiveExecutionRequest(BaseModel):
         if self.expected_output is None and "expected_output" in self.model_fields_set:
             _dict["expected_output"] = None
 
+        # set to None if evaluator_version_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.evaluator_version_id is None and "evaluator_version_id" in self.model_fields_set:
+            _dict["evaluator_version_id"] = None
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ObjectiveExecutionRequest from a dict"""
+        """Create an instance of JudgeRectifierRequestRequest from a dict"""
         if obj is None:
             return None
 
@@ -109,6 +123,7 @@ class ObjectiveExecutionRequest(BaseModel):
                 else None,
                 "expected_output": obj.get("expected_output"),
                 "tags": obj.get("tags"),
+                "evaluator_version_id": obj.get("evaluator_version_id"),
             }
         )
         return _obj

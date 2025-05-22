@@ -47,7 +47,7 @@ class ExecutionLogs:
 
         Args:
           limit: Number of entries to iterate through at most.
-          search_term: Can be used to limit returned logs. For example, a skill id or name.
+          search_term: Can be used to limit returned logs. For example, a evaluator id or name.
           tags: Optional tags to filter the logs by.
           include: Optional fields to include in the response.
         """
@@ -77,7 +77,7 @@ class ExecutionLogs:
 
         Args:
           limit: Number of entries to iterate through at most.
-          search_term: Can be used to limit returned logs. For example, a skill id or name.
+          search_term: Can be used to limit returned logs. For example, a evaluator id or name.
           tags: Optional tags to filter the logs by.
           include: Optional fields to include in the response.
         """

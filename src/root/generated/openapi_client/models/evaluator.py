@@ -44,7 +44,7 @@ class Evaluator(BaseModel):
     input_variables: Optional[List[InputVariable]] = None
     model_params: Optional[ModelParams] = None
     models: Optional[List[StrictStr]] = None
-    name: Optional[Annotated[str, Field(strict=True, max_length=1000)]] = None
+    name: Annotated[str, Field(min_length=2, strict=True, max_length=1000)]
     objective: Optional[Objective] = None
     owner: NestedUserDetails
     prompt: Optional[StrictStr] = None

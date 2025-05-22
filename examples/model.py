@@ -10,5 +10,9 @@ model = client.models.create(
     url="https://d65e-88-148-175-2.ngrok-free.app",
 )
 
-# Use the model in a skill
-skill = client.skills.create(name="My model test", prompt="Hello, my model!", model="ollama/llama3")
+# Use the model in a evaluator
+evaluator = client.evaluators.create(
+    name="My model test",
+    predicate="Hello, my model! {{response}}",
+    model="ollama/llama3",
+)

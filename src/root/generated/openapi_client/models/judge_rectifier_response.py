@@ -18,22 +18,29 @@ import pprint
 import re  # noqa: F401
 from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool
-from typing_extensions import Annotated, Self
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from typing_extensions import Self
 
-from root.generated.openapi_client.models.open_ai_message_request import OpenAIMessageRequest
+from root.generated.openapi_client.models.evaluator_result import EvaluatorResult
 
 
-class OpenAIChatCompletionRequest(BaseModel):
+class JudgeRectifierResponse(BaseModel):
     """
-    OpenAIChatCompletionRequest
+    JudgeRectifierResponse
     """  # noqa: E501
 
-    model: Annotated[str, Field(min_length=1, strict=True, max_length=200)]
-    messages: List[OpenAIMessageRequest]
-    stream: Optional[StrictBool] = False
-    extra_body: Optional[Dict[str, Any]] = None
-    __properties: ClassVar[List[str]] = ["model", "messages", "stream", "extra_body"]
+    evaluator_results: List[EvaluatorResult] = Field(description="List of results from each evaluator")
+    improved_response: StrictStr = Field(description="Improved response from rectifier")
+    original_response: StrictStr = Field(description="Original response before rectification")
+    original_evaluator_results: List[EvaluatorResult] = Field(
+        description="List of evaluation results for the original response"
+    )
+    __properties: ClassVar[List[str]] = [
+        "evaluator_results",
+        "improved_response",
+        "original_response",
+        "original_evaluator_results",
+    ]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -52,7 +59,7 @@ class OpenAIChatCompletionRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of OpenAIChatCompletionRequest from a JSON string"""
+        """Create an instance of JudgeRectifierResponse from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,18 +79,25 @@ class OpenAIChatCompletionRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in messages (list)
+        # override the default output from pydantic by calling `to_dict()` of each item in evaluator_results (list)
         _items = []
-        if self.messages:
-            for _item in self.messages:
+        if self.evaluator_results:
+            for _item in self.evaluator_results:
                 if _item:
                     _items.append(_item.to_dict())
-            _dict["messages"] = _items
+            _dict["evaluator_results"] = _items
+        # override the default output from pydantic by calling `to_dict()` of each item in original_evaluator_results (list)
+        _items = []
+        if self.original_evaluator_results:
+            for _item in self.original_evaluator_results:
+                if _item:
+                    _items.append(_item.to_dict())
+            _dict["original_evaluator_results"] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of OpenAIChatCompletionRequest from a dict"""
+        """Create an instance of JudgeRectifierResponse from a dict"""
         if obj is None:
             return None
 
@@ -92,12 +106,16 @@ class OpenAIChatCompletionRequest(BaseModel):
 
         _obj = cls.model_validate(
             {
-                "model": obj.get("model"),
-                "messages": [OpenAIMessageRequest.from_dict(_item) for _item in obj["messages"]]
-                if obj.get("messages") is not None
+                "evaluator_results": [EvaluatorResult.from_dict(_item) for _item in obj["evaluator_results"]]
+                if obj.get("evaluator_results") is not None
                 else None,
-                "stream": obj.get("stream") if obj.get("stream") is not None else False,
-                "extra_body": obj.get("extra_body"),
+                "improved_response": obj.get("improved_response"),
+                "original_response": obj.get("original_response"),
+                "original_evaluator_results": [
+                    EvaluatorResult.from_dict(_item) for _item in obj["original_evaluator_results"]
+                ]
+                if obj.get("original_evaluator_results") is not None
+                else None,
             }
         )
         return _obj

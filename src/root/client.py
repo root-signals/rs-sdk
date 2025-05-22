@@ -28,7 +28,7 @@ if TYPE_CHECKING:
     from .judges import Judges
     from .models import Models
     from .objectives import Objectives
-    from .skills import Evaluators, Skills
+    from .skills import Evaluators
 
 
 def _get_api_key(*, dot_env: str = ".env") -> str:
@@ -193,13 +193,6 @@ class RootSignals:
         from .objectives import Objectives
 
         return Objectives(self.get_client_context)
-
-    @cached_property
-    def skills(self) -> Skills:
-        """Get Skills API"""
-        from .skills import Skills
-
-        return Skills(self.get_client_context)
 
     @cached_property
     def beta(self) -> Beta:

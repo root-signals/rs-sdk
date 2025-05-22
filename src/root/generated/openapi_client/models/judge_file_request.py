@@ -18,18 +18,17 @@ import pprint
 import re  # noqa: F401
 from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing_extensions import Annotated, Self
+from pydantic import BaseModel, ConfigDict, StrictStr
+from typing_extensions import Self
 
 
-class ReferenceVariableDynamicDatasetsRequest(BaseModel):
+class JudgeFileRequest(BaseModel):
     """
-    ReferenceVariableDynamicDatasetsRequest
+    JudgeFileRequest
     """  # noqa: E501
 
-    reference_variable_name: Annotated[str, Field(min_length=1, strict=True)]
-    dataset_id: StrictStr
-    __properties: ClassVar[List[str]] = ["reference_variable_name", "dataset_id"]
+    id: StrictStr
+    __properties: ClassVar[List[str]] = ["id"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -48,7 +47,7 @@ class ReferenceVariableDynamicDatasetsRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ReferenceVariableDynamicDatasetsRequest from a JSON string"""
+        """Create an instance of JudgeFileRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,14 +71,12 @@ class ReferenceVariableDynamicDatasetsRequest(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ReferenceVariableDynamicDatasetsRequest from a dict"""
+        """Create an instance of JudgeFileRequest from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
 
-        _obj = cls.model_validate(
-            {"reference_variable_name": obj.get("reference_variable_name"), "dataset_id": obj.get("dataset_id")}
-        )
+        _obj = cls.model_validate({"id": obj.get("id")})
         return _obj

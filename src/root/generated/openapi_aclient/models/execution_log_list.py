@@ -35,7 +35,7 @@ class ExecutionLogList(BaseModel):
     ExecutionLogList
     """  # noqa: E501
 
-    cost: Optional[Union[StrictFloat, StrictInt]]
+    cost: Union[StrictFloat, StrictInt]
     created_at: Optional[datetime]
     id: StrictStr
     judge: Optional[ExecutionLogDetailsJudge]
@@ -138,11 +138,6 @@ class ExecutionLogList(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of evaluation_context
         if self.evaluation_context:
             _dict["evaluation_context"] = self.evaluation_context.to_dict()
-        # set to None if cost (nullable) is None
-        # and model_fields_set contains the field
-        if self.cost is None and "cost" in self.model_fields_set:
-            _dict["cost"] = None
-
         # set to None if created_at (nullable) is None
         # and model_fields_set contains the field
         if self.created_at is None and "created_at" in self.model_fields_set:

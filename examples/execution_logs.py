@@ -1,22 +1,18 @@
 from root import RootSignals
-from root.validators import Validator
 
 # Connect to the Root Signals API
 client = RootSignals()
 
-skill = client.skills.create(
-    name="My strict chatbot",
-    intent="Simple Q&A chatbot",
-    prompt="Provide a clear answer to the question: {{question}}",
-    model="gpt-4",
-    validators=[Validator(evaluator_name="Clarity", threshold=0.6)],
+evaluator = client.evaluators.create(
+    name="My evaluator",
+    intent="Asses the response",
+    predicate="Is this a integer in the range 0-100: {{request}}",
+    model="gemini-2.0-flash",
 )
 
-# Execute the skill
-response = skill.run({"question": "What is the capital of France?"})
+# Execute the evaluator
+response = evaluator.run(response="99")
 
-# Get the validation results
-print(response.validation)
 
 # Get the execution details
 log = client.execution_logs.get(execution_result=response)

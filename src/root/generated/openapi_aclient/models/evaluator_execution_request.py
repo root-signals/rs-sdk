@@ -18,7 +18,7 @@ import pprint
 import re  # noqa: F401
 from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing_extensions import Annotated, Self
 
 from root.generated.openapi_aclient.models.evaluator_execution_functions_request import (
@@ -31,24 +31,24 @@ class EvaluatorExecutionRequest(BaseModel):
     EvaluatorExecutionRequest
     """  # noqa: E501
 
-    skill_version_id: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
     request: Optional[Annotated[str, Field(strict=True, max_length=1000000)]] = ""
     response: Optional[Annotated[str, Field(strict=True, max_length=1000000)]] = ""
     contexts: Optional[List[Annotated[str, Field(min_length=1, strict=True)]]] = None
     functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None
     expected_output: Optional[Annotated[str, Field(strict=True, max_length=1000000)]] = None
     tags: Optional[List[Annotated[str, Field(min_length=1, strict=True, max_length=1000)]]] = None
+    evaluator_version_id: Optional[StrictStr] = None
     variables: Optional[Dict[str, Annotated[str, Field(min_length=1, strict=True)]]] = Field(
         default=None, description="Extra variables to be used in the execution of the evaluator. Optional."
     )
     __properties: ClassVar[List[str]] = [
-        "skill_version_id",
         "request",
         "response",
         "contexts",
         "functions",
         "expected_output",
         "tags",
+        "evaluator_version_id",
         "variables",
     ]
 
@@ -96,15 +96,15 @@ class EvaluatorExecutionRequest(BaseModel):
                 if _item:
                     _items.append(_item.to_dict())
             _dict["functions"] = _items
-        # set to None if skill_version_id (nullable) is None
-        # and model_fields_set contains the field
-        if self.skill_version_id is None and "skill_version_id" in self.model_fields_set:
-            _dict["skill_version_id"] = None
-
         # set to None if expected_output (nullable) is None
         # and model_fields_set contains the field
         if self.expected_output is None and "expected_output" in self.model_fields_set:
             _dict["expected_output"] = None
+
+        # set to None if evaluator_version_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.evaluator_version_id is None and "evaluator_version_id" in self.model_fields_set:
+            _dict["evaluator_version_id"] = None
 
         return _dict
 
@@ -119,7 +119,6 @@ class EvaluatorExecutionRequest(BaseModel):
 
         _obj = cls.model_validate(
             {
-                "skill_version_id": obj.get("skill_version_id"),
                 "request": obj.get("request") if obj.get("request") is not None else "",
                 "response": obj.get("response") if obj.get("response") is not None else "",
                 "contexts": obj.get("contexts"),
@@ -128,6 +127,7 @@ class EvaluatorExecutionRequest(BaseModel):
                 else None,
                 "expected_output": obj.get("expected_output"),
                 "tags": obj.get("tags"),
+                "evaluator_version_id": obj.get("evaluator_version_id"),
                 "variables": obj.get("variables"),
             }
         )

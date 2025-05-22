@@ -18,8 +18,8 @@ import pprint
 import re  # noqa: F401
 from typing import Any, ClassVar, Dict, List, Optional, Set, Union
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt
-from typing_extensions import Self
+from pydantic import BaseModel, ConfigDict, Field
+from typing_extensions import Annotated, Self
 
 
 class ModelParamsRequest(BaseModel):
@@ -27,7 +27,9 @@ class ModelParamsRequest(BaseModel):
     ModelParamsRequest
     """  # noqa: E501
 
-    temperature: Optional[Union[StrictFloat, StrictInt]] = None
+    temperature: Optional[
+        Union[Annotated[float, Field(le=1, strict=True, ge=0)], Annotated[int, Field(le=1, strict=True, ge=0)]]
+    ] = None
     __properties: ClassVar[List[str]] = ["temperature"]
 
     model_config = ConfigDict(

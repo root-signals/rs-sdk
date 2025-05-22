@@ -31,7 +31,8 @@ class JudgeRequest(BaseModel):
 
     name: Annotated[str, Field(min_length=1, strict=True, max_length=512)]
     evaluator_references: Optional[List[EvaluatorReferenceRequest]] = None
-    __properties: ClassVar[List[str]] = ["name", "evaluator_references"]
+    stage: Optional[Annotated[str, Field(strict=True, max_length=255)]] = None
+    __properties: ClassVar[List[str]] = ["name", "evaluator_references", "stage"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -96,6 +97,7 @@ class JudgeRequest(BaseModel):
                 ]
                 if obj.get("evaluator_references") is not None
                 else None,
+                "stage": obj.get("stage"),
             }
         )
         return _obj

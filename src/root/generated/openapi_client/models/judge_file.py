@@ -18,22 +18,19 @@ import pprint
 import re  # noqa: F401
 from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool
-from typing_extensions import Annotated, Self
-
-from root.generated.openapi_aclient.models.open_ai_message_request import OpenAIMessageRequest
+from pydantic import BaseModel, ConfigDict, StrictStr
+from typing_extensions import Self
 
 
-class OpenAIChatCompletionRequest(BaseModel):
+class JudgeFile(BaseModel):
     """
-    OpenAIChatCompletionRequest
+    JudgeFile
     """  # noqa: E501
 
-    model: Annotated[str, Field(min_length=1, strict=True, max_length=200)]
-    messages: List[OpenAIMessageRequest]
-    stream: Optional[StrictBool] = False
-    extra_body: Optional[Dict[str, Any]] = None
-    __properties: ClassVar[List[str]] = ["model", "messages", "stream", "extra_body"]
+    url: StrictStr
+    name: StrictStr
+    id: StrictStr
+    __properties: ClassVar[List[str]] = ["url", "name", "id"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -52,7 +49,7 @@ class OpenAIChatCompletionRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of OpenAIChatCompletionRequest from a JSON string"""
+        """Create an instance of JudgeFile from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -64,40 +61,31 @@ class OpenAIChatCompletionRequest(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
-        excluded_fields: Set[str] = set([])
+        excluded_fields: Set[str] = set(
+            [
+                "url",
+                "name",
+            ]
+        )
 
         _dict = self.model_dump(
             by_alias=True,
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in messages (list)
-        _items = []
-        if self.messages:
-            for _item in self.messages:
-                if _item:
-                    _items.append(_item.to_dict())
-            _dict["messages"] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of OpenAIChatCompletionRequest from a dict"""
+        """Create an instance of JudgeFile from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
 
-        _obj = cls.model_validate(
-            {
-                "model": obj.get("model"),
-                "messages": [OpenAIMessageRequest.from_dict(_item) for _item in obj["messages"]]
-                if obj.get("messages") is not None
-                else None,
-                "stream": obj.get("stream") if obj.get("stream") is not None else False,
-                "extra_body": obj.get("extra_body"),
-            }
-        )
+        _obj = cls.model_validate({"url": obj.get("url"), "name": obj.get("name"), "id": obj.get("id")})
         return _obj
