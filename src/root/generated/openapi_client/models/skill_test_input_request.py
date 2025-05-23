@@ -21,7 +21,6 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict, Field, StrictBool
 from typing_extensions import Annotated, Self
 
-from root.generated.openapi_client.models.data_loader_request import DataLoaderRequest
 from root.generated.openapi_client.models.input_variable_request import InputVariableRequest
 from root.generated.openapi_client.models.objective_request import ObjectiveRequest
 from root.generated.openapi_client.models.reference_variable_request import ReferenceVariableRequest
@@ -38,7 +37,6 @@ class SkillTestInputRequest(BaseModel):
     dataset_range: Optional[SkillTestDataRequestDatasetRange] = None
     prompt: Annotated[str, Field(min_length=1, strict=True)]
     reference_variables: Optional[List[ReferenceVariableRequest]] = None
-    data_loaders: Optional[List[DataLoaderRequest]] = None
     input_variables: Optional[List[InputVariableRequest]] = None
     models: Optional[List[Annotated[str, Field(min_length=1, strict=True)]]] = None
     name: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
@@ -51,7 +49,6 @@ class SkillTestInputRequest(BaseModel):
         "dataset_range",
         "prompt",
         "reference_variables",
-        "data_loaders",
         "input_variables",
         "models",
         "name",
@@ -107,13 +104,6 @@ class SkillTestInputRequest(BaseModel):
                 if _item:
                     _items.append(_item.to_dict())
             _dict["reference_variables"] = _items
-        # override the default output from pydantic by calling `to_dict()` of each item in data_loaders (list)
-        _items = []
-        if self.data_loaders:
-            for _item in self.data_loaders:
-                if _item:
-                    _items.append(_item.to_dict())
-            _dict["data_loaders"] = _items
         # override the default output from pydantic by calling `to_dict()` of each item in input_variables (list)
         _items = []
         if self.input_variables:
@@ -167,9 +157,6 @@ class SkillTestInputRequest(BaseModel):
                     ReferenceVariableRequest.from_dict(_item) for _item in obj["reference_variables"]
                 ]
                 if obj.get("reference_variables") is not None
-                else None,
-                "data_loaders": [DataLoaderRequest.from_dict(_item) for _item in obj["data_loaders"]]
-                if obj.get("data_loaders") is not None
                 else None,
                 "input_variables": [InputVariableRequest.from_dict(_item) for _item in obj["input_variables"]]
                 if obj.get("input_variables") is not None

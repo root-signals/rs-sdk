@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from contextlib import AbstractAsyncContextManager
 from functools import partial
-from typing import TYPE_CHECKING, AsyncIterator, Iterator, List, Optional, cast
+from typing import AsyncIterator, Iterator, Optional, cast
 
 from pydantic import StrictStr
 
@@ -27,12 +27,7 @@ from .generated.openapi_client.models.objective_list import ObjectiveList
 from .generated.openapi_client.models.objective_request import ObjectiveRequest
 from .generated.openapi_client.models.paginated_objective_list import PaginatedObjectiveList
 from .generated.openapi_client.models.patched_objective_request import PatchedObjectiveRequest
-from .skills import Skills
 from .utils import ClientContextCallable, iterate_cursor_list, with_async_client, with_sync_client
-from .validators import AValidator
-
-if TYPE_CHECKING:
-    from .validators import Validator
 
 
 class Versions:
@@ -53,7 +48,7 @@ class Versions:
         """
 
         api_instance = ObjectivesApi(_client)
-        return api_instance.get_a_list_of_all_versions_of_an_objective(id=objective_id)
+        return api_instance.v1_objectives_versions_list(id=objective_id)
 
     async def alist(self, objective_id: str) -> APaginatedObjectiveList:
         """Asynchronously list all versions of an objective.
@@ -66,7 +61,7 @@ class Versions:
         assert isinstance(context, AbstractAsyncContextManager), "This method is not available in synchronous mode"
         async with context as client:
             api_instance = AObjectivesApi(client)
-            return await api_instance.get_a_list_of_all_versions_of_an_objective(id=objective_id)
+            return await api_instance.v1_objectives_versions_list(id=objective_id)
 
 
 class Objective(OpenApiObjective):
@@ -127,7 +122,6 @@ class Objectives:
         self,
         *,
         intent: Optional[str] = None,
-        validators: Optional[List[Validator]] = None,
         test_dataset_id: Optional[str] = None,
         _request_timeout: Optional[int] = None,
         _client: ApiClient,
@@ -137,14 +131,11 @@ class Objectives:
 
         Args:
           intent: The intent of the objective.
-          validators: An optional list of validators.
           test_dataset_id: The ID of the test dataset
         """
 
-        skills = Skills(self.client_context)
         request = ObjectiveRequest(
             intent=intent,
-            validators=[validator._to_request(skills) for validator in validators or []],
             test_dataset_id=test_dataset_id,
         )
         api_instance = ObjectivesApi(_client)
@@ -156,7 +147,6 @@ class Objectives:
         self,
         *,
         intent: Optional[str] = None,
-        validators: Optional[List[AValidator]] = None,
         test_dataset_id: Optional[str] = None,
         _request_timeout: Optional[int] = None,
         _client: AApiClient,
@@ -166,14 +156,11 @@ class Objectives:
 
         Args:
           intent: The intent of the objective.
-          validators: An optional list of validators.
           test_dataset_id: The ID of the test dataset
         """
 
-        skills = Skills(self.client_context)
         request = AObjectiveRequest(
             intent=intent,
-            validators=[await avalidator._ato_request(skills) for avalidator in validators or []],
             test_dataset_id=test_dataset_id,
         )
         api_instance = AObjectivesApi(_client)
@@ -296,7 +283,6 @@ class Objectives:
         objective_id: str,
         *,
         intent: Optional[str] = None,
-        validators: Optional[List[Validator]] = None,
         test_dataset_id: Optional[str] = None,
         _request_timeout: Optional[int] = None,
         _client: ApiClient,
@@ -307,13 +293,10 @@ class Objectives:
         Args:
           objective_id: The objective to be updated.
           intent: The intent of the objective.
-          validators: An optional list of validators.
         """
 
-        skills = Skills(self.client_context)
         request = PatchedObjectiveRequest(
             intent=intent,
-            validators=[validator._to_request(skills) for validator in validators] if validators else None,
             test_dataset_id=test_dataset_id,
         )
         api_instance = ObjectivesApi(_client)
@@ -332,7 +315,6 @@ class Objectives:
         objective_id: str,
         *,
         intent: Optional[str] = None,
-        validators: Optional[List[AValidator]] = None,
         test_dataset_id: Optional[str] = None,
         _request_timeout: Optional[int] = None,
         _client: AApiClient,
@@ -343,13 +325,11 @@ class Objectives:
         Args:
           objective_id: The objective to be updated.
           intent: The intent of the objective.
-          validators: An optional list of validators.
+
         """
 
-        skills = Skills(self.client_context)
         request = APatchedObjectiveRequest(
             intent=intent,
-            validators=[await validator._ato_request(skills) for validator in validators] if validators else None,
             test_dataset_id=test_dataset_id,
         )
         api_instance = AObjectivesApi(_client)

@@ -18,21 +18,29 @@ import pprint
 import re  # noqa: F401
 from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing_extensions import Self
 
-from root.generated.openapi_aclient.models.chat import Chat
+from root.generated.openapi_client.models.evaluator_result import EvaluatorResult
 
 
-class PaginatedChatList(BaseModel):
+class JudgeRectifierResponse(BaseModel):
     """
-    PaginatedChatList
+    JudgeRectifierResponse
     """  # noqa: E501
 
-    next: Optional[StrictStr] = None
-    previous: Optional[StrictStr] = None
-    results: List[Chat]
-    __properties: ClassVar[List[str]] = ["next", "previous", "results"]
+    evaluator_results: List[EvaluatorResult] = Field(description="List of results from each evaluator")
+    improved_response: StrictStr = Field(description="Improved response from rectifier")
+    original_response: StrictStr = Field(description="Original response before rectification")
+    original_evaluator_results: List[EvaluatorResult] = Field(
+        description="List of evaluation results for the original response"
+    )
+    __properties: ClassVar[List[str]] = [
+        "evaluator_results",
+        "improved_response",
+        "original_response",
+        "original_evaluator_results",
+    ]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -51,7 +59,7 @@ class PaginatedChatList(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of PaginatedChatList from a JSON string"""
+        """Create an instance of JudgeRectifierResponse from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -71,28 +79,25 @@ class PaginatedChatList(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in results (list)
+        # override the default output from pydantic by calling `to_dict()` of each item in evaluator_results (list)
         _items = []
-        if self.results:
-            for _item in self.results:
+        if self.evaluator_results:
+            for _item in self.evaluator_results:
                 if _item:
                     _items.append(_item.to_dict())
-            _dict["results"] = _items
-        # set to None if next (nullable) is None
-        # and model_fields_set contains the field
-        if self.next is None and "next" in self.model_fields_set:
-            _dict["next"] = None
-
-        # set to None if previous (nullable) is None
-        # and model_fields_set contains the field
-        if self.previous is None and "previous" in self.model_fields_set:
-            _dict["previous"] = None
-
+            _dict["evaluator_results"] = _items
+        # override the default output from pydantic by calling `to_dict()` of each item in original_evaluator_results (list)
+        _items = []
+        if self.original_evaluator_results:
+            for _item in self.original_evaluator_results:
+                if _item:
+                    _items.append(_item.to_dict())
+            _dict["original_evaluator_results"] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of PaginatedChatList from a dict"""
+        """Create an instance of JudgeRectifierResponse from a dict"""
         if obj is None:
             return None
 
@@ -101,10 +106,15 @@ class PaginatedChatList(BaseModel):
 
         _obj = cls.model_validate(
             {
-                "next": obj.get("next"),
-                "previous": obj.get("previous"),
-                "results": [Chat.from_dict(_item) for _item in obj["results"]]
-                if obj.get("results") is not None
+                "evaluator_results": [EvaluatorResult.from_dict(_item) for _item in obj["evaluator_results"]]
+                if obj.get("evaluator_results") is not None
+                else None,
+                "improved_response": obj.get("improved_response"),
+                "original_response": obj.get("original_response"),
+                "original_evaluator_results": [
+                    EvaluatorResult.from_dict(_item) for _item in obj["original_evaluator_results"]
+                ]
+                if obj.get("original_evaluator_results") is not None
                 else None,
             }
         )

@@ -18,20 +18,17 @@ import pprint
 import re  # noqa: F401
 from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, ConfigDict, StrictBool
-from typing_extensions import Self
-
-from root.generated.openapi_aclient.models.validator_result import ValidatorResult
+from pydantic import BaseModel, ConfigDict, Field
+from typing_extensions import Annotated, Self
 
 
-class Validation(BaseModel):
+class NestedUserDetailsRequest(BaseModel):
     """
-    Validation
+    NestedUserDetailsRequest
     """  # noqa: E501
 
-    is_valid: Optional[StrictBool] = None
-    validator_results: Optional[List[ValidatorResult]]
-    __properties: ClassVar[List[str]] = ["is_valid", "validator_results"]
+    full_name: Annotated[str, Field(min_length=1, strict=True)]
+    __properties: ClassVar[List[str]] = ["full_name"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -50,7 +47,7 @@ class Validation(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of Validation from a JSON string"""
+        """Create an instance of NestedUserDetailsRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -70,35 +67,16 @@ class Validation(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in validator_results (list)
-        _items = []
-        if self.validator_results:
-            for _item in self.validator_results:
-                if _item:
-                    _items.append(_item.to_dict())
-            _dict["validator_results"] = _items
-        # set to None if validator_results (nullable) is None
-        # and model_fields_set contains the field
-        if self.validator_results is None and "validator_results" in self.model_fields_set:
-            _dict["validator_results"] = None
-
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of Validation from a dict"""
+        """Create an instance of NestedUserDetailsRequest from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
 
-        _obj = cls.model_validate(
-            {
-                "is_valid": obj.get("is_valid"),
-                "validator_results": [ValidatorResult.from_dict(_item) for _item in obj["validator_results"]]
-                if obj.get("validator_results") is not None
-                else None,
-            }
-        )
+        _obj = cls.model_validate({"full_name": obj.get("full_name")})
         return _obj

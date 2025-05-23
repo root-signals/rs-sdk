@@ -19,10 +19,11 @@ import re  # noqa: F401
 from datetime import datetime
 from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
 from typing_extensions import Self
 
 from root.generated.openapi_aclient.models.judge_status_enum import JudgeStatusEnum
+from root.generated.openapi_aclient.models.nested_evaluator import NestedEvaluator
 
 
 class JudgeList(BaseModel):
@@ -35,7 +36,21 @@ class JudgeList(BaseModel):
     intent: StrictStr
     created_at: Optional[datetime]
     status: JudgeStatusEnum
-    __properties: ClassVar[List[str]] = ["id", "name", "intent", "created_at", "status"]
+    requires_contexts: StrictBool
+    requires_functions: StrictBool
+    requires_expected_output: StrictBool
+    evaluators: List[NestedEvaluator]
+    __properties: ClassVar[List[str]] = [
+        "id",
+        "name",
+        "intent",
+        "created_at",
+        "status",
+        "requires_contexts",
+        "requires_functions",
+        "requires_expected_output",
+        "evaluators",
+    ]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -70,6 +85,10 @@ class JudgeList(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
@@ -77,6 +96,10 @@ class JudgeList(BaseModel):
                 "intent",
                 "created_at",
                 "status",
+                "requires_contexts",
+                "requires_functions",
+                "requires_expected_output",
+                "evaluators",
             ]
         )
 
@@ -85,6 +108,13 @@ class JudgeList(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in evaluators (list)
+        _items = []
+        if self.evaluators:
+            for _item in self.evaluators:
+                if _item:
+                    _items.append(_item.to_dict())
+            _dict["evaluators"] = _items
         # set to None if created_at (nullable) is None
         # and model_fields_set contains the field
         if self.created_at is None and "created_at" in self.model_fields_set:
@@ -108,6 +138,12 @@ class JudgeList(BaseModel):
                 "intent": obj.get("intent"),
                 "created_at": obj.get("created_at"),
                 "status": obj.get("status"),
+                "requires_contexts": obj.get("requires_contexts"),
+                "requires_functions": obj.get("requires_functions"),
+                "requires_expected_output": obj.get("requires_expected_output"),
+                "evaluators": [NestedEvaluator.from_dict(_item) for _item in obj["evaluators"]]
+                if obj.get("evaluators") is not None
+                else None,
             }
         )
         return _obj

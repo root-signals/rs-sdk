@@ -16,26 +16,19 @@ from __future__ import annotations
 import json
 import pprint
 import re  # noqa: F401
-from typing import Any, ClassVar, Dict, List, Optional, Set, Union
+from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt
-from typing_extensions import Self
-
-from root.generated.openapi_client.models.skill_execution_result import SkillExecutionResult
+from pydantic import BaseModel, ConfigDict, Field
+from typing_extensions import Annotated, Self
 
 
-class SkillTestOutput(BaseModel):
+class NestedUserDetailsRequest(BaseModel):
     """
-    SkillTestOutput
+    NestedUserDetailsRequest
     """  # noqa: E501
 
-    variables: Dict[str, Any]
-    model_call_duration: Optional[Union[StrictFloat, StrictInt]] = Field(
-        default=None, description="Deprecated, use result.model_call_duration instead."
-    )
-    row_number: StrictInt
-    result: SkillExecutionResult
-    __properties: ClassVar[List[str]] = ["variables", "model_call_duration", "row_number", "result"]
+    full_name: Annotated[str, Field(min_length=1, strict=True)]
+    __properties: ClassVar[List[str]] = ["full_name"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -54,7 +47,7 @@ class SkillTestOutput(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of SkillTestOutput from a JSON string"""
+        """Create an instance of NestedUserDetailsRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -74,26 +67,16 @@ class SkillTestOutput(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of result
-        if self.result:
-            _dict["result"] = self.result.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of SkillTestOutput from a dict"""
+        """Create an instance of NestedUserDetailsRequest from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
 
-        _obj = cls.model_validate(
-            {
-                "variables": obj.get("variables"),
-                "model_call_duration": obj.get("model_call_duration"),
-                "row_number": obj.get("row_number"),
-                "result": SkillExecutionResult.from_dict(obj["result"]) if obj.get("result") is not None else None,
-            }
-        )
+        _obj = cls.model_validate({"full_name": obj.get("full_name")})
         return _obj

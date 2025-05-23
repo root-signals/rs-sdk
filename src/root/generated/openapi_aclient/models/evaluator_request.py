@@ -39,7 +39,7 @@ class EvaluatorRequest(BaseModel):
     input_variables: Optional[List[InputVariableRequest]] = None
     model_params: Optional[ModelParamsRequest] = None
     models: Optional[List[Annotated[str, Field(min_length=1, strict=True)]]] = None
-    name: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=1000)]] = None
+    name: Annotated[str, Field(min_length=2, strict=True, max_length=1000)]
     objective: Optional[ObjectiveRequest] = None
     objective_id: Optional[StrictStr] = None
     objective_version_id: Optional[StrictStr] = Field(
