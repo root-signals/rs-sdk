@@ -1,6 +1,7 @@
 # SDK features using concrete examples
 
-These examples walk through some features of the platform in more detail.
+These examples walk through some features of the platform in more detail.  
+Full list of examples is available [here](https://github.com/root-signals/rs-python-sdk/tree/main/examples).
 
 ## Root Signals evaluators
 
@@ -57,69 +58,6 @@ Evaluator runs can be tagged with free-form tags.
 ```
 
 
-## Use OpenAI client for chat completions
-
-Evaluators and monitoring can be added to your existing codebase using OpenAI client. To do this, retrieve `base_url` from the Root Signals SDK Skill, and then use the normal `openai` API client with it. There are two ways to do it:
-
-Without streaming, the API returns whole response to the call:
-
-```{literalinclude} ../examples/chat_openai.py
-```
-```shell
-# print(completion.choices[0].message.content)
-
-The sky appears blue because of the way sunlight interacts ...
-```
-```shell
-# print(completion.choices[0].message.content)
-
-The sky appears blue because of the way sunlight interacts ...
-```
-```json
-// print(log.validation_results)
-[
-  "evaluator_name": "Truthfulness"
-  "result": "0.9"
-  "is_valid": "true"
-  "..."
-]
-```
-
-Do note that only models specified as either `model` or
-`fallback_models` to the created Skill are accepted by the API. Trying
-to use other model names will result in an error.
-
-When streaming (`stream=True`), the API response will be provided as a generator which will provide a set of chunks over time:chunks :
-
-```{literalinclude} ../examples/chat_openai_2.py
-```
-```shell
-# print(chunk.choices[0].delta.content)
-
-The sky appears blue because of the way sunlight interacts ...
-```
-
-Do note that if validators are in use, it is not possible to stream the response as the response must be validated before returning it to the caller. In that case (and possibly for other reasons too), the platform will just return the final full response after validators are done evaluating it as a single chunk.
-
-## Evaluate your LLM pipeline by grouping validators to a *Objective*
-
-We can group and track any LLM pipeline results using an *Objective*.
-
-```{literalinclude} ../examples/objective.py
-```
-```json
-// print(response)
-
-"validation":
-  "validation_results": [
-    "evaluator_name": "Clarity"
-    "result": "0.5"
-    "is_valid": "true"
-    "..."
-  ]
-```
-
-
 ## Add a model
 
 Adding a model is as simple as specifying the model name and an endpoint. The model can be a local model or a model hosted on a cloud service.
@@ -127,19 +65,3 @@ Adding a model is as simple as specifying the model name and an endpoint. The mo
 ```{literalinclude} ../examples/model.py
 ```
 
-## Simple Skill
-
-*Skills* are measurable units of automations powered by LLMs. The APIs typically respond with Python objects that can be used to chain requests or alternatively reuse previous calls' results. It specifies explicitly the model to use, the descriptive intent, and the input variables that are referred to in the prompt.
-
-```{literalinclude} ../examples/simple.py
-```
-```json
-// print(response)
-
-"llm_output": "Finance",
-"validation": "Validation(is_valid=True, validator_results=[])",
-"model": "gpt-4",
-"execution_log_id": "1181e790-7b87-457f-a2cb-6b1dfc1eddf4",
-"rendered_prompt": "Classify this text into ...",
-"cost": "0.00093",
-```

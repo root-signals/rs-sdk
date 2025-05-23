@@ -19,14 +19,14 @@ import re  # noqa: F401
 from datetime import datetime
 from typing import Any, ClassVar, Dict, List, Optional, Set, Union
 
-from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing_extensions import Self
 
 from root.generated.openapi_client.models.execution_log_details_evaluation_context import (
     ExecutionLogDetailsEvaluationContext,
 )
-from root.generated.openapi_client.models.execution_log_details_evaluator_latencies import (
-    ExecutionLogDetailsEvaluatorLatencies,
+from root.generated.openapi_client.models.execution_log_details_evaluator_latencies_inner import (
+    ExecutionLogDetailsEvaluatorLatenciesInner,
 )
 from root.generated.openapi_client.models.execution_log_details_judge import ExecutionLogDetailsJudge
 from root.generated.openapi_client.models.execution_log_details_objective import ExecutionLogDetailsObjective
@@ -42,10 +42,12 @@ class ExecutionLogDetails(BaseModel):
     """  # noqa: E501
 
     chat_id: Optional[StrictStr]
-    cost: Union[StrictFloat, StrictInt]
+    cost: Optional[Union[StrictFloat, StrictInt]]
     created_at: Optional[datetime]
     evaluation_context: ExecutionLogDetailsEvaluationContext
-    evaluator_latencies: ExecutionLogDetailsEvaluatorLatencies
+    evaluator_latencies: Optional[List[ExecutionLogDetailsEvaluatorLatenciesInner]] = Field(
+        description="Latency information for each evaluator in seconds"
+    )
     id: StrictStr
     judge: Optional[ExecutionLogDetailsJudge]
     justification: StrictStr
@@ -128,12 +130,14 @@ class ExecutionLogDetails(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
                 "chat_id",
                 "cost",
                 "created_at",
+                "evaluator_latencies",
                 "id",
                 "justification",
                 "llm_output",
@@ -155,9 +159,13 @@ class ExecutionLogDetails(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of evaluation_context
         if self.evaluation_context:
             _dict["evaluation_context"] = self.evaluation_context.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of evaluator_latencies
+        # override the default output from pydantic by calling `to_dict()` of each item in evaluator_latencies (list)
+        _items = []
         if self.evaluator_latencies:
-            _dict["evaluator_latencies"] = self.evaluator_latencies.to_dict()
+            for _item in self.evaluator_latencies:
+                if _item:
+                    _items.append(_item.to_dict())
+            _dict["evaluator_latencies"] = _items
         # override the default output from pydantic by calling `to_dict()` of judge
         if self.judge:
             _dict["judge"] = self.judge.to_dict()
@@ -185,10 +193,20 @@ class ExecutionLogDetails(BaseModel):
         if self.chat_id is None and "chat_id" in self.model_fields_set:
             _dict["chat_id"] = None
 
+        # set to None if cost (nullable) is None
+        # and model_fields_set contains the field
+        if self.cost is None and "cost" in self.model_fields_set:
+            _dict["cost"] = None
+
         # set to None if created_at (nullable) is None
         # and model_fields_set contains the field
         if self.created_at is None and "created_at" in self.model_fields_set:
             _dict["created_at"] = None
+
+        # set to None if evaluator_latencies (nullable) is None
+        # and model_fields_set contains the field
+        if self.evaluator_latencies is None and "evaluator_latencies" in self.model_fields_set:
+            _dict["evaluator_latencies"] = None
 
         # set to None if judge (nullable) is None
         # and model_fields_set contains the field
@@ -234,7 +252,9 @@ class ExecutionLogDetails(BaseModel):
                 "evaluation_context": ExecutionLogDetailsEvaluationContext.from_dict(obj["evaluation_context"])
                 if obj.get("evaluation_context") is not None
                 else None,
-                "evaluator_latencies": ExecutionLogDetailsEvaluatorLatencies.from_dict(obj["evaluator_latencies"])
+                "evaluator_latencies": [
+                    ExecutionLogDetailsEvaluatorLatenciesInner.from_dict(_item) for _item in obj["evaluator_latencies"]
+                ]
                 if obj.get("evaluator_latencies") is not None
                 else None,
                 "id": obj.get("id"),

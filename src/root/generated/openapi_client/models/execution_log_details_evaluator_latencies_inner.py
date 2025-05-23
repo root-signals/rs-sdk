@@ -22,9 +22,9 @@ from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
 from typing_extensions import Self
 
 
-class ExecutionLogDetailsEvaluatorLatencies(BaseModel):
+class ExecutionLogDetailsEvaluatorLatenciesInner(BaseModel):
     """
-    Latency information for each evaluator in seconds
+    ExecutionLogDetailsEvaluatorLatenciesInner
     """  # noqa: E501
 
     evaluator_name: Optional[StrictStr] = None
@@ -48,7 +48,7 @@ class ExecutionLogDetailsEvaluatorLatencies(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ExecutionLogDetailsEvaluatorLatencies from a JSON string"""
+        """Create an instance of ExecutionLogDetailsEvaluatorLatenciesInner from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,7 +72,7 @@ class ExecutionLogDetailsEvaluatorLatencies(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ExecutionLogDetailsEvaluatorLatencies from a dict"""
+        """Create an instance of ExecutionLogDetailsEvaluatorLatenciesInner from a dict"""
         if obj is None:
             return None
 

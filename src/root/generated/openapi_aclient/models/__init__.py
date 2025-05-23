@@ -50,8 +50,8 @@ from root.generated.openapi_aclient.models.execution_log_details import Executio
 from root.generated.openapi_aclient.models.execution_log_details_evaluation_context import (
     ExecutionLogDetailsEvaluationContext,
 )
-from root.generated.openapi_aclient.models.execution_log_details_evaluator_latencies import (
-    ExecutionLogDetailsEvaluatorLatencies,
+from root.generated.openapi_aclient.models.execution_log_details_evaluator_latencies_inner import (
+    ExecutionLogDetailsEvaluatorLatenciesInner,
 )
 from root.generated.openapi_aclient.models.execution_log_details_judge import ExecutionLogDetailsJudge
 from root.generated.openapi_aclient.models.execution_log_details_objective import ExecutionLogDetailsObjective

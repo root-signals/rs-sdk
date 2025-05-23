@@ -147,7 +147,7 @@ Class | Method | HTTP request | Description
  - [EvaluatorResult](root/generated/openapi_client/docs/EvaluatorResult.md)
  - [ExecutionLogDetails](root/generated/openapi_client/docs/ExecutionLogDetails.md)
  - [ExecutionLogDetailsEvaluationContext](root/generated/openapi_client/docs/ExecutionLogDetailsEvaluationContext.md)
- - [ExecutionLogDetailsEvaluatorLatencies](root/generated/openapi_client/docs/ExecutionLogDetailsEvaluatorLatencies.md)
+ - [ExecutionLogDetailsEvaluatorLatenciesInner](root/generated/openapi_client/docs/ExecutionLogDetailsEvaluatorLatenciesInner.md)
  - [ExecutionLogDetailsJudge](root/generated/openapi_client/docs/ExecutionLogDetailsJudge.md)
  - [ExecutionLogDetailsObjective](root/generated/openapi_client/docs/ExecutionLogDetailsObjective.md)
  - [ExecutionLogDetailsSkill](root/generated/openapi_client/docs/ExecutionLogDetailsSkill.md)

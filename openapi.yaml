@@ -2356,6 +2356,7 @@ components:
           type: number
           format: double
           readOnly: true
+          nullable: true
         created_at:
           type: string
           format: date-time
@@ -2372,12 +2373,15 @@ components:
               type: string
           readOnly: true
         evaluator_latencies:
-          type: object
-          properties:
-            evaluator_name:
-              type: string
-            duration:
-              type: number
+          type: array
+          items:
+            type: object
+            properties:
+              evaluator_name:
+                type: string
+              duration:
+                type: number
+          nullable: true
           description: Latency information for each evaluator in seconds
           readOnly: true
         id:
@@ -2499,6 +2503,7 @@ components:
           type: number
           format: double
           readOnly: true
+          nullable: true
         created_at:
           type: string
           format: date-time
