@@ -70,6 +70,10 @@ Module Contents
       :type:  pydantic.StrictStr
 
 
+   .. py:attribute:: required_variables
+      :type:  List[pydantic.StrictStr]
+
+
    .. py:attribute:: requires_contexts
       :type:  pydantic.StrictBool
 

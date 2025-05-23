@@ -30,6 +30,5 @@ Submodules
    /autoapi/root/models/index
    /autoapi/root/objectives/index
    /autoapi/root/skills/index
-   /autoapi/root/validators/index
 
 

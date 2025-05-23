@@ -41,7 +41,7 @@ Module Contents
       Asynchronously list execution logs
 
       :param limit: Number of entries to iterate through at most.
-      :param search_term: Can be used to limit returned logs. For example, a skill id or name.
+      :param search_term: Can be used to limit returned logs. For example, a evaluator id or name.
       :param tags: Optional tags to filter the logs by.
       :param include: Optional fields to include in the response.
 
@@ -63,7 +63,7 @@ Module Contents
       List execution logs
 
       :param limit: Number of entries to iterate through at most.
-      :param search_term: Can be used to limit returned logs. For example, a skill id or name.
+      :param search_term: Can be used to limit returned logs. For example, a evaluator id or name.
       :param tags: Optional tags to filter the logs by.
       :param include: Optional fields to include in the response.
 

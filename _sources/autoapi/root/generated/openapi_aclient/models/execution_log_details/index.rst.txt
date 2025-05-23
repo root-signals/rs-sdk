@@ -51,6 +51,10 @@ Module Contents
       :type:  root.generated.openapi_aclient.models.execution_log_details_evaluation_context.ExecutionLogDetailsEvaluationContext
 
 
+   .. py:attribute:: evaluator_latencies
+      :type:  Optional[List[root.generated.openapi_aclient.models.execution_log_details_evaluator_latencies_inner.ExecutionLogDetailsEvaluatorLatenciesInner]]
+
+
    .. py:attribute:: id
       :type:  pydantic.StrictStr
 

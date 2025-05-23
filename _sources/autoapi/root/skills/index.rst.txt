@@ -21,7 +21,6 @@ Classes
    root.skills.ACalibrateBatchResult
    root.skills.AEvaluator
    root.skills.APresetEvaluatorRunner
-   root.skills.ASkill
    root.skills.CalibrateBatchParameters
    root.skills.CalibrateBatchResult
    root.skills.Evaluator
@@ -31,8 +30,6 @@ Classes
    root.skills.ModelParams
    root.skills.PresetEvaluatorRunner
    root.skills.ReferenceVariable
-   root.skills.Skill
-   root.skills.Skills
    root.skills.Versions
 
 
@@ -92,7 +89,7 @@ Module Contents
 
 .. py:class:: AEvaluator
 
-   Bases: :py:obj:`root.generated.openapi_aclient.models.skill.Skill`
+   Bases: :py:obj:`root.generated.openapi_aclient.models.evaluator.Evaluator`
 
 
    Wrapper for a single Evaluator.
@@ -122,46 +119,18 @@ Module Contents
       :type:  root.utils.ClientContextCallable
 
 
-.. py:class:: APresetEvaluatorRunner(client_context: root.utils.ClientContextCallable, skill_id: str, eval_name: str, evaluator_version_id: Optional[str] = None)
+.. py:class:: APresetEvaluatorRunner(client_context: root.utils.ClientContextCallable, evaluator_id: str, eval_name: str, evaluator_version_id: Optional[str] = None)
 
    .. py:attribute:: client_context
       :type:  root.utils.ClientContextCallable
+
+
+   .. py:attribute:: evaluator_id
 
 
    .. py:attribute:: evaluator_version_id
       :value: None
 
-
-
-   .. py:attribute:: skill_id
-
-
-.. py:class:: ASkill
-
-   Bases: :py:obj:`root.generated.openapi_aclient.models.skill.Skill`
-
-
-   Wrapper for a single Skill.
-
-   For available attributes, please check the (automatically
-   generated) superclass documentation.
-
-
-   .. py:method:: arun(variables: Optional[Dict[str, str]] = None, *, model_params: Optional[Union[ModelParams, root.generated.openapi_aclient.models.ModelParamsRequest]] = None, _client: root.generated.openapi_aclient.ApiClient) -> root.generated.openapi_aclient.models.skill_execution_result.SkillExecutionResult
-      :async:
-
-
-      Asynchronously run a skill.
-
-      :param variables: Dictionary mapping the prompt template variables to their values. For example, if the prompt is
-                        "tell me about {{subject}}", then variables={"subject": "history"} would generate
-                        "tell me about history".
-      :param model_params: Optional model parameters (e.g. temperature).
-
-
-
-   .. py:attribute:: client_context
-      :type:  root.utils.ClientContextCallable
 
 
 .. py:class:: CalibrateBatchParameters(name: str, prompt: str, model: ModelName, pii_filter: bool = False, reference_variables: Optional[Union[List[ReferenceVariable], List[root.generated.openapi_client.models.reference_variable_request.ReferenceVariableRequest]]] = None, input_variables: Optional[Union[List[InputVariable], List[root.generated.openapi_client.models.input_variable_request.InputVariableRequest]]] = None)
@@ -217,7 +186,7 @@ Module Contents
 
 .. py:class:: Evaluator
 
-   Bases: :py:obj:`root.generated.openapi_client.models.skill.Skill`
+   Bases: :py:obj:`root.generated.openapi_aclient.models.evaluator.Evaluator`
 
 
    Wrapper for a single Evaluator.
@@ -515,8 +484,8 @@ Module Contents
       Asynchronously run calibration for a set of prompts and models
 
       :param evaluator_definitions: List of evaluator definitions.
-      :param test_dataset_id: ID of the dataset to be used to test the skill.
-      :param test_data: Snapshot of data to be used to test the skill.
+      :param test_dataset_id: ID of the dataset to be used to test the evaluator.
+      :param test_data: Snapshot of data to be used to test the evaluator.
       :param parallel_requests: Number of parallel requests.
 
       Returns a model with the results and errors for each model and prompt.
@@ -531,7 +500,7 @@ Module Contents
 
 
 
-   .. py:method:: acreate(predicate: str = '', *, name: Optional[str] = None, intent: Optional[str] = None, model: Optional[ModelName] = None, fallback_models: Optional[List[ModelName]] = None, pii_filter: bool = False, reference_variables: Optional[Union[List[ReferenceVariable], List[root.generated.openapi_aclient.models.reference_variable_request.ReferenceVariableRequest]]] = None, input_variables: Optional[Union[List[InputVariable], List[root.generated.openapi_aclient.models.input_variable_request.InputVariableRequest]]] = None, model_params: Optional[Union[ModelParams, root.generated.openapi_aclient.models.ModelParamsRequest]] = None, evaluator_demonstrations: Optional[List[EvaluatorDemonstration]] = None, objective_id: Optional[str] = None, overwrite: bool = False) -> AEvaluator
+   .. py:method:: acreate(predicate: str = '', *, name: Optional[str] = None, intent: Optional[str] = None, model: Optional[ModelName] = None, fallback_models: Optional[List[ModelName]] = None, reference_variables: Optional[Union[List[ReferenceVariable], List[root.generated.openapi_aclient.models.reference_variable_request.ReferenceVariableRequest]]] = None, input_variables: Optional[Union[List[InputVariable], List[root.generated.openapi_aclient.models.input_variable_request.InputVariableRequest]]] = None, model_params: Optional[Union[ModelParams, root.generated.openapi_aclient.models.ModelParamsRequest]] = None, evaluator_demonstrations: Optional[List[EvaluatorDemonstration]] = None, objective_id: Optional[str] = None, overwrite: bool = False, _client: root.generated.openapi_client.api.v1_api.ApiClient, _request_timeout: Optional[int] = None) -> AEvaluator
       :async:
 
 
@@ -539,21 +508,28 @@ Module Contents
 
       :param predicate: The question / predicate that is provided to the semantic quantification layer to
       :param transform it into a final prompt before being passed to the model:
-      :param name: Name of the skill (defaulting to <unnamed>)
+      :param name: Name of the evaluator (defaulting to <unnamed>)
       :param objective_id: Optional pre-existing objective id to assign to the evaluator.
-      :param intent: The intent of the skill (defaulting to name); not available if objective_id is set.
+      :param intent: The intent of the evaluator (defaulting to name); not available if objective_id is set.
       :param model: The model to use (defaults to 'root', which means
-                    Root Signals default at the time of skill creation)
+                    Root Signals default at the time of evaluator creation)
       :param fallback_models: The fallback models to use in case the primary model fails.
-      :param pii_filter: Whether to use PII filter or not.
       :param reference_variables: An optional list of reference variables for
-                                  the skill.
+                                  the evaluator.
       :param input_variables: An optional list of input variables for
-                              the skill.
+                              the evaluator.
       :param model_params: An optional set of additional parameters to the model (e.g., temperature).
       :param evaluator_demonstrations: An optional list of evaluator demonstrations to guide
                                        the evaluator's behavior.
-      :param overwrite: Whether to overwrite a skill with the same name if it exists.
+      :param overwrite: Whether to overwrite an evaluator with the same name if it exists.
+
+
+
+   .. py:method:: adelete(evaluator_id: str, *, _client: root.generated.openapi_aclient.ApiClient) -> None
+      :async:
+
+
+      Delete the evaluator.
 
 
 
@@ -651,9 +627,9 @@ Module Contents
       Run calibration for a set of prompts and models
 
       :param evaluator_definitions: List of evaluator definitions.
-      :param test_dataset_id: ID of the dataset to be used to test the skill.
-      :param test_data: Snapshot of data to be used to test the skill.
-      :param parallel_requests: Number of parallel requests. Uses ThreadPoolExecutor if > 1.
+      :param test_dataset_id: ID of the dataset to be used to test the evaluator.
+      :param test_data: Snapshot of data to be used to test the evaluator.
+      :param parallel_requests: Number of parallel requests.
 
       Returns a model with the results and errors for each model and prompt.
 
@@ -665,26 +641,32 @@ Module Contents
 
 
 
-   .. py:method:: create(predicate: str = '', *, name: Optional[str] = None, intent: Optional[str] = None, model: Optional[ModelName] = None, fallback_models: Optional[List[ModelName]] = None, pii_filter: bool = False, reference_variables: Optional[Union[List[ReferenceVariable], List[root.generated.openapi_client.models.reference_variable_request.ReferenceVariableRequest]]] = None, input_variables: Optional[Union[List[InputVariable], List[root.generated.openapi_client.models.input_variable_request.InputVariableRequest]]] = None, model_params: Optional[Union[ModelParams, root.generated.openapi_client.models.model_params_request.ModelParamsRequest]] = None, evaluator_demonstrations: Optional[List[EvaluatorDemonstration]] = None, objective_id: Optional[str] = None, overwrite: bool = False) -> Evaluator
+   .. py:method:: create(predicate: str = '', *, name: Optional[str] = None, intent: Optional[str] = None, model: Optional[ModelName] = None, fallback_models: Optional[List[ModelName]] = None, reference_variables: Optional[Union[List[ReferenceVariable], List[root.generated.openapi_client.models.reference_variable_request.ReferenceVariableRequest]]] = None, input_variables: Optional[Union[List[InputVariable], List[root.generated.openapi_client.models.input_variable_request.InputVariableRequest]]] = None, model_params: Optional[Union[ModelParams, root.generated.openapi_client.models.model_params_request.ModelParamsRequest]] = None, evaluator_demonstrations: Optional[List[EvaluatorDemonstration]] = None, objective_id: Optional[str] = None, overwrite: bool = False, _client: root.generated.openapi_client.api.v1_api.ApiClient, _request_timeout: Optional[int] = None) -> Evaluator
 
       Create a new evaluator and return the result
 
       :param predicate: The question / predicate that is provided to the semantic quantification layer to
       :param transform it into a final prompt before being passed to the model:
-      :param name: Name of the skill (defaulting to <unnamed>)
+      :param name: Name of the evaluator (defaulting to <unnamed>)
       :param objective_id: Optional pre-existing objective id to assign to the evaluator.
-      :param intent: The intent of the skill (defaulting to name); not available if objective_id is set.
+      :param intent: The intent of the evaluator (defaulting to name); not available if objective_id is set.
       :param model: The model to use (defaults to 'root', which means
-                    Root Signals default at the time of skill creation)
+                    Root Signals default at the time of evaluator creation)
       :param fallback_models: The fallback models to use in case the primary model fails.
-      :param pii_filter: Whether to use PII filter or not.
       :param reference_variables: An optional list of reference variables for
-                                  the skill.
+                                  the evaluator.
       :param input_variables: An optional list of input variables for
-                              the skill.
+                              the evaluator.
       :param model_params: An optional set of additional parameters to the model (e.g., temperature).
-      :param An optional list of evaluator demonstrations to guide: the evaluator's behavior.
-      :param overwrite: Whether to overwrite a skill with the same name if it exists.
+      :param evaluator_demonstrations: An optional list of evaluator demonstrations to guide
+                                       the evaluator's behavior.
+      :param overwrite: Whether to overwrite an evaluator with the same name if it exists.
+
+
+
+   .. py:method:: delete(evaluator_id: str, *, _client: root.generated.openapi_client.api.v1_api.ApiClient) -> None
+
+      Delete the evaluator.
 
 
 
@@ -797,18 +779,18 @@ Module Contents
 
 
 
-.. py:class:: PresetEvaluatorRunner(client_context: root.utils.ClientContextCallable, skill_id: str, eval_name: str, evaluator_version_id: Optional[str] = None)
+.. py:class:: PresetEvaluatorRunner(client_context: root.utils.ClientContextCallable, evaluator_id: str, eval_name: str, evaluator_version_id: Optional[str] = None)
 
    .. py:attribute:: client_context
       :type:  root.utils.ClientContextCallable
 
 
+   .. py:attribute:: evaluator_id
+
+
    .. py:attribute:: evaluator_version_id
       :value: None
 
-
-
-   .. py:attribute:: skill_id
 
 
 .. py:class:: ReferenceVariable
@@ -829,266 +811,6 @@ Module Contents
       :type:  str
 
 
-.. py:class:: Skill
-
-   Bases: :py:obj:`root.generated.openapi_client.models.skill.Skill`
-
-
-   Wrapper for a single Skill.
-
-   For available attributes, please check the (automatically
-   generated) superclass documentation.
-
-
-   .. py:method:: run(variables: Optional[Dict[str, str]] = None, *, model_params: Optional[Union[ModelParams, root.generated.openapi_client.models.model_params_request.ModelParamsRequest]] = None, _client: root.generated.openapi_client.api.v1_api.ApiClient) -> root.generated.openapi_client.models.skill_execution_result.SkillExecutionResult
-
-      Run a skill.
-
-      :param variables: Dictionary mapping the prompt template variables to their values. For example, if the prompt is
-                        "tell me about {{subject}}", then variables={"subject": "history"} would generate
-                        "tell me about history".
-      :param model_params: Optional model parameters (e.g. temperature).
-
-
-
-   .. py:property:: aopenai_base_url
-      :type: str
-
-
-      Get the OpenAI compatibility API URL for the skill.
-
-      Currently only OpenAI chat completions API is supported using
-      the base URL.
-
-
-   .. py:attribute:: client_context
-      :type:  root.utils.ClientContextCallable
-
-
-   .. py:property:: openai_base_url
-      :type: str
-
-
-      Get the OpenAI compatibility API URL for the skill.
-
-      Currently only OpenAI chat completions API is supported using
-      the base URL.
-
-
-.. py:class:: Skills(client_context: root.utils.ClientContextCallable)
-
-   Skills API
-
-   .. note::
-
-      The construction of the API instance should be handled by
-      accesing an attribute of a :class:`root.client.RootSignals` instance.
-
-
-   .. py:method:: acreate(prompt: str = '', *, name: Optional[str] = None, intent: Optional[str] = None, model: Optional[ModelName] = None, _client: root.generated.openapi_aclient.ApiClient, system_message: str = '', fallback_models: Optional[List[ModelName]] = None, pii_filter: bool = False, validators: Optional[List[root.validators.AValidator]] = None, reference_variables: Optional[Union[List[ReferenceVariable], List[root.generated.openapi_aclient.models.reference_variable_request.ReferenceVariableRequest]]] = None, input_variables: Optional[Union[List[InputVariable], List[root.generated.openapi_aclient.models.input_variable_request.InputVariableRequest]]] = None, is_evaluator: Optional[bool] = None, model_params: Optional[Union[ModelParams, root.generated.openapi_aclient.models.ModelParamsRequest]] = None, evaluator_demonstrations: Optional[List[EvaluatorDemonstration]] = None, objective_id: Optional[str] = None, overwrite: bool = False, _request_timeout: Optional[int] = None) -> ASkill
-      :async:
-
-
-      Asynchronously create a new skill and return the result.
-
-      :param prompt: The prompt template that is provided to the model
-      :param name: Name of the skill (defaulting to <unnamed>)
-      :param intent: The intent of the skill (defaulting to name); not available if objective_id is set
-      :param model: The model to use (defaults to 'root', which means
-                    Root Signals default at the time of skill creation)
-      :param system_message: The system instruction to give to the model
-                             (mainly useful with OpenAI compatibility API)
-      :param fallback_models: The fallback models to use in case the primary model fails
-      :param pii_filter: Whether to use PII filter or not
-      :param validators: An optional list of validators; not available if objective_id is set
-      :param reference_variables: An optional list of reference variables for the skill
-      :param input_variables: An optional list of input variables for the skill
-      :param is_evaluator: Whether this skill is an evaluator skill
-      :param model_params: An optional set of additional parameters to the model (e.g., temperature)
-      :param evaluator_demonstrations: Optional list of demonstrations for evaluator skills
-      :param objective_id: Optional pre-existing objective id to assign to the skill
-      :param overwrite: Whether to overwrite a skill with the same name if it exists
-      :param _request_timeout: Optional timeout for the request in seconds
-
-
-
-   .. py:method:: adelete(skill_id: str, *, _client: root.generated.openapi_aclient.ApiClient) -> None
-      :async:
-
-
-      Asynchronously delete the skill.
-
-
-
-   .. py:method:: aget(skill_id: str, _client: root.generated.openapi_aclient.ApiClient, _request_timeout: Optional[int] = None) -> ASkill
-      :async:
-
-
-      Asynchronously get a Skill instance by ID.
-
-
-
-   .. py:method:: alist(search_term: Optional[str] = None, *, limit: int = 100, name: Optional[str] = None, only_evaluators: bool = False, only_root_evaluators: bool = False) -> AsyncIterator[root.generated.openapi_aclient.models.skill_list_output.SkillListOutput]
-      :async:
-
-
-      Asynchronously iterate through the skills.
-
-      :param search_term: Can be used to limit returned skills.
-      :param limit: Number of entries to iterate through at most.
-      :param name: Specific name the returned skills must match.
-      :param only_evaluators: Returns only evaluators.
-      :param only_root_evaluators: Returns only Root Signals defined evaluators.
-
-
-
-   .. py:method:: arun(skill_id: str, variables: Optional[Dict[str, str]] = None, *, model_params: Optional[Union[ModelParams, root.generated.openapi_aclient.models.ModelParamsRequest]] = None, skill_version_id: Optional[str] = None, _request_timeout: Optional[int] = None, _client: root.generated.openapi_aclient.ApiClient) -> root.generated.openapi_aclient.models.skill_execution_result.SkillExecutionResult
-      :async:
-
-
-      Asynchronously run a skill.
-
-      :param variables: Dictionary mapping the prompt template variables to their values. For example, if the prompt is
-                        "tell me about {{subject}}", then variables={"subject": "history"} would generate
-                        "tell me about history".
-      :param model_params: Optional model parameters to override the skill's default parameters
-      :param skill_version_id: Optional version ID of the skill to run. Defaults to the latest version.
-      :param _request_timeout: Optional timeout for the request in seconds
-
-
-
-   .. py:method:: atest(test_dataset_id: str, prompt: str, model: ModelName, *, _client: root.generated.openapi_aclient.ApiClient, fallback_models: Optional[List[ModelName]] = None, pii_filter: bool = False, validators: Optional[List[root.validators.AValidator]] = None, reference_variables: Optional[Union[List[ReferenceVariable], List[root.generated.openapi_aclient.models.reference_variable_request.ReferenceVariableRequest]]] = None, input_variables: Optional[Union[List[InputVariable], List[root.generated.openapi_aclient.models.input_variable_request.InputVariableRequest]]] = None, _request_timeout: Optional[int] = None) -> List[root.generated.openapi_aclient.models.skill_test_output.SkillTestOutput]
-      :async:
-
-
-      Asynchronously test a skill definition with a test dataset and return the result.
-
-      For description of the rest of the arguments, please refer to create
-      method.
-
-
-
-   .. py:method:: atest_existing(skill_id: str, *, test_dataset_id: Optional[str] = None, test_data: Optional[List[List[str]]] = None, _request_timeout: Optional[int] = None, _client: root.generated.openapi_aclient.ApiClient) -> List[root.generated.openapi_aclient.models.skill_test_output.SkillTestOutput]
-      :async:
-
-
-      Asynchronously test an existing skill.
-
-      Note that only one of the test_data and test_data_set must be provided.
-
-      :param test_data: Ephemeral data to be used to test the skill.
-      :param test_dataset_id: ID of the dataset to be used to test the skill.
-
-
-
-   .. py:method:: aupdate(skill_id: str, *, change_note: Optional[str] = None, _client: root.generated.openapi_aclient.ApiClient, fallback_models: Optional[List[ModelName]] = None, input_variables: Optional[Union[List[InputVariable], List[root.generated.openapi_aclient.models.input_variable_request.InputVariableRequest]]] = None, model: Optional[ModelName] = None, name: Optional[str] = None, pii_filter: Optional[bool] = None, prompt: Optional[str] = None, is_evaluator: Optional[bool] = None, reference_variables: Optional[Union[List[ReferenceVariable], List[root.generated.openapi_aclient.models.reference_variable_request.ReferenceVariableRequest]]] = None, model_params: Optional[Union[ModelParams, root.generated.openapi_aclient.models.ModelParamsRequest]] = None, evaluator_demonstrations: Optional[List[EvaluatorDemonstration]] = None, objective_id: Optional[str] = None, _request_timeout: Optional[int] = None) -> ASkill
-      :async:
-
-
-      Asynchronously update existing skill instance and return the result.
-
-      For description of the rest of the arguments, please refer to create
-      method.
-
-
-
-   .. py:method:: create(prompt: str = '', *, name: Optional[str] = None, intent: Optional[str] = None, model: Optional[ModelName] = None, _client: root.generated.openapi_client.api.v1_api.ApiClient, system_message: str = '', fallback_models: Optional[List[ModelName]] = None, pii_filter: bool = False, validators: Optional[List[root.validators.Validator]] = None, reference_variables: Optional[Union[List[ReferenceVariable], List[root.generated.openapi_client.models.reference_variable_request.ReferenceVariableRequest]]] = None, input_variables: Optional[Union[List[InputVariable], List[root.generated.openapi_client.models.input_variable_request.InputVariableRequest]]] = None, is_evaluator: Optional[bool] = None, model_params: Optional[Union[ModelParams, root.generated.openapi_client.models.model_params_request.ModelParamsRequest]] = None, evaluator_demonstrations: Optional[List[EvaluatorDemonstration]] = None, objective_id: Optional[str] = None, overwrite: bool = False, _request_timeout: Optional[int] = None) -> Skill
-
-      Create a new skill and return the result.
-
-      :param prompt: The prompt template that is provided to the model
-      :param name: Name of the skill (defaulting to <unnamed>)
-      :param intent: The intent of the skill (defaulting to name); not available if objective_id is set
-      :param model: The model to use (defaults to 'root', which means
-                    Root Signals default at the time of skill creation)
-      :param system_message: The system instruction to give to the model
-                             (mainly useful with OpenAI compatibility API)
-      :param fallback_models: The fallback models to use in case the primary model fails
-      :param pii_filter: Whether to use PII filter or not
-      :param validators: An optional list of validators; not available if objective_id is set
-      :param reference_variables: An optional list of reference variables for the skill
-      :param input_variables: An optional list of input variables for the skill
-      :param is_evaluator: Whether this skill is an evaluator skill
-      :param model_params: An optional set of additional parameters to the model (e.g., temperature)
-      :param evaluator_demonstrations: Optional list of demonstrations for evaluator skills
-      :param objective_id: Optional pre-existing objective id to assign to the skill
-      :param overwrite: Whether to overwrite a skill with the same name if it exists
-      :param _request_timeout: Optional timeout for the request in seconds
-
-
-
-   .. py:method:: delete(skill_id: str, *, _client: root.generated.openapi_client.api.v1_api.ApiClient) -> None
-
-      Delete the skill.
-
-
-
-   .. py:method:: get(skill_id: str, _client: root.generated.openapi_client.api.v1_api.ApiClient, _request_timeout: Optional[int] = None) -> Skill
-
-      Get a Skill instance by ID.
-
-
-
-   .. py:method:: list(search_term: Optional[str] = None, *, limit: int = 100, _client: root.generated.openapi_client.api.v1_api.ApiClient, name: Optional[str] = None, only_evaluators: bool = False, only_root_evaluators: bool = False) -> Iterator[root.generated.openapi_client.models.skill_list_output.SkillListOutput]
-
-      Iterate through the skills.
-
-      :param search_term: Can be used to limit returned skills.
-      :param limit: Number of entries to iterate through at most.
-      :param name: Specific name the returned skills must match.
-      :param only_evaluators: Returns only evaluators.
-      :param only_root_evaluators: Returns only Root Signals defined evaluators.
-
-
-
-   .. py:method:: run(skill_id: str, variables: Optional[Dict[str, str]] = None, *, model_params: Optional[Union[ModelParams, root.generated.openapi_client.models.model_params_request.ModelParamsRequest]] = None, skill_version_id: Optional[str] = None, _request_timeout: Optional[int] = None, _client: root.generated.openapi_client.api.v1_api.ApiClient) -> root.generated.openapi_client.models.skill_execution_result.SkillExecutionResult
-
-      Run a skill.
-
-      :param variables: Dictionary mapping the prompt template variables to their values. For example, if the prompt is
-                        "tell me about {{subject}}", then variables={"subject": "history"} would generate
-                        "tell me about history".
-      :param model_params: Optional model parameters to override the skill's default parameters
-      :param skill_version_id: Optional version ID of the skill to run. Defaults to the latest version.
-      :param _request_timeout: Optional timeout for the request in seconds
-
-
-
-   .. py:method:: test(test_dataset_id: str, prompt: str, model: ModelName, *, _client: root.generated.openapi_client.api.v1_api.ApiClient, fallback_models: Optional[List[ModelName]] = None, pii_filter: bool = False, validators: Optional[List[root.validators.Validator]] = None, reference_variables: Optional[Union[List[ReferenceVariable], List[root.generated.openapi_client.models.reference_variable_request.ReferenceVariableRequest]]] = None, input_variables: Optional[Union[List[InputVariable], List[root.generated.openapi_client.models.input_variable_request.InputVariableRequest]]] = None, _request_timeout: Optional[int] = None) -> List[root.generated.openapi_client.models.skill_test_output.SkillTestOutput]
-
-      Test a skill definition with a test dataset and return the result.
-
-      For description of the rest of the arguments, please refer to create
-      method.
-
-
-
-   .. py:method:: test_existing(skill_id: str, *, test_dataset_id: Optional[str] = None, test_data: Optional[List[List[str]]] = None, _request_timeout: Optional[int] = None, _client: root.generated.openapi_client.api.v1_api.ApiClient) -> List[root.generated.openapi_client.models.skill_test_output.SkillTestOutput]
-
-      Test an existing skill.
-
-      Note that only one of the test_data and test_data_set must be provided.
-
-      :param test_data: Ephemeral data to be used to test the skill.
-      :param test_dataset_id: ID of the dataset to be used to test the skill.
-
-
-
-   .. py:method:: update(skill_id: str, *, change_note: Optional[str] = None, _client: root.generated.openapi_client.api.v1_api.ApiClient, fallback_models: Optional[List[ModelName]] = None, input_variables: Optional[Union[List[InputVariable], List[root.generated.openapi_client.models.input_variable_request.InputVariableRequest]]] = None, model: Optional[ModelName] = None, name: Optional[str] = None, pii_filter: Optional[bool] = None, prompt: Optional[str] = None, is_evaluator: Optional[bool] = None, reference_variables: Optional[Union[List[ReferenceVariable], List[root.generated.openapi_client.models.reference_variable_request.ReferenceVariableRequest]]] = None, model_params: Optional[Union[ModelParams, root.generated.openapi_client.models.model_params_request.ModelParamsRequest]] = None, evaluator_demonstrations: Optional[List[EvaluatorDemonstration]] = None, objective_id: Optional[str] = None, _request_timeout: Optional[int] = None) -> Skill
-
-      Update existing skill instance and return the result.
-
-      For description of the rest of the arguments, please refer to create
-      method.
-
-
-
-   .. py:attribute:: client_context
-
-
-   .. py:attribute:: versions
-
-
 .. py:class:: Versions(client_context: root.utils.ClientContextCallable)
 
    Version listing (sub)API
@@ -1096,17 +818,17 @@ Module Contents
    Note that this should not be directly instantiated.
 
 
-   .. py:method:: alist(skill_id: str) -> root.generated.openapi_aclient.models.paginated_skill_list.PaginatedSkillList
+   .. py:method:: alist(evaluator_id: str) -> root.generated.openapi_aclient.models.paginated_evaluator_list.PaginatedEvaluatorList
       :async:
 
 
-      Asynchronously list all versions of a skill.
+      Asynchronously list all versions of a evaluator.
 
 
 
-   .. py:method:: list(skill_id: str, *, _client: root.generated.openapi_client.api.v1_api.ApiClient) -> root.generated.openapi_client.models.paginated_skill_list.PaginatedSkillList
+   .. py:method:: list(evaluator_id: str, *, _client: root.generated.openapi_client.api.v1_api.ApiClient) -> root.generated.openapi_client.models.paginated_evaluator_list.PaginatedEvaluatorList
 
-      List all versions of a skill.
+      List all versions of a evaluator.
 
 
 

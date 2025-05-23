@@ -48,7 +48,19 @@ Module Contents
 
 
 
+   .. py:attribute:: requires_contexts
+      :type:  Optional[pydantic.StrictBool]
+      :value: None
+
+
+
    .. py:attribute:: requires_expected_output
+      :type:  Optional[pydantic.StrictBool]
+      :value: None
+
+
+
+   .. py:attribute:: requires_functions
       :type:  Optional[pydantic.StrictBool]
       :value: None
 

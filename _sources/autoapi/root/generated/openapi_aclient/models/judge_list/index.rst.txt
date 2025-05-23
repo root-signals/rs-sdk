@@ -39,6 +39,10 @@ Module Contents
       :type:  Optional[datetime.datetime]
 
 
+   .. py:attribute:: evaluators
+      :type:  List[root.generated.openapi_aclient.models.nested_evaluator.NestedEvaluator]
+
+
    .. py:attribute:: id
       :type:  pydantic.StrictStr
 
@@ -52,6 +56,18 @@ Module Contents
 
    .. py:attribute:: name
       :type:  pydantic.StrictStr
+
+
+   .. py:attribute:: requires_contexts
+      :type:  pydantic.StrictBool
+
+
+   .. py:attribute:: requires_expected_output
+      :type:  pydantic.StrictBool
+
+
+   .. py:attribute:: requires_functions
+      :type:  pydantic.StrictBool
 
 
    .. py:attribute:: status

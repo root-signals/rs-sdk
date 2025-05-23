@@ -22,17 +22,9 @@ Submodules
 .. toctree::
    :maxdepth: 1
 
-   /autoapi/root/generated/openapi_client/models/chat/index
-   /autoapi/root/generated/openapi_client/models/chat_detail/index
-   /autoapi/root/generated/openapi_client/models/chat_execution_result/index
-   /autoapi/root/generated/openapi_client/models/chat_message/index
-   /autoapi/root/generated/openapi_client/models/data_loader/index
-   /autoapi/root/generated/openapi_client/models/data_loader_type_enum/index
    /autoapi/root/generated/openapi_client/models/data_set_create/index
    /autoapi/root/generated/openapi_client/models/data_set_list/index
    /autoapi/root/generated/openapi_client/models/data_set_type/index
-   /autoapi/root/generated/openapi_client/models/document_parse_response/index
-   /autoapi/root/generated/openapi_client/models/document_type_enum/index
    /autoapi/root/generated/openapi_client/models/evaluator/index
    /autoapi/root/generated/openapi_client/models/evaluator_calibration_output/index
    /autoapi/root/generated/openapi_client/models/evaluator_calibration_result/index
@@ -45,6 +37,7 @@ Submodules
    /autoapi/root/generated/openapi_client/models/evaluator_result/index
    /autoapi/root/generated/openapi_client/models/execution_log_details/index
    /autoapi/root/generated/openapi_client/models/execution_log_details_evaluation_context/index
+   /autoapi/root/generated/openapi_client/models/execution_log_details_evaluator_latencies_inner/index
    /autoapi/root/generated/openapi_client/models/execution_log_details_judge/index
    /autoapi/root/generated/openapi_client/models/execution_log_details_objective/index
    /autoapi/root/generated/openapi_client/models/execution_log_details_skill/index
@@ -55,7 +48,9 @@ Submodules
    /autoapi/root/generated/openapi_client/models/input_variable/index
    /autoapi/root/generated/openapi_client/models/judge/index
    /autoapi/root/generated/openapi_client/models/judge_execution_response/index
+   /autoapi/root/generated/openapi_client/models/judge_file/index
    /autoapi/root/generated/openapi_client/models/judge_list/index
+   /autoapi/root/generated/openapi_client/models/judge_rectifier_response/index
    /autoapi/root/generated/openapi_client/models/judge_status_enum/index
    /autoapi/root/generated/openapi_client/models/model/index
    /autoapi/root/generated/openapi_client/models/model_list/index
@@ -68,7 +63,6 @@ Submodules
    /autoapi/root/generated/openapi_client/models/objective/index
    /autoapi/root/generated/openapi_client/models/objective_list/index
    /autoapi/root/generated/openapi_client/models/objective_validator/index
-   /autoapi/root/generated/openapi_client/models/paginated_chat_list/index
    /autoapi/root/generated/openapi_client/models/paginated_data_set_list_list/index
    /autoapi/root/generated/openapi_client/models/paginated_evaluator_list/index
    /autoapi/root/generated/openapi_client/models/paginated_evaluator_list_output_list/index
@@ -77,25 +71,14 @@ Submodules
    /autoapi/root/generated/openapi_client/models/paginated_model_list_list/index
    /autoapi/root/generated/openapi_client/models/paginated_objective_list/index
    /autoapi/root/generated/openapi_client/models/paginated_objective_list_list/index
-   /autoapi/root/generated/openapi_client/models/paginated_skill_list/index
-   /autoapi/root/generated/openapi_client/models/paginated_skill_list_output_list/index
    /autoapi/root/generated/openapi_client/models/provider/index
    /autoapi/root/generated/openapi_client/models/reference_variable/index
-   /autoapi/root/generated/openapi_client/models/response_format_enum/index
-   /autoapi/root/generated/openapi_client/models/role_enum/index
-   /autoapi/root/generated/openapi_client/models/skill/index
-   /autoapi/root/generated/openapi_client/models/skill_execution_result/index
    /autoapi/root/generated/openapi_client/models/skill_execution_validator_result/index
-   /autoapi/root/generated/openapi_client/models/skill_list_output/index
    /autoapi/root/generated/openapi_client/models/skill_test_data_request_dataset_range/index
-   /autoapi/root/generated/openapi_client/models/skill_test_output/index
    /autoapi/root/generated/openapi_client/models/skill_type_enum/index
    /autoapi/root/generated/openapi_client/models/status_change/index
    /autoapi/root/generated/openapi_client/models/status_change_status_enum/index
    /autoapi/root/generated/openapi_client/models/status_enum/index
-   /autoapi/root/generated/openapi_client/models/validation/index
    /autoapi/root/generated/openapi_client/models/validation_result_status/index
-   /autoapi/root/generated/openapi_client/models/validator_execution_result/index
-   /autoapi/root/generated/openapi_client/models/validator_result/index
 
 

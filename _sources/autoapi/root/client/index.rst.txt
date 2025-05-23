@@ -104,10 +104,3 @@ Module Contents
 
 
 
-   .. py:property:: skills
-      :type: root.skills.Skills
-
-
-      Get Skills API
-
-
