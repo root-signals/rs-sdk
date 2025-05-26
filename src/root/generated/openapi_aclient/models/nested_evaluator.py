@@ -21,6 +21,8 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
 from typing_extensions import Self
 
+from root.generated.openapi_aclient.models.nested_evaluator_objective import NestedEvaluatorObjective
+
 
 class NestedEvaluator(BaseModel):
     """
@@ -28,11 +30,12 @@ class NestedEvaluator(BaseModel):
     """  # noqa: E501
 
     id: StrictStr
-    intent: StrictStr
     name: StrictStr
+    objective: NestedEvaluatorObjective
     is_root_evaluator: StrictBool
     model: StrictStr
-    __properties: ClassVar[List[str]] = ["id", "intent", "name", "is_root_evaluator", "model"]
+    version_id: StrictStr
+    __properties: ClassVar[List[str]] = ["id", "name", "objective", "is_root_evaluator", "model", "version_id"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -68,7 +71,7 @@ class NestedEvaluator(BaseModel):
         """
         excluded_fields: Set[str] = set(
             [
-                "intent",
+                "objective",
                 "model",
             ]
         )
@@ -78,6 +81,9 @@ class NestedEvaluator(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of objective
+        if self.objective:
+            _dict["objective"] = self.objective.to_dict()
         return _dict
 
     @classmethod
@@ -92,10 +98,13 @@ class NestedEvaluator(BaseModel):
         _obj = cls.model_validate(
             {
                 "id": obj.get("id"),
-                "intent": obj.get("intent"),
                 "name": obj.get("name"),
+                "objective": NestedEvaluatorObjective.from_dict(obj["objective"])
+                if obj.get("objective") is not None
+                else None,
                 "is_root_evaluator": obj.get("is_root_evaluator"),
                 "model": obj.get("model"),
+                "version_id": obj.get("version_id"),
             }
         )
         return _obj

@@ -10,7 +10,7 @@ from typing import (
 from pydantic import StrictStr
 
 from .generated.openapi_aclient import ApiClient as AApiClient
-from .generated.openapi_aclient.api.v1_api import V1Api as AModelsApi
+from .generated.openapi_aclient.api.models_api import ModelsApi as AModelsApi
 from .generated.openapi_aclient.models.model_list import ModelList as AModelItem
 from .generated.openapi_aclient.models.model_request import (
     ModelRequest as AModelRequest,
@@ -19,7 +19,7 @@ from .generated.openapi_aclient.models.paginated_model_list_list import (
     PaginatedModelListList as APaginatedModelListList,
 )
 from .generated.openapi_client import ApiClient
-from .generated.openapi_client.api.v1_api import V1Api as ModelsApi
+from .generated.openapi_client.api.models_api import ModelsApi as ModelsApi
 from .generated.openapi_client.models.model_list import ModelList as ModelItem
 from .generated.openapi_client.models.model_request import ModelRequest
 from .utils import (
@@ -61,7 +61,7 @@ class Models:
         """
 
         api_instance = ModelsApi(_client)
-        yield from iterate_cursor_list(partial(api_instance.v1_models_list, capable_of=capable_of), limit=limit)
+        yield from iterate_cursor_list(partial(api_instance.models_list, capable_of=capable_of), limit=limit)
 
     async def alist(
         self,
@@ -80,7 +80,7 @@ class Models:
 
         async with context as client:
             api_instance = AModelsApi(client)
-            partial_list = partial(api_instance.v1_models_list, capable_of=capable_of)
+            partial_list = partial(api_instance.models_list, capable_of=capable_of)
 
             cursor: Optional[StrictStr] = None
             while limit > 0:
@@ -128,7 +128,7 @@ class Models:
         )
 
         api_instance = ModelsApi(_client)
-        return api_instance.v1_models_create(model_request=request, _request_timeout=_request_timeout).id
+        return api_instance.models_create(model_request=request, _request_timeout=_request_timeout).id
 
     @with_async_client
     async def acreate(
@@ -163,7 +163,7 @@ class Models:
             url=url,
         )
         api_instance = AModelsApi(_client)
-        created_model = await api_instance.v1_models_create(model_request=request, _request_timeout=_request_timeout)
+        created_model = await api_instance.models_create(model_request=request, _request_timeout=_request_timeout)
         return created_model.id
 
     @with_sync_client
@@ -178,7 +178,7 @@ class Models:
         Delete the model.
         """
         api_instance = ModelsApi(_client)
-        return api_instance.v1_models_destroy(id=model_id, _request_timeout=_request_timeout)
+        return api_instance.models_destroy(id=model_id, _request_timeout=_request_timeout)
 
     @with_async_client
     async def adelete(
@@ -192,6 +192,6 @@ class Models:
         Asynchronously delete the model.
         """
         api_instance = AModelsApi(_client)
-        return await api_instance.v1_models_destroy(id=model_id, _request_timeout=_request_timeout)
+        return await api_instance.models_destroy(id=model_id, _request_timeout=_request_timeout)
 
     # TODO: update

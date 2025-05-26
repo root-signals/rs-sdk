@@ -7,7 +7,7 @@ from typing import AsyncIterator, Iterator, List, Optional, Union, cast
 from pydantic import StrictStr
 
 from .generated.openapi_aclient import ApiClient as AApiClient
-from .generated.openapi_aclient.api.beta_api import BetaApi as ABetaApi
+from .generated.openapi_aclient.api.judges_api import JudgesApi as AJudgesApi
 from .generated.openapi_aclient.models.evaluator_execution_functions_request import (
     EvaluatorExecutionFunctionsRequest as AEvaluatorExecutionFunctionsRequest,
 )
@@ -29,7 +29,7 @@ from .generated.openapi_aclient.models.patched_judge_request import (
     PatchedJudgeRequest as APatchedJudgeRequest,
 )
 from .generated.openapi_client import ApiClient
-from .generated.openapi_client.api.beta_api import BetaApi
+from .generated.openapi_client.api.judges_api import JudgesApi
 from .generated.openapi_client.models.evaluator_execution_functions_request import (
     EvaluatorExecutionFunctionsRequest,
 )
@@ -87,7 +87,7 @@ class Judge(OpenApiJudge):
           tags: Optional tags to add to the judge execution
           _request_timeout: Optional timeout for the request
         """
-        api_instance = BetaApi(_client)
+        api_instance = JudgesApi(_client)
         execution_request = JudgeExecutionRequest(
             request=request,
             response=response,
@@ -96,7 +96,7 @@ class Judge(OpenApiJudge):
             expected_output=expected_output,
             tags=tags,
         )
-        return api_instance.beta_judges_execute_create(
+        return api_instance.judges_execute_create(
             judge_id=self.id,
             judge_execution_request=execution_request,
             _request_timeout=_request_timeout,
@@ -147,7 +147,7 @@ class AJudge(AOpenApiJudge):
           tags: Optional tags to add to the judge execution
           _request_timeout: Optional timeout for the request
         """
-        api_instance = ABetaApi(_client)
+        api_instance = AJudgesApi(_client)
         execution_request = AJudgeExecutionRequest(
             contexts=contexts,
             functions=functions,
@@ -156,7 +156,7 @@ class AJudge(AOpenApiJudge):
             response=response,
             tags=tags,
         )
-        return await api_instance.beta_judges_execute_create(
+        return await api_instance.judges_execute_create(
             judge_id=self.id,
             judge_execution_request=execution_request,
             _request_timeout=_request_timeout,
@@ -183,9 +183,9 @@ class Judges:
         Args:
           judge_id: The judge to be fetched.
         """
-        api_instance = BetaApi(_client)
+        api_instance = JudgesApi(_client)
         return Judge._wrap(
-            api_instance.beta_judges_retrieve(id=judge_id, _request_timeout=_request_timeout),
+            api_instance.judges_retrieve(id=judge_id, _request_timeout=_request_timeout),
             client_context=self.client_context,
         )
 
@@ -197,9 +197,9 @@ class Judges:
         Args:
           judge_id: The judge to be fetched.
         """
-        api_instance = ABetaApi(_client)
+        api_instance = AJudgesApi(_client)
         return await AJudge._awrap(
-            await api_instance.beta_judges_retrieve(id=judge_id, _request_timeout=_request_timeout),
+            await api_instance.judges_retrieve(id=judge_id, _request_timeout=_request_timeout),
             client_context=self.client_context,
         )
 
@@ -211,8 +211,8 @@ class Judges:
         Args:
           judge_id: The judge to be deleted.
         """
-        api_instance = BetaApi(_client)
-        return api_instance.beta_judges_destroy(id=judge_id, _request_timeout=_request_timeout)
+        api_instance = JudgesApi(_client)
+        return api_instance.judges_destroy(id=judge_id, _request_timeout=_request_timeout)
 
     @with_async_client
     async def adelete(self, judge_id: str, *, _request_timeout: Optional[int] = None, _client: AApiClient) -> None:
@@ -222,8 +222,8 @@ class Judges:
         Args:
           judge_id: The judge to be deleted.
         """
-        api_instance = ABetaApi(_client)
-        return await api_instance.beta_judges_destroy(id=judge_id, _request_timeout=_request_timeout)
+        api_instance = AJudgesApi(_client)
+        return await api_instance.judges_destroy(id=judge_id, _request_timeout=_request_timeout)
 
     @with_sync_client
     def list(self, *, limit: int = 100, _client: ApiClient) -> Iterator[Judge]:
@@ -233,10 +233,10 @@ class Judges:
         Args:
           limit: Number of entries to iterate through at most.
         """
-        api_instance = BetaApi(_client)
+        api_instance = JudgesApi(_client)
         cursor: Optional[StrictStr] = None
         while limit > 0:
-            result: PaginatedJudgeListList = api_instance.beta_judges_list(page_size=limit, cursor=cursor)
+            result: PaginatedJudgeListList = api_instance.judges_list(page_size=limit, cursor=cursor)
             if not result.results:
                 return
 
@@ -258,8 +258,8 @@ class Judges:
         context = self.client_context()
         assert isinstance(context, AbstractAsyncContextManager), "This method is not available in synchronous mode"
         async with context as client:
-            api_instance = ABetaApi(client)
-            partial_list = partial(api_instance.beta_judges_list)
+            api_instance = AJudgesApi(client)
+            partial_list = partial(api_instance.judges_list)
 
             cursor: Optional[StrictStr] = None
             while limit > 0:
@@ -293,13 +293,13 @@ class Judges:
           name: New name for the judge
           evaluator_references: New list of evaluator references
         """
-        api_instance = BetaApi(_client)
+        api_instance = JudgesApi(_client)
         request = PatchedJudgeRequest(
             name=name,
             evaluator_references=evaluator_references,
         )
         return Judge._wrap(
-            api_instance.beta_judges_partial_update(
+            api_instance.judges_partial_update(
                 id=judge_id,
                 patched_judge_request=request,
                 _request_timeout=_request_timeout,
@@ -325,13 +325,13 @@ class Judges:
           name: New name for the judge
           evaluator_references: New list of evaluator references
         """
-        api_instance = ABetaApi(_client)
+        api_instance = AJudgesApi(_client)
         request = APatchedJudgeRequest(
             name=name,
             evaluator_references=evaluator_references,
         )
         return await AJudge._awrap(
-            await api_instance.beta_judges_partial_update(
+            await api_instance.judges_partial_update(
                 id=judge_id,
                 patched_judge_request=request,
                 _request_timeout=_request_timeout,
@@ -366,7 +366,7 @@ class Judges:
           tags: Optional tags to add to the judge execution
           _request_timeout: Optional timeout for the request
         """
-        api_instance = BetaApi(_client)
+        api_instance = JudgesApi(_client)
         execution_request = JudgeExecutionRequest(
             request=request,
             response=response,
@@ -375,7 +375,7 @@ class Judges:
             expected_output=expected_output,
             tags=tags,
         )
-        return api_instance.beta_judges_execute_create(
+        return api_instance.judges_execute_create(
             judge_id=judge_id,
             judge_execution_request=execution_request,
             _request_timeout=_request_timeout,
@@ -408,7 +408,7 @@ class Judges:
           tags: Optional tags to add to the judge execution
           _request_timeout: Optional timeout for the request
         """
-        api_instance = ABetaApi(_client)
+        api_instance = AJudgesApi(_client)
         execution_request = AJudgeExecutionRequest(
             contexts=contexts,
             functions=functions,
@@ -417,7 +417,7 @@ class Judges:
             response=response,
             tags=tags,
         )
-        return await api_instance.beta_judges_execute_create(
+        return await api_instance.judges_execute_create(
             judge_id=judge_id,
             judge_execution_request=execution_request,
             _request_timeout=_request_timeout,

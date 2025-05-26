@@ -22,13 +22,13 @@ from pydantic import BaseModel, ConfigDict, StrictStr
 from typing_extensions import Self
 
 
-class JudgeFileRequest(BaseModel):
+class NestedEvaluatorObjective(BaseModel):
     """
-    JudgeFileRequest
+    NestedEvaluatorObjective
     """  # noqa: E501
 
-    id: StrictStr
-    __properties: ClassVar[List[str]] = ["id"]
+    intent: StrictStr
+    __properties: ClassVar[List[str]] = ["intent"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -47,7 +47,7 @@ class JudgeFileRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of JudgeFileRequest from a JSON string"""
+        """Create an instance of NestedEvaluatorObjective from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -59,8 +59,13 @@ class JudgeFileRequest(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * OpenAPI `readOnly` fields are excluded.
         """
-        excluded_fields: Set[str] = set([])
+        excluded_fields: Set[str] = set(
+            [
+                "intent",
+            ]
+        )
 
         _dict = self.model_dump(
             by_alias=True,
@@ -71,12 +76,12 @@ class JudgeFileRequest(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of JudgeFileRequest from a dict"""
+        """Create an instance of NestedEvaluatorObjective from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
 
-        _obj = cls.model_validate({"id": obj.get("id")})
+        _obj = cls.model_validate({"intent": obj.get("intent")})
         return _obj

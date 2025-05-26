@@ -16,21 +16,20 @@ from __future__ import annotations
 import json
 import pprint
 import re  # noqa: F401
-from typing import Any, ClassVar, Dict, List, Optional, Set
+from typing import Any, ClassVar, Dict, List, Optional, Set, Union
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt
 from typing_extensions import Self
 
 
-class JudgeFile(BaseModel):
+class GenerationModelParamsRequest(BaseModel):
     """
-    JudgeFile
+    GenerationModelParamsRequest
     """  # noqa: E501
 
-    url: StrictStr
-    name: StrictStr
-    id: StrictStr
-    __properties: ClassVar[List[str]] = ["url", "name", "id"]
+    seed: Optional[StrictInt] = None
+    temperature: Optional[Union[StrictFloat, StrictInt]] = None
+    __properties: ClassVar[List[str]] = ["seed", "temperature"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -49,7 +48,7 @@ class JudgeFile(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of JudgeFile from a JSON string"""
+        """Create an instance of GenerationModelParamsRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -61,31 +60,34 @@ class JudgeFile(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
-        * OpenAPI `readOnly` fields are excluded.
-        * OpenAPI `readOnly` fields are excluded.
         """
-        excluded_fields: Set[str] = set(
-            [
-                "url",
-                "name",
-            ]
-        )
+        excluded_fields: Set[str] = set([])
 
         _dict = self.model_dump(
             by_alias=True,
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if seed (nullable) is None
+        # and model_fields_set contains the field
+        if self.seed is None and "seed" in self.model_fields_set:
+            _dict["seed"] = None
+
+        # set to None if temperature (nullable) is None
+        # and model_fields_set contains the field
+        if self.temperature is None and "temperature" in self.model_fields_set:
+            _dict["temperature"] = None
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of JudgeFile from a dict"""
+        """Create an instance of GenerationModelParamsRequest from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
 
-        _obj = cls.model_validate({"url": obj.get("url"), "name": obj.get("name"), "id": obj.get("id")})
+        _obj = cls.model_validate({"seed": obj.get("seed"), "temperature": obj.get("temperature")})
         return _obj

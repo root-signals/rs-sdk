@@ -9,13 +9,13 @@ from pydantic import StrictStr
 from root.generated.openapi_client.api_client import ApiClient
 
 from .generated.openapi_aclient import ApiClient as AApiClient
-from .generated.openapi_aclient.api.v1_api import V1Api as ADatasetsApi
+from .generated.openapi_aclient.api.datasets_api import DatasetsApi as ADatasetsApi
 from .generated.openapi_aclient.models.data_set_create import DataSetCreate as ADataSetCreate
 from .generated.openapi_aclient.models.data_set_list import DataSetList as ADataSetList
 from .generated.openapi_aclient.models.paginated_data_set_list_list import (
     PaginatedDataSetListList as APaginatedDataSetListList,
 )
-from .generated.openapi_client.api.v1_api import V1Api as DatasetsApi
+from .generated.openapi_client.api.datasets_api import DatasetsApi as DatasetsApi
 from .generated.openapi_client.models.data_set_create import DataSetCreate
 from .generated.openapi_client.models.data_set_list import DataSetList
 from .utils import ClientContextCallable, iterate_cursor_list, with_async_client, with_sync_client
@@ -126,7 +126,7 @@ class DataSets:
         """
 
         api_instance = DatasetsApi(_client)
-        return api_instance.v1_datasets_retrieve(dataset_id, _request_timeout=_request_timeout)
+        return api_instance.datasets_retrieve(dataset_id, _request_timeout=_request_timeout)
 
     @with_async_client
     async def aget(
@@ -141,7 +141,7 @@ class DataSets:
         """
 
         api_instance = ADatasetsApi(_client)
-        return await api_instance.v1_datasets_retrieve(dataset_id, _request_timeout=_request_timeout)
+        return await api_instance.datasets_retrieve(dataset_id, _request_timeout=_request_timeout)
 
     @with_sync_client
     def list(
@@ -162,7 +162,7 @@ class DataSets:
 
         api_instance = DatasetsApi(_client)
         yield from iterate_cursor_list(
-            partial(api_instance.v1_datasets_list, search=search_term, _request_timeout=_request_timeout), limit=limit
+            partial(api_instance.datasets_list, search=search_term, _request_timeout=_request_timeout), limit=limit
         )
 
     async def alist(
@@ -184,7 +184,7 @@ class DataSets:
         assert isinstance(context, AbstractAsyncContextManager), "This method is not available in synchronous mode"
         async with context as client:
             api_instance = ADatasetsApi(client)
-            partial_list = partial(api_instance.v1_datasets_list, search=search_term, _request_timeout=_request_timeout)
+            partial_list = partial(api_instance.datasets_list, search=search_term, _request_timeout=_request_timeout)
             cursor: Optional[StrictStr] = None
             while limit > 0:
                 result: APaginatedDataSetListList = await partial_list(page_size=limit, cursor=cursor)
@@ -213,7 +213,7 @@ class DataSets:
         """
 
         api_instance = DatasetsApi(_client)
-        return api_instance.v1_datasets_destroy(dataset_id, _request_timeout=_request_timeout)
+        return api_instance.datasets_destroy(dataset_id, _request_timeout=_request_timeout)
 
     @with_async_client
     async def adelete(
@@ -228,4 +228,4 @@ class DataSets:
         """
 
         api_instance = ADatasetsApi(_client)
-        return await api_instance.v1_datasets_destroy(dataset_id, _request_timeout=_request_timeout)
+        return await api_instance.datasets_destroy(dataset_id, _request_timeout=_request_timeout)

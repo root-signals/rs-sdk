@@ -19,10 +19,11 @@ import re  # noqa: F401
 from datetime import datetime
 from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing_extensions import Annotated, Self
 
-from root.generated.openapi_aclient.models.judge_file import JudgeFile
+from root.generated.openapi_aclient.models.evaluator_inputs_value import EvaluatorInputsValue
+from root.generated.openapi_aclient.models.judge_files_inner import JudgeFilesInner
 from root.generated.openapi_aclient.models.judge_status_enum import JudgeStatusEnum
 from root.generated.openapi_aclient.models.nested_evaluator import NestedEvaluator
 from root.generated.openapi_aclient.models.nested_vector_objective import NestedVectorObjective
@@ -33,31 +34,29 @@ class Judge(BaseModel):
     Judge
     """  # noqa: E501
 
+    meta: Dict[str, Any] = Field(alias="_meta")
+    created_at: Optional[datetime]
+    evaluators: List[NestedEvaluator]
+    files: List[JudgeFilesInner]
     id: StrictStr
     name: Annotated[str, Field(strict=True, max_length=512)]
-    file: Optional[JudgeFile]
-    evaluators: List[NestedEvaluator]
-    prototype: NestedVectorObjective
-    created_at: Optional[datetime]
+    objective: NestedVectorObjective
     stage: Optional[Annotated[str, Field(strict=True, max_length=255)]] = None
+    inputs: Dict[str, EvaluatorInputsValue] = Field(
+        description="Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like functions, contexts, and expected output."
+    )
     status: JudgeStatusEnum
-    meta: Dict[str, Any] = Field(alias="_meta")
-    requires_contexts: StrictBool
-    requires_functions: StrictBool
-    requires_expected_output: StrictBool
     __properties: ClassVar[List[str]] = [
+        "_meta",
+        "created_at",
+        "evaluators",
+        "files",
         "id",
         "name",
-        "file",
-        "evaluators",
-        "prototype",
-        "created_at",
+        "objective",
         "stage",
+        "inputs",
         "status",
-        "_meta",
-        "requires_contexts",
-        "requires_functions",
-        "requires_expected_output",
     ]
 
     model_config = ConfigDict(
@@ -97,21 +96,17 @@ class Judge(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
-        * OpenAPI `readOnly` fields are excluded.
-        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
-                "id",
-                "file",
-                "evaluators",
-                "prototype",
-                "created_at",
-                "status",
                 "meta",
-                "requires_contexts",
-                "requires_functions",
-                "requires_expected_output",
+                "created_at",
+                "evaluators",
+                "files",
+                "id",
+                "objective",
+                "inputs",
+                "status",
             ]
         )
 
@@ -120,9 +115,6 @@ class Judge(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of file
-        if self.file:
-            _dict["file"] = self.file.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in evaluators (list)
         _items = []
         if self.evaluators:
@@ -130,14 +122,23 @@ class Judge(BaseModel):
                 if _item:
                     _items.append(_item.to_dict())
             _dict["evaluators"] = _items
-        # override the default output from pydantic by calling `to_dict()` of prototype
-        if self.prototype:
-            _dict["prototype"] = self.prototype.to_dict()
-        # set to None if file (nullable) is None
-        # and model_fields_set contains the field
-        if self.file is None and "file" in self.model_fields_set:
-            _dict["file"] = None
-
+        # override the default output from pydantic by calling `to_dict()` of each item in files (list)
+        _items = []
+        if self.files:
+            for _item in self.files:
+                if _item:
+                    _items.append(_item.to_dict())
+            _dict["files"] = _items
+        # override the default output from pydantic by calling `to_dict()` of objective
+        if self.objective:
+            _dict["objective"] = self.objective.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each value in inputs (dict)
+        _field_dict = {}
+        if self.inputs:
+            for _key in self.inputs:
+                if self.inputs[_key]:
+                    _field_dict[_key] = self.inputs[_key].to_dict()
+            _dict["inputs"] = _field_dict
         # set to None if created_at (nullable) is None
         # and model_fields_set contains the field
         if self.created_at is None and "created_at" in self.model_fields_set:
@@ -156,22 +157,24 @@ class Judge(BaseModel):
 
         _obj = cls.model_validate(
             {
-                "id": obj.get("id"),
-                "name": obj.get("name"),
-                "file": JudgeFile.from_dict(obj["file"]) if obj.get("file") is not None else None,
+                "_meta": obj.get("_meta"),
+                "created_at": obj.get("created_at"),
                 "evaluators": [NestedEvaluator.from_dict(_item) for _item in obj["evaluators"]]
                 if obj.get("evaluators") is not None
                 else None,
-                "prototype": NestedVectorObjective.from_dict(obj["prototype"])
-                if obj.get("prototype") is not None
+                "files": [JudgeFilesInner.from_dict(_item) for _item in obj["files"]]
+                if obj.get("files") is not None
                 else None,
-                "created_at": obj.get("created_at"),
+                "id": obj.get("id"),
+                "name": obj.get("name"),
+                "objective": NestedVectorObjective.from_dict(obj["objective"])
+                if obj.get("objective") is not None
+                else None,
                 "stage": obj.get("stage"),
+                "inputs": dict((_k, EvaluatorInputsValue.from_dict(_v)) for _k, _v in obj["inputs"].items())
+                if obj.get("inputs") is not None
+                else None,
                 "status": obj.get("status"),
-                "_meta": obj.get("_meta"),
-                "requires_contexts": obj.get("requires_contexts"),
-                "requires_functions": obj.get("requires_functions"),
-                "requires_expected_output": obj.get("requires_expected_output"),
             }
         )
         return _obj

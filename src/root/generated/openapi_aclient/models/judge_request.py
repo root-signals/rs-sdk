@@ -29,10 +29,10 @@ class JudgeRequest(BaseModel):
     JudgeRequest
     """  # noqa: E501
 
-    name: Annotated[str, Field(min_length=1, strict=True, max_length=512)]
     evaluator_references: Optional[List[EvaluatorReferenceRequest]] = None
+    name: Annotated[str, Field(min_length=1, strict=True, max_length=512)]
     stage: Optional[Annotated[str, Field(strict=True, max_length=255)]] = None
-    __properties: ClassVar[List[str]] = ["name", "evaluator_references", "stage"]
+    __properties: ClassVar[List[str]] = ["evaluator_references", "name", "stage"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -91,12 +91,12 @@ class JudgeRequest(BaseModel):
 
         _obj = cls.model_validate(
             {
-                "name": obj.get("name"),
                 "evaluator_references": [
                     EvaluatorReferenceRequest.from_dict(_item) for _item in obj["evaluator_references"]
                 ]
                 if obj.get("evaluator_references") is not None
                 else None,
+                "name": obj.get("name"),
                 "stage": obj.get("stage"),
             }
         )

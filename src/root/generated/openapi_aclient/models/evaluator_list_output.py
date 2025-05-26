@@ -19,9 +19,10 @@ import re  # noqa: F401
 from datetime import datetime
 from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing_extensions import Self
 
+from root.generated.openapi_aclient.models.evaluator_inputs_value import EvaluatorInputsValue
 from root.generated.openapi_aclient.models.nested_objective_list import NestedObjectiveList
 from root.generated.openapi_aclient.models.nested_user_details import NestedUserDetails
 from root.generated.openapi_aclient.models.status_enum import StatusEnum
@@ -44,10 +45,9 @@ class EvaluatorListOutput(BaseModel):
     updated_at: Optional[datetime]
     updated_by: Optional[NestedUserDetails]
     version_id: StrictStr
-    requires_contexts: StrictBool
-    requires_functions: StrictBool
-    requires_expected_output: StrictBool
-    required_variables: List[StrictStr]
+    inputs: Dict[str, EvaluatorInputsValue] = Field(
+        description="Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like functions, contexts, and expected output."
+    )
     __properties: ClassVar[List[str]] = [
         "_meta",
         "created_at",
@@ -61,10 +61,7 @@ class EvaluatorListOutput(BaseModel):
         "updated_at",
         "updated_by",
         "version_id",
-        "requires_contexts",
-        "requires_functions",
-        "requires_expected_output",
-        "required_variables",
+        "inputs",
     ]
 
     model_config = ConfigDict(
@@ -109,9 +106,6 @@ class EvaluatorListOutput(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
-        * OpenAPI `readOnly` fields are excluded.
-        * OpenAPI `readOnly` fields are excluded.
-        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
@@ -127,10 +121,7 @@ class EvaluatorListOutput(BaseModel):
                 "updated_at",
                 "updated_by",
                 "version_id",
-                "requires_contexts",
-                "requires_functions",
-                "requires_expected_output",
-                "required_variables",
+                "inputs",
             ]
         )
 
@@ -148,6 +139,13 @@ class EvaluatorListOutput(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of updated_by
         if self.updated_by:
             _dict["updated_by"] = self.updated_by.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each value in inputs (dict)
+        _field_dict = {}
+        if self.inputs:
+            for _key in self.inputs:
+                if self.inputs[_key]:
+                    _field_dict[_key] = self.inputs[_key].to_dict()
+            _dict["inputs"] = _field_dict
         # set to None if meta (nullable) is None
         # and model_fields_set contains the field
         if self.meta is None and "meta" in self.model_fields_set:
@@ -197,10 +195,9 @@ class EvaluatorListOutput(BaseModel):
                 if obj.get("updated_by") is not None
                 else None,
                 "version_id": obj.get("version_id"),
-                "requires_contexts": obj.get("requires_contexts"),
-                "requires_functions": obj.get("requires_functions"),
-                "requires_expected_output": obj.get("requires_expected_output"),
-                "required_variables": obj.get("required_variables"),
+                "inputs": dict((_k, EvaluatorInputsValue.from_dict(_v)) for _k, _v in obj["inputs"].items())
+                if obj.get("inputs") is not None
+                else None,
             }
         )
         return _obj
