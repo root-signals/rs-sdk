@@ -12,7 +12,7 @@ pip install root-signals
 export ROOTSIGNALS_API_KEY=SomethingReallySecret
 ```
 
-**3.** Start evaluating with Root Signals Judges:
+**3.** Start evaluating with Root Signals Evaluators:
 
 ```python
 from root import RootSignals

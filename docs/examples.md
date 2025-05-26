@@ -49,6 +49,13 @@ For RAG, there are special evaluators that can separately measure the different 
 ```{literalinclude} ../examples/run_rag.py
 ```
 
+## Forming a judge
+
+You can form a judge by describing your application and optionally the stage you want to evaluate. A judge is a collection of evaluators that can evaluate a component of your application.
+
+```{literalinclude} ../examples/simple_judge.py
+```
+
 
 ## Monitoring LLM pipelines with tags
 

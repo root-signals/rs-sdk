@@ -2,9 +2,20 @@ from __future__ import annotations
 
 from contextlib import AbstractAsyncContextManager
 from functools import partial
-from typing import AsyncIterator, Iterator, List, Optional, Union, cast
+from typing import AsyncIterator, Dict, Iterator, List, Literal, Optional, Union, cast
 
 from pydantic import StrictStr
+
+from root.generated.openapi_aclient.models.judge_generator_request import (
+    JudgeGeneratorRequest as AJudgeGeneratorRequest,
+)
+from root.generated.openapi_aclient.models.judge_generator_response import (
+    JudgeGeneratorResponse as AJudgeGeneratorResponse,
+)
+from root.generated.openapi_aclient.models.visibility_enum import VisibilityEnum as AVisibilityEnum
+from root.generated.openapi_client.models.judge_generator_request import JudgeGeneratorRequest
+from root.generated.openapi_client.models.judge_generator_response import JudgeGeneratorResponse
+from root.generated.openapi_client.models.visibility_enum import VisibilityEnum
 
 from .generated.openapi_aclient import ApiClient as AApiClient
 from .generated.openapi_aclient.api.judges_api import JudgesApi as AJudgesApi
@@ -174,6 +185,88 @@ class Judges:
 
     def __init__(self, client_context: ClientContextCallable):
         self.client_context = client_context
+
+    @with_sync_client
+    def generate(
+        self,
+        *,
+        intent: str,
+        visibility: Literal["public", "unlisted"] = "unlisted",
+        stage: Optional[str] = None,
+        extra_contexts: Optional[Dict[str, str | None]] = None,
+        strict: bool = False,
+        _request_timeout: Optional[int] = None,
+        _client: ApiClient,
+    ) -> JudgeGeneratorResponse:
+        """
+        Generate a judge.
+
+        Args:
+          intent: Describe what you want the judge to build for.
+            Example: I am building a chatbot for ecommerce and I would like to measure the quality of the responses.
+          visibility: Whether the judge should be visible to everyone or only to your organization.
+          stage: If the intent is ambiguous, you can specify the stage of the judge.
+            Example: For a chatbot judge, we can specify the stage to be "response generation".
+          extra_contexts: Extra contexts to be passed to the judge.
+            Example: {"domain": "Ecommerce selling clothing"}, {"audience": "Women aged 25-35"}
+          strict: Whether to fail generation if the intent is ambiguous.
+          _request_timeout: Optional timeout for the request
+
+        Returns:
+          Wrapper for the judge id and optionally an error code if the generation failed.
+        """
+        api_instance = JudgesApi(_client)
+        judge_request = JudgeGeneratorRequest(
+            intent=intent,
+            stage=stage,
+            extra_contexts=extra_contexts,
+            strict=strict,
+            visibility=VisibilityEnum.GLOBAL if visibility == "public" else VisibilityEnum.UNLISTED,
+        )
+        return api_instance.judges_generate_create(
+            judge_generator_request=judge_request, _request_timeout=_request_timeout
+        )
+
+    @with_async_client
+    async def agenerate(
+        self,
+        *,
+        intent: str,
+        visibility: Literal["public", "unlisted"] = "unlisted",
+        stage: Optional[str] = None,
+        extra_contexts: Optional[Dict[str, str | None]] = None,
+        strict: bool = False,
+        _request_timeout: Optional[int] = None,
+        _client: AApiClient,
+    ) -> AJudgeGeneratorResponse:
+        """
+        Asynchronously generate a judge.
+
+        Args:
+          intent: Describe what you want the judge to build for.
+            Example: I am building a chatbot for ecommerce and I would like to measure the quality of the responses.
+          visibility: Whether the judge should be visible to everyone or only to your organization.
+          stage: If the intent is ambiguous, you can specify the stage of the judge.
+            Example: For a chatbot judge, we can specify the stage to be "response generation".
+          extra_contexts: Extra contexts to be passed to the judge.
+            Example: {"domain": "Ecommerce selling clothing"}, {"audience": "Women aged 25-35"}
+          strict: Whether to fail generation if the intent is ambiguous.
+          _request_timeout: Optional timeout for the request
+
+        Returns:
+          Wrapper for the judge id and optionally an error code if the generation failed.
+        """
+        api_instance = AJudgesApi(_client)
+        judge_request = AJudgeGeneratorRequest(
+            intent=intent,
+            stage=stage,
+            extra_contexts=extra_contexts,
+            strict=strict,
+            visibility=AVisibilityEnum.GLOBAL if visibility == "public" else AVisibilityEnum.UNLISTED,
+        )
+        return await api_instance.judges_generate_create(
+            judge_generator_request=judge_request, _request_timeout=_request_timeout
+        )
 
     @with_sync_client
     def get(self, judge_id: str, *, _request_timeout: Optional[int] = None, _client: ApiClient) -> Judge:

@@ -28,7 +28,7 @@ class JudgeGeneratorResponse(BaseModel):
     """  # noqa: E501
 
     judge_id: StrictStr
-    error_code: StrictStr
+    error_code: Optional[StrictStr]
     __properties: ClassVar[List[str]] = ["judge_id", "error_code"]
 
     model_config = ConfigDict(
