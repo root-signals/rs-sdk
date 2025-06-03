@@ -195,6 +195,13 @@ class RootSignals:
         return Objectives(self.get_client_context)
 
     @cached_property
+    def judges(self) -> Judges:
+        """Get Judges API"""
+        from .judges import Judges
+
+        return Judges(self.get_client_context)
+
+    @cached_property
     def beta(self) -> Beta:
         """Get Beta API features"""
         return Beta(self.get_client_context)

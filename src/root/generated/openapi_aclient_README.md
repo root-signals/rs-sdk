@@ -55,15 +55,15 @@ configuration.api_key['publicApiKey'] = os.environ["API_KEY"]
 # Enter a context with an instance of the API client
 async with root.generated.openapi_aclient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = root.generated.openapi_aclient.BetaApi(api_client)
-    judge_request = root.generated.openapi_aclient.JudgeRequest() # JudgeRequest | 
+    api_instance = root.generated.openapi_aclient.DatasetsApi(api_client)
+    data_set_create_request = {"name":"My data set","url":"https://example.com"} # DataSetCreateRequest |  (optional)
 
     try:
-        api_response = await api_instance.beta_judges_create(judge_request)
-        print("The response of BetaApi->beta_judges_create:\n")
+        api_response = await api_instance.datasets_create(data_set_create_request=data_set_create_request)
+        print("The response of DatasetsApi->datasets_create:\n")
         pprint(api_response)
     except ApiException as e:
-        print("Exception when calling BetaApi->beta_judges_create: %s\n" % e)
+        print("Exception when calling DatasetsApi->datasets_create: %s\n" % e)
 
 ```
 
@@ -73,52 +73,53 @@ All URIs are relative to *https://api.app.rootsignals.ai*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*BetaApi* | [**beta_judges_create**](root/generated/openapi_aclient/docs/BetaApi.md#beta_judges_create) | **POST** /beta/judges/ | 
-*BetaApi* | [**beta_judges_destroy**](root/generated/openapi_aclient/docs/BetaApi.md#beta_judges_destroy) | **DELETE** /beta/judges/{id}/ | 
-*BetaApi* | [**beta_judges_duplicate_create**](root/generated/openapi_aclient/docs/BetaApi.md#beta_judges_duplicate_create) | **POST** /beta/judges/{id}/duplicate/ | 
-*BetaApi* | [**beta_judges_execute_create**](root/generated/openapi_aclient/docs/BetaApi.md#beta_judges_execute_create) | **POST** /beta/judges/{judge_id}/execute/ | 
-*BetaApi* | [**beta_judges_list**](root/generated/openapi_aclient/docs/BetaApi.md#beta_judges_list) | **GET** /beta/judges/ | 
-*BetaApi* | [**beta_judges_openai_chat_completions_create**](root/generated/openapi_aclient/docs/BetaApi.md#beta_judges_openai_chat_completions_create) | **POST** /beta/judges/openai/chat/completions | 
-*BetaApi* | [**beta_judges_openai_chat_completions_create2**](root/generated/openapi_aclient/docs/BetaApi.md#beta_judges_openai_chat_completions_create2) | **POST** /beta/judges/{judge_id}/openai/chat/completions | 
-*BetaApi* | [**beta_judges_partial_update**](root/generated/openapi_aclient/docs/BetaApi.md#beta_judges_partial_update) | **PATCH** /beta/judges/{id}/ | 
-*BetaApi* | [**beta_judges_refine_create**](root/generated/openapi_aclient/docs/BetaApi.md#beta_judges_refine_create) | **POST** /beta/judges/{judge_id}/refine/ | 
-*BetaApi* | [**beta_judges_refine_openai_chat_completions_create**](root/generated/openapi_aclient/docs/BetaApi.md#beta_judges_refine_openai_chat_completions_create) | **POST** /beta/judges/{judge_id}/refine/openai/chat/completions | 
-*BetaApi* | [**beta_judges_retrieve**](root/generated/openapi_aclient/docs/BetaApi.md#beta_judges_retrieve) | **GET** /beta/judges/{id}/ | 
-*BetaApi* | [**beta_judges_update**](root/generated/openapi_aclient/docs/BetaApi.md#beta_judges_update) | **PUT** /beta/judges/{id}/ | 
-*V1Api* | [**v1_datasets_create**](root/generated/openapi_aclient/docs/V1Api.md#v1_datasets_create) | **POST** /v1/datasets/ | 
-*V1Api* | [**v1_datasets_destroy**](root/generated/openapi_aclient/docs/V1Api.md#v1_datasets_destroy) | **DELETE** /v1/datasets/{id}/ | 
-*V1Api* | [**v1_datasets_list**](root/generated/openapi_aclient/docs/V1Api.md#v1_datasets_list) | **GET** /v1/datasets/ | 
-*V1Api* | [**v1_datasets_retrieve**](root/generated/openapi_aclient/docs/V1Api.md#v1_datasets_retrieve) | **GET** /v1/datasets/{id}/ | 
-*V1Api* | [**v1_datasets_status_update**](root/generated/openapi_aclient/docs/V1Api.md#v1_datasets_status_update) | **PUT** /v1/datasets/status/{id}/ | 
-*V1Api* | [**v1_evaluators_calibrate_create**](root/generated/openapi_aclient/docs/V1Api.md#v1_evaluators_calibrate_create) | **POST** /v1/evaluators/calibrate/ | 
-*V1Api* | [**v1_evaluators_calibrate_create2**](root/generated/openapi_aclient/docs/V1Api.md#v1_evaluators_calibrate_create2) | **POST** /v1/evaluators/calibrate/{id} | 
-*V1Api* | [**v1_evaluators_create**](root/generated/openapi_aclient/docs/V1Api.md#v1_evaluators_create) | **POST** /v1/evaluators/ | 
-*V1Api* | [**v1_evaluators_destroy**](root/generated/openapi_aclient/docs/V1Api.md#v1_evaluators_destroy) | **DELETE** /v1/evaluators/{id}/ | 
-*V1Api* | [**v1_evaluators_duplicate_create**](root/generated/openapi_aclient/docs/V1Api.md#v1_evaluators_duplicate_create) | **POST** /v1/evaluators/duplicate/{id}/ | 
-*V1Api* | [**v1_evaluators_execute_by_name_create**](root/generated/openapi_aclient/docs/V1Api.md#v1_evaluators_execute_by_name_create) | **POST** /v1/evaluators/execute/by-name/ | 
-*V1Api* | [**v1_evaluators_execute_create**](root/generated/openapi_aclient/docs/V1Api.md#v1_evaluators_execute_create) | **POST** /v1/evaluators/execute/{id}/ | 
-*V1Api* | [**v1_evaluators_list**](root/generated/openapi_aclient/docs/V1Api.md#v1_evaluators_list) | **GET** /v1/evaluators/ | 
-*V1Api* | [**v1_evaluators_partial_update**](root/generated/openapi_aclient/docs/V1Api.md#v1_evaluators_partial_update) | **PATCH** /v1/evaluators/{id}/ | 
-*V1Api* | [**v1_evaluators_retrieve**](root/generated/openapi_aclient/docs/V1Api.md#v1_evaluators_retrieve) | **GET** /v1/evaluators/{id}/ | 
-*V1Api* | [**v1_evaluators_status_create**](root/generated/openapi_aclient/docs/V1Api.md#v1_evaluators_status_create) | **POST** /v1/evaluators/status/{id}/ | 
-*V1Api* | [**v1_evaluators_status_update**](root/generated/openapi_aclient/docs/V1Api.md#v1_evaluators_status_update) | **PUT** /v1/evaluators/status/{id}/ | 
-*V1Api* | [**v1_evaluators_update**](root/generated/openapi_aclient/docs/V1Api.md#v1_evaluators_update) | **PUT** /v1/evaluators/{id}/ | 
-*V1Api* | [**v1_evaluators_versions_list**](root/generated/openapi_aclient/docs/V1Api.md#v1_evaluators_versions_list) | **GET** /v1/evaluators/versions/{id}/ | 
-*V1Api* | [**v1_execution_logs_list**](root/generated/openapi_aclient/docs/V1Api.md#v1_execution_logs_list) | **GET** /v1/execution-logs/ | 
-*V1Api* | [**v1_execution_logs_retrieve**](root/generated/openapi_aclient/docs/V1Api.md#v1_execution_logs_retrieve) | **GET** /v1/execution-logs/{log_id}/ | 
-*V1Api* | [**v1_models_create**](root/generated/openapi_aclient/docs/V1Api.md#v1_models_create) | **POST** /v1/models/ | 
-*V1Api* | [**v1_models_destroy**](root/generated/openapi_aclient/docs/V1Api.md#v1_models_destroy) | **DELETE** /v1/models/{id}/ | 
-*V1Api* | [**v1_models_list**](root/generated/openapi_aclient/docs/V1Api.md#v1_models_list) | **GET** /v1/models/ | 
-*V1Api* | [**v1_models_partial_update**](root/generated/openapi_aclient/docs/V1Api.md#v1_models_partial_update) | **PATCH** /v1/models/{id}/ | 
-*V1Api* | [**v1_models_retrieve**](root/generated/openapi_aclient/docs/V1Api.md#v1_models_retrieve) | **GET** /v1/models/{id}/ | 
-*V1Api* | [**v1_models_update**](root/generated/openapi_aclient/docs/V1Api.md#v1_models_update) | **PUT** /v1/models/{id}/ | 
-*V1Api* | [**v1_objectives_create**](root/generated/openapi_aclient/docs/V1Api.md#v1_objectives_create) | **POST** /v1/objectives/ | 
-*V1Api* | [**v1_objectives_destroy**](root/generated/openapi_aclient/docs/V1Api.md#v1_objectives_destroy) | **DELETE** /v1/objectives/{id}/ | 
-*V1Api* | [**v1_objectives_list**](root/generated/openapi_aclient/docs/V1Api.md#v1_objectives_list) | **GET** /v1/objectives/ | 
-*V1Api* | [**v1_objectives_partial_update**](root/generated/openapi_aclient/docs/V1Api.md#v1_objectives_partial_update) | **PATCH** /v1/objectives/{id}/ | 
-*V1Api* | [**v1_objectives_retrieve**](root/generated/openapi_aclient/docs/V1Api.md#v1_objectives_retrieve) | **GET** /v1/objectives/{id}/ | 
-*V1Api* | [**v1_objectives_update**](root/generated/openapi_aclient/docs/V1Api.md#v1_objectives_update) | **PUT** /v1/objectives/{id}/ | 
-*V1Api* | [**v1_objectives_versions_list**](root/generated/openapi_aclient/docs/V1Api.md#v1_objectives_versions_list) | **GET** /v1/objectives/versions/{id}/ | 
+*DatasetsApi* | [**datasets_create**](root/generated/openapi_aclient/docs/DatasetsApi.md#datasets_create) | **POST** /v1/datasets/ | 
+*DatasetsApi* | [**datasets_destroy**](root/generated/openapi_aclient/docs/DatasetsApi.md#datasets_destroy) | **DELETE** /v1/datasets/{id}/ | 
+*DatasetsApi* | [**datasets_list**](root/generated/openapi_aclient/docs/DatasetsApi.md#datasets_list) | **GET** /v1/datasets/ | 
+*DatasetsApi* | [**datasets_retrieve**](root/generated/openapi_aclient/docs/DatasetsApi.md#datasets_retrieve) | **GET** /v1/datasets/{id}/ | 
+*DatasetsApi* | [**datasets_status_update**](root/generated/openapi_aclient/docs/DatasetsApi.md#datasets_status_update) | **PUT** /v1/datasets/status/{id}/ | 
+*EvaluatorsApi* | [**evaluators_calibrate_create**](root/generated/openapi_aclient/docs/EvaluatorsApi.md#evaluators_calibrate_create) | **POST** /v1/evaluators/calibrate/ | 
+*EvaluatorsApi* | [**evaluators_calibrate_create2**](root/generated/openapi_aclient/docs/EvaluatorsApi.md#evaluators_calibrate_create2) | **POST** /v1/evaluators/calibrate/{id} | 
+*EvaluatorsApi* | [**evaluators_create**](root/generated/openapi_aclient/docs/EvaluatorsApi.md#evaluators_create) | **POST** /v1/evaluators/ | 
+*EvaluatorsApi* | [**evaluators_destroy**](root/generated/openapi_aclient/docs/EvaluatorsApi.md#evaluators_destroy) | **DELETE** /v1/evaluators/{id}/ | 
+*EvaluatorsApi* | [**evaluators_duplicate_create**](root/generated/openapi_aclient/docs/EvaluatorsApi.md#evaluators_duplicate_create) | **POST** /v1/evaluators/duplicate/{id}/ | 
+*EvaluatorsApi* | [**evaluators_execute_by_name_create**](root/generated/openapi_aclient/docs/EvaluatorsApi.md#evaluators_execute_by_name_create) | **POST** /v1/evaluators/execute/by-name/ | 
+*EvaluatorsApi* | [**evaluators_execute_create**](root/generated/openapi_aclient/docs/EvaluatorsApi.md#evaluators_execute_create) | **POST** /v1/evaluators/execute/{id}/ | 
+*EvaluatorsApi* | [**evaluators_list**](root/generated/openapi_aclient/docs/EvaluatorsApi.md#evaluators_list) | **GET** /v1/evaluators/ | 
+*EvaluatorsApi* | [**evaluators_partial_update**](root/generated/openapi_aclient/docs/EvaluatorsApi.md#evaluators_partial_update) | **PATCH** /v1/evaluators/{id}/ | 
+*EvaluatorsApi* | [**evaluators_retrieve**](root/generated/openapi_aclient/docs/EvaluatorsApi.md#evaluators_retrieve) | **GET** /v1/evaluators/{id}/ | 
+*EvaluatorsApi* | [**evaluators_status_create**](root/generated/openapi_aclient/docs/EvaluatorsApi.md#evaluators_status_create) | **POST** /v1/evaluators/status/{id}/ | 
+*EvaluatorsApi* | [**evaluators_status_update**](root/generated/openapi_aclient/docs/EvaluatorsApi.md#evaluators_status_update) | **PUT** /v1/evaluators/status/{id}/ | 
+*EvaluatorsApi* | [**evaluators_update**](root/generated/openapi_aclient/docs/EvaluatorsApi.md#evaluators_update) | **PUT** /v1/evaluators/{id}/ | 
+*EvaluatorsApi* | [**evaluators_versions_list**](root/generated/openapi_aclient/docs/EvaluatorsApi.md#evaluators_versions_list) | **GET** /v1/evaluators/versions/{id}/ | 
+*ExecutionLogsApi* | [**execution_logs_list**](root/generated/openapi_aclient/docs/ExecutionLogsApi.md#execution_logs_list) | **GET** /v1/execution-logs/ | 
+*ExecutionLogsApi* | [**execution_logs_retrieve**](root/generated/openapi_aclient/docs/ExecutionLogsApi.md#execution_logs_retrieve) | **GET** /v1/execution-logs/{log_id}/ | 
+*JudgesApi* | [**judges_create**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_create) | **POST** /v1/judges/ | 
+*JudgesApi* | [**judges_destroy**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_destroy) | **DELETE** /v1/judges/{id}/ | 
+*JudgesApi* | [**judges_duplicate_create**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_duplicate_create) | **POST** /v1/judges/{id}/duplicate/ | 
+*JudgesApi* | [**judges_execute_create**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_execute_create) | **POST** /v1/judges/{judge_id}/execute/ | 
+*JudgesApi* | [**judges_generate_create**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_generate_create) | **POST** /v1/judges/generate/ | 
+*JudgesApi* | [**judges_list**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_list) | **GET** /v1/judges/ | 
+*JudgesApi* | [**judges_openai_chat_completions_create**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_openai_chat_completions_create) | **POST** /v1/judges/openai/chat/completions | 
+*JudgesApi* | [**judges_openai_chat_completions_create2**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_openai_chat_completions_create2) | **POST** /v1/judges/{judge_id}/openai/chat/completions | 
+*JudgesApi* | [**judges_partial_update**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_partial_update) | **PATCH** /v1/judges/{id}/ | 
+*JudgesApi* | [**judges_refine_create**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_refine_create) | **POST** /v1/judges/{judge_id}/refine/ | 
+*JudgesApi* | [**judges_refine_openai_chat_completions_create**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_refine_openai_chat_completions_create) | **POST** /v1/judges/{judge_id}/refine/openai/chat/completions | 
+*JudgesApi* | [**judges_retrieve**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_retrieve) | **GET** /v1/judges/{id}/ | 
+*JudgesApi* | [**judges_update**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_update) | **PUT** /v1/judges/{id}/ | 
+*ModelsApi* | [**models_create**](root/generated/openapi_aclient/docs/ModelsApi.md#models_create) | **POST** /v1/models/ | 
+*ModelsApi* | [**models_destroy**](root/generated/openapi_aclient/docs/ModelsApi.md#models_destroy) | **DELETE** /v1/models/{id}/ | 
+*ModelsApi* | [**models_list**](root/generated/openapi_aclient/docs/ModelsApi.md#models_list) | **GET** /v1/models/ | 
+*ModelsApi* | [**models_partial_update**](root/generated/openapi_aclient/docs/ModelsApi.md#models_partial_update) | **PATCH** /v1/models/{id}/ | 
+*ModelsApi* | [**models_retrieve**](root/generated/openapi_aclient/docs/ModelsApi.md#models_retrieve) | **GET** /v1/models/{id}/ | 
+*ModelsApi* | [**models_update**](root/generated/openapi_aclient/docs/ModelsApi.md#models_update) | **PUT** /v1/models/{id}/ | 
+*ObjectivesApi* | [**objectives_create**](root/generated/openapi_aclient/docs/ObjectivesApi.md#objectives_create) | **POST** /v1/objectives/ | 
+*ObjectivesApi* | [**objectives_destroy**](root/generated/openapi_aclient/docs/ObjectivesApi.md#objectives_destroy) | **DELETE** /v1/objectives/{id}/ | 
+*ObjectivesApi* | [**objectives_list**](root/generated/openapi_aclient/docs/ObjectivesApi.md#objectives_list) | **GET** /v1/objectives/ | 
+*ObjectivesApi* | [**objectives_partial_update**](root/generated/openapi_aclient/docs/ObjectivesApi.md#objectives_partial_update) | **PATCH** /v1/objectives/{id}/ | 
+*ObjectivesApi* | [**objectives_retrieve**](root/generated/openapi_aclient/docs/ObjectivesApi.md#objectives_retrieve) | **GET** /v1/objectives/{id}/ | 
+*ObjectivesApi* | [**objectives_update**](root/generated/openapi_aclient/docs/ObjectivesApi.md#objectives_update) | **PUT** /v1/objectives/{id}/ | 
+*ObjectivesApi* | [**objectives_versions_list**](root/generated/openapi_aclient/docs/ObjectivesApi.md#objectives_versions_list) | **GET** /v1/objectives/versions/{id}/ | 
 
 
 ## Documentation For Models
@@ -141,6 +142,8 @@ Class | Method | HTTP request | Description
  - [EvaluatorExecutionFunctionsTypeEnum](root/generated/openapi_aclient/docs/EvaluatorExecutionFunctionsTypeEnum.md)
  - [EvaluatorExecutionRequest](root/generated/openapi_aclient/docs/EvaluatorExecutionRequest.md)
  - [EvaluatorExecutionResult](root/generated/openapi_aclient/docs/EvaluatorExecutionResult.md)
+ - [EvaluatorInputsValue](root/generated/openapi_aclient/docs/EvaluatorInputsValue.md)
+ - [EvaluatorInputsValueItems](root/generated/openapi_aclient/docs/EvaluatorInputsValueItems.md)
  - [EvaluatorListOutput](root/generated/openapi_aclient/docs/EvaluatorListOutput.md)
  - [EvaluatorReference](root/generated/openapi_aclient/docs/EvaluatorReference.md)
  - [EvaluatorReferenceRequest](root/generated/openapi_aclient/docs/EvaluatorReferenceRequest.md)
@@ -155,14 +158,16 @@ Class | Method | HTTP request | Description
  - [ExecutionLogList](root/generated/openapi_aclient/docs/ExecutionLogList.md)
  - [ExecutionLogListEvaluationContext](root/generated/openapi_aclient/docs/ExecutionLogListEvaluationContext.md)
  - [ExecutionLogListSkill](root/generated/openapi_aclient/docs/ExecutionLogListSkill.md)
+ - [GenerationModelParamsRequest](root/generated/openapi_aclient/docs/GenerationModelParamsRequest.md)
  - [ID](root/generated/openapi_aclient/docs/ID.md)
  - [InputVariable](root/generated/openapi_aclient/docs/InputVariable.md)
  - [InputVariableRequest](root/generated/openapi_aclient/docs/InputVariableRequest.md)
  - [Judge](root/generated/openapi_aclient/docs/Judge.md)
  - [JudgeExecutionRequest](root/generated/openapi_aclient/docs/JudgeExecutionRequest.md)
  - [JudgeExecutionResponse](root/generated/openapi_aclient/docs/JudgeExecutionResponse.md)
- - [JudgeFile](root/generated/openapi_aclient/docs/JudgeFile.md)
- - [JudgeFileRequest](root/generated/openapi_aclient/docs/JudgeFileRequest.md)
+ - [JudgeFilesInner](root/generated/openapi_aclient/docs/JudgeFilesInner.md)
+ - [JudgeGeneratorRequest](root/generated/openapi_aclient/docs/JudgeGeneratorRequest.md)
+ - [JudgeGeneratorResponse](root/generated/openapi_aclient/docs/JudgeGeneratorResponse.md)
  - [JudgeList](root/generated/openapi_aclient/docs/JudgeList.md)
  - [JudgeRectifierRequestRequest](root/generated/openapi_aclient/docs/JudgeRectifierRequestRequest.md)
  - [JudgeRectifierResponse](root/generated/openapi_aclient/docs/JudgeRectifierResponse.md)
@@ -174,6 +179,7 @@ Class | Method | HTTP request | Description
  - [ModelParamsRequest](root/generated/openapi_aclient/docs/ModelParamsRequest.md)
  - [ModelRequest](root/generated/openapi_aclient/docs/ModelRequest.md)
  - [NestedEvaluator](root/generated/openapi_aclient/docs/NestedEvaluator.md)
+ - [NestedEvaluatorObjective](root/generated/openapi_aclient/docs/NestedEvaluatorObjective.md)
  - [NestedEvaluatorRequest](root/generated/openapi_aclient/docs/NestedEvaluatorRequest.md)
  - [NestedObjectiveEvaluator](root/generated/openapi_aclient/docs/NestedObjectiveEvaluator.md)
  - [NestedObjectiveEvaluatorRequest](root/generated/openapi_aclient/docs/NestedObjectiveEvaluatorRequest.md)
@@ -212,6 +218,7 @@ Class | Method | HTTP request | Description
  - [StatusChangeStatusEnum](root/generated/openapi_aclient/docs/StatusChangeStatusEnum.md)
  - [StatusEnum](root/generated/openapi_aclient/docs/StatusEnum.md)
  - [ValidationResultStatus](root/generated/openapi_aclient/docs/ValidationResultStatus.md)
+ - [VisibilityEnum](root/generated/openapi_aclient/docs/VisibilityEnum.md)
 
 
 <a id="documentation-for-authorization"></a>

@@ -17,7 +17,8 @@ class AsynchronousMock(MagicMock):
 
 @pytest.mark.asyncio
 @mock.patch(
-    "root.generated.openapi_aclient.api.v1_api.V1Api.v1_evaluators_calibrate_create", new_callable=AsynchronousMock
+    "root.generated.openapi_aclient.api.evaluators_api.EvaluatorsApi.evaluators_calibrate_create",
+    new_callable=AsynchronousMock,
 )
 async def test_acalibrate_evaluator_batch(mock_skills_calibrate_api: AsynchronousMock) -> None:
     mock_skills_calibrate_api.return_value = [

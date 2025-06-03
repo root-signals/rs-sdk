@@ -2,12 +2,23 @@ from __future__ import annotations
 
 from contextlib import AbstractAsyncContextManager
 from functools import partial
-from typing import AsyncIterator, Iterator, List, Optional, Union, cast
+from typing import AsyncIterator, Dict, Iterator, List, Literal, Optional, Union, cast
 
 from pydantic import StrictStr
 
+from root.generated.openapi_aclient.models.judge_generator_request import (
+    JudgeGeneratorRequest as AJudgeGeneratorRequest,
+)
+from root.generated.openapi_aclient.models.judge_generator_response import (
+    JudgeGeneratorResponse as AJudgeGeneratorResponse,
+)
+from root.generated.openapi_aclient.models.visibility_enum import VisibilityEnum as AVisibilityEnum
+from root.generated.openapi_client.models.judge_generator_request import JudgeGeneratorRequest
+from root.generated.openapi_client.models.judge_generator_response import JudgeGeneratorResponse
+from root.generated.openapi_client.models.visibility_enum import VisibilityEnum
+
 from .generated.openapi_aclient import ApiClient as AApiClient
-from .generated.openapi_aclient.api.beta_api import BetaApi as ABetaApi
+from .generated.openapi_aclient.api.judges_api import JudgesApi as AJudgesApi
 from .generated.openapi_aclient.models.evaluator_execution_functions_request import (
     EvaluatorExecutionFunctionsRequest as AEvaluatorExecutionFunctionsRequest,
 )
@@ -29,7 +40,7 @@ from .generated.openapi_aclient.models.patched_judge_request import (
     PatchedJudgeRequest as APatchedJudgeRequest,
 )
 from .generated.openapi_client import ApiClient
-from .generated.openapi_client.api.beta_api import BetaApi
+from .generated.openapi_client.api.judges_api import JudgesApi
 from .generated.openapi_client.models.evaluator_execution_functions_request import (
     EvaluatorExecutionFunctionsRequest,
 )
@@ -87,7 +98,7 @@ class Judge(OpenApiJudge):
           tags: Optional tags to add to the judge execution
           _request_timeout: Optional timeout for the request
         """
-        api_instance = BetaApi(_client)
+        api_instance = JudgesApi(_client)
         execution_request = JudgeExecutionRequest(
             request=request,
             response=response,
@@ -96,7 +107,7 @@ class Judge(OpenApiJudge):
             expected_output=expected_output,
             tags=tags,
         )
-        return api_instance.beta_judges_execute_create(
+        return api_instance.judges_execute_create(
             judge_id=self.id,
             judge_execution_request=execution_request,
             _request_timeout=_request_timeout,
@@ -147,7 +158,7 @@ class AJudge(AOpenApiJudge):
           tags: Optional tags to add to the judge execution
           _request_timeout: Optional timeout for the request
         """
-        api_instance = ABetaApi(_client)
+        api_instance = AJudgesApi(_client)
         execution_request = AJudgeExecutionRequest(
             contexts=contexts,
             functions=functions,
@@ -156,7 +167,7 @@ class AJudge(AOpenApiJudge):
             response=response,
             tags=tags,
         )
-        return await api_instance.beta_judges_execute_create(
+        return await api_instance.judges_execute_create(
             judge_id=self.id,
             judge_execution_request=execution_request,
             _request_timeout=_request_timeout,
@@ -176,6 +187,88 @@ class Judges:
         self.client_context = client_context
 
     @with_sync_client
+    def generate(
+        self,
+        *,
+        intent: str,
+        visibility: Literal["public", "unlisted"] = "unlisted",
+        stage: Optional[str] = None,
+        extra_contexts: Optional[Dict[str, str | None]] = None,
+        strict: bool = False,
+        _request_timeout: Optional[int] = None,
+        _client: ApiClient,
+    ) -> JudgeGeneratorResponse:
+        """
+        Generate a judge.
+
+        Args:
+          intent: Describe what you want the judge to build for.
+            Example: I am building a chatbot for ecommerce and I would like to measure the quality of the responses.
+          visibility: Whether the judge should be visible to everyone or only to your organization.
+          stage: If the intent is ambiguous, you can specify the stage of the judge.
+            Example: For a chatbot judge, we can specify the stage to be "response generation".
+          extra_contexts: Extra contexts to be passed to the judge.
+            Example: {"domain": "Ecommerce selling clothing"}, {"audience": "Women aged 25-35"}
+          strict: Whether to fail generation if the intent is ambiguous.
+          _request_timeout: Optional timeout for the request
+
+        Returns:
+          Wrapper for the judge id and optionally an error code if the generation failed.
+        """
+        api_instance = JudgesApi(_client)
+        judge_request = JudgeGeneratorRequest(
+            intent=intent,
+            stage=stage,
+            extra_contexts=extra_contexts,
+            strict=strict,
+            visibility=VisibilityEnum.GLOBAL if visibility == "public" else VisibilityEnum.UNLISTED,
+        )
+        return api_instance.judges_generate_create(
+            judge_generator_request=judge_request, _request_timeout=_request_timeout
+        )
+
+    @with_async_client
+    async def agenerate(
+        self,
+        *,
+        intent: str,
+        visibility: Literal["public", "unlisted"] = "unlisted",
+        stage: Optional[str] = None,
+        extra_contexts: Optional[Dict[str, str | None]] = None,
+        strict: bool = False,
+        _request_timeout: Optional[int] = None,
+        _client: AApiClient,
+    ) -> AJudgeGeneratorResponse:
+        """
+        Asynchronously generate a judge.
+
+        Args:
+          intent: Describe what you want the judge to build for.
+            Example: I am building a chatbot for ecommerce and I would like to measure the quality of the responses.
+          visibility: Whether the judge should be visible to everyone or only to your organization.
+          stage: If the intent is ambiguous, you can specify the stage of the judge.
+            Example: For a chatbot judge, we can specify the stage to be "response generation".
+          extra_contexts: Extra contexts to be passed to the judge.
+            Example: {"domain": "Ecommerce selling clothing"}, {"audience": "Women aged 25-35"}
+          strict: Whether to fail generation if the intent is ambiguous.
+          _request_timeout: Optional timeout for the request
+
+        Returns:
+          Wrapper for the judge id and optionally an error code if the generation failed.
+        """
+        api_instance = AJudgesApi(_client)
+        judge_request = AJudgeGeneratorRequest(
+            intent=intent,
+            stage=stage,
+            extra_contexts=extra_contexts,
+            strict=strict,
+            visibility=AVisibilityEnum.GLOBAL if visibility == "public" else AVisibilityEnum.UNLISTED,
+        )
+        return await api_instance.judges_generate_create(
+            judge_generator_request=judge_request, _request_timeout=_request_timeout
+        )
+
+    @with_sync_client
     def get(self, judge_id: str, *, _request_timeout: Optional[int] = None, _client: ApiClient) -> Judge:
         """
         Get a judge by ID.
@@ -183,9 +276,9 @@ class Judges:
         Args:
           judge_id: The judge to be fetched.
         """
-        api_instance = BetaApi(_client)
+        api_instance = JudgesApi(_client)
         return Judge._wrap(
-            api_instance.beta_judges_retrieve(id=judge_id, _request_timeout=_request_timeout),
+            api_instance.judges_retrieve(id=judge_id, _request_timeout=_request_timeout),
             client_context=self.client_context,
         )
 
@@ -197,9 +290,9 @@ class Judges:
         Args:
           judge_id: The judge to be fetched.
         """
-        api_instance = ABetaApi(_client)
+        api_instance = AJudgesApi(_client)
         return await AJudge._awrap(
-            await api_instance.beta_judges_retrieve(id=judge_id, _request_timeout=_request_timeout),
+            await api_instance.judges_retrieve(id=judge_id, _request_timeout=_request_timeout),
             client_context=self.client_context,
         )
 
@@ -211,8 +304,8 @@ class Judges:
         Args:
           judge_id: The judge to be deleted.
         """
-        api_instance = BetaApi(_client)
-        return api_instance.beta_judges_destroy(id=judge_id, _request_timeout=_request_timeout)
+        api_instance = JudgesApi(_client)
+        return api_instance.judges_destroy(id=judge_id, _request_timeout=_request_timeout)
 
     @with_async_client
     async def adelete(self, judge_id: str, *, _request_timeout: Optional[int] = None, _client: AApiClient) -> None:
@@ -222,8 +315,8 @@ class Judges:
         Args:
           judge_id: The judge to be deleted.
         """
-        api_instance = ABetaApi(_client)
-        return await api_instance.beta_judges_destroy(id=judge_id, _request_timeout=_request_timeout)
+        api_instance = AJudgesApi(_client)
+        return await api_instance.judges_destroy(id=judge_id, _request_timeout=_request_timeout)
 
     @with_sync_client
     def list(self, *, limit: int = 100, _client: ApiClient) -> Iterator[Judge]:
@@ -233,10 +326,10 @@ class Judges:
         Args:
           limit: Number of entries to iterate through at most.
         """
-        api_instance = BetaApi(_client)
+        api_instance = JudgesApi(_client)
         cursor: Optional[StrictStr] = None
         while limit > 0:
-            result: PaginatedJudgeListList = api_instance.beta_judges_list(page_size=limit, cursor=cursor)
+            result: PaginatedJudgeListList = api_instance.judges_list(page_size=limit, cursor=cursor)
             if not result.results:
                 return
 
@@ -258,8 +351,8 @@ class Judges:
         context = self.client_context()
         assert isinstance(context, AbstractAsyncContextManager), "This method is not available in synchronous mode"
         async with context as client:
-            api_instance = ABetaApi(client)
-            partial_list = partial(api_instance.beta_judges_list)
+            api_instance = AJudgesApi(client)
+            partial_list = partial(api_instance.judges_list)
 
             cursor: Optional[StrictStr] = None
             while limit > 0:
@@ -293,13 +386,13 @@ class Judges:
           name: New name for the judge
           evaluator_references: New list of evaluator references
         """
-        api_instance = BetaApi(_client)
+        api_instance = JudgesApi(_client)
         request = PatchedJudgeRequest(
             name=name,
             evaluator_references=evaluator_references,
         )
         return Judge._wrap(
-            api_instance.beta_judges_partial_update(
+            api_instance.judges_partial_update(
                 id=judge_id,
                 patched_judge_request=request,
                 _request_timeout=_request_timeout,
@@ -325,13 +418,13 @@ class Judges:
           name: New name for the judge
           evaluator_references: New list of evaluator references
         """
-        api_instance = ABetaApi(_client)
+        api_instance = AJudgesApi(_client)
         request = APatchedJudgeRequest(
             name=name,
             evaluator_references=evaluator_references,
         )
         return await AJudge._awrap(
-            await api_instance.beta_judges_partial_update(
+            await api_instance.judges_partial_update(
                 id=judge_id,
                 patched_judge_request=request,
                 _request_timeout=_request_timeout,
@@ -366,7 +459,7 @@ class Judges:
           tags: Optional tags to add to the judge execution
           _request_timeout: Optional timeout for the request
         """
-        api_instance = BetaApi(_client)
+        api_instance = JudgesApi(_client)
         execution_request = JudgeExecutionRequest(
             request=request,
             response=response,
@@ -375,7 +468,7 @@ class Judges:
             expected_output=expected_output,
             tags=tags,
         )
-        return api_instance.beta_judges_execute_create(
+        return api_instance.judges_execute_create(
             judge_id=judge_id,
             judge_execution_request=execution_request,
             _request_timeout=_request_timeout,
@@ -408,7 +501,7 @@ class Judges:
           tags: Optional tags to add to the judge execution
           _request_timeout: Optional timeout for the request
         """
-        api_instance = ABetaApi(_client)
+        api_instance = AJudgesApi(_client)
         execution_request = AJudgeExecutionRequest(
             contexts=contexts,
             functions=functions,
@@ -417,7 +510,7 @@ class Judges:
             response=response,
             tags=tags,
         )
-        return await api_instance.beta_judges_execute_create(
+        return await api_instance.judges_execute_create(
             judge_id=judge_id,
             judge_execution_request=execution_request,
             _request_timeout=_request_timeout,

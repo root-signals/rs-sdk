@@ -41,6 +41,8 @@ from root.generated.openapi_aclient.models.evaluator_execution_functions_type_en
 )
 from root.generated.openapi_aclient.models.evaluator_execution_request import EvaluatorExecutionRequest
 from root.generated.openapi_aclient.models.evaluator_execution_result import EvaluatorExecutionResult
+from root.generated.openapi_aclient.models.evaluator_inputs_value import EvaluatorInputsValue
+from root.generated.openapi_aclient.models.evaluator_inputs_value_items import EvaluatorInputsValueItems
 from root.generated.openapi_aclient.models.evaluator_list_output import EvaluatorListOutput
 from root.generated.openapi_aclient.models.evaluator_reference import EvaluatorReference
 from root.generated.openapi_aclient.models.evaluator_reference_request import EvaluatorReferenceRequest
@@ -61,14 +63,16 @@ from root.generated.openapi_aclient.models.execution_log_list_evaluation_context
     ExecutionLogListEvaluationContext,
 )
 from root.generated.openapi_aclient.models.execution_log_list_skill import ExecutionLogListSkill
+from root.generated.openapi_aclient.models.generation_model_params_request import GenerationModelParamsRequest
 from root.generated.openapi_aclient.models.id import ID
 from root.generated.openapi_aclient.models.input_variable import InputVariable
 from root.generated.openapi_aclient.models.input_variable_request import InputVariableRequest
 from root.generated.openapi_aclient.models.judge import Judge
 from root.generated.openapi_aclient.models.judge_execution_request import JudgeExecutionRequest
 from root.generated.openapi_aclient.models.judge_execution_response import JudgeExecutionResponse
-from root.generated.openapi_aclient.models.judge_file import JudgeFile
-from root.generated.openapi_aclient.models.judge_file_request import JudgeFileRequest
+from root.generated.openapi_aclient.models.judge_files_inner import JudgeFilesInner
+from root.generated.openapi_aclient.models.judge_generator_request import JudgeGeneratorRequest
+from root.generated.openapi_aclient.models.judge_generator_response import JudgeGeneratorResponse
 from root.generated.openapi_aclient.models.judge_list import JudgeList
 from root.generated.openapi_aclient.models.judge_rectifier_request_request import JudgeRectifierRequestRequest
 from root.generated.openapi_aclient.models.judge_rectifier_response import JudgeRectifierResponse
@@ -80,6 +84,7 @@ from root.generated.openapi_aclient.models.model_params import ModelParams
 from root.generated.openapi_aclient.models.model_params_request import ModelParamsRequest
 from root.generated.openapi_aclient.models.model_request import ModelRequest
 from root.generated.openapi_aclient.models.nested_evaluator import NestedEvaluator
+from root.generated.openapi_aclient.models.nested_evaluator_objective import NestedEvaluatorObjective
 from root.generated.openapi_aclient.models.nested_evaluator_request import NestedEvaluatorRequest
 from root.generated.openapi_aclient.models.nested_objective_evaluator import NestedObjectiveEvaluator
 from root.generated.openapi_aclient.models.nested_objective_evaluator_request import NestedObjectiveEvaluatorRequest
@@ -118,3 +123,4 @@ from root.generated.openapi_aclient.models.status_change_request import StatusCh
 from root.generated.openapi_aclient.models.status_change_status_enum import StatusChangeStatusEnum
 from root.generated.openapi_aclient.models.status_enum import StatusEnum
 from root.generated.openapi_aclient.models.validation_result_status import ValidationResultStatus
+from root.generated.openapi_aclient.models.visibility_enum import VisibilityEnum

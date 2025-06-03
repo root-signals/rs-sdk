@@ -7,7 +7,7 @@ from typing import AsyncIterator, Iterator, Optional, cast
 from pydantic import StrictStr
 
 from .generated.openapi_aclient import ApiClient as AApiClient
-from .generated.openapi_aclient.api.v1_api import V1Api as AObjectivesApi
+from .generated.openapi_aclient.api.objectives_api import ObjectivesApi as AObjectivesApi
 from .generated.openapi_aclient.models.objective import Objective as AOpenApiObjective
 from .generated.openapi_aclient.models.objective_list import ObjectiveList as AObjectiveList
 from .generated.openapi_aclient.models.objective_request import ObjectiveRequest as AObjectiveRequest
@@ -21,7 +21,7 @@ from .generated.openapi_aclient.models.patched_objective_request import (
     PatchedObjectiveRequest as APatchedObjectiveRequest,
 )
 from .generated.openapi_client import ApiClient
-from .generated.openapi_client.api.v1_api import V1Api as ObjectivesApi
+from .generated.openapi_client.api.objectives_api import ObjectivesApi as ObjectivesApi
 from .generated.openapi_client.models.objective import Objective as OpenApiObjective
 from .generated.openapi_client.models.objective_list import ObjectiveList
 from .generated.openapi_client.models.objective_request import ObjectiveRequest
@@ -48,7 +48,7 @@ class Versions:
         """
 
         api_instance = ObjectivesApi(_client)
-        return api_instance.v1_objectives_versions_list(id=objective_id)
+        return api_instance.objectives_versions_list(id=objective_id)
 
     async def alist(self, objective_id: str) -> APaginatedObjectiveList:
         """Asynchronously list all versions of an objective.
@@ -61,7 +61,7 @@ class Versions:
         assert isinstance(context, AbstractAsyncContextManager), "This method is not available in synchronous mode"
         async with context as client:
             api_instance = AObjectivesApi(client)
-            return await api_instance.v1_objectives_versions_list(id=objective_id)
+            return await api_instance.objectives_versions_list(id=objective_id)
 
 
 class Objective(OpenApiObjective):
@@ -139,7 +139,7 @@ class Objectives:
             test_dataset_id=test_dataset_id,
         )
         api_instance = ObjectivesApi(_client)
-        objective = api_instance.v1_objectives_create(objective_request=request)
+        objective = api_instance.objectives_create(objective_request=request)
         return self.get(objective.id, _request_timeout=_request_timeout)
 
     @with_async_client
@@ -164,7 +164,7 @@ class Objectives:
             test_dataset_id=test_dataset_id,
         )
         api_instance = AObjectivesApi(_client)
-        objective = await api_instance.v1_objectives_create(objective_request=request)
+        objective = await api_instance.objectives_create(objective_request=request)
         return await self.aget(objective.id, _request_timeout=_request_timeout)
 
     @with_sync_client
@@ -184,7 +184,7 @@ class Objectives:
 
         api_instance = ObjectivesApi(_client)
         return Objective._wrap(
-            api_instance.v1_objectives_retrieve(id=objective_id, _request_timeout=_request_timeout),
+            api_instance.objectives_retrieve(id=objective_id, _request_timeout=_request_timeout),
             client_context=self.client_context,
         )
 
@@ -205,7 +205,7 @@ class Objectives:
 
         api_instance = AObjectivesApi(_client)
         return await AObjective._awrap(
-            await api_instance.v1_objectives_retrieve(id=objective_id, _request_timeout=_request_timeout),
+            await api_instance.objectives_retrieve(id=objective_id, _request_timeout=_request_timeout),
             client_context=self.client_context,
         )
 
@@ -219,7 +219,7 @@ class Objectives:
         """
 
         api_instance = ObjectivesApi(_client)
-        return api_instance.v1_objectives_destroy(id=objective_id, _request_timeout=_request_timeout)
+        return api_instance.objectives_destroy(id=objective_id, _request_timeout=_request_timeout)
 
     @with_async_client
     async def adelete(self, objective_id: str, *, _request_timeout: Optional[int] = None, _client: AApiClient) -> None:
@@ -231,7 +231,7 @@ class Objectives:
         """
 
         api_instance = AObjectivesApi(_client)
-        return await api_instance.v1_objectives_destroy(id=objective_id, _request_timeout=_request_timeout)
+        return await api_instance.objectives_destroy(id=objective_id, _request_timeout=_request_timeout)
 
     @with_sync_client
     def list(self, *, intent: Optional[str] = None, limit: int = 100, _client: ApiClient) -> Iterator[ObjectiveList]:
@@ -244,7 +244,7 @@ class Objectives:
         """
 
         api_instance = ObjectivesApi(_client)
-        yield from iterate_cursor_list(partial(api_instance.v1_objectives_list, intent=intent), limit=limit)
+        yield from iterate_cursor_list(partial(api_instance.objectives_list, intent=intent), limit=limit)
 
     @with_async_client
     async def alist(self, *, intent: Optional[str] = None, limit: int = 100) -> AsyncIterator[AObjectiveList]:
@@ -261,7 +261,7 @@ class Objectives:
         assert isinstance(context, AbstractAsyncContextManager), "This method is not available in synchronous mode"
         async with context as client:
             api_instance = AObjectivesApi(client)
-            partial_list = partial(api_instance.v1_objectives_list, intent=intent)
+            partial_list = partial(api_instance.objectives_list, intent=intent)
 
             cursor: Optional[StrictStr] = None
             while limit > 0:
@@ -301,7 +301,7 @@ class Objectives:
         )
         api_instance = ObjectivesApi(_client)
         return Objective._wrap(
-            api_instance.v1_objectives_partial_update(
+            api_instance.objectives_partial_update(
                 id=objective_id,
                 patched_objective_request=request,
                 _request_timeout=_request_timeout,
@@ -334,7 +334,7 @@ class Objectives:
         )
         api_instance = AObjectivesApi(_client)
         return await AObjective._awrap(
-            await api_instance.v1_objectives_partial_update(
+            await api_instance.objectives_partial_update(
                 id=objective_id,
                 patched_objective_request=request,
                 _request_timeout=_request_timeout,

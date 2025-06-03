@@ -22,9 +22,8 @@ from root.generated.openapi_client.models.evaluator_request import EvaluatorRequ
 from root.generated.openapi_client.models.paginated_evaluator_list import PaginatedEvaluatorList
 
 from .generated.openapi_aclient import ApiClient as AApiClient
-from .generated.openapi_aclient.api.v1_api import V1Api as AEvaluatorsApi
-from .generated.openapi_aclient.api.v1_api import V1Api as AObjectivesApi
-from .generated.openapi_aclient.api.v1_api import V1Api as AV1Api
+from .generated.openapi_aclient.api.evaluators_api import EvaluatorsApi as AEvaluatorsApi
+from .generated.openapi_aclient.api.objectives_api import ObjectivesApi as AObjectivesApi
 from .generated.openapi_aclient.models import (
     EvaluatorDemonstrationsRequest as AEvaluatorDemonstrationsRequest,
 )
@@ -57,9 +56,9 @@ from .generated.openapi_aclient.models.skill_test_data_request import SkillTestD
 from .generated.openapi_aclient.models.skill_test_input_request import (
     SkillTestInputRequest as ASkillTestInputRequest,
 )
-from .generated.openapi_client.api.v1_api import ApiClient, V1Api
-from .generated.openapi_client.api.v1_api import V1Api as EvaluatorsApi
-from .generated.openapi_client.api.v1_api import V1Api as ObjectivesApi
+from .generated.openapi_client import ApiClient as ApiClient
+from .generated.openapi_client.api.evaluators_api import EvaluatorsApi as EvaluatorsApi
+from .generated.openapi_client.api.objectives_api import ObjectivesApi as ObjectivesApi
 from .generated.openapi_client.models.evaluator_calibration_output import EvaluatorCalibrationOutput
 from .generated.openapi_client.models.evaluator_demonstrations_request import (
     EvaluatorDemonstrationsRequest,
@@ -205,7 +204,7 @@ class Versions:
         """
 
         api_instance = EvaluatorsApi(_client)
-        return api_instance.v1_evaluators_versions_list(id=evaluator_id)
+        return api_instance.evaluators_versions_list(id=evaluator_id)
 
     async def alist(self, evaluator_id: str) -> APaginatedEvaluatorList:
         """
@@ -216,7 +215,7 @@ class Versions:
         assert isinstance(context, AbstractAsyncContextManager), "This method is not available in synchronous mode"
         async with context as client:
             api_instance = AEvaluatorsApi(client)
-            return await api_instance.v1_evaluators_versions_list(id=evaluator_id)
+            return await api_instance.evaluators_versions_list(id=evaluator_id)
 
 
 class Evaluator(AOpenAPIEvaluator):
@@ -269,7 +268,7 @@ class Evaluator(AOpenAPIEvaluator):
         if not response and not request:
             raise ValueError("Either response or request must be provided")
 
-        api_instance = V1Api(_client)
+        api_instance = EvaluatorsApi(_client)
 
         evaluator_execution_request = EvaluatorExecutionRequest(
             evaluator_version_id=self.version_id,
@@ -281,7 +280,7 @@ class Evaluator(AOpenAPIEvaluator):
             variables=variables,
             tags=tags,
         )
-        return api_instance.v1_evaluators_execute_create(
+        return api_instance.evaluators_execute_create(
             id=self.id,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
@@ -338,7 +337,7 @@ class AEvaluator(AOpenAPIEvaluator):
         if not response and not request:
             raise ValueError("Either response or request must be provided")
 
-        api_instance = AV1Api(_client)
+        api_instance = AEvaluatorsApi(_client)
 
         evaluator_execution_request = AEvaluatorExecutionRequest(
             evaluator_version_id=self.version_id,
@@ -350,7 +349,7 @@ class AEvaluator(AOpenAPIEvaluator):
             variables=variables,
             tags=tags,
         )
-        return await api_instance.v1_evaluators_execute_create(
+        return await api_instance.evaluators_execute_create(
             id=self.id,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
@@ -499,7 +498,7 @@ class PresetEvaluatorRunner:
         if not response and not request:
             raise ValueError("Either response or request must be provided")
 
-        api_instance = V1Api(_client)
+        api_instance = EvaluatorsApi(_client)
 
         evaluator_execution_request = EvaluatorExecutionRequest(
             evaluator_version_id=self.evaluator_version_id,
@@ -511,7 +510,7 @@ class PresetEvaluatorRunner:
             variables=variables,
             tags=tags,
         )
-        return api_instance.v1_evaluators_execute_create(
+        return api_instance.evaluators_execute_create(
             id=self.evaluator_id,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
@@ -576,7 +575,7 @@ class APresetEvaluatorRunner:
             variables=variables,
             tags=tags,
         )
-        return await api_instance.v1_evaluators_execute_create(
+        return await api_instance.evaluators_execute_create(
             id=self.evaluator_id,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
@@ -652,7 +651,7 @@ class Evaluators:
         if not response and not request:
             raise ValueError("Either response or request must be provided")
 
-        api_instance = V1Api(_client)
+        api_instance = EvaluatorsApi(_client)
 
         evaluator_execution_request = EvaluatorExecutionRequest(
             evaluator_version_id=evaluator_version_id,
@@ -664,7 +663,7 @@ class Evaluators:
             variables=variables,
             tags=tags,
         )
-        return api_instance.v1_evaluators_execute_create(
+        return api_instance.evaluators_execute_create(
             id=evaluator_id,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
@@ -706,7 +705,7 @@ class Evaluators:
         if not response and not request:
             raise ValueError("Either response or request must be provided")
 
-        api_instance = AV1Api(_client)
+        api_instance = AEvaluatorsApi(_client)
         evaluator_execution_request = AEvaluatorExecutionRequest(
             evaluator_version_id=evaluator_version_id,
             request=request,
@@ -717,7 +716,7 @@ class Evaluators:
             variables=variables,
             tags=tags,
         )
-        return await api_instance.v1_evaluators_execute_create(
+        return await api_instance.evaluators_execute_create(
             id=evaluator_id,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
@@ -746,7 +745,7 @@ class Evaluators:
             test_dataset_id=test_dataset_id,
             test_data=test_data,
         )
-        return api_instance.v1_evaluators_calibrate_create2(
+        return api_instance.evaluators_calibrate_create2(
             evaluator_id, evaluator_test_request, _request_timeout=_request_timeout
         )
 
@@ -773,7 +772,7 @@ class Evaluators:
             test_dataset_id=test_dataset_id,
             test_data=test_data,
         )
-        return await api_instance.v1_evaluators_calibrate_create2(
+        return await api_instance.evaluators_calibrate_create2(
             evaluator_id, evaluator_test_request, _request_timeout=_request_timeout
         )
 
@@ -814,7 +813,7 @@ class Evaluators:
             reference_variables=_to_reference_variables(reference_variables),
             input_variables=_to_input_variables(input_variables),
         )
-        return api_instance.v1_evaluators_calibrate_create(evaluator_test_request, _request_timeout=_request_timeout)
+        return api_instance.evaluators_calibrate_create(evaluator_test_request, _request_timeout=_request_timeout)
 
     @with_async_client
     async def acalibrate(
@@ -853,9 +852,7 @@ class Evaluators:
             reference_variables=_ato_reference_variables(reference_variables),
             input_variables=_ato_input_variables(input_variables),
         )
-        return await api_instance.v1_evaluators_calibrate_create(
-            evaluator_test_request, _request_timeout=_request_timeout
-        )
+        return await api_instance.evaluators_calibrate_create(evaluator_test_request, _request_timeout=_request_timeout)
 
     def calibrate_batch(
         self,
@@ -1098,7 +1095,7 @@ class Evaluators:
 
         evaluator_list: List[EvaluatorListOutput] = list(
             iterate_cursor_list(
-                partial(api_instance.v1_evaluators_list, name=name),
+                partial(api_instance.evaluators_list, name=name),
                 limit=1,
             )
         )
@@ -1107,7 +1104,7 @@ class Evaluators:
             raise ValueError(f"No evaluator found with name '{name}'")
 
         evaluator = evaluator_list[0]
-        api_response = api_instance.v1_evaluators_retrieve(id=evaluator.id)
+        api_response = api_instance.evaluators_retrieve(id=evaluator.id)
 
         return Evaluator._wrap(api_response, self.client_context)
 
@@ -1133,7 +1130,7 @@ class Evaluators:
 
             evaluator_list: List[AEvaluatorListOutput] = []
             async for evaluator in aiterate_cursor_list(  # type: ignore[var-annotated]
-                partial(api_instance.v1_evaluators_list, name=name),
+                partial(api_instance.evaluators_list, name=name),
                 limit=1,
             ):
                 evaluator_list.extend(evaluator)
@@ -1142,7 +1139,7 @@ class Evaluators:
                 raise ValueError(f"No evaluator found with name '{name}'")
 
             evaluator = evaluator_list[0]
-            api_response = await api_instance.v1_evaluators_retrieve(id=evaluator.id)
+            api_response = await api_instance.evaluators_retrieve(id=evaluator.id)
 
             return await AEvaluator._awrap(api_response, self.client_context)
 
@@ -1205,7 +1202,7 @@ class Evaluators:
                 intent=intent,
             )
             objectives_api_instance = ObjectivesApi(_client)
-            objective_id = objectives_api_instance.v1_objectives_create(objective_request=objective).id
+            objective_id = objectives_api_instance.objectives_create(objective_request=objective).id
 
         evaluator_request = EvaluatorRequest(
             name=name,
@@ -1219,7 +1216,7 @@ class Evaluators:
             overwrite=overwrite,
         )
 
-        evaluator = api_instance.v1_evaluators_create(
+        evaluator = api_instance.evaluators_create(
             evaluator_request=evaluator_request, _request_timeout=_request_timeout
         )
 
@@ -1283,7 +1280,7 @@ class Evaluators:
                 intent = name
             objective = await self._ato_objective_request(intent=intent)
             objectives_api_instance = AObjectivesApi(_client)
-            new_objective = await objectives_api_instance.v1_objectives_create(objective_request=objective)
+            new_objective = await objectives_api_instance.objectives_create(objective_request=objective)
             objective_id = new_objective.id
 
         evaluator_request = AEvaluatorRequest(
@@ -1298,7 +1295,7 @@ class Evaluators:
             overwrite=overwrite,
         )
 
-        evaluator = await api_instance.v1_evaluators_create(
+        evaluator = await api_instance.evaluators_create(
             evaluator_request=evaluator_request, _request_timeout=_request_timeout
         )
 
@@ -1345,7 +1342,7 @@ class Evaluators:
             else None,
         )
 
-        api_response = api_instance.v1_evaluators_partial_update(
+        api_response = api_instance.evaluators_partial_update(
             id=evaluator_id,
             patched_evaluator_request=request,
             _request_timeout=_request_timeout,
@@ -1392,7 +1389,7 @@ class Evaluators:
             if evaluator_demonstrations
             else None,
         )
-        api_response = await api_instance.v1_evaluators_partial_update(
+        api_response = await api_instance.evaluators_partial_update(
             id=evaluator_id,
             patched_evaluator_request=request,
             _request_timeout=_request_timeout,
@@ -1412,7 +1409,7 @@ class Evaluators:
         """
 
         api_instance = EvaluatorsApi(_client)
-        api_response = api_instance.v1_evaluators_retrieve(id=evaluator_id, _request_timeout=_request_timeout)
+        api_response = api_instance.evaluators_retrieve(id=evaluator_id, _request_timeout=_request_timeout)
         return Evaluator._wrap(api_response, self.client_context)
 
     @with_async_client
@@ -1428,7 +1425,7 @@ class Evaluators:
         """
 
         api_instance = AEvaluatorsApi(_client)
-        api_response = await api_instance.v1_evaluators_retrieve(id=evaluator_id, _request_timeout=_request_timeout)
+        api_response = await api_instance.evaluators_retrieve(id=evaluator_id, _request_timeout=_request_timeout)
         return await AEvaluator._awrap(api_response, self.client_context)
 
     @with_sync_client
@@ -1454,7 +1451,7 @@ class Evaluators:
         api_instance = EvaluatorsApi(_client)
         yield from iterate_cursor_list(
             partial(
-                api_instance.v1_evaluators_list,
+                api_instance.evaluators_list,
                 name=name,
                 search=search_term,
                 is_root_evaluator=True if only_root_evaluators else None,
@@ -1483,9 +1480,9 @@ class Evaluators:
         context = self.client_context()
         assert isinstance(context, AbstractAsyncContextManager), "This method is not available in synchronous mode"
         async with context as client:
-            api_instance = AV1Api(client)
+            api_instance = AEvaluatorsApi(client)
             partial_list = partial(
-                api_instance.v1_evaluators_list,
+                api_instance.evaluators_list,
                 name=name,
                 search=search_term,
                 is_root_evaluator=True if only_root_evaluators else None,
@@ -1553,7 +1550,7 @@ class Evaluators:
             variables=variables,
             tags=tags,
         )
-        return api_instance.v1_evaluators_execute_by_name_create(
+        return api_instance.evaluators_execute_by_name_create(
             name=name,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,
@@ -1566,7 +1563,7 @@ class Evaluators:
         """
 
         api_instance = EvaluatorsApi(_client)
-        return api_instance.v1_evaluators_destroy(id=evaluator_id)
+        return api_instance.evaluators_destroy(id=evaluator_id)
 
     @with_async_client
     async def adelete(self, evaluator_id: str, *, _client: AApiClient) -> None:
@@ -1575,7 +1572,7 @@ class Evaluators:
         """
 
         api_instance = AEvaluatorsApi(_client)
-        return await api_instance.v1_evaluators_destroy(id=evaluator_id)
+        return await api_instance.evaluators_destroy(id=evaluator_id)
 
     @with_async_client
     async def arun_by_name(
@@ -1624,7 +1621,7 @@ class Evaluators:
             variables=variables,
             tags=tags,
         )
-        return await api_instance.v1_evaluators_execute_by_name_create(
+        return await api_instance.evaluators_execute_by_name_create(
             name=name,
             evaluator_execution_request=evaluator_execution_request,
             _request_timeout=_request_timeout,

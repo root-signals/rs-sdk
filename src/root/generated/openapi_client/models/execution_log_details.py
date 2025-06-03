@@ -19,7 +19,7 @@ import re  # noqa: F401
 from datetime import datetime
 from typing import Any, ClassVar, Dict, List, Optional, Set, Union
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
 from typing_extensions import Self
 
 from root.generated.openapi_client.models.execution_log_details_evaluation_context import (
@@ -45,9 +45,7 @@ class ExecutionLogDetails(BaseModel):
     cost: Optional[Union[StrictFloat, StrictInt]]
     created_at: Optional[datetime]
     evaluation_context: ExecutionLogDetailsEvaluationContext
-    evaluator_latencies: Optional[List[ExecutionLogDetailsEvaluatorLatenciesInner]] = Field(
-        description="Latency information for each evaluator in seconds"
-    )
+    evaluator_latencies: Optional[List[ExecutionLogDetailsEvaluatorLatenciesInner]]
     id: StrictStr
     judge: Optional[ExecutionLogDetailsJudge]
     justification: StrictStr

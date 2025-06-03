@@ -18,24 +18,17 @@ import pprint
 import re  # noqa: F401
 from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictStr
 from typing_extensions import Self
 
-from root.generated.openapi_client.models.nested_evaluator_objective import NestedEvaluatorObjective
 
-
-class NestedEvaluator(BaseModel):
+class NestedEvaluatorObjective(BaseModel):
     """
-    NestedEvaluator
+    NestedEvaluatorObjective
     """  # noqa: E501
 
-    id: StrictStr
-    name: StrictStr
-    objective: NestedEvaluatorObjective
-    is_root_evaluator: StrictBool
-    model: StrictStr
-    version_id: StrictStr
-    __properties: ClassVar[List[str]] = ["id", "name", "objective", "is_root_evaluator", "model", "version_id"]
+    intent: StrictStr
+    __properties: ClassVar[List[str]] = ["intent"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -54,7 +47,7 @@ class NestedEvaluator(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of NestedEvaluator from a JSON string"""
+        """Create an instance of NestedEvaluatorObjective from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -67,12 +60,10 @@ class NestedEvaluator(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         * OpenAPI `readOnly` fields are excluded.
-        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
-                "objective",
-                "model",
+                "intent",
             ]
         )
 
@@ -81,30 +72,16 @@ class NestedEvaluator(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of objective
-        if self.objective:
-            _dict["objective"] = self.objective.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of NestedEvaluator from a dict"""
+        """Create an instance of NestedEvaluatorObjective from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
 
-        _obj = cls.model_validate(
-            {
-                "id": obj.get("id"),
-                "name": obj.get("name"),
-                "objective": NestedEvaluatorObjective.from_dict(obj["objective"])
-                if obj.get("objective") is not None
-                else None,
-                "is_root_evaluator": obj.get("is_root_evaluator"),
-                "model": obj.get("model"),
-                "version_id": obj.get("version_id"),
-            }
-        )
+        _obj = cls.model_validate({"intent": obj.get("intent")})
         return _obj

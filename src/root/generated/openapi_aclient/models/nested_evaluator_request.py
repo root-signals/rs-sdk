@@ -30,7 +30,8 @@ class NestedEvaluatorRequest(BaseModel):
     id: StrictStr
     name: Annotated[str, Field(min_length=1, strict=True)]
     is_root_evaluator: StrictBool
-    __properties: ClassVar[List[str]] = ["id", "name", "is_root_evaluator"]
+    version_id: StrictStr
+    __properties: ClassVar[List[str]] = ["id", "name", "is_root_evaluator", "version_id"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -81,6 +82,11 @@ class NestedEvaluatorRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate(
-            {"id": obj.get("id"), "name": obj.get("name"), "is_root_evaluator": obj.get("is_root_evaluator")}
+            {
+                "id": obj.get("id"),
+                "name": obj.get("name"),
+                "is_root_evaluator": obj.get("is_root_evaluator"),
+                "version_id": obj.get("version_id"),
+            }
         )
         return _obj

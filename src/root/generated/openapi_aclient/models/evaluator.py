@@ -19,10 +19,11 @@ import re  # noqa: F401
 from datetime import datetime
 from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing_extensions import Annotated, Self
 
 from root.generated.openapi_aclient.models.evaluator_demonstrations import EvaluatorDemonstrations
+from root.generated.openapi_aclient.models.evaluator_inputs_value import EvaluatorInputsValue
 from root.generated.openapi_aclient.models.input_variable import InputVariable
 from root.generated.openapi_aclient.models.model_params import ModelParams
 from root.generated.openapi_aclient.models.nested_user_details import NestedUserDetails
@@ -56,9 +57,9 @@ class Evaluator(BaseModel):
     updated_by: Optional[NestedUserDetails]
     version_id: StrictStr
     meta: Optional[Any] = Field(alias="_meta")
-    requires_contexts: StrictBool
-    requires_functions: StrictBool
-    requires_expected_output: StrictBool = Field(description="Expected output to the request from the LLM.")
+    inputs: Dict[str, EvaluatorInputsValue] = Field(
+        description="Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like functions, contexts, and expected output."
+    )
     __properties: ClassVar[List[str]] = [
         "change_note",
         "created_at",
@@ -79,9 +80,7 @@ class Evaluator(BaseModel):
         "updated_by",
         "version_id",
         "_meta",
-        "requires_contexts",
-        "requires_functions",
-        "requires_expected_output",
+        "inputs",
     ]
 
     model_config = ConfigDict(
@@ -122,8 +121,6 @@ class Evaluator(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
-        * OpenAPI `readOnly` fields are excluded.
-        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
@@ -135,9 +132,7 @@ class Evaluator(BaseModel):
                 "updated_by",
                 "version_id",
                 "meta",
-                "requires_contexts",
-                "requires_functions",
-                "requires_expected_output",
+                "inputs",
             ]
         )
 
@@ -179,6 +174,13 @@ class Evaluator(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of updated_by
         if self.updated_by:
             _dict["updated_by"] = self.updated_by.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each value in inputs (dict)
+        _field_dict = {}
+        if self.inputs:
+            for _key in self.inputs:
+                if self.inputs[_key]:
+                    _field_dict[_key] = self.inputs[_key].to_dict()
+            _dict["inputs"] = _field_dict
         # set to None if change_note (nullable) is None
         # and model_fields_set contains the field
         if self.change_note is None and "change_note" in self.model_fields_set:
@@ -263,9 +265,9 @@ class Evaluator(BaseModel):
                 else None,
                 "version_id": obj.get("version_id"),
                 "_meta": obj.get("_meta"),
-                "requires_contexts": obj.get("requires_contexts"),
-                "requires_functions": obj.get("requires_functions"),
-                "requires_expected_output": obj.get("requires_expected_output"),
+                "inputs": dict((_k, EvaluatorInputsValue.from_dict(_v)) for _k, _v in obj["inputs"].items())
+                if obj.get("inputs") is not None
+                else None,
             }
         )
         return _obj

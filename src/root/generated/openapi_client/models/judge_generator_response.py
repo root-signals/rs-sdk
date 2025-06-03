@@ -22,13 +22,14 @@ from pydantic import BaseModel, ConfigDict, StrictStr
 from typing_extensions import Self
 
 
-class JudgeFileRequest(BaseModel):
+class JudgeGeneratorResponse(BaseModel):
     """
-    JudgeFileRequest
+    JudgeGeneratorResponse
     """  # noqa: E501
 
-    id: StrictStr
-    __properties: ClassVar[List[str]] = ["id"]
+    judge_id: StrictStr
+    error_code: Optional[StrictStr]
+    __properties: ClassVar[List[str]] = ["judge_id", "error_code"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -47,7 +48,7 @@ class JudgeFileRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of JudgeFileRequest from a JSON string"""
+        """Create an instance of JudgeGeneratorResponse from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -71,12 +72,12 @@ class JudgeFileRequest(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of JudgeFileRequest from a dict"""
+        """Create an instance of JudgeGeneratorResponse from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
 
-        _obj = cls.model_validate({"id": obj.get("id")})
+        _obj = cls.model_validate({"judge_id": obj.get("judge_id"), "error_code": obj.get("error_code")})
         return _obj
