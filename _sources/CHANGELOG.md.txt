@@ -1,3 +1,18 @@
+## 1.6.0
+
+### Added
+
+- Added judge generate method.
+
+### Changed
+
+- Promoted judges out of beta.
+- New signature for evaluator inputs.
+
+### Removed
+
+- Operational skills
+
 ## 1.5.4
 
 ### Added
