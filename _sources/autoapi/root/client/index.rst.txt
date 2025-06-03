@@ -85,6 +85,13 @@ Module Contents
 
 
 
+   .. py:property:: judges
+      :type: root.judges.Judges
+
+
+      Get Judges API
+
+
    .. py:property:: models
       :type: root.models.Models
 

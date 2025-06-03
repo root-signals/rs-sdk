@@ -61,6 +61,10 @@ Module Contents
 
 
 
+   .. py:attribute:: inputs
+      :type:  Dict[str, root.generated.openapi_client.models.evaluator_inputs_value.EvaluatorInputsValue]
+
+
    .. py:attribute:: meta
       :type:  Optional[Any]
 
@@ -104,18 +108,6 @@ Module Contents
       :type:  Optional[List[root.generated.openapi_client.models.reference_variable.ReferenceVariable]]
       :value: None
 
-
-
-   .. py:attribute:: requires_contexts
-      :type:  pydantic.StrictBool
-
-
-   .. py:attribute:: requires_expected_output
-      :type:  pydantic.StrictBool
-
-
-   .. py:attribute:: requires_functions
-      :type:  pydantic.StrictBool
 
 
    .. py:attribute:: skill_type

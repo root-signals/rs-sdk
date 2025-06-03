@@ -32,6 +32,8 @@ Submodules
    /autoapi/root/generated/openapi_client/models/evaluator_execution_function_parameter_type_enum/index
    /autoapi/root/generated/openapi_client/models/evaluator_execution_functions_type_enum/index
    /autoapi/root/generated/openapi_client/models/evaluator_execution_result/index
+   /autoapi/root/generated/openapi_client/models/evaluator_inputs_value/index
+   /autoapi/root/generated/openapi_client/models/evaluator_inputs_value_items/index
    /autoapi/root/generated/openapi_client/models/evaluator_list_output/index
    /autoapi/root/generated/openapi_client/models/evaluator_reference/index
    /autoapi/root/generated/openapi_client/models/evaluator_result/index
@@ -48,7 +50,8 @@ Submodules
    /autoapi/root/generated/openapi_client/models/input_variable/index
    /autoapi/root/generated/openapi_client/models/judge/index
    /autoapi/root/generated/openapi_client/models/judge_execution_response/index
-   /autoapi/root/generated/openapi_client/models/judge_file/index
+   /autoapi/root/generated/openapi_client/models/judge_files_inner/index
+   /autoapi/root/generated/openapi_client/models/judge_generator_response/index
    /autoapi/root/generated/openapi_client/models/judge_list/index
    /autoapi/root/generated/openapi_client/models/judge_rectifier_response/index
    /autoapi/root/generated/openapi_client/models/judge_status_enum/index
@@ -56,6 +59,7 @@ Submodules
    /autoapi/root/generated/openapi_client/models/model_list/index
    /autoapi/root/generated/openapi_client/models/model_params/index
    /autoapi/root/generated/openapi_client/models/nested_evaluator/index
+   /autoapi/root/generated/openapi_client/models/nested_evaluator_objective/index
    /autoapi/root/generated/openapi_client/models/nested_objective_evaluator/index
    /autoapi/root/generated/openapi_client/models/nested_objective_list/index
    /autoapi/root/generated/openapi_client/models/nested_user_details/index
@@ -80,5 +84,6 @@ Submodules
    /autoapi/root/generated/openapi_client/models/status_change_status_enum/index
    /autoapi/root/generated/openapi_client/models/status_enum/index
    /autoapi/root/generated/openapi_client/models/validation_result_status/index
+   /autoapi/root/generated/openapi_client/models/visibility_enum/index
 
 

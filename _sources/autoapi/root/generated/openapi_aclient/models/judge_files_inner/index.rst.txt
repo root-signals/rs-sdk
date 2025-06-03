@@ -1,7 +1,7 @@
-root.generated.openapi_client.models.judge_file
-===============================================
+root.generated.openapi_aclient.models.judge_files_inner
+=======================================================
 
-.. py:module:: root.generated.openapi_client.models.judge_file
+.. py:module:: root.generated.openapi_aclient.models.judge_files_inner
 
 .. autoapi-nested-parse::
 
@@ -21,32 +21,38 @@ Classes
 
 .. autoapisummary::
 
-   root.generated.openapi_client.models.judge_file.JudgeFile
+   root.generated.openapi_aclient.models.judge_files_inner.JudgeFilesInner
 
 
 Module Contents
 ---------------
 
-.. py:class:: JudgeFile
+.. py:class:: JudgeFilesInner
 
    Bases: :py:obj:`pydantic.BaseModel`
 
 
-   JudgeFile
+   JudgeFilesInner
 
 
    .. py:attribute:: id
-      :type:  pydantic.StrictStr
+      :type:  Optional[pydantic.StrictStr]
+      :value: None
+
 
 
    .. py:attribute:: model_config
 
 
    .. py:attribute:: name
-      :type:  pydantic.StrictStr
+      :type:  Optional[pydantic.StrictStr]
+      :value: None
+
 
 
    .. py:attribute:: url
-      :type:  pydantic.StrictStr
+      :type:  Optional[pydantic.StrictStr]
+      :value: None
+
 
 

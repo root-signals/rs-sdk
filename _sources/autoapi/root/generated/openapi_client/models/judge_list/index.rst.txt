@@ -47,6 +47,10 @@ Module Contents
       :type:  pydantic.StrictStr
 
 
+   .. py:attribute:: inputs
+      :type:  Dict[str, root.generated.openapi_client.models.evaluator_inputs_value.EvaluatorInputsValue]
+
+
    .. py:attribute:: intent
       :type:  pydantic.StrictStr
 
@@ -56,18 +60,6 @@ Module Contents
 
    .. py:attribute:: name
       :type:  pydantic.StrictStr
-
-
-   .. py:attribute:: requires_contexts
-      :type:  pydantic.StrictBool
-
-
-   .. py:attribute:: requires_expected_output
-      :type:  pydantic.StrictBool
-
-
-   .. py:attribute:: requires_functions
-      :type:  pydantic.StrictBool
 
 
    .. py:attribute:: status

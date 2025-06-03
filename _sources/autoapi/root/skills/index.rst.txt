@@ -195,7 +195,7 @@ Module Contents
    generated) superclass documentation.
 
 
-   .. py:method:: run(response: Optional[str] = None, request: Optional[str] = None, contexts: Optional[List[str]] = None, functions: Optional[List[root.generated.openapi_client.models.evaluator_execution_functions_request.EvaluatorExecutionFunctionsRequest]] = None, expected_output: Optional[str] = None, variables: Optional[dict[str, str]] = None, tags: Optional[List[str]] = None, *, _client: root.generated.openapi_client.api.v1_api.ApiClient, _request_timeout: Optional[int] = None) -> root.generated.openapi_client.models.evaluator_execution_result.EvaluatorExecutionResult
+   .. py:method:: run(response: Optional[str] = None, request: Optional[str] = None, contexts: Optional[List[str]] = None, functions: Optional[List[root.generated.openapi_client.models.evaluator_execution_functions_request.EvaluatorExecutionFunctionsRequest]] = None, expected_output: Optional[str] = None, variables: Optional[dict[str, str]] = None, tags: Optional[List[str]] = None, *, _client: root.generated.openapi_client.ApiClient, _request_timeout: Optional[int] = None) -> root.generated.openapi_client.models.evaluator_execution_result.EvaluatorExecutionResult
 
       Run the evaluator.
 
@@ -500,7 +500,7 @@ Module Contents
 
 
 
-   .. py:method:: acreate(predicate: str = '', *, name: Optional[str] = None, intent: Optional[str] = None, model: Optional[ModelName] = None, fallback_models: Optional[List[ModelName]] = None, reference_variables: Optional[Union[List[ReferenceVariable], List[root.generated.openapi_aclient.models.reference_variable_request.ReferenceVariableRequest]]] = None, input_variables: Optional[Union[List[InputVariable], List[root.generated.openapi_aclient.models.input_variable_request.InputVariableRequest]]] = None, model_params: Optional[Union[ModelParams, root.generated.openapi_aclient.models.ModelParamsRequest]] = None, evaluator_demonstrations: Optional[List[EvaluatorDemonstration]] = None, objective_id: Optional[str] = None, overwrite: bool = False, _client: root.generated.openapi_client.api.v1_api.ApiClient, _request_timeout: Optional[int] = None) -> AEvaluator
+   .. py:method:: acreate(predicate: str = '', *, name: Optional[str] = None, intent: Optional[str] = None, model: Optional[ModelName] = None, fallback_models: Optional[List[ModelName]] = None, reference_variables: Optional[Union[List[ReferenceVariable], List[root.generated.openapi_aclient.models.reference_variable_request.ReferenceVariableRequest]]] = None, input_variables: Optional[Union[List[InputVariable], List[root.generated.openapi_aclient.models.input_variable_request.InputVariableRequest]]] = None, model_params: Optional[Union[ModelParams, root.generated.openapi_aclient.models.ModelParamsRequest]] = None, evaluator_demonstrations: Optional[List[EvaluatorDemonstration]] = None, objective_id: Optional[str] = None, overwrite: bool = False, _client: root.generated.openapi_client.ApiClient, _request_timeout: Optional[int] = None) -> AEvaluator
       :async:
 
 
@@ -541,7 +541,7 @@ Module Contents
 
 
 
-   .. py:method:: aget_by_name(name: str, *, _client: root.generated.openapi_client.api.v1_api.ApiClient) -> AEvaluator
+   .. py:method:: aget_by_name(name: str, *, _client: root.generated.openapi_client.ApiClient) -> AEvaluator
       :async:
 
 
@@ -615,7 +615,7 @@ Module Contents
 
 
 
-   .. py:method:: calibrate(*, name: str, test_dataset_id: Optional[str] = None, test_data: Optional[List[List[str]]] = None, prompt: str, model: ModelName, pii_filter: bool = False, reference_variables: Optional[Union[List[ReferenceVariable], List[root.generated.openapi_client.models.reference_variable_request.ReferenceVariableRequest]]] = None, input_variables: Optional[Union[List[InputVariable], List[root.generated.openapi_client.models.input_variable_request.InputVariableRequest]]] = None, _request_timeout: Optional[int] = None, _client: root.generated.openapi_client.api.v1_api.ApiClient) -> List[root.generated.openapi_client.models.evaluator_calibration_output.EvaluatorCalibrationOutput]
+   .. py:method:: calibrate(*, name: str, test_dataset_id: Optional[str] = None, test_data: Optional[List[List[str]]] = None, prompt: str, model: ModelName, pii_filter: bool = False, reference_variables: Optional[Union[List[ReferenceVariable], List[root.generated.openapi_client.models.reference_variable_request.ReferenceVariableRequest]]] = None, input_variables: Optional[Union[List[InputVariable], List[root.generated.openapi_client.models.input_variable_request.InputVariableRequest]]] = None, _request_timeout: Optional[int] = None, _client: root.generated.openapi_client.ApiClient) -> List[root.generated.openapi_client.models.evaluator_calibration_output.EvaluatorCalibrationOutput]
 
       Run calibration set for an evaluator definition.
       See the create evaluator method for more details on the parameters.
@@ -635,13 +635,13 @@ Module Contents
 
 
 
-   .. py:method:: calibrate_existing(evaluator_id: str, *, test_dataset_id: Optional[str] = None, test_data: Optional[List[List[str]]] = None, _request_timeout: Optional[int] = None, _client: root.generated.openapi_client.api.v1_api.ApiClient) -> List[root.generated.openapi_client.models.evaluator_calibration_output.EvaluatorCalibrationOutput]
+   .. py:method:: calibrate_existing(evaluator_id: str, *, test_dataset_id: Optional[str] = None, test_data: Optional[List[List[str]]] = None, _request_timeout: Optional[int] = None, _client: root.generated.openapi_client.ApiClient) -> List[root.generated.openapi_client.models.evaluator_calibration_output.EvaluatorCalibrationOutput]
 
       Run calibration set on an existing evaluator.
 
 
 
-   .. py:method:: create(predicate: str = '', *, name: Optional[str] = None, intent: Optional[str] = None, model: Optional[ModelName] = None, fallback_models: Optional[List[ModelName]] = None, reference_variables: Optional[Union[List[ReferenceVariable], List[root.generated.openapi_client.models.reference_variable_request.ReferenceVariableRequest]]] = None, input_variables: Optional[Union[List[InputVariable], List[root.generated.openapi_client.models.input_variable_request.InputVariableRequest]]] = None, model_params: Optional[Union[ModelParams, root.generated.openapi_client.models.model_params_request.ModelParamsRequest]] = None, evaluator_demonstrations: Optional[List[EvaluatorDemonstration]] = None, objective_id: Optional[str] = None, overwrite: bool = False, _client: root.generated.openapi_client.api.v1_api.ApiClient, _request_timeout: Optional[int] = None) -> Evaluator
+   .. py:method:: create(predicate: str = '', *, name: Optional[str] = None, intent: Optional[str] = None, model: Optional[ModelName] = None, fallback_models: Optional[List[ModelName]] = None, reference_variables: Optional[Union[List[ReferenceVariable], List[root.generated.openapi_client.models.reference_variable_request.ReferenceVariableRequest]]] = None, input_variables: Optional[Union[List[InputVariable], List[root.generated.openapi_client.models.input_variable_request.InputVariableRequest]]] = None, model_params: Optional[Union[ModelParams, root.generated.openapi_client.models.model_params_request.ModelParamsRequest]] = None, evaluator_demonstrations: Optional[List[EvaluatorDemonstration]] = None, objective_id: Optional[str] = None, overwrite: bool = False, _client: root.generated.openapi_client.ApiClient, _request_timeout: Optional[int] = None) -> Evaluator
 
       Create a new evaluator and return the result
 
@@ -664,19 +664,19 @@ Module Contents
 
 
 
-   .. py:method:: delete(evaluator_id: str, *, _client: root.generated.openapi_client.api.v1_api.ApiClient) -> None
+   .. py:method:: delete(evaluator_id: str, *, _client: root.generated.openapi_client.ApiClient) -> None
 
       Delete the evaluator.
 
 
 
-   .. py:method:: get(evaluator_id: str, *, _request_timeout: Optional[int] = None, _client: root.generated.openapi_client.api.v1_api.ApiClient) -> Evaluator
+   .. py:method:: get(evaluator_id: str, *, _request_timeout: Optional[int] = None, _client: root.generated.openapi_client.ApiClient) -> Evaluator
 
       Get a Evaluator instance by ID.
 
 
 
-   .. py:method:: get_by_name(name: str, *, _client: root.generated.openapi_client.api.v1_api.ApiClient) -> Evaluator
+   .. py:method:: get_by_name(name: str, *, _client: root.generated.openapi_client.ApiClient) -> Evaluator
 
       Get an evaluator instance by name.
 
@@ -685,7 +685,7 @@ Module Contents
 
 
 
-   .. py:method:: list(search_term: Optional[str] = None, *, limit: int = 100, name: Optional[str] = None, only_root_evaluators: bool = False, _client: root.generated.openapi_client.api.v1_api.ApiClient) -> Iterator[root.generated.openapi_client.models.evaluator_list_output.EvaluatorListOutput]
+   .. py:method:: list(search_term: Optional[str] = None, *, limit: int = 100, name: Optional[str] = None, only_root_evaluators: bool = False, _client: root.generated.openapi_client.ApiClient) -> Iterator[root.generated.openapi_client.models.evaluator_list_output.EvaluatorListOutput]
 
       Iterate through the evaluators.
 
@@ -696,7 +696,7 @@ Module Contents
 
 
 
-   .. py:method:: run(evaluator_id: str, *, request: Optional[str] = None, response: Optional[str] = None, contexts: Optional[List[str]] = None, functions: Optional[List[root.generated.openapi_client.models.evaluator_execution_functions_request.EvaluatorExecutionFunctionsRequest]] = None, expected_output: Optional[str] = None, evaluator_version_id: Optional[str] = None, variables: Optional[dict[str, str]] = None, tags: Optional[List[str]] = None, _request_timeout: Optional[int] = None, _client: root.generated.openapi_client.api.v1_api.ApiClient) -> root.generated.openapi_client.models.evaluator_execution_result.EvaluatorExecutionResult
+   .. py:method:: run(evaluator_id: str, *, request: Optional[str] = None, response: Optional[str] = None, contexts: Optional[List[str]] = None, functions: Optional[List[root.generated.openapi_client.models.evaluator_execution_functions_request.EvaluatorExecutionFunctionsRequest]] = None, expected_output: Optional[str] = None, evaluator_version_id: Optional[str] = None, variables: Optional[dict[str, str]] = None, tags: Optional[List[str]] = None, _request_timeout: Optional[int] = None, _client: root.generated.openapi_client.ApiClient) -> root.generated.openapi_client.models.evaluator_execution_result.EvaluatorExecutionResult
 
       Run the evaluator.
 
@@ -714,7 +714,7 @@ Module Contents
 
 
 
-   .. py:method:: run_by_name(name: str, *, request: Optional[str] = None, response: Optional[str] = None, contexts: Optional[List[str]] = None, functions: Optional[List[root.generated.openapi_client.models.evaluator_execution_functions_request.EvaluatorExecutionFunctionsRequest]] = None, expected_output: Optional[str] = None, evaluator_version_id: Optional[str] = None, variables: Optional[dict[str, str]] = None, tags: Optional[List[str]] = None, _request_timeout: Optional[int] = None, _client: root.generated.openapi_client.api.v1_api.ApiClient) -> root.generated.openapi_client.models.evaluator_execution_result.EvaluatorExecutionResult
+   .. py:method:: run_by_name(name: str, *, request: Optional[str] = None, response: Optional[str] = None, contexts: Optional[List[str]] = None, functions: Optional[List[root.generated.openapi_client.models.evaluator_execution_functions_request.EvaluatorExecutionFunctionsRequest]] = None, expected_output: Optional[str] = None, evaluator_version_id: Optional[str] = None, variables: Optional[dict[str, str]] = None, tags: Optional[List[str]] = None, _request_timeout: Optional[int] = None, _client: root.generated.openapi_client.ApiClient) -> root.generated.openapi_client.models.evaluator_execution_result.EvaluatorExecutionResult
 
       Run an evaluator by name.
 
@@ -732,7 +732,7 @@ Module Contents
 
 
 
-   .. py:method:: update(evaluator_id: str, *, change_note: Optional[str] = None, fallback_models: Optional[List[ModelName]] = None, input_variables: Optional[Union[List[InputVariable], List[root.generated.openapi_client.models.input_variable_request.InputVariableRequest]]] = None, model: Optional[ModelName] = None, name: Optional[str] = None, predicate: Optional[str] = None, reference_variables: Optional[Union[List[ReferenceVariable], List[root.generated.openapi_client.models.reference_variable_request.ReferenceVariableRequest]]] = None, model_params: Optional[Union[ModelParams, root.generated.openapi_client.models.model_params_request.ModelParamsRequest]] = None, evaluator_demonstrations: Optional[List[EvaluatorDemonstration]] = None, objective_id: Optional[str] = None, _request_timeout: Optional[int] = None, _client: root.generated.openapi_client.api.v1_api.ApiClient) -> Evaluator
+   .. py:method:: update(evaluator_id: str, *, change_note: Optional[str] = None, fallback_models: Optional[List[ModelName]] = None, input_variables: Optional[Union[List[InputVariable], List[root.generated.openapi_client.models.input_variable_request.InputVariableRequest]]] = None, model: Optional[ModelName] = None, name: Optional[str] = None, predicate: Optional[str] = None, reference_variables: Optional[Union[List[ReferenceVariable], List[root.generated.openapi_client.models.reference_variable_request.ReferenceVariableRequest]]] = None, model_params: Optional[Union[ModelParams, root.generated.openapi_client.models.model_params_request.ModelParamsRequest]] = None, evaluator_demonstrations: Optional[List[EvaluatorDemonstration]] = None, objective_id: Optional[str] = None, _request_timeout: Optional[int] = None, _client: root.generated.openapi_client.ApiClient) -> Evaluator
 
       Update an evaluator and return the result
 
@@ -826,7 +826,7 @@ Module Contents
 
 
 
-   .. py:method:: list(evaluator_id: str, *, _client: root.generated.openapi_client.api.v1_api.ApiClient) -> root.generated.openapi_client.models.paginated_evaluator_list.PaginatedEvaluatorList
+   .. py:method:: list(evaluator_id: str, *, _client: root.generated.openapi_client.ApiClient) -> root.generated.openapi_client.models.paginated_evaluator_list.PaginatedEvaluatorList
 
       List all versions of a evaluator.
 

@@ -43,12 +43,16 @@ Module Contents
       :type:  List[root.generated.openapi_aclient.models.nested_evaluator.NestedEvaluator]
 
 
-   .. py:attribute:: file
-      :type:  Optional[root.generated.openapi_aclient.models.judge_file.JudgeFile]
+   .. py:attribute:: files
+      :type:  List[root.generated.openapi_aclient.models.judge_files_inner.JudgeFilesInner]
 
 
    .. py:attribute:: id
       :type:  pydantic.StrictStr
+
+
+   .. py:attribute:: inputs
+      :type:  Dict[str, root.generated.openapi_aclient.models.evaluator_inputs_value.EvaluatorInputsValue]
 
 
    .. py:attribute:: meta
@@ -62,20 +66,8 @@ Module Contents
       :type:  typing_extensions.Annotated[str, Field(strict=True, max_length=512)]
 
 
-   .. py:attribute:: prototype
+   .. py:attribute:: objective
       :type:  root.generated.openapi_aclient.models.nested_vector_objective.NestedVectorObjective
-
-
-   .. py:attribute:: requires_contexts
-      :type:  pydantic.StrictBool
-
-
-   .. py:attribute:: requires_expected_output
-      :type:  pydantic.StrictBool
-
-
-   .. py:attribute:: requires_functions
-      :type:  pydantic.StrictBool
 
 
    .. py:attribute:: stage

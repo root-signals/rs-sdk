@@ -39,10 +39,6 @@ Module Contents
       :type:  pydantic.StrictStr
 
 
-   .. py:attribute:: intent
-      :type:  pydantic.StrictStr
-
-
    .. py:attribute:: is_root_evaluator
       :type:  pydantic.StrictBool
 
@@ -55,6 +51,14 @@ Module Contents
 
 
    .. py:attribute:: name
+      :type:  pydantic.StrictStr
+
+
+   .. py:attribute:: objective
+      :type:  root.generated.openapi_aclient.models.nested_evaluator_objective.NestedEvaluatorObjective
+
+
+   .. py:attribute:: version_id
       :type:  pydantic.StrictStr
 
 
