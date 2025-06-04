@@ -12,9 +12,13 @@ from root.generated.openapi_aclient.models.judge_generator_request import (
 from root.generated.openapi_aclient.models.judge_generator_response import (
     JudgeGeneratorResponse as AJudgeGeneratorResponse,
 )
+from root.generated.openapi_aclient.models.judge_request import (
+    JudgeRequest as AJudgeRequest,
+)
 from root.generated.openapi_aclient.models.visibility_enum import VisibilityEnum as AVisibilityEnum
 from root.generated.openapi_client.models.judge_generator_request import JudgeGeneratorRequest
 from root.generated.openapi_client.models.judge_generator_response import JudgeGeneratorResponse
+from root.generated.openapi_client.models.judge_request import JudgeRequest
 from root.generated.openapi_client.models.visibility_enum import VisibilityEnum
 
 from .generated.openapi_aclient import ApiClient as AApiClient
@@ -266,6 +270,72 @@ class Judges:
         )
         return await api_instance.judges_generate_create(
             judge_generator_request=judge_request, _request_timeout=_request_timeout
+        )
+
+    @with_sync_client
+    def create(
+        self,
+        *,
+        name: str,
+        intent: str,
+        evaluator_references: Optional[List[EvaluatorReferenceRequest]] = None,
+        stage: Optional[str] = None,
+        _request_timeout: Optional[int] = None,
+        _client: ApiClient,
+    ) -> Judge:
+        """
+        Create a new judge with a name, intent, and list of evaluators.
+
+        Args:
+          name: Name for the judge
+          intent: Intent for the judge
+          evaluator_references: List of evaluator references to include in the judge
+          stage: Stage for the judge
+          _request_timeout: Optional timeout for the request
+        """
+        api_instance = JudgesApi(_client)
+        request = JudgeRequest(
+            name=name,
+            intent=intent,
+            evaluator_references=evaluator_references,
+            stage=stage,
+        )
+        return Judge._wrap(
+            api_instance.judges_create(judge_request=request, _request_timeout=_request_timeout),
+            client_context=self.client_context,
+        )
+
+    @with_async_client
+    async def acreate(
+        self,
+        *,
+        name: str,
+        intent: str,
+        evaluator_references: Optional[List[AEvaluatorReferenceRequest]] = None,
+        stage: Optional[str] = None,
+        _request_timeout: Optional[int] = None,
+        _client: AApiClient,
+    ) -> AJudge:
+        """
+        Asynchronously create a new judge with a name, intent, and list of evaluators.
+
+        Args:
+          name: Name for the judge
+          intent: Intent for the judge
+          evaluator_references: List of evaluator references to include in the judge
+          stage: Stage for the judge
+          _request_timeout: Optional timeout for the request
+        """
+        api_instance = AJudgesApi(_client)
+        request = AJudgeRequest(
+            name=name,
+            intent=intent,
+            evaluator_references=evaluator_references,
+            stage=stage,
+        )
+        return await AJudge._awrap(
+            await api_instance.judges_create(judge_request=request, _request_timeout=_request_timeout),
+            client_context=self.client_context,
         )
 
     @with_sync_client
