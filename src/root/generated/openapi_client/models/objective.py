@@ -37,7 +37,7 @@ class Objective(BaseModel):
     status: Optional[StatusEnum] = None
     test_set: Optional[List[List[StrictStr]]] = Field(description="Deprecated: Use test_dataset_id instead.")
     validators: Optional[List[ObjectiveValidator]] = None
-    created_at: Optional[datetime]
+    created_at: datetime
     owner: NestedUserDetails
     version_id: StrictStr
     test_dataset_id: Optional[StrictStr] = None
@@ -121,11 +121,6 @@ class Objective(BaseModel):
         # and model_fields_set contains the field
         if self.test_set is None and "test_set" in self.model_fields_set:
             _dict["test_set"] = None
-
-        # set to None if created_at (nullable) is None
-        # and model_fields_set contains the field
-        if self.created_at is None and "created_at" in self.model_fields_set:
-            _dict["created_at"] = None
 
         # set to None if test_dataset_id (nullable) is None
         # and model_fields_set contains the field

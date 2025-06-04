@@ -18,7 +18,7 @@ import pprint
 import re  # noqa: F401
 from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing_extensions import Annotated, Self
 
 from root.generated.openapi_aclient.models.evaluator_execution_functions_request import (
@@ -31,11 +31,11 @@ class JudgeExecutionRequest(BaseModel):
     JudgeExecutionRequest
     """  # noqa: E501
 
-    request: Optional[Annotated[str, Field(strict=True, max_length=1000000)]] = ""
-    response: Optional[Annotated[str, Field(strict=True, max_length=1000000)]] = ""
+    request: Optional[StrictStr] = ""
+    response: Optional[StrictStr] = ""
     contexts: Optional[List[Annotated[str, Field(min_length=1, strict=True)]]] = None
     functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None
-    expected_output: Optional[Annotated[str, Field(strict=True, max_length=1000000)]] = None
+    expected_output: Optional[Annotated[str, Field(strict=True, max_length=3500000)]] = None
     tags: Optional[List[Annotated[str, Field(min_length=1, strict=True, max_length=1000)]]] = None
     __properties: ClassVar[List[str]] = ["request", "response", "contexts", "functions", "expected_output", "tags"]
 
