@@ -31,11 +31,11 @@ class EvaluatorExecutionRequest(BaseModel):
     EvaluatorExecutionRequest
     """  # noqa: E501
 
-    request: Optional[Annotated[str, Field(strict=True, max_length=1000000)]] = ""
-    response: Optional[Annotated[str, Field(strict=True, max_length=1000000)]] = ""
+    request: Optional[StrictStr] = ""
+    response: Optional[StrictStr] = ""
     contexts: Optional[List[Annotated[str, Field(min_length=1, strict=True)]]] = None
     functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None
-    expected_output: Optional[Annotated[str, Field(strict=True, max_length=1000000)]] = None
+    expected_output: Optional[Annotated[str, Field(strict=True, max_length=3500000)]] = None
     tags: Optional[List[Annotated[str, Field(min_length=1, strict=True, max_length=1000)]]] = None
     evaluator_version_id: Optional[StrictStr] = None
     variables: Optional[Dict[str, Annotated[str, Field(min_length=1, strict=True)]]] = Field(

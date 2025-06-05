@@ -60,7 +60,7 @@ class JudgesApi:
     ) -> Judge:
         """judges_create
 
-        Create a new judge. Note: Judge creation is not implemented yet. Please use the Judge Generator.
+        Create a new judge with a name, intent, and list of evaluators.
 
         :param judge_request: (required)
         :type judge_request: JudgeRequest
@@ -120,7 +120,7 @@ class JudgesApi:
     ) -> ApiResponse[Judge]:
         """judges_create
 
-        Create a new judge. Note: Judge creation is not implemented yet. Please use the Judge Generator.
+        Create a new judge with a name, intent, and list of evaluators.
 
         :param judge_request: (required)
         :type judge_request: JudgeRequest
@@ -180,7 +180,7 @@ class JudgesApi:
     ) -> RESTResponseType:
         """judges_create
 
-        Create a new judge. Note: Judge creation is not implemented yet. Please use the Judge Generator.
+        Create a new judge with a name, intent, and list of evaluators.
 
         :param judge_request: (required)
         :type judge_request: JudgeRequest

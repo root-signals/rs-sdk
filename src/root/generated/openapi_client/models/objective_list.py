@@ -36,7 +36,7 @@ class ObjectiveList(BaseModel):
     intent: Optional[Annotated[str, Field(strict=True, max_length=100000)]] = None
     status: Optional[StatusEnum] = None
     owner: NestedUserDetails
-    created_at: Optional[datetime]
+    created_at: datetime
     validators: List[ObjectiveValidator]
     meta: Dict[str, Any] = Field(alias="_meta")
     __properties: ClassVar[List[str]] = ["id", "intent", "status", "owner", "created_at", "validators", "_meta"]
@@ -101,11 +101,6 @@ class ObjectiveList(BaseModel):
                 if _item:
                     _items.append(_item.to_dict())
             _dict["validators"] = _items
-        # set to None if created_at (nullable) is None
-        # and model_fields_set contains the field
-        if self.created_at is None and "created_at" in self.model_fields_set:
-            _dict["created_at"] = None
-
         return _dict
 
     @classmethod

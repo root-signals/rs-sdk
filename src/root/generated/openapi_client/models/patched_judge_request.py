@@ -30,9 +30,12 @@ class PatchedJudgeRequest(BaseModel):
     """  # noqa: E501
 
     evaluator_references: Optional[List[EvaluatorReferenceRequest]] = None
+    intent: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(
+        default=None, description="Intent for the judge"
+    )
     name: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=512)]] = None
     stage: Optional[Annotated[str, Field(strict=True, max_length=255)]] = None
-    __properties: ClassVar[List[str]] = ["evaluator_references", "name", "stage"]
+    __properties: ClassVar[List[str]] = ["evaluator_references", "intent", "name", "stage"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -96,6 +99,7 @@ class PatchedJudgeRequest(BaseModel):
                 ]
                 if obj.get("evaluator_references") is not None
                 else None,
+                "intent": obj.get("intent"),
                 "name": obj.get("name"),
                 "stage": obj.get("stage"),
             }

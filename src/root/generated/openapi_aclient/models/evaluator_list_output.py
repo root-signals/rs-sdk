@@ -34,7 +34,7 @@ class EvaluatorListOutput(BaseModel):
     """  # noqa: E501
 
     meta: Optional[Any] = Field(alias="_meta")
-    created_at: Optional[datetime]
+    created_at: datetime
     models: List[StrictStr]
     id: StrictStr
     name: StrictStr
@@ -150,11 +150,6 @@ class EvaluatorListOutput(BaseModel):
         # and model_fields_set contains the field
         if self.meta is None and "meta" in self.model_fields_set:
             _dict["_meta"] = None
-
-        # set to None if created_at (nullable) is None
-        # and model_fields_set contains the field
-        if self.created_at is None and "created_at" in self.model_fields_set:
-            _dict["created_at"] = None
 
         # set to None if updated_at (nullable) is None
         # and model_fields_set contains the field

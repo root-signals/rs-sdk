@@ -39,7 +39,7 @@ class Evaluator(BaseModel):
     """  # noqa: E501
 
     change_note: Optional[StrictStr] = None
-    created_at: Optional[datetime]
+    created_at: datetime
     evaluator_demonstrations: Optional[List[EvaluatorDemonstrations]] = None
     id: StrictStr
     input_variables: Optional[List[InputVariable]] = None
@@ -185,11 +185,6 @@ class Evaluator(BaseModel):
         # and model_fields_set contains the field
         if self.change_note is None and "change_note" in self.model_fields_set:
             _dict["change_note"] = None
-
-        # set to None if created_at (nullable) is None
-        # and model_fields_set contains the field
-        if self.created_at is None and "created_at" in self.model_fields_set:
-            _dict["created_at"] = None
 
         # set to None if evaluator_demonstrations (nullable) is None
         # and model_fields_set contains the field
