@@ -22,7 +22,8 @@ results = client.judges.run(
     response="We have a 30-day return policy. If you're not satisfied with your purchase, "
     "you can return it within 30 days for a full refund.",
     contexts=[
-        "We have a 30-day return policy. If you're not satisfied with your purchase, you can return it within 30 days for a full refund."
+        "Returns are accepted within thirty (30) calendar days of the delivery date. "
+        "Eligible items accompanied by valid proof of purchase will receive a full refund, issued via the original method of payment."
     ],
 )
 print(results)
