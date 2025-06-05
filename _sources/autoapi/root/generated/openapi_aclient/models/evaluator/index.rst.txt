@@ -42,7 +42,7 @@ Module Contents
 
 
    .. py:attribute:: created_at
-      :type:  Optional[datetime.datetime]
+      :type:  datetime.datetime
 
 
    .. py:attribute:: evaluator_demonstrations

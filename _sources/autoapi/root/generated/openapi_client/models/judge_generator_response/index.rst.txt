@@ -37,6 +37,8 @@ Module Contents
 
    .. py:attribute:: error_code
       :type:  Optional[pydantic.StrictStr]
+      :value: None
+
 
 
    .. py:attribute:: judge_id

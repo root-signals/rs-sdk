@@ -55,7 +55,10 @@ You can form a judge by describing your application and optionally the stage you
 
 ```{literalinclude} ../examples/simple_judge.py
 ```
-
+## Creating a judge
+You can create a judge by giving the name, intent and list of evaluators.
+```{literalinclude} ../examples/create_judge.py
+```
 
 ## Monitoring LLM pipelines with tags
 

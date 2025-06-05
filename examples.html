@@ -618,6 +618,41 @@ Full list of examples is available <a class="reference external" href="https://g
 </pre></div>
 </div>
 </section>
+<section id="creating-a-judge">
+<h2>Creating a judge<a class="headerlink" href="#creating-a-judge" title="Link to this heading">¶</a></h2>
+<p>You can create a judge by giving the name, intent and list of evaluators.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">root</span><span class="w"> </span><span class="kn">import</span> <span class="n">RootSignals</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">root.generated.openapi_client.models.evaluator_reference_request</span><span class="w"> </span><span class="kn">import</span> <span class="n">EvaluatorReferenceRequest</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">root.skills</span><span class="w"> </span><span class="kn">import</span> <span class="n">Evaluators</span>
+
+<span class="c1"># Connect to the Root Signals API</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">RootSignals</span><span class="p">()</span>
+
+<span class="n">evaluator_references</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">EvaluatorReferenceRequest</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">Evaluators</span><span class="o">.</span><span class="n">Eval</span><span class="o">.</span><span class="n">Truthfulness</span><span class="o">.</span><span class="n">value</span><span class="p">),</span>
+    <span class="n">EvaluatorReferenceRequest</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">Evaluators</span><span class="o">.</span><span class="n">Eval</span><span class="o">.</span><span class="n">Relevance</span><span class="o">.</span><span class="n">value</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">judge</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">judges</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Custom Returns Policy Judge&quot;</span><span class="p">,</span>
+    <span class="n">intent</span><span class="o">=</span><span class="s2">&quot;Evaluate customer service responses about return policies&quot;</span><span class="p">,</span>
+    <span class="n">evaluator_references</span><span class="o">=</span><span class="n">evaluator_references</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">judges</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+    <span class="n">judge</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+    <span class="n">request</span><span class="o">=</span><span class="s2">&quot;What&#39;s your return policy?&quot;</span><span class="p">,</span>
+    <span class="n">response</span><span class="o">=</span><span class="s2">&quot;We have a 30-day return policy. If you&#39;re not satisfied with your purchase, &quot;</span>
+    <span class="s2">&quot;you can return it within 30 days for a full refund.&quot;</span><span class="p">,</span>
+    <span class="n">contexts</span><span class="o">=</span><span class="p">[</span>
+        <span class="s2">&quot;Returns are accepted within thirty (30) calendar days of the delivery date. &quot;</span>
+        <span class="s2">&quot;Eligible items accompanied by valid proof of purchase will receive a full refund, issued via the original method of payment.&quot;</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
 <section id="monitoring-llm-pipelines-with-tags">
 <h2>Monitoring LLM pipelines with tags<a class="headerlink" href="#monitoring-llm-pipelines-with-tags" title="Link to this heading">¶</a></h2>
 <p>Evaluator runs can be tagged with free-form tags.</p>
@@ -743,6 +778,7 @@ Full list of examples is available <a class="reference external" href="https://g
 <li><a class="reference internal" href="#adjust-evaluator-behavior">Adjust evaluator behavior</a></li>
 <li><a class="reference internal" href="#retrieval-augmented-generation-rag-evaluation">Retrieval Augmented Generation (RAG) evaluation</a></li>
 <li><a class="reference internal" href="#forming-a-judge">Forming a judge</a></li>
+<li><a class="reference internal" href="#creating-a-judge">Creating a judge</a></li>
 <li><a class="reference internal" href="#monitoring-llm-pipelines-with-tags">Monitoring LLM pipelines with tags</a></li>
 <li><a class="reference internal" href="#add-a-model">Add a model</a></li>
 </ul>
