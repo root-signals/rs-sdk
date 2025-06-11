@@ -1,3 +1,9 @@
+## 1.6.1
+
+### Added
+
+- Added judge create method
+
 ## 1.6.0
 
 ### Added
