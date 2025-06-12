@@ -28,9 +28,6 @@ from root.generated.openapi_client.models.execution_log_details_evaluation_conte
 from root.generated.openapi_client.models.execution_log_details_evaluator_latencies_inner import (
     ExecutionLogDetailsEvaluatorLatenciesInner,
 )
-from root.generated.openapi_client.models.execution_log_details_judge import ExecutionLogDetailsJudge
-from root.generated.openapi_client.models.execution_log_details_objective import ExecutionLogDetailsObjective
-from root.generated.openapi_client.models.execution_log_details_skill import ExecutionLogDetailsSkill
 from root.generated.openapi_client.models.model_params import ModelParams
 from root.generated.openapi_client.models.nested_user_details import NestedUserDetails
 from root.generated.openapi_client.models.skill_execution_validator_result import SkillExecutionValidatorResult
@@ -46,19 +43,21 @@ class ExecutionLogDetails(BaseModel):
     created_at: Optional[datetime]
     evaluation_context: ExecutionLogDetailsEvaluationContext
     evaluator_latencies: Optional[List[ExecutionLogDetailsEvaluatorLatenciesInner]]
+    executed_item_id: Optional[StrictStr]
+    executed_item_name: StrictStr
+    executed_item_version_id: Optional[StrictStr]
+    execution_type: StrictStr
     id: StrictStr
-    judge: Optional[ExecutionLogDetailsJudge]
     justification: StrictStr
     llm_output: StrictStr
     model_call_duration: Union[StrictFloat, StrictInt]
     model_params: Optional[ModelParams] = None
     model: StrictStr
-    objective: ExecutionLogDetailsObjective
     owner: NestedUserDetails
     parent_execution_log_id: Optional[StrictStr] = None
+    prompt_template: StrictStr
     rendered_prompt: StrictStr
     score: Optional[Union[StrictFloat, StrictInt]]
-    skill: ExecutionLogDetailsSkill
     tags: List[StrictStr]
     validation_results: List[SkillExecutionValidatorResult]
     variables: Optional[Dict[str, StrictStr]]
@@ -68,19 +67,21 @@ class ExecutionLogDetails(BaseModel):
         "created_at",
         "evaluation_context",
         "evaluator_latencies",
+        "executed_item_id",
+        "executed_item_name",
+        "executed_item_version_id",
+        "execution_type",
         "id",
-        "judge",
         "justification",
         "llm_output",
         "model_call_duration",
         "model_params",
         "model",
-        "objective",
         "owner",
         "parent_execution_log_id",
+        "prompt_template",
         "rendered_prompt",
         "score",
-        "skill",
         "tags",
         "validation_results",
         "variables",
@@ -129,6 +130,11 @@ class ExecutionLogDetails(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
@@ -136,11 +142,16 @@ class ExecutionLogDetails(BaseModel):
                 "cost",
                 "created_at",
                 "evaluator_latencies",
+                "executed_item_id",
+                "executed_item_name",
+                "executed_item_version_id",
+                "execution_type",
                 "id",
                 "justification",
                 "llm_output",
                 "model",
                 "owner",
+                "prompt_template",
                 "rendered_prompt",
                 "score",
                 "tags",
@@ -164,21 +175,12 @@ class ExecutionLogDetails(BaseModel):
                 if _item:
                     _items.append(_item.to_dict())
             _dict["evaluator_latencies"] = _items
-        # override the default output from pydantic by calling `to_dict()` of judge
-        if self.judge:
-            _dict["judge"] = self.judge.to_dict()
         # override the default output from pydantic by calling `to_dict()` of model_params
         if self.model_params:
             _dict["model_params"] = self.model_params.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of objective
-        if self.objective:
-            _dict["objective"] = self.objective.to_dict()
         # override the default output from pydantic by calling `to_dict()` of owner
         if self.owner:
             _dict["owner"] = self.owner.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of skill
-        if self.skill:
-            _dict["skill"] = self.skill.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in validation_results (list)
         _items = []
         if self.validation_results:
@@ -206,10 +208,15 @@ class ExecutionLogDetails(BaseModel):
         if self.evaluator_latencies is None and "evaluator_latencies" in self.model_fields_set:
             _dict["evaluator_latencies"] = None
 
-        # set to None if judge (nullable) is None
+        # set to None if executed_item_id (nullable) is None
         # and model_fields_set contains the field
-        if self.judge is None and "judge" in self.model_fields_set:
-            _dict["judge"] = None
+        if self.executed_item_id is None and "executed_item_id" in self.model_fields_set:
+            _dict["executed_item_id"] = None
+
+        # set to None if executed_item_version_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.executed_item_version_id is None and "executed_item_version_id" in self.model_fields_set:
+            _dict["executed_item_version_id"] = None
 
         # set to None if model_params (nullable) is None
         # and model_fields_set contains the field
@@ -255,8 +262,11 @@ class ExecutionLogDetails(BaseModel):
                 ]
                 if obj.get("evaluator_latencies") is not None
                 else None,
+                "executed_item_id": obj.get("executed_item_id"),
+                "executed_item_name": obj.get("executed_item_name"),
+                "executed_item_version_id": obj.get("executed_item_version_id"),
+                "execution_type": obj.get("execution_type"),
                 "id": obj.get("id"),
-                "judge": ExecutionLogDetailsJudge.from_dict(obj["judge"]) if obj.get("judge") is not None else None,
                 "justification": obj.get("justification"),
                 "llm_output": obj.get("llm_output"),
                 "model_call_duration": obj.get("model_call_duration"),
@@ -264,14 +274,11 @@ class ExecutionLogDetails(BaseModel):
                 if obj.get("model_params") is not None
                 else None,
                 "model": obj.get("model"),
-                "objective": ExecutionLogDetailsObjective.from_dict(obj["objective"])
-                if obj.get("objective") is not None
-                else None,
                 "owner": NestedUserDetails.from_dict(obj["owner"]) if obj.get("owner") is not None else None,
                 "parent_execution_log_id": obj.get("parent_execution_log_id"),
+                "prompt_template": obj.get("prompt_template"),
                 "rendered_prompt": obj.get("rendered_prompt"),
                 "score": obj.get("score"),
-                "skill": ExecutionLogDetailsSkill.from_dict(obj["skill"]) if obj.get("skill") is not None else None,
                 "tags": obj.get("tags"),
                 "validation_results": [
                     SkillExecutionValidatorResult.from_dict(_item) for _item in obj["validation_results"]

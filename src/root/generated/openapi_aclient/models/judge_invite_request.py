@@ -18,22 +18,22 @@ import pprint
 import re  # noqa: F401
 from typing import Any, ClassVar, Dict, List, Optional, Set
 
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
-from typing_extensions import Self
+from pydantic import BaseModel, ConfigDict, Field
+from typing_extensions import Annotated, Self
 
 
-class ExecutionLogDetailsSkill(BaseModel):
+class JudgeInviteRequest(BaseModel):
     """
-    ExecutionLogDetailsSkill
+    JudgeInviteRequest
     """  # noqa: E501
 
-    prompt: Optional[StrictStr] = None
-    pii_filter: Optional[StrictBool] = None
-    version_id: Optional[StrictStr] = None
-    name: Optional[StrictStr] = None
-    type: Optional[StrictStr] = None
-    id: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["prompt", "pii_filter", "version_id", "name", "type", "id"]
+    emails: Annotated[List[Annotated[str, Field(min_length=1, strict=True)]], Field(min_length=1, max_length=10)] = (
+        Field(description="List of email addresses to send the invite to (maximum 10)")
+    )
+    judge_url: Annotated[str, Field(min_length=1, strict=True)] = Field(
+        description="Full URL to the judge to include in the email"
+    )
+    __properties: ClassVar[List[str]] = ["emails", "judge_url"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -52,7 +52,7 @@ class ExecutionLogDetailsSkill(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of ExecutionLogDetailsSkill from a JSON string"""
+        """Create an instance of JudgeInviteRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -76,21 +76,12 @@ class ExecutionLogDetailsSkill(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of ExecutionLogDetailsSkill from a dict"""
+        """Create an instance of JudgeInviteRequest from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
 
-        _obj = cls.model_validate(
-            {
-                "prompt": obj.get("prompt"),
-                "pii_filter": obj.get("pii_filter"),
-                "version_id": obj.get("version_id"),
-                "name": obj.get("name"),
-                "type": obj.get("type"),
-                "id": obj.get("id"),
-            }
-        )
+        _obj = cls.model_validate({"emails": obj.get("emails"), "judge_url": obj.get("judge_url")})
         return _obj

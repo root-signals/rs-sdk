@@ -55,14 +55,10 @@ from root.generated.openapi_aclient.models.execution_log_details_evaluation_cont
 from root.generated.openapi_aclient.models.execution_log_details_evaluator_latencies_inner import (
     ExecutionLogDetailsEvaluatorLatenciesInner,
 )
-from root.generated.openapi_aclient.models.execution_log_details_judge import ExecutionLogDetailsJudge
-from root.generated.openapi_aclient.models.execution_log_details_objective import ExecutionLogDetailsObjective
-from root.generated.openapi_aclient.models.execution_log_details_skill import ExecutionLogDetailsSkill
 from root.generated.openapi_aclient.models.execution_log_list import ExecutionLogList
 from root.generated.openapi_aclient.models.execution_log_list_evaluation_context import (
     ExecutionLogListEvaluationContext,
 )
-from root.generated.openapi_aclient.models.execution_log_list_skill import ExecutionLogListSkill
 from root.generated.openapi_aclient.models.generation_model_params_request import GenerationModelParamsRequest
 from root.generated.openapi_aclient.models.id import ID
 from root.generated.openapi_aclient.models.input_variable import InputVariable
@@ -73,6 +69,7 @@ from root.generated.openapi_aclient.models.judge_execution_response import Judge
 from root.generated.openapi_aclient.models.judge_files_inner import JudgeFilesInner
 from root.generated.openapi_aclient.models.judge_generator_request import JudgeGeneratorRequest
 from root.generated.openapi_aclient.models.judge_generator_response import JudgeGeneratorResponse
+from root.generated.openapi_aclient.models.judge_invite_request import JudgeInviteRequest
 from root.generated.openapi_aclient.models.judge_list import JudgeList
 from root.generated.openapi_aclient.models.judge_rectifier_request_request import JudgeRectifierRequestRequest
 from root.generated.openapi_aclient.models.judge_rectifier_response import JudgeRectifierResponse
