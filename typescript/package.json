@@ -1,0 +1,66 @@
+{
+  "name": "@root-signals/typescript-sdk",
+  "version": "0.1.0",
+  "description": "TypeScript SDK for Root Signals API",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "npm run build:clean && npm run build:compile",
+    "build:clean": "rm -rf dist/",
+    "build:compile": "tsc --project tsconfig.build.json",
+    "build:watch": "tsc --project tsconfig.build.json --watch",
+    
+    "generate": "./scripts/generate.sh",
+    "generate:types": "openapi-typescript ../api/schema.yml -o src/generated/types.ts",
+    
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest --coverage",
+    "test:unit": "vitest tests/unit",
+    "test:integration": "vitest tests/integration",
+    "test:comprehensive": "vitest tests/comprehensive.test.ts",
+    "test:examples": "npm run build && node dist/examples/basic-evaluation.js",
+    
+    "lint": "eslint src/ tests/ examples/",
+    "lint:fix": "eslint src/ tests/ examples/ --fix",
+    
+    "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\" \"examples/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\" \"tests/**/*.ts\" \"examples/**/*.ts\"",
+    
+    "type-check": "tsc --noEmit --project tsconfig.json",
+    
+    "check-all": "npm run type-check && npm run lint && npm run format:check && npm run test",
+    "fix-all": "npm run lint:fix && npm run format",
+    
+    "clean": "rm -rf dist/ coverage/ .tsbuildinfo node_modules/.cache/",
+    "dev": "npm run build:watch",
+    
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run check-all && npm run build"
+  },
+  "keywords": ["root-signals", "llm", "evaluation", "typescript", "sdk"],
+  "author": "Root Signals",
+  "license": "MIT",
+  "dependencies": {
+    "openapi-fetch": "^0.12.2"
+  },
+  "optionalDependencies": {
+    "undici": "^6.0.0",
+    "form-data": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.8.7",
+    "@typescript-eslint/eslint-plugin": "^8.15.0",
+    "@typescript-eslint/parser": "^8.15.0",
+    "@vitest/coverage-v8": "^2.1.8",
+    "eslint": "^9.15.0",
+    "openapi-typescript": "^7.4.2",
+    "prettier": "^3.3.3",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "files": [
+    "dist/",
+    "README.md"
+  ]
+}

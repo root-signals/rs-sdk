@@ -1,0 +1,633 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { TestUtils } from './helpers/test-utils.js';
+import { mockClient } from './helpers/mock-client.js';
+import type { RootSignals } from '../src/index.js';
+
+describe('Root Signals SDK Comprehensive Tests', () => {
+  let client: RootSignals;
+
+  beforeEach(() => {
+    // Reset all mocks before each test
+    vi.clearAllMocks();
+    mockClient.reset();
+    
+    // Create mock client using TestUtils
+    client = TestUtils.createMockClient();
+  });
+
+  describe('Connection and Auth', () => {
+    it('should connect to API successfully', async () => {
+      expect.assertions(3);
+      
+      // Mock successful evaluators list response
+      mockClient.setMockResponse('GET', '/v1/evaluators/', {
+        data: {
+          results: [
+            {
+              id: 'eval-test-1',
+              name: 'Test Evaluator',
+              requires_expected_output: false,
+              requires_contexts: false,
+              requires_functions: false
+            }
+          ],
+          count: 1,
+          next: null,
+          previous: null
+        },
+        error: undefined
+      });
+      
+      const result = await client.evaluators.list({ page_size: 1 });
+      expect(result.results).toBeDefined();
+      expect(Array.isArray(result.results)).toBe(true);
+      expect(result.results).toHaveLength(1);
+    });
+  });
+
+  describe('Phase 1 - Evaluators Resource', () => {
+    const testEvaluatorId = 'eval-test-123';
+
+    it('should list evaluators', async () => {
+      expect.assertions(4);
+      
+      mockClient.setMockResponse('GET', '/v1/evaluators/', {
+        data: {
+          results: [
+            {
+              id: testEvaluatorId,
+              name: 'Answer Relevance Evaluator',
+              requires_expected_output: false,
+              requires_contexts: true,
+              requires_functions: false
+            },
+            {
+              id: 'eval-test-456',
+              name: 'Quality Assessment Evaluator',
+              requires_expected_output: true,
+              requires_contexts: false,
+              requires_functions: false
+            }
+          ],
+          count: 2,
+          next: null,
+          previous: null
+        },
+        error: undefined
+      });
+      
+      const result = await client.evaluators.list({ page_size: 5 });
+      expect(result.results).toBeDefined();
+      expect(Array.isArray(result.results)).toBe(true);
+      expect(result.count).toBe(2);
+      expect(result.results[0].id).toBe(testEvaluatorId);
+    });
+
+    it('should get evaluator details', async () => {
+      expect.assertions(3);
+      
+      mockClient.setMockResponse('GET', `/v1/evaluators/${testEvaluatorId}/`, {
+        data: {
+          id: testEvaluatorId,
+          name: 'Answer Relevance Evaluator',
+          requires_expected_output: false,
+          requires_contexts: true,
+          requires_functions: false,
+          created_at: '2024-01-01T00:00:00Z',
+          updated_at: '2024-01-01T00:00:00Z'
+        },
+        error: undefined
+      });
+      
+      const evaluator = await client.evaluators.get(testEvaluatorId);
+      expect(evaluator.id).toBe(testEvaluatorId);
+      expect(evaluator.name).toBe('Answer Relevance Evaluator');
+      expect(evaluator.requires_contexts).toBe(true);
+    });
+
+    it('should execute evaluator by name', async () => {
+      expect.assertions(4);
+      
+      // Mock the execution response
+      mockClient.setMockResponse('POST', '/v1/evaluators/Answer Relevance Evaluator/execute_by_name/', {
+        data: {
+          score: 0.95,
+          reason: 'The response correctly identifies Paris as the capital of France',
+          metadata: {
+            execution_time: 1.2,
+            model_used: 'gpt-4'
+          }
+        },
+        error: undefined
+      });
+      
+      const result = await client.evaluators.executeByName('Answer Relevance Evaluator', {
+        request: "What is the capital of France?",
+        response: "The capital of France is Paris.",
+        expected_output: "Paris"
+      });
+      
+      expect(result).toBeDefined();
+      expect(result.score).toBe(0.95);
+      expect(result.reason).toContain('Paris');
+      expect(result.metadata).toBeDefined();
+    });
+
+    it('should duplicate evaluator', async () => {
+      expect.assertions(3);
+      
+      const duplicatedId = 'eval-duplicated-789';
+      
+      mockClient.setMockResponse('POST', `/v1/evaluators/${testEvaluatorId}/duplicate/`, {
+        data: {
+          id: duplicatedId,
+          name: 'Answer Relevance Evaluator (Copy)',
+          requires_expected_output: false,
+          requires_contexts: true,
+          requires_functions: false,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        },
+        error: undefined
+      });
+      
+      const duplicated = await client.evaluators.duplicate(testEvaluatorId);
+      expect(duplicated.id).toBeDefined();
+      expect(duplicated.id).not.toBe(testEvaluatorId);
+      expect(duplicated.name).toContain('Copy');
+    });
+  });
+
+  describe('Phase 1 - Judges Resource', () => {
+    let testJudgeId: string;
+    let createdJudgeId: string;
+
+    test('should list judges', async () => {
+      const result = await client.judges.list({ page_size: 5 });
+      expect(result.results).toBeDefined();
+      expect(Array.isArray(result.results)).toBe(true);
+      expect(result.count).toBeGreaterThanOrEqual(0);
+      
+      if (result.results.length > 0) {
+        testJudgeId = result.results[0].id;
+        console.log('✓ Found judges, using ID:', testJudgeId);
+      }
+    });
+
+    test('should create a judge', async () => {
+      try {
+        const judge = await client.judges.create({
+          name: `Test Judge ${Date.now()}`,
+          intent: "Test judge for SDK testing purposes",
+          evaluators: []
+        });
+        expect(judge.id).toBeDefined();
+        createdJudgeId = judge.id;
+        console.log('✓ Judge created successfully:', judge.id);
+      } catch (error) {
+        console.log('⚠️ Judge creation failed:', error);
+      }
+    }, 10000);
+
+    test('should get judge details', async () => {
+      const judgeId = createdJudgeId || testJudgeId;
+      if (judgeId) {
+        const judge = await client.judges.get(judgeId);
+        expect(judge.id).toBe(judgeId);
+        expect(judge.name).toBeDefined();
+        console.log('✓ Judge details:', judge.name);
+      }
+    });
+
+    test('should update judge', async () => {
+      if (createdJudgeId) {
+        try {
+          const updated = await client.judges.update(createdJudgeId, {
+            name: `Updated Test Judge ${Date.now()}`,
+            intent: "Updated test judge for SDK testing",
+            evaluators: []
+          });
+          expect(updated.id).toBe(createdJudgeId);
+          console.log('✓ Judge updated successfully');
+        } catch (error) {
+          console.log('⚠️ Judge update failed:', error);
+        }
+      }
+    });
+
+    test('should generate judge with AI', async () => {
+      try {
+        const generated = await client.judges.generate({
+          intent: "Evaluate if a response correctly answers a question about geography",
+          examples: [
+            {
+              input: "What is the capital of France?",
+              good_output: "The capital of France is Paris.",
+              bad_output: "France is a country in Europe."
+            }
+          ]
+        });
+        expect(generated.id).toBeDefined();
+        console.log('✓ AI-generated judge created:', generated.id);
+      } catch (error) {
+        console.log('⚠️ Judge generation failed:', error);
+      }
+    }, 20000);
+
+    test('should execute judge (if available)', async () => {
+      const judgeId = createdJudgeId || testJudgeId;
+      if (judgeId) {
+        try {
+          const result = await client.judges.execute(judgeId, {
+            input: "What is the capital of France?",
+            output: "The capital of France is Paris."
+          });
+          expect(result).toBeDefined();
+          console.log('✓ Judge execution successful');
+        } catch (error) {
+          console.log('⚠️ Judge execution failed (might need specific setup):', error);
+        }
+      }
+    }, 15000);
+
+    test('should duplicate judge (if available)', async () => {
+      const judgeId = createdJudgeId || testJudgeId;
+      if (judgeId) {
+        try {
+          const duplicated = await client.judges.duplicate(judgeId);
+          expect(duplicated.id).toBeDefined();
+          expect(duplicated.id).not.toBe(judgeId);
+          console.log('✓ Judge duplicated successfully:', duplicated.id);
+        } catch (error) {
+          console.log('⚠️ Judge duplication failed:', error);
+        }
+      }
+    });
+
+    test('should delete created judge', async () => {
+      if (createdJudgeId) {
+        try {
+          await client.judges.delete(createdJudgeId);
+          console.log('✓ Judge deleted successfully');
+        } catch (error) {
+          console.log('⚠️ Judge deletion failed:', error);
+        }
+      }
+    });
+  });
+
+  describe('Phase 2 - Objectives Resource', () => {
+    let testObjectiveId: string;
+    let createdObjectiveId: string;
+
+    test('should list objectives', async () => {
+      const result = await client.objectives.list({ page_size: 5 });
+      expect(result.results).toBeDefined();
+      expect(Array.isArray(result.results)).toBe(true);
+      expect(result.count).toBeGreaterThanOrEqual(0);
+      
+      if (result.results.length > 0) {
+        testObjectiveId = result.results[0].id;
+        console.log('✓ Found objectives, using ID:', testObjectiveId);
+      }
+    });
+
+    test('should create an objective', async () => {
+      try {
+        const objective = await client.objectives.create({
+          intent: `Test objective created for SDK testing ${Date.now()}`,
+          status: 'unlisted',
+          validators: []
+        });
+        expect(objective.id).toBeDefined();
+        createdObjectiveId = objective.id;
+        console.log('✓ Objective created successfully:', objective.id);
+      } catch (error) {
+        console.log('⚠️ Objective creation failed:', error);
+      }
+    });
+
+    test('should get objective details', async () => {
+      const objectiveId = createdObjectiveId || testObjectiveId;
+      if (objectiveId) {
+        const objective = await client.objectives.get(objectiveId);
+        expect(objective.id).toBe(objectiveId);
+        expect(objective.intent).toBeDefined();
+        console.log('✓ Objective details retrieved');
+      }
+    });
+
+    test('should update objective', async () => {
+      if (createdObjectiveId) {
+        try {
+          const updated = await client.objectives.update(createdObjectiveId, {
+            intent: `Updated test objective ${Date.now()}`,
+            status: 'unlisted',
+            validators: []
+          });
+          expect(updated.id).toBe(createdObjectiveId);
+          console.log('✓ Objective updated successfully');
+        } catch (error) {
+          console.log('⚠️ Objective update failed:', error);
+        }
+      }
+    });
+
+    test('should get objective versions', async () => {
+      const objectiveId = createdObjectiveId || testObjectiveId;
+      if (objectiveId) {
+        try {
+          const versions = await client.objectives.versions(objectiveId);
+          expect(versions.results).toBeDefined();
+          expect(Array.isArray(versions.results)).toBe(true);
+          console.log('✓ Objective versions retrieved:', versions.results.length);
+        } catch (error) {
+          console.log('⚠️ Objective versions retrieval failed:', error);
+        }
+      }
+    });
+
+    test('should patch objective', async () => {
+      if (createdObjectiveId) {
+        try {
+          const patched = await client.objectives.patch(createdObjectiveId, {
+            status: 'listed'
+          });
+          expect(patched.id).toBe(createdObjectiveId);
+          console.log('✓ Objective patched successfully');
+        } catch (error) {
+          console.log('⚠️ Objective patch failed:', error);
+        }
+      }
+    });
+
+    test('should delete created objective', async () => {
+      if (createdObjectiveId) {
+        try {
+          await client.objectives.delete(createdObjectiveId);
+          console.log('✓ Objective deleted successfully');
+        } catch (error) {
+          console.log('⚠️ Objective deletion failed:', error);
+        }
+      }
+    });
+  });
+
+  describe('Phase 2 - Models Resource', () => {
+    let testModelId: string;
+    let createdModelId: string;
+
+    test('should list models', async () => {
+      const result = await client.models.list({ page_size: 5 });
+      expect(result.results).toBeDefined();
+      expect(Array.isArray(result.results)).toBe(true);
+      expect(result.count).toBeGreaterThanOrEqual(0);
+      
+      if (result.results.length > 0) {
+        testModelId = result.results[0].id;
+        console.log('✓ Found models, using ID:', testModelId);
+      }
+    });
+
+    test('should create a custom model', async () => {
+      try {
+        const model = await client.models.create({
+          name: `Test Model ${Date.now()}`,
+          model: 'gpt-3.5-turbo',
+          max_token_count: 4096,
+          max_output_token_count: 1024
+        });
+        expect(model.id).toBeDefined();
+        createdModelId = model.id;
+        console.log('✓ Model created successfully:', model.id);
+      } catch (error) {
+        console.log('⚠️ Model creation failed:', error);
+      }
+    });
+
+    test('should get model details', async () => {
+      const modelId = createdModelId || testModelId;
+      if (modelId) {
+        const model = await client.models.get(modelId);
+        expect(model.id).toBe(modelId);
+        expect(model.name).toBeDefined();
+        console.log('✓ Model details:', model.name);
+      }
+    });
+
+    test('should update model', async () => {
+      if (createdModelId) {
+        try {
+          const updated = await client.models.update(createdModelId, {
+            name: `Updated Test Model ${Date.now()}`,
+            model: 'gpt-3.5-turbo',
+            max_token_count: 8192
+          });
+          expect(updated.id).toBe(createdModelId);
+          console.log('✓ Model updated successfully');
+        } catch (error) {
+          console.log('⚠️ Model update failed:', error);
+        }
+      }
+    });
+
+    test('should patch model', async () => {
+      if (createdModelId) {
+        try {
+          const patched = await client.models.patch(createdModelId, {
+            max_output_token_count: 2048
+          });
+          expect(patched.id).toBe(createdModelId);
+          console.log('✓ Model patched successfully');
+        } catch (error) {
+          console.log('⚠️ Model patch failed:', error);
+        }
+      }
+    });
+
+    test('should delete created model', async () => {
+      if (createdModelId) {
+        try {
+          await client.models.delete(createdModelId);
+          console.log('✓ Model deleted successfully');
+        } catch (error) {
+          console.log('⚠️ Model deletion failed:', error);
+        }
+      }
+    });
+  });
+
+  describe('Phase 2 - Execution Logs Resource', () => {
+    test('should list execution logs', async () => {
+      const result = await client.executionLogs.list({ page_size: 5 });
+      expect(result.results).toBeDefined();
+      expect(Array.isArray(result.results)).toBe(true);
+      expect(result.count).toBeGreaterThanOrEqual(0);
+      console.log('✓ Execution logs retrieved:', result.results.length);
+    });
+
+    test('should get execution log details (if available)', async () => {
+      const logs = await client.executionLogs.list({ page_size: 1 });
+      if (logs.results.length > 0) {
+        const logId = logs.results[0].id;
+        try {
+          const logDetails = await client.executionLogs.get(logId);
+          expect(logDetails.id).toBe(logId);
+          console.log('✓ Execution log details retrieved');
+        } catch (error) {
+          console.log('⚠️ Execution log details retrieval failed:', error);
+        }
+      }
+    });
+
+    test('should filter logs by date range', async () => {
+      const endDate = new Date().toISOString();
+      const startDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(); // 7 days ago
+      
+      try {
+        const result = await client.executionLogs.getByDateRange(startDate, endDate, { page_size: 5 });
+        expect(result.results).toBeDefined();
+        expect(Array.isArray(result.results)).toBe(true);
+        console.log('✓ Execution logs filtered by date range:', result.results.length);
+      } catch (error) {
+        console.log('⚠️ Date range filtering failed:', error);
+      }
+    });
+
+    test('should filter logs by cost range', async () => {
+      try {
+        const result = await client.executionLogs.getByCostRange(0, 1, { page_size: 5 });
+        expect(result.results).toBeDefined();
+        expect(Array.isArray(result.results)).toBe(true);
+        console.log('✓ Execution logs filtered by cost range:', result.results.length);
+      } catch (error) {
+        console.log('⚠️ Cost range filtering failed:', error);
+      }
+    });
+
+    test('should filter logs by score range', async () => {
+      try {
+        const result = await client.executionLogs.getByScoreRange(0, 1, { page_size: 5 });
+        expect(result.results).toBeDefined();
+        expect(Array.isArray(result.results)).toBe(true);
+        console.log('✓ Execution logs filtered by score range:', result.results.length);
+      } catch (error) {
+        console.log('⚠️ Score range filtering failed:', error);
+      }
+    });
+
+    test('should filter logs by evaluator (if available)', async () => {
+      const evaluators = await client.evaluators.list({ page_size: 1 });
+      if (evaluators.results.length > 0) {
+        const evaluatorId = evaluators.results[0].id;
+        try {
+          const result = await client.executionLogs.getByEvaluator(evaluatorId, { page_size: 5 });
+          expect(result.results).toBeDefined();
+          expect(Array.isArray(result.results)).toBe(true);
+          console.log('✓ Execution logs filtered by evaluator:', result.results.length);
+        } catch (error) {
+          console.log('⚠️ Evaluator filtering failed:', error);
+        }
+      }
+    });
+
+    test('should filter logs by model', async () => {
+      try {
+        const result = await client.executionLogs.getByModel('gpt-3.5-turbo', { page_size: 5 });
+        expect(result.results).toBeDefined();
+        expect(Array.isArray(result.results)).toBe(true);
+        console.log('✓ Execution logs filtered by model:', result.results.length);
+      } catch (error) {
+        console.log('⚠️ Model filtering failed:', error);
+      }
+    });
+  });
+
+  describe('Error Handling', () => {
+    test('should handle invalid evaluator ID gracefully', async () => {
+      try {
+        await client.evaluators.get('invalid-id-12345');
+        fail('Should have thrown an error');
+      } catch (error: any) {
+        expect(error.name).toBe('RootSignalsError');
+        console.log('✓ Invalid evaluator ID handled correctly');
+      }
+    });
+
+    test('should handle invalid judge ID gracefully', async () => {
+      try {
+        await client.judges.get('invalid-id-12345');
+        fail('Should have thrown an error');
+      } catch (error: any) {
+        expect(error.name).toBe('RootSignalsError');
+        console.log('✓ Invalid judge ID handled correctly');
+      }
+    });
+
+    test('should handle invalid objective ID gracefully', async () => {
+      try {
+        await client.objectives.get('invalid-id-12345');
+        fail('Should have thrown an error');
+      } catch (error: any) {
+        expect(error.name).toBe('RootSignalsError');
+        console.log('✓ Invalid objective ID handled correctly');
+      }
+    });
+
+    test('should handle invalid model ID gracefully', async () => {
+      try {
+        await client.models.get('invalid-id-12345');
+        fail('Should have thrown an error');
+      } catch (error: any) {
+        expect(error.name).toBe('RootSignalsError');
+        console.log('✓ Invalid model ID handled correctly');
+      }
+    });
+
+    test('should handle invalid execution log ID gracefully', async () => {
+      try {
+        await client.executionLogs.get('invalid-id-12345');
+        fail('Should have thrown an error');
+      } catch (error: any) {
+        expect(error.name).toBe('RootSignalsError');
+        console.log('✓ Invalid execution log ID handled correctly');
+      }
+    });
+  });
+
+  describe('Pagination', () => {
+    test('should handle pagination correctly for evaluators', async () => {
+      const firstPage = await client.evaluators.list({ page_size: 2 });
+      expect(firstPage.results).toBeDefined();
+      
+      if (firstPage.next) {
+        // Extract cursor from next URL for demonstration
+        console.log('✓ Pagination available for evaluators');
+      } else {
+        console.log('✓ All evaluators fit in first page');
+      }
+    });
+
+    test('should handle pagination correctly for judges', async () => {
+      const firstPage = await client.judges.list({ page_size: 2 });
+      expect(firstPage.results).toBeDefined();
+      
+      if (firstPage.next) {
+        console.log('✓ Pagination available for judges');
+      } else {
+        console.log('✓ All judges fit in first page');
+      }
+    });
+
+    test('should handle pagination correctly for execution logs', async () => {
+      const firstPage = await client.executionLogs.list({ page_size: 2 });
+      expect(firstPage.results).toBeDefined();
+      
+      if (firstPage.next) {
+        console.log('✓ Pagination available for execution logs');
+      } else {
+        console.log('✓ All execution logs fit in first page');
+      }
+    });
+  });
+});

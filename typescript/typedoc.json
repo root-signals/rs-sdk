@@ -1,0 +1,73 @@
+{
+  "entryPoints": ["src/index.ts"],
+  "out": "docs",
+  "theme": "default",
+  "name": "Root Signals TypeScript SDK",
+  "readme": "README.md",
+  "includeVersion": true,
+  "excludeExternals": true,
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "hideGenerator": false,
+  "disableSources": false,
+  "searchInComments": true,
+  "cleanOutputDir": true,
+  "treatWarningsAsErrors": false,
+  "validation": {
+    "notExported": true,
+    "invalidLink": true,
+    "notDocumented": false
+  },
+  "categorizeByGroup": true,
+  "categoryOrder": [
+    "Client",
+    "Resources",
+    "Types",
+    "Utilities",
+    "Errors",
+    "*"
+  ],
+  "sort": ["source-order"],
+  "kindSortOrder": [
+    "Document",
+    "Project",
+    "Module",
+    "Namespace",
+    "Enum",
+    "EnumMember",
+    "Class",
+    "Interface",
+    "TypeAlias",
+    "Constructor",
+    "Property",
+    "Variable",
+    "Function",
+    "Accessor",
+    "Method",
+    "Parameter",
+    "TypeParameter",
+    "TypeLiteral",
+    "CallSignature",
+    "ConstructorSignature",
+    "IndexSignature",
+    "GetSignature",
+    "SetSignature"
+  ],
+  "exclude": [
+    "src/generated/**/*",
+    "tests/**/*",
+    "examples/**/*",
+    "**/*.test.ts",
+    "**/*.spec.ts"
+  ],
+  "plugin": ["typedoc-plugin-markdown"],
+  "githubPages": false,
+  "gaID": "",
+  "gaSite": "auto",
+  "hideInPageTOC": false,
+  "navigationLinks": {
+    "GitHub": "https://github.com/root-signals/typescript-sdk",
+    "Documentation": "https://docs.rootsignals.ai",
+    "Discord": "https://discord.gg/rootsignals"
+  }
+}
