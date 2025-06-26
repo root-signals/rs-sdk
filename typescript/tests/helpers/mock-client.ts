@@ -1,85 +1,13 @@
 import { vi } from 'vitest';
-import type { paths } from '../../src/generated/types';
-
-type GetMethod = <TPath extends keyof paths>(
-  url: TPath,
-  options?: paths[TPath]['get'] extends { parameters?: infer TParams }
-    ? { params?: TParams }
-    : never,
-) => Promise<{
-  data: paths[TPath]['get'] extends {
-    responses: { 200: { content: { 'application/json': infer TData } } };
-  }
-    ? TData
-    : any;
-  error: any;
-}>;
-
-type PostMethod = <TPath extends keyof paths>(
-  url: TPath,
-  options?: paths[TPath]['post'] extends {
-    requestBody?: { content: { 'application/json': infer TBody } };
-    parameters?: infer TParams;
-  }
-    ? { body?: TBody; params?: TParams }
-    : never,
-) => Promise<{
-  data: paths[TPath]['post'] extends {
-    responses:
-      | { 200: { content: { 'application/json': infer TData } } }
-      | { 201: { content: { 'application/json': infer TData } } };
-  }
-    ? TData
-    : any;
-  error: any;
-}>;
-
-type PutMethod = <TPath extends keyof paths>(
-  url: TPath,
-  options?: paths[TPath]['put'] extends {
-    requestBody?: { content: { 'application/json': infer TBody } };
-    parameters?: infer TParams;
-  }
-    ? { body?: TBody; params?: TParams }
-    : never,
-) => Promise<{
-  data: paths[TPath]['put'] extends {
-    responses: { 200: { content: { 'application/json': infer TData } } };
-  }
-    ? TData
-    : any;
-  error: any;
-}>;
-
-type PatchMethod = <TPath extends keyof paths>(
-  url: TPath,
-  options?: paths[TPath]['patch'] extends {
-    requestBody?: { content: { 'application/json': infer TBody } };
-    parameters?: infer TParams;
-  }
-    ? { body?: TBody; params?: TParams }
-    : never,
-) => Promise<{
-  data: paths[TPath]['patch'] extends {
-    responses: { 200: { content: { 'application/json': infer TData } } };
-  }
-    ? TData
-    : any;
-  error: any;
-}>;
-
-type DeleteMethod = <TPath extends keyof paths>(
-  url: TPath,
-  options?: paths[TPath]['delete'] extends { parameters?: infer TParams }
-    ? { params?: TParams }
-    : never,
-) => Promise<{
-  data: paths[TPath]['delete'] extends { responses: { 204: any } } ? undefined : any;
-  error: any;
-}>;
 
 // Mock HTTP client that simulates openapi-fetch behavior
 export class MockClient {
+  // Add missing properties to match openapi-fetch Client interface
+  OPTIONS = vi.fn();
+  HEAD = vi.fn();
+  TRACE = vi.fn();
+  use = vi.fn();
+  eject = vi.fn();
   private mockResponses: Map<string, any> = new Map();
 
   constructor() {
@@ -133,7 +61,7 @@ export class MockClient {
   }
 
   // Mock GET requests
-  GET = vi.fn<GetMethod>((url, options) => {
+  GET = vi.fn().mockImplementation((url: any, _options?: any) => {
     const key = `GET ${url}`;
     const response = this.mockResponses.get(key);
 
@@ -149,7 +77,7 @@ export class MockClient {
   });
 
   // Mock POST requests
-  POST = vi.fn<PostMethod>((url, options) => {
+  POST = vi.fn().mockImplementation((url: any, options?: any) => {
     const key = `POST ${url}`;
     const response = this.mockResponses.get(key);
 
@@ -159,29 +87,29 @@ export class MockClient {
 
     // Default creation response
     return Promise.resolve({
-      data: { id: 'created-123', ...options?.body },
+      data: { id: 'created-123', ...(options?.body || {}) },
       error: undefined,
     });
   });
 
   // Mock PUT requests
-  PUT = vi.fn<PutMethod>((url, options) => {
+  PUT = vi.fn().mockImplementation((url: any, options?: any) => {
     return Promise.resolve({
-      data: { id: 'updated-123', ...options?.body },
+      data: { id: 'updated-123', ...(options?.body || {}) },
       error: undefined,
     });
   });
 
   // Mock PATCH requests
-  PATCH = vi.fn<PatchMethod>((url, options) => {
+  PATCH = vi.fn().mockImplementation((url: any, options?: any) => {
     return Promise.resolve({
-      data: { id: 'patched-123', ...options?.body },
+      data: { id: 'patched-123', ...(options?.body || {}) },
       error: undefined,
     });
   });
 
   // Mock DELETE requests
-  DELETE = vi.fn<DeleteMethod>((url, options) => {
+  DELETE = vi.fn().mockImplementation((_url: any, _options?: any) => {
     return Promise.resolve({
       data: undefined,
       error: undefined,
