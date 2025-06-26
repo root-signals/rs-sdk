@@ -99,6 +99,7 @@ Class | Method | HTTP request | Description
 *JudgesApi* | [**judges_duplicate_create**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_duplicate_create) | **POST** /v1/judges/{id}/duplicate/ | 
 *JudgesApi* | [**judges_execute_create**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_execute_create) | **POST** /v1/judges/{judge_id}/execute/ | 
 *JudgesApi* | [**judges_generate_create**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_generate_create) | **POST** /v1/judges/generate/ | 
+*JudgesApi* | [**judges_invite_create**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_invite_create) | **POST** /v1/judges/{id}/invite/ | 
 *JudgesApi* | [**judges_list**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_list) | **GET** /v1/judges/ | 
 *JudgesApi* | [**judges_openai_chat_completions_create**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_openai_chat_completions_create) | **POST** /v1/judges/openai/chat/completions | 
 *JudgesApi* | [**judges_openai_chat_completions_create2**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_openai_chat_completions_create2) | **POST** /v1/judges/{judge_id}/openai/chat/completions | 
@@ -152,12 +153,8 @@ Class | Method | HTTP request | Description
  - [ExecutionLogDetails](root/generated/openapi_aclient/docs/ExecutionLogDetails.md)
  - [ExecutionLogDetailsEvaluationContext](root/generated/openapi_aclient/docs/ExecutionLogDetailsEvaluationContext.md)
  - [ExecutionLogDetailsEvaluatorLatenciesInner](root/generated/openapi_aclient/docs/ExecutionLogDetailsEvaluatorLatenciesInner.md)
- - [ExecutionLogDetailsJudge](root/generated/openapi_aclient/docs/ExecutionLogDetailsJudge.md)
- - [ExecutionLogDetailsObjective](root/generated/openapi_aclient/docs/ExecutionLogDetailsObjective.md)
- - [ExecutionLogDetailsSkill](root/generated/openapi_aclient/docs/ExecutionLogDetailsSkill.md)
  - [ExecutionLogList](root/generated/openapi_aclient/docs/ExecutionLogList.md)
  - [ExecutionLogListEvaluationContext](root/generated/openapi_aclient/docs/ExecutionLogListEvaluationContext.md)
- - [ExecutionLogListSkill](root/generated/openapi_aclient/docs/ExecutionLogListSkill.md)
  - [GenerationModelParamsRequest](root/generated/openapi_aclient/docs/GenerationModelParamsRequest.md)
  - [ID](root/generated/openapi_aclient/docs/ID.md)
  - [InputVariable](root/generated/openapi_aclient/docs/InputVariable.md)
@@ -168,6 +165,7 @@ Class | Method | HTTP request | Description
  - [JudgeFilesInner](root/generated/openapi_aclient/docs/JudgeFilesInner.md)
  - [JudgeGeneratorRequest](root/generated/openapi_aclient/docs/JudgeGeneratorRequest.md)
  - [JudgeGeneratorResponse](root/generated/openapi_aclient/docs/JudgeGeneratorResponse.md)
+ - [JudgeInviteRequest](root/generated/openapi_aclient/docs/JudgeInviteRequest.md)
  - [JudgeList](root/generated/openapi_aclient/docs/JudgeList.md)
  - [JudgeRectifierRequestRequest](root/generated/openapi_aclient/docs/JudgeRectifierRequestRequest.md)
  - [JudgeRectifierResponse](root/generated/openapi_aclient/docs/JudgeRectifierResponse.md)

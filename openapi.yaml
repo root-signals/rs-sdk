@@ -795,15 +795,24 @@ paths:
         schema:
           type: string
       - in: query
+        name: executed_item_id
+        schema:
+          type: string
+          format: uuid
+      - in: query
         name: execution_type
         schema:
           type: string
           enum:
-          - runtime
-          - test
+          - evaluator
+          - experiment
+          - judge
+          - skill
         description: |-
-          * `runtime` - runtime
-          * `test` - test
+          * `skill` - skill
+          * `evaluator` - evaluator
+          * `judge` - judge
+          * `experiment` - experiment
       - in: query
         name: include
         schema:
@@ -839,11 +848,6 @@ paths:
           type: string
           default: ''
         description: Filter with skill name or id
-      - in: query
-        name: skill_data_id
-        schema:
-          type: string
-          format: uuid
       - in: query
         name: tags
         schema:
@@ -1289,6 +1293,41 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Judge'
+          description: ''
+  /v1/judges/{id}/invite/:
+    post:
+      operationId: judges_invite_create
+      description: Send email invites to view a specific judge (up to 10 recipients)
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this judge.
+        required: true
+      tags:
+      - judges
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JudgeInviteRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/JudgeInviteRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/JudgeInviteRequest'
+        required: true
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                description: Invitations sent successfully
           description: ''
   /v1/judges/generate/:
     post:
@@ -2463,17 +2502,26 @@ components:
                 type: number
           nullable: true
           readOnly: true
+        executed_item_id:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+        executed_item_name:
+          type: string
+          readOnly: true
+        executed_item_version_id:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+        execution_type:
+          type: string
+          readOnly: true
         id:
           type: string
           format: uuid
           readOnly: true
-        judge:
-          type: object
-          properties:
-            name:
-              type: string
-          readOnly: true
-          nullable: true
         justification:
           type: string
           readOnly: true
@@ -2490,15 +2538,6 @@ components:
         model:
           type: string
           readOnly: true
-        objective:
-          type: object
-          properties:
-            intent:
-              type: string
-            id:
-              type: string
-              format: uuid
-          readOnly: true
         owner:
           allOf:
           - $ref: '#/components/schemas/NestedUserDetails'
@@ -2507,6 +2546,9 @@ components:
           type: string
           format: uuid
           nullable: true
+        prompt_template:
+          type: string
+          readOnly: true
         rendered_prompt:
           type: string
           readOnly: true
@@ -2515,30 +2557,6 @@ components:
           format: double
           readOnly: true
           nullable: true
-        skill:
-          type: object
-          properties:
-            prompt:
-              type: string
-            pii_filter:
-              type: boolean
-            version_id:
-              type: string
-            name:
-              type: string
-            type:
-              type: string
-            id:
-              type: string
-              format: uuid
-          example:
-            prompt: 'Provide a clear answer to the question: {{question}}'
-            pii_filter: false
-            version_id: '1234'
-            name: Skill name
-            type: skill
-            id: dfd76dd3-1415-4339-9b20-3bc2bbe3e8ce
-          readOnly: true
         tags:
           type: array
           items:
@@ -2561,17 +2579,19 @@ components:
       - created_at
       - evaluation_context
       - evaluator_latencies
+      - executed_item_id
+      - executed_item_name
+      - executed_item_version_id
+      - execution_type
       - id
-      - judge
       - justification
       - llm_output
       - model
       - model_call_duration
-      - objective
       - owner
+      - prompt_template
       - rendered_prompt
       - score
-      - skill
       - tags
       - validation_results
       - variables
@@ -2588,69 +2608,6 @@ components:
           format: date-time
           readOnly: true
           nullable: true
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        judge:
-          type: object
-          properties:
-            name:
-              type: string
-          readOnly: true
-          nullable: true
-        owner:
-          allOf:
-          - $ref: '#/components/schemas/NestedUserDetails'
-          readOnly: true
-        parent_execution_log_id:
-          type: string
-          format: uuid
-          nullable: true
-        score:
-          type: number
-          format: double
-          readOnly: true
-          nullable: true
-        skill:
-          type: object
-          properties:
-            name:
-              type: string
-            type:
-              type: string
-            id:
-              type: string
-              format: uuid
-          example:
-            name: Skill name
-            type: skill
-            id: dfd76dd3-1415-4339-9b20-3bc2bbe3e8ce
-          readOnly: true
-        tags:
-          type: array
-          items:
-            type: string
-          readOnly: true
-        validation_result_average:
-          type: number
-          format: double
-          readOnly: true
-          nullable: true
-        llm_output:
-          type: string
-          nullable: true
-          description: The raw output from the LLM model. Only included when explicitly
-            requested with include=llm_output parameter.
-          readOnly: true
-        variables:
-          type: object
-          additionalProperties:
-            type: string
-          nullable: true
-          description: The variables used in the execution. Only included when explicitly
-            requested with include=variables parameter.
-          readOnly: true
         evaluation_context:
           type: object
           properties:
@@ -2664,18 +2621,71 @@ components:
             when explicitly requested with include=evaluation_context parameter.
           nullable: true
           readOnly: true
+        executed_item_id:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+        executed_item_name:
+          type: string
+          readOnly: true
+        executed_item_version_id:
+          type: string
+          format: uuid
+          readOnly: true
+          nullable: true
+        execution_type:
+          type: string
+          readOnly: true
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        llm_output:
+          type: string
+          nullable: true
+          description: The raw output from the LLM model. Only included when explicitly
+            requested with include=llm_output parameter.
+          readOnly: true
+        owner:
+          allOf:
+          - $ref: '#/components/schemas/NestedUserDetails'
+          readOnly: true
+        parent_execution_log_id:
+          type: string
+          format: uuid
+          nullable: true
+        score:
+          type: number
+          format: double
+          readOnly: true
+          nullable: true
+        tags:
+          type: array
+          items:
+            type: string
+          readOnly: true
+        variables:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+          description: The variables used in the execution. Only included when explicitly
+            requested with include=variables parameter.
+          readOnly: true
       required:
       - cost
       - created_at
       - evaluation_context
+      - executed_item_id
+      - executed_item_name
+      - executed_item_version_id
+      - execution_type
       - id
-      - judge
       - llm_output
       - owner
       - score
-      - skill
       - tags
-      - validation_result_average
       - variables
     GenerationModelParamsRequest:
       type: object
@@ -2918,6 +2928,26 @@ components:
           nullable: true
       required:
       - judge_id
+    JudgeInviteRequest:
+      type: object
+      properties:
+        emails:
+          type: array
+          items:
+            type: string
+            format: email
+            minLength: 1
+          description: List of email addresses to send the invite to (maximum 10)
+          maxItems: 10
+          minItems: 1
+        judge_url:
+          type: string
+          format: uri
+          minLength: 1
+          description: Full URL to the judge to include in the email
+      required:
+      - emails
+      - judge_url
     JudgeList:
       type: object
       properties:

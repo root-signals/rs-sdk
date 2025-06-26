@@ -40,8 +40,12 @@ class ExecutionLogsApi:
     def execution_logs_list(
         self,
         cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
+        executed_item_id: Optional[StrictStr] = None,
         execution_type: Annotated[
-            Optional[StrictStr], Field(description="* `runtime` - runtime * `test` - test")
+            Optional[StrictStr],
+            Field(
+                description="* `skill` - skill * `evaluator` - evaluator * `judge` - judge * `experiment` - experiment"
+            ),
         ] = None,
         include: Annotated[
             Optional[StrictStr],
@@ -62,7 +66,6 @@ class ExecutionLogsApi:
         ] = None,
         page_size: Annotated[Optional[StrictInt], Field(description="Number of results to return per page.")] = None,
         search: Annotated[Optional[StrictStr], Field(description="Filter with skill name or id")] = None,
-        skill_data_id: Optional[StrictStr] = None,
         tags: Annotated[Optional[StrictStr], Field(description="Filter logs by tag names (comma-separated)")] = None,
         unique_skills: Annotated[Optional[StrictBool], Field(description="Return only unique skills")] = None,
         _request_timeout: Union[
@@ -81,7 +84,9 @@ class ExecutionLogsApi:
 
         :param cursor: The pagination cursor value.
         :type cursor: str
-        :param execution_type: * `runtime` - runtime * `test` - test
+        :param executed_item_id:
+        :type executed_item_id: str
+        :param execution_type: * `skill` - skill * `evaluator` - evaluator * `judge` - judge * `experiment` - experiment
         :type execution_type: str
         :param include: Comma-separated list of additional fields to include in the response. Supports: llm_output, variables, evaluation_context
         :type include: str
@@ -95,8 +100,6 @@ class ExecutionLogsApi:
         :type page_size: int
         :param search: Filter with skill name or id
         :type search: str
-        :param skill_data_id:
-        :type skill_data_id: str
         :param tags: Filter logs by tag names (comma-separated)
         :type tags: str
         :param unique_skills: Return only unique skills
@@ -125,6 +128,7 @@ class ExecutionLogsApi:
 
         _param = self._execution_logs_list_serialize(
             cursor=cursor,
+            executed_item_id=executed_item_id,
             execution_type=execution_type,
             include=include,
             max_score=max_score,
@@ -132,7 +136,6 @@ class ExecutionLogsApi:
             ordering=ordering,
             page_size=page_size,
             search=search,
-            skill_data_id=skill_data_id,
             tags=tags,
             unique_skills=unique_skills,
             _request_auth=_request_auth,
@@ -155,8 +158,12 @@ class ExecutionLogsApi:
     def execution_logs_list_with_http_info(
         self,
         cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
+        executed_item_id: Optional[StrictStr] = None,
         execution_type: Annotated[
-            Optional[StrictStr], Field(description="* `runtime` - runtime * `test` - test")
+            Optional[StrictStr],
+            Field(
+                description="* `skill` - skill * `evaluator` - evaluator * `judge` - judge * `experiment` - experiment"
+            ),
         ] = None,
         include: Annotated[
             Optional[StrictStr],
@@ -177,7 +184,6 @@ class ExecutionLogsApi:
         ] = None,
         page_size: Annotated[Optional[StrictInt], Field(description="Number of results to return per page.")] = None,
         search: Annotated[Optional[StrictStr], Field(description="Filter with skill name or id")] = None,
-        skill_data_id: Optional[StrictStr] = None,
         tags: Annotated[Optional[StrictStr], Field(description="Filter logs by tag names (comma-separated)")] = None,
         unique_skills: Annotated[Optional[StrictBool], Field(description="Return only unique skills")] = None,
         _request_timeout: Union[
@@ -196,7 +202,9 @@ class ExecutionLogsApi:
 
         :param cursor: The pagination cursor value.
         :type cursor: str
-        :param execution_type: * `runtime` - runtime * `test` - test
+        :param executed_item_id:
+        :type executed_item_id: str
+        :param execution_type: * `skill` - skill * `evaluator` - evaluator * `judge` - judge * `experiment` - experiment
         :type execution_type: str
         :param include: Comma-separated list of additional fields to include in the response. Supports: llm_output, variables, evaluation_context
         :type include: str
@@ -210,8 +218,6 @@ class ExecutionLogsApi:
         :type page_size: int
         :param search: Filter with skill name or id
         :type search: str
-        :param skill_data_id:
-        :type skill_data_id: str
         :param tags: Filter logs by tag names (comma-separated)
         :type tags: str
         :param unique_skills: Return only unique skills
@@ -240,6 +246,7 @@ class ExecutionLogsApi:
 
         _param = self._execution_logs_list_serialize(
             cursor=cursor,
+            executed_item_id=executed_item_id,
             execution_type=execution_type,
             include=include,
             max_score=max_score,
@@ -247,7 +254,6 @@ class ExecutionLogsApi:
             ordering=ordering,
             page_size=page_size,
             search=search,
-            skill_data_id=skill_data_id,
             tags=tags,
             unique_skills=unique_skills,
             _request_auth=_request_auth,
@@ -270,8 +276,12 @@ class ExecutionLogsApi:
     def execution_logs_list_without_preload_content(
         self,
         cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
+        executed_item_id: Optional[StrictStr] = None,
         execution_type: Annotated[
-            Optional[StrictStr], Field(description="* `runtime` - runtime * `test` - test")
+            Optional[StrictStr],
+            Field(
+                description="* `skill` - skill * `evaluator` - evaluator * `judge` - judge * `experiment` - experiment"
+            ),
         ] = None,
         include: Annotated[
             Optional[StrictStr],
@@ -292,7 +302,6 @@ class ExecutionLogsApi:
         ] = None,
         page_size: Annotated[Optional[StrictInt], Field(description="Number of results to return per page.")] = None,
         search: Annotated[Optional[StrictStr], Field(description="Filter with skill name or id")] = None,
-        skill_data_id: Optional[StrictStr] = None,
         tags: Annotated[Optional[StrictStr], Field(description="Filter logs by tag names (comma-separated)")] = None,
         unique_skills: Annotated[Optional[StrictBool], Field(description="Return only unique skills")] = None,
         _request_timeout: Union[
@@ -311,7 +320,9 @@ class ExecutionLogsApi:
 
         :param cursor: The pagination cursor value.
         :type cursor: str
-        :param execution_type: * `runtime` - runtime * `test` - test
+        :param executed_item_id:
+        :type executed_item_id: str
+        :param execution_type: * `skill` - skill * `evaluator` - evaluator * `judge` - judge * `experiment` - experiment
         :type execution_type: str
         :param include: Comma-separated list of additional fields to include in the response. Supports: llm_output, variables, evaluation_context
         :type include: str
@@ -325,8 +336,6 @@ class ExecutionLogsApi:
         :type page_size: int
         :param search: Filter with skill name or id
         :type search: str
-        :param skill_data_id:
-        :type skill_data_id: str
         :param tags: Filter logs by tag names (comma-separated)
         :type tags: str
         :param unique_skills: Return only unique skills
@@ -355,6 +364,7 @@ class ExecutionLogsApi:
 
         _param = self._execution_logs_list_serialize(
             cursor=cursor,
+            executed_item_id=executed_item_id,
             execution_type=execution_type,
             include=include,
             max_score=max_score,
@@ -362,7 +372,6 @@ class ExecutionLogsApi:
             ordering=ordering,
             page_size=page_size,
             search=search,
-            skill_data_id=skill_data_id,
             tags=tags,
             unique_skills=unique_skills,
             _request_auth=_request_auth,
@@ -380,6 +389,7 @@ class ExecutionLogsApi:
     def _execution_logs_list_serialize(
         self,
         cursor,
+        executed_item_id,
         execution_type,
         include,
         max_score,
@@ -387,7 +397,6 @@ class ExecutionLogsApi:
         ordering,
         page_size,
         search,
-        skill_data_id,
         tags,
         unique_skills,
         _request_auth,
@@ -411,6 +420,9 @@ class ExecutionLogsApi:
         if cursor is not None:
             _query_params.append(("cursor", cursor))
 
+        if executed_item_id is not None:
+            _query_params.append(("executed_item_id", executed_item_id))
+
         if execution_type is not None:
             _query_params.append(("execution_type", execution_type))
 
@@ -431,9 +443,6 @@ class ExecutionLogsApi:
 
         if search is not None:
             _query_params.append(("search", search))
-
-        if skill_data_id is not None:
-            _query_params.append(("skill_data_id", skill_data_id))
 
         if tags is not None:
             _query_params.append(("tags", tags))
