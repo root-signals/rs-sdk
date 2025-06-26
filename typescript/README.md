@@ -7,20 +7,11 @@
 </p>
 
 <p align="center">
-    <a href="https://www.npmjs.com/package/@rootsignals/sdk">
+    <a href="https://www.npmjs.com/package/@root-signals/typescript-sdk">
       <img alt="Supported Node.js versions" src="https://img.shields.io/badge/Node.js-18%20to%2022-yellow?style=for-the-badge&logo=node.js&logoColor=yellow">
     </a>
 </p>
 
-<p align="center">
-  <a href="https://www.npmjs.com/package/@rootsignals/sdk">
-    <img src="https://img.shields.io/npm/v/@rootsignals/sdk" alt="npm">
-  </a>
-  <img src="https://img.shields.io/npm/dm/@rootsignals/sdk?color=orange" alt="Downloads">
-  <a href="https://github.com/root-signals/rs-typescript-sdk/blob/main/LICENSE">
-    <img src="https://img.shields.io/github/license/root-signals/rs-typescript-sdk.svg" alt="License">
-  </a>
-</p>
 
 <p align="center">
   <a href="https://app.rootsignals.ai/register">
@@ -51,11 +42,11 @@ With Root Signals you can develop your LLM application reliably, deploy them in 
 ## 📦 Install
 
 ```bash
-npm install @rootsignals/sdk
+npm install @root-signals/typescript-sdk
 # or
-yarn add @rootsignals/sdk
+yarn add @root-signals/typescript-sdk
 # or  
-pnpm add @rootsignals/sdk
+pnpm add @root-signals/typescript-sdk
 ```
 
 ## ⚡ Quickstart
@@ -75,7 +66,7 @@ echo ROOTSIGNALS_API_KEY=your-Root-API-key >> .env
 
 ### *Root* Evaluators
 ```typescript
-import { RootSignals } from '@rootsignals/sdk';
+import { RootSignals } from '@root-signals/typescript-sdk';
 
 // Connect to Root Signals API
 const client = new RootSignals({
@@ -101,35 +92,18 @@ Check the full list of *Root* evaluators from the [Root evaluators documentation
 
 | Resource | Link |
 |----------|------|
-| 🟨 TypeScript SDK API | [Generated TypeDoc](./docs/index.html) |
 | 📘 Product Docs | [View Documentation](https://docs.rootsignals.ai) |
 | 📑 API Docs | [View Documentation](https://api.docs.rootsignals.ai/) |
 | 🐍 Python SDK | [View Documentation](https://github.com/root-signals/python-sdk) |
 | 🔌 MCP | [View Repo](https://github.com/root-signals/root-signals-mcp) |
 
-## 🚀 SDK Features
-
-| Feature | TypeScript SDK | Python SDK |
-|---------|---------------|------------|
-| **Evaluators** | ✅ Execute, List, Get, Duplicate | ✅ Execute, List, Get, Duplicate |
-| **Judges** | ✅ Create, Execute, Generate, Refine | ✅ Create, Execute, Generate, Refine |
-| **Models** | ✅ List, Create, Update, Delete | ✅ List, Create, Update, Delete |
-| **Objectives** | ✅ List, Create, Update, Delete, Versions | ✅ List, Create, Update, Delete, Versions |
-| **Execution Logs** | ✅ List, Get with filtering | ✅ List, Get with filtering |
-| **Datasets** | ✅ Create, Upload, List, Delete | ✅ Create, Upload, List, Delete |
-| **Organizations** | ✅ Info, Members, Cost Metrics | ✅ Info, Members, Cost Metrics |
-| **API Keys** | ✅ List, Create, Delete | ✅ List, Create, Delete |
-| **Type Safety** | ✅ Full TypeScript types | ❌ Dynamic typing |
-| **Auto-completion** | ✅ IDE support | ✅ IDE support |
-| **Retry Logic** | ✅ Built-in with backoff | ✅ Built-in with backoff |
-| **Rate Limiting** | ✅ Configurable strategies | ✅ Configurable strategies |
 
 ## Examples
 
 ### Root Evaluator by Name
 
 ```typescript
-import { RootSignals } from '@rootsignals/sdk';
+import { RootSignals } from '@root-signals/typescript-sdk';
 
 const client = new RootSignals({ apiKey: process.env.ROOTSIGNALS_API_KEY! });
 
@@ -176,7 +150,7 @@ try {
 ### Custom Evaluators
 
 ```typescript
-import { RootSignals } from '@rootsignals/sdk';
+import { RootSignals } from '@root-signals/typescript-sdk';
 
 const client = new RootSignals({ apiKey: process.env.ROOTSIGNALS_API_KEY! });
 
@@ -209,7 +183,7 @@ console.log(response.justification);
 ### Simple Judge
 
 ```typescript
-import { RootSignals } from '@rootsignals/sdk';
+import { RootSignals } from '@root-signals/typescript-sdk';
 
 // Connect to the Root Signals API
 const client = new RootSignals({ apiKey: process.env.ROOTSIGNALS_API_KEY! });
@@ -243,7 +217,7 @@ console.log(results);
 ### Create Judge
 
 ```typescript
-import { RootSignals } from '@rootsignals/sdk';
+import { RootSignals } from '@root-signals/typescript-sdk';
 
 // Connect to the Root Signals API
 const client = new RootSignals({ apiKey: process.env.ROOTSIGNALS_API_KEY! });
@@ -277,7 +251,7 @@ console.log(results);
 ### Execution Logs
 
 ```typescript
-import { RootSignals } from '@rootsignals/sdk';
+import { RootSignals } from '@root-signals/typescript-sdk';
 
 // Connect to the Root Signals API
 const client = new RootSignals({ apiKey: process.env.ROOTSIGNALS_API_KEY! });
@@ -308,7 +282,6 @@ console.log(iterator.results[0]);
 ```typescript
 const client = new RootSignals({
   apiKey: 'your-api-key',
-  baseUrl: 'https://api.app.rootsignals.ai', // Custom endpoint
   timeout: 30000, // Request timeout in ms
   
   // Retry configuration
@@ -349,7 +322,7 @@ const client = new RootSignals({
 The SDK provides structured error handling following RFC 9457:
 
 ```typescript
-import { RootSignalsError } from '@rootsignals/sdk';
+import { RootSignalsError } from '@root-signals/typescript-sdk';
 
 try {
   const result = await client.evaluators.executeByName('Accuracy', payload);
@@ -371,29 +344,6 @@ try {
 }
 ```
 
-## TypeScript Support
-
-Full TypeScript support with comprehensive type definitions:
-
-```typescript
-import type { 
-  ExecutionResult,
-  Judge,
-  JudgeExecutionResult,
-  ExecutionLogDetails
-} from '@rootsignals/sdk';
-
-// Type-safe evaluation function
-const evaluateText = async (
-  text: string
-): Promise<ExecutionResult> => {
-  return await client.evaluators.executeByName('Accuracy', {
-    request: text,
-    response: 'Generated response',
-    expected_output: 'Expected response'
-  });
-};
-```
 
 ## Advanced Features
 
@@ -430,39 +380,6 @@ const result2 = await client.withRateLimit(async () => {
 const result3 = await client.withRetryAndRateLimit(async () => {
   return await client.evaluators.executeByName('Helpfulness', payload);
 });
-```
-
-### Batch Processing
-
-Efficiently process multiple evaluations:
-
-```typescript
-const payloads = [
-  { request: 'Question 1', response: 'Answer 1' },
-  { request: 'Question 2', response: 'Answer 2' },
-  { request: 'Question 3', response: 'Answer 3' }
-];
-
-// Sequential processing
-for (const payload of payloads) {
-  const result = await client.withRetryAndRateLimit(() =>
-    client.evaluators.executeByName('Accuracy', payload)
-  );
-  console.log(`Score: ${result.score}`);
-}
-
-// Parallel processing with concurrency control
-const batchSize = 3;
-for (let i = 0; i < payloads.length; i += batchSize) {
-  const batch = payloads.slice(i, i + batchSize);
-  const promises = batch.map(payload =>
-    client.withRetryAndRateLimit(() =>
-      client.evaluators.executeByName('Accuracy', payload)
-    )
-  );
-  const results = await Promise.all(promises);
-  console.log(`Batch completed: ${results.length} evaluations`);
-}
 ```
 
 ## 📚 API Resources
@@ -509,119 +426,6 @@ The TypeScript SDK provides access to all Root Signals API resources:
   - `get(id)` - Get dataset details
   - `delete(id)` - Remove dataset
 
-### Analytics & Organization
-- **`client.executionLogs`** - View evaluation history
-  - `list(params)` - List execution logs
-  - `get(params)` - Get specific execution
-
-- **`client.organizations`** - Organization management
-  - `getInfo()` - Organization details
-  - `getMembers()` - List members
-  - `getCostMetrics()` - Usage analytics
-  - `inviteUser(email, role)` - Invite member
-  - `updateMember(id, data)` - Update permissions
-
-- **`client.apiKeys`** - API key management
-  - `list()` - List API keys
-  - `create(data)` - Generate new key
-  - `delete(id)` - Revoke key
-
-## 🔄 Migration from Python SDK
-
-If you're migrating from the Python SDK, here are the key differences:
-
-### Client Initialization
-
-**Python:**
-```python
-from rootsignals import RootSignals
-
-client = RootSignals(api_key="your-key")
-```
-
-**TypeScript:**
-```typescript
-import { RootSignals } from '@rootsignals';
-
-const client = new RootSignals({ apiKey: "your-key" });
-```
-
-### Method Naming
-
-Most methods are identical, but note these patterns:
-
-**Python:**
-```python
-# Python uses snake_case
-result = client.evaluators.execute_by_name("Accuracy", payload)
-logs = client.execution_logs.list()
-api_keys = client.api_keys.list()
-```
-
-**TypeScript:**
-```typescript
-// TypeScript uses camelCase
-const result = await client.evaluators.executeByName("Accuracy", payload);
-const logs = await client.executionLogs.list();
-const apiKeys = await client.apiKeys.list();
-```
-
-### Async/Await
-
-All TypeScript SDK methods are async and return Promises:
-
-**Python:**
-```python
-# Synchronous by default
-result = client.evaluators.execute("eval-id", payload)
-```
-
-**TypeScript:**
-```typescript
-// Always async with await
-const result = await client.evaluators.execute("eval-id", payload);
-```
-
-### Error Handling
-
-**Python:**
-```python
-try:
-    result = client.evaluators.execute("eval-id", payload)
-except RootSignalsError as e:
-    print(f"Error: {e.status} - {e.detail}")
-```
-
-**TypeScript:**
-```typescript
-import { RootSignalsError } from '@rootsignals';
-
-try {
-    const result = await client.evaluators.execute("eval-id", payload);
-} catch (error) {
-    if (error instanceof RootSignalsError) {
-        console.error(`Error: ${error.status} - ${error.detail}`);
-    }
-}
-```
-
-### Type Safety Benefits
-
-The TypeScript SDK provides compile-time type checking:
-
-```typescript
-// TypeScript catches errors at compile time
-const result: ExecutionResult = await client.evaluators.execute("eval-id", {
-    request: "Hello",
-    response: "Hi there!",
-    // expected_output: 123  // ❌ Compile error: should be string
-    expected_output: "Hello back!"  // ✅ Correct
-});
-
-// Auto-completion for response properties
-console.log(result.score);        // ✅ IDE knows this exists
-console.log(result.invalidProp);  // ❌ Compile error: property doesn't exist
-```
 
 ## Contributing
 
