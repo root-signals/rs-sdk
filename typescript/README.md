@@ -101,10 +101,28 @@ Check the full list of *Root* evaluators from the [Root evaluators documentation
 
 | Resource | Link |
 |----------|------|
-| 🟨 TypeScript SDK | [View Documentation](https://docs.rootsignals.ai) |
+| 🟨 TypeScript SDK API | [Generated TypeDoc](./docs/index.html) |
 | 📘 Product Docs | [View Documentation](https://docs.rootsignals.ai) |
 | 📑 API Docs | [View Documentation](https://api.docs.rootsignals.ai/) |
+| 🐍 Python SDK | [View Documentation](https://github.com/root-signals/python-sdk) |
 | 🔌 MCP | [View Repo](https://github.com/root-signals/root-signals-mcp) |
+
+## 🚀 SDK Features
+
+| Feature | TypeScript SDK | Python SDK |
+|---------|---------------|------------|
+| **Evaluators** | ✅ Execute, List, Get, Duplicate | ✅ Execute, List, Get, Duplicate |
+| **Judges** | ✅ Create, Execute, Generate, Refine | ✅ Create, Execute, Generate, Refine |
+| **Models** | ✅ List, Create, Update, Delete | ✅ List, Create, Update, Delete |
+| **Objectives** | ✅ List, Create, Update, Delete, Versions | ✅ List, Create, Update, Delete, Versions |
+| **Execution Logs** | ✅ List, Get with filtering | ✅ List, Get with filtering |
+| **Datasets** | ✅ Create, Upload, List, Delete | ✅ Create, Upload, List, Delete |
+| **Organizations** | ✅ Info, Members, Cost Metrics | ✅ Info, Members, Cost Metrics |
+| **API Keys** | ✅ List, Create, Delete | ✅ List, Create, Delete |
+| **Type Safety** | ✅ Full TypeScript types | ❌ Dynamic typing |
+| **Auto-completion** | ✅ IDE support | ✅ IDE support |
+| **Retry Logic** | ✅ Built-in with backoff | ✅ Built-in with backoff |
+| **Rate Limiting** | ✅ Configurable strategies | ✅ Configurable strategies |
 
 ## Examples
 
@@ -445,6 +463,164 @@ for (let i = 0; i < payloads.length; i += batchSize) {
   const results = await Promise.all(promises);
   console.log(`Batch completed: ${results.length} evaluations`);
 }
+```
+
+## 📚 API Resources
+
+The TypeScript SDK provides access to all Root Signals API resources:
+
+### Core Evaluation
+- **`client.evaluators`** - Execute and manage LLM evaluators
+  - `list()` - List available evaluators
+  - `get(id)` - Get evaluator details
+  - `execute(id, payload)` - Run evaluation
+  - `executeByName(name, payload)` - Run by name
+  - `duplicate(id)` - Copy evaluator
+
+- **`client.judges`** - Composite evaluation with multiple evaluators
+  - `list()` - List available judges
+  - `create(data)` - Create new judge
+  - `get(id)` - Get judge details
+  - `execute(id, payload)` - Run judge evaluation
+  - `generate(intent)` - AI-generated judge
+  - `refine(id, payload)` - Improve judge with feedback
+  - `duplicate(id)` - Copy judge
+
+### Configuration & Data
+- **`client.models`** - Manage LLM model configurations
+  - `list()` - List available models
+  - `create(data)` - Add custom model
+  - `get(id)` - Get model details
+  - `update(id, data)` - Update configuration
+  - `delete(id)` - Remove model
+
+- **`client.objectives`** - Define evaluation objectives
+  - `list()` - List objectives
+  - `create(data)` - Create objective
+  - `get(id)` - Get details
+  - `update(id, data)` - Update objective
+  - `delete(id)` - Remove objective
+  - `versions(id)` - Get version history
+
+- **`client.datasets`** - Manage evaluation datasets
+  - `list()` - List datasets
+  - `create(data)` - Create dataset
+  - `upload(file, metadata)` - Upload data
+  - `get(id)` - Get dataset details
+  - `delete(id)` - Remove dataset
+
+### Analytics & Organization
+- **`client.executionLogs`** - View evaluation history
+  - `list(params)` - List execution logs
+  - `get(params)` - Get specific execution
+
+- **`client.organizations`** - Organization management
+  - `getInfo()` - Organization details
+  - `getMembers()` - List members
+  - `getCostMetrics()` - Usage analytics
+  - `inviteUser(email, role)` - Invite member
+  - `updateMember(id, data)` - Update permissions
+
+- **`client.apiKeys`** - API key management
+  - `list()` - List API keys
+  - `create(data)` - Generate new key
+  - `delete(id)` - Revoke key
+
+## 🔄 Migration from Python SDK
+
+If you're migrating from the Python SDK, here are the key differences:
+
+### Client Initialization
+
+**Python:**
+```python
+from rootsignals import RootSignals
+
+client = RootSignals(api_key="your-key")
+```
+
+**TypeScript:**
+```typescript
+import { RootSignals } from '@rootsignals';
+
+const client = new RootSignals({ apiKey: "your-key" });
+```
+
+### Method Naming
+
+Most methods are identical, but note these patterns:
+
+**Python:**
+```python
+# Python uses snake_case
+result = client.evaluators.execute_by_name("Accuracy", payload)
+logs = client.execution_logs.list()
+api_keys = client.api_keys.list()
+```
+
+**TypeScript:**
+```typescript
+// TypeScript uses camelCase
+const result = await client.evaluators.executeByName("Accuracy", payload);
+const logs = await client.executionLogs.list();
+const apiKeys = await client.apiKeys.list();
+```
+
+### Async/Await
+
+All TypeScript SDK methods are async and return Promises:
+
+**Python:**
+```python
+# Synchronous by default
+result = client.evaluators.execute("eval-id", payload)
+```
+
+**TypeScript:**
+```typescript
+// Always async with await
+const result = await client.evaluators.execute("eval-id", payload);
+```
+
+### Error Handling
+
+**Python:**
+```python
+try:
+    result = client.evaluators.execute("eval-id", payload)
+except RootSignalsError as e:
+    print(f"Error: {e.status} - {e.detail}")
+```
+
+**TypeScript:**
+```typescript
+import { RootSignalsError } from '@rootsignals';
+
+try {
+    const result = await client.evaluators.execute("eval-id", payload);
+} catch (error) {
+    if (error instanceof RootSignalsError) {
+        console.error(`Error: ${error.status} - ${error.detail}`);
+    }
+}
+```
+
+### Type Safety Benefits
+
+The TypeScript SDK provides compile-time type checking:
+
+```typescript
+// TypeScript catches errors at compile time
+const result: ExecutionResult = await client.evaluators.execute("eval-id", {
+    request: "Hello",
+    response: "Hi there!",
+    // expected_output: 123  // ❌ Compile error: should be string
+    expected_output: "Hello back!"  // ✅ Correct
+});
+
+// Auto-completion for response properties
+console.log(result.score);        // ✅ IDE knows this exists
+console.log(result.invalidProp);  // ❌ Compile error: property doesn't exist
 ```
 
 ## Contributing

@@ -4,10 +4,20 @@ This directory contains practical examples for the Root Signals TypeScript SDK.
 
 ## Available Examples
 
-### Basic Examples
-- [**basic-evaluation.ts**](./basic-evaluation.ts) - Simple evaluator execution and basic API usage
+### 🎯 Basic Examples
+- [**basic-evaluation.ts**](./basic-evaluation.ts) - Fundamental evaluator usage with comprehensive error handling
 - [**custom-evaluator.ts**](./custom-evaluator.ts) - Creating and using custom evaluators
-- [**batch-evaluation.ts**](./batch-evaluation.ts) - Efficient batch processing of multiple evaluations
+- [**batch-evaluation.ts**](./batch-evaluation.ts) - Efficient batch processing with performance optimization
+
+### 🔧 Advanced Examples  
+- [**advanced-judges.ts**](./advanced-judges.ts) - AI-generated judges, custom judge creation, and refinement
+- [**real-world-integration.ts**](./real-world-integration.ts) - Production-ready integration patterns and A/B testing
+- [**error-handling-patterns.ts**](./error-handling-patterns.ts) - Comprehensive error handling and resilience patterns
+
+### 🚀 Specialized Examples
+- [**simple-judge.ts**](./simple-judge.ts) - Basic judge creation and execution
+- [**create-judge.ts**](./create-judge.ts) - Detailed judge creation with evaluator references
+- [**execution-logs.ts**](./execution-logs.ts) - Working with evaluation history and analytics
 
 ## Running Examples
 
@@ -47,24 +57,38 @@ Copy and adapt the examples for your specific use cases.
 
 ### 🎯 Basic Evaluation
 Learn the fundamentals of using Root Signals evaluators:
-- Connecting to the API
-- Listing available evaluators
-- Executing simple evaluations
-- Handling responses and errors
+- Connecting to the API with proper configuration
+- Listing and exploring available evaluators
+- Executing evaluations with comprehensive error handling
+- Understanding response formats and scoring
 
-### 🔧 Custom Evaluators
-Create domain-specific evaluation logic:
-- Defining custom evaluation criteria
-- Creating reusable evaluators
-- Managing evaluator lifecycle
-- Testing with various inputs
+### 🔧 Advanced Judges & Custom Logic
+Master sophisticated evaluation workflows:
+- AI-generated judges for complex scenarios
+- Custom judge creation with multiple evaluators
+- Judge refinement and iterative improvement
+- Multi-dimensional evaluation strategies
 
-### 📊 Batch Processing
-Efficiently process multiple evaluations:
-- Sequential vs parallel processing
-- Rate limiting and retry logic
-- Performance optimization
-- Progress monitoring
+### 📊 Production Integration
+Real-world usage patterns for production systems:
+- Comprehensive monitoring and analytics
+- A/B testing evaluation workflows
+- Performance optimization and benchmarking
+- Integration with logging and alerting systems
+
+### 🛡️ Error Handling & Resilience
+Robust error handling for production environments:
+- Circuit breaker patterns for API protection
+- Retry strategies with exponential backoff
+- Graceful degradation and fallback mechanisms
+- Partial failure handling in batch operations
+
+### 📈 Performance & Scalability
+Optimize for high-throughput scenarios:
+- Efficient batch processing strategies
+- Rate limiting and concurrency control
+- Memory-efficient data handling
+- Performance monitoring and optimization
 
 ## Best Practices
 
