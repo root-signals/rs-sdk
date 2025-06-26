@@ -1,6 +1,6 @@
 /**
  * Error Handling Patterns Example
- * 
+ *
  * This example demonstrates comprehensive error handling strategies:
  * - Different types of API errors
  * - Retry strategies and backoff patterns
@@ -28,13 +28,13 @@ class RobustEvaluationClient {
   };
 
   constructor(apiKey: string) {
-    this.client = new RootSignals({ 
+    this.client = new RootSignals({
       apiKey,
       timeout: 15000,
       retry: {
         maxRetries: 2, // Lower retries as we'll implement our own logic
-        baseDelay: 500
-      }
+        baseDelay: 500,
+      },
     });
 
     // Circuit breaker state
@@ -43,7 +43,7 @@ class RobustEvaluationClient {
       failureCount: 0,
       threshold: 5,
       resetTimeout: 60000, // 1 minute
-      lastFailureTime: 0
+      lastFailureTime: 0,
     };
   }
 
@@ -53,11 +53,11 @@ class RobustEvaluationClient {
   async safeEvaluate(
     evaluatorName: string,
     payload: any,
-    options: { 
+    options: {
       fallbackResponse?: any;
       enableCircuitBreaker?: boolean;
       customRetry?: RetryOptions;
-    } = {}
+    } = {},
   ): Promise<{
     success: boolean;
     result?: any;
@@ -75,7 +75,7 @@ class RobustEvaluationClient {
       maxRetries: 3,
       baseDelay: 1000,
       maxDelay: 10000,
-      backoffMultiplier: 2
+      backoffMultiplier: 2,
     };
 
     let lastError: Error | null = null;
@@ -83,48 +83,49 @@ class RobustEvaluationClient {
 
     for (let attempt = 0; attempt <= retryOptions.maxRetries; attempt++) {
       try {
-        console.log(`🔄 Attempt ${attempt + 1}/${retryOptions.maxRetries + 1} for ${evaluatorName}`);
-        
+        console.log(
+          `🔄 Attempt ${attempt + 1}/${retryOptions.maxRetries + 1} for ${evaluatorName}`,
+        );
+
         const result = await this.client.evaluators.executeByName(evaluatorName, payload);
-        
+
         // Success - reset circuit breaker
         this.circuitBreaker.failureCount = 0;
-        
+
         console.log(`✅ Success on attempt ${attempt + 1}`);
         return {
           success: true,
           result,
-          retriesUsed: attempt
+          retriesUsed: attempt,
         };
-
       } catch (error) {
         lastError = error instanceof Error ? error : new Error(String(error));
         retriesUsed = attempt;
-        
+
         console.log(`❌ Attempt ${attempt + 1} failed: ${lastError.message}`);
-        
+
         // Handle different error types
         if (error instanceof RootSignalsError) {
           const shouldRetry = this.shouldRetryError(error);
-          
+
           if (!shouldRetry) {
             console.log(`🚫 Non-retryable error (${error.status}), stopping retries`);
             break;
           }
-          
+
           // Update circuit breaker on API errors
           if (options.enableCircuitBreaker) {
             this.updateCircuitBreaker(true);
           }
         }
-        
+
         // Calculate delay for next attempt
         if (attempt < retryOptions.maxRetries) {
           const delay = Math.min(
             retryOptions.baseDelay * Math.pow(retryOptions.backoffMultiplier, attempt),
-            retryOptions.maxDelay
+            retryOptions.maxDelay,
           );
-          
+
           console.log(`⏳ Waiting ${delay}ms before retry...`);
           await this.delay(delay);
         }
@@ -133,7 +134,7 @@ class RobustEvaluationClient {
 
     // All attempts failed
     console.log(`💥 All ${retryOptions.maxRetries + 1} attempts failed`);
-    
+
     if (options.enableCircuitBreaker) {
       this.updateCircuitBreaker(true);
     }
@@ -147,7 +148,7 @@ class RobustEvaluationClient {
     return {
       success: false,
       error: lastError?.message || 'Unknown error',
-      retriesUsed
+      retriesUsed,
     };
   }
 
@@ -162,39 +163,45 @@ class RobustEvaluationClient {
     const invalidResult = await this.safeEvaluate(
       'NonExistentEvaluator',
       { request: 'test', response: 'test' },
-      { fallbackResponse: { score: 0.5, justification: 'Fallback used due to error' } }
+      { fallbackResponse: { score: 0.5, justification: 'Fallback used due to error' } },
     );
-    console.log(`   Result: ${invalidResult.success ? 'Success' : 'Failed'}, Fallback used: ${invalidResult.fallbackUsed}\n`);
+    console.log(
+      `   Result: ${invalidResult.success ? 'Success' : 'Failed'}, Fallback used: ${invalidResult.fallbackUsed}\n`,
+    );
 
     // 2. Invalid payload
     console.log('2️⃣ Testing invalid payload:');
     const invalidPayloadResult = await this.safeEvaluate(
       'Helpfulness',
       { invalid_field: 'this will cause an error' },
-      { fallbackResponse: { score: 0.0, justification: 'Invalid request format' } }
+      { fallbackResponse: { score: 0.0, justification: 'Invalid request format' } },
     );
-    console.log(`   Result: ${invalidPayloadResult.success ? 'Success' : 'Failed'}, Fallback used: ${invalidPayloadResult.fallbackUsed}\n`);
+    console.log(
+      `   Result: ${invalidPayloadResult.success ? 'Success' : 'Failed'}, Fallback used: ${invalidPayloadResult.fallbackUsed}\n`,
+    );
 
     // 3. Successful evaluation for comparison
     console.log('3️⃣ Testing valid evaluation:');
-    const validResult = await this.safeEvaluate(
-      'Helpfulness',
-      { request: 'How do I reset my password?', response: 'Click the forgot password link.' }
+    const validResult = await this.safeEvaluate('Helpfulness', {
+      request: 'How do I reset my password?',
+      response: 'Click the forgot password link.',
+    });
+    console.log(
+      `   Result: ${validResult.success ? 'Success' : 'Failed'}, Score: ${validResult.result?.score?.toFixed(3) || 'N/A'}\n`,
     );
-    console.log(`   Result: ${validResult.success ? 'Success' : 'Failed'}, Score: ${validResult.result?.score?.toFixed(3) || 'N/A'}\n`);
 
     // 4. Circuit breaker demonstration
     console.log('4️⃣ Testing circuit breaker pattern:');
     console.log('   Simulating multiple failures to trigger circuit breaker...');
-    
+
     for (let i = 0; i < 3; i++) {
-      const circuitResult = await this.safeEvaluate(
+      await this.safeEvaluate(
         'NonExistentEvaluator',
         { request: 'test', response: 'test' },
-        { 
+        {
           enableCircuitBreaker: true,
-          fallbackResponse: { score: 0.3, justification: 'Circuit breaker fallback' }
-        }
+          fallbackResponse: { score: 0.3, justification: 'Circuit breaker fallback' },
+        },
       );
       console.log(`   Failure ${i + 1}: Circuit breaker open = ${this.circuitBreaker.isOpen}`);
     }
@@ -206,40 +213,60 @@ class RobustEvaluationClient {
    */
   async batchEvaluateWithErrorHandling(
     evaluatorName: string,
-    payloads: Array<{ id: string; request: string; response: string }>
+    payloads: Array<{ id: string; request: string; response: string }>,
   ): Promise<{
     successful: number;
     failed: number;
     results: Array<{ id: string; success: boolean; result?: any; error?: string }>;
   }> {
     console.log(`📦 Batch evaluating ${payloads.length} items with error handling...`);
-    
-    const results = [];
+
+    const results: Array<{
+      id: string;
+      success: boolean;
+      result?: any;
+      error?: string;
+    }> = [];
     let successful = 0;
     let failed = 0;
 
     for (const payload of payloads) {
       console.log(`🔍 Processing item ${payload.id}...`);
-      
+
       const result = await this.safeEvaluate(
         evaluatorName,
         { request: payload.request, response: payload.response },
-        { 
-          fallbackResponse: { score: 0.5, justification: 'Default score due to evaluation failure' },
-          enableCircuitBreaker: true
-        }
+        {
+          fallbackResponse: {
+            score: 0.5,
+            justification: 'Default score due to evaluation failure',
+          },
+          enableCircuitBreaker: true,
+        },
       );
 
-      results.push({
+      const resultEntry: {
+        id: string;
+        success: boolean;
+        result?: any;
+        error?: string;
+      } = {
         id: payload.id,
         success: result.success,
         result: result.result,
-        error: result.error
-      });
+      };
+
+      if (result.error) {
+        resultEntry.error = result.error;
+      }
+
+      results.push(resultEntry);
 
       if (result.success) {
         successful++;
-        console.log(`   ✅ ${payload.id}: Success (Score: ${result.result?.score?.toFixed(3) || 'N/A'})`);
+        console.log(
+          `   ✅ ${payload.id}: Success (Score: ${result.result?.score?.toFixed(3) || 'N/A'})`,
+        );
       } else {
         failed++;
         console.log(`   ❌ ${payload.id}: Failed (${result.error})`);
@@ -247,7 +274,7 @@ class RobustEvaluationClient {
     }
 
     console.log(`📊 Batch completed: ${successful} successful, ${failed} failed\n`);
-    
+
     return { successful, failed, results };
   }
 
@@ -256,12 +283,12 @@ class RobustEvaluationClient {
     if (error.status >= 400 && error.status < 500) {
       return error.status === 429; // Rate limit - retry with backoff
     }
-    
+
     // Retry server errors (5xx)
     if (error.status >= 500) {
       return true;
     }
-    
+
     // Don't retry other status codes
     return false;
   }
@@ -270,7 +297,7 @@ class RobustEvaluationClient {
     if (!this.circuitBreaker.isOpen) {
       return false;
     }
-    
+
     // Check if enough time has passed to try resetting
     const timeSinceLastFailure = Date.now() - this.circuitBreaker.lastFailureTime;
     if (timeSinceLastFailure >= this.circuitBreaker.resetTimeout) {
@@ -279,7 +306,7 @@ class RobustEvaluationClient {
       this.circuitBreaker.failureCount = 0;
       return false;
     }
-    
+
     return true;
   }
 
@@ -287,7 +314,7 @@ class RobustEvaluationClient {
     if (failure) {
       this.circuitBreaker.failureCount++;
       this.circuitBreaker.lastFailureTime = Date.now();
-      
+
       if (this.circuitBreaker.failureCount >= this.circuitBreaker.threshold) {
         console.log(`⚡ Circuit breaker opened after ${this.circuitBreaker.failureCount} failures`);
         this.circuitBreaker.isOpen = true;
@@ -306,18 +333,18 @@ class RobustEvaluationClient {
       return {
         success: true,
         result: fallbackResponse,
-        fallbackUsed: true
+        fallbackUsed: true,
       };
     }
-    
+
     return {
       success: false,
-      fallbackUsed: false
+      fallbackUsed: false,
     };
   }
 
   private delay(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   // Public method to check circuit breaker status
@@ -325,7 +352,7 @@ class RobustEvaluationClient {
     return {
       isOpen: this.circuitBreaker.isOpen,
       failureCount: this.circuitBreaker.failureCount,
-      threshold: this.circuitBreaker.threshold
+      threshold: this.circuitBreaker.threshold,
     };
   }
 }
@@ -333,7 +360,7 @@ class RobustEvaluationClient {
 async function main() {
   try {
     console.log('🚀 Starting error handling patterns example...\n');
-    
+
     const robustClient = new RobustEvaluationClient(process.env.ROOTSIGNALS_API_KEY!);
 
     // Demonstrate error scenarios
@@ -343,7 +370,7 @@ async function main() {
     const batchPayloads = [
       { id: 'item1', request: 'Valid request', response: 'Valid response' },
       { id: 'item2', request: 'Another valid request', response: 'Another valid response' },
-      { id: 'item3', request: 'Valid request', response: 'Valid response again' }
+      { id: 'item3', request: 'Valid request', response: 'Valid response again' },
     ];
 
     await robustClient.batchEvaluateWithErrorHandling('Helpfulness', batchPayloads);
@@ -355,7 +382,6 @@ async function main() {
     console.log(`   Failure Count: ${cbStatus.failureCount}/${cbStatus.threshold}`);
 
     console.log('\n✅ Error handling patterns example completed successfully!');
-
   } catch (error) {
     console.error('❌ Critical error in example:', error);
     process.exit(1);

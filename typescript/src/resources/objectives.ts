@@ -1,5 +1,5 @@
 import type { paths, components } from '../generated/types.js';
-import { PaginatedResponse, ListParams, RootSignalsError } from '../types/common.js';
+import { PaginatedResponse, ListParams, RootSignalsError, ApiError } from '../types/common.js';
 
 type Client = ReturnType<typeof import('openapi-fetch').default<paths>>;
 
@@ -36,24 +36,22 @@ export interface ObjectiveListParams extends ListParams {
 }
 
 export class ObjectivesResource {
-  constructor(
-    private _client: Client
-  ) {}
+  constructor(private _client: Client) {}
 
   /**
    * List all objectives
    */
   async list(params: ObjectiveListParams = {}): Promise<PaginatedResponse<ObjectiveList>> {
     const { data, error } = await this._client.GET('/v1/objectives/', {
-      params: { query: params }
+      params: { query: params },
     });
 
     if (error) {
       throw new RootSignalsError(
-        (error as any)?.status ?? 500,
+        (error as ApiError)?.status ?? 500,
         'LIST_OBJECTIVES_FAILED',
         error,
-        'Failed to list objectives'
+        'Failed to list objectives',
       );
     }
 
@@ -61,7 +59,6 @@ export class ObjectivesResource {
       results: data.results,
       next: data.next ?? undefined,
       previous: data.previous ?? undefined,
-      count: (data as any).count ?? data.results.length
     };
   }
 
@@ -70,15 +67,15 @@ export class ObjectivesResource {
    */
   async create(data: CreateObjectiveData): Promise<{ id: string }> {
     const { data: responseData, error } = await this._client.POST('/v1/objectives/', {
-      body: data
+      body: data,
     });
 
     if (error) {
       throw new RootSignalsError(
-        (error as any)?.status ?? 500,
+        (error as ApiError)?.status ?? 500,
         'CREATE_OBJECTIVE_FAILED',
         error,
-        'Failed to create objective'
+        'Failed to create objective',
       );
     }
 
@@ -90,15 +87,15 @@ export class ObjectivesResource {
    */
   async get(id: string): Promise<ObjectiveDetail> {
     const { data, error } = await this._client.GET('/v1/objectives/{id}/', {
-      params: { path: { id } }
+      params: { path: { id } },
     });
 
     if (error) {
       throw new RootSignalsError(
-        (error as any)?.status ?? 500,
+        (error as ApiError)?.status ?? 500,
         'GET_OBJECTIVE_FAILED',
         error,
-        `Failed to get objective ${id}`
+        `Failed to get objective ${id}`,
       );
     }
 
@@ -111,15 +108,15 @@ export class ObjectivesResource {
   async update(id: string, data: UpdateObjectiveData): Promise<ObjectiveDetail> {
     const { data: responseData, error } = await this._client.PUT('/v1/objectives/{id}/', {
       params: { path: { id } },
-      body: data
+      body: data,
     });
 
     if (error) {
       throw new RootSignalsError(
-        (error as any)?.status ?? 500,
+        (error as ApiError)?.status ?? 500,
         'UPDATE_OBJECTIVE_FAILED',
         error,
-        `Failed to update objective ${id}`
+        `Failed to update objective ${id}`,
       );
     }
 
@@ -131,15 +128,15 @@ export class ObjectivesResource {
    */
   async delete(id: string): Promise<void> {
     const { error } = await this._client.DELETE('/v1/objectives/{id}/', {
-      params: { path: { id } }
+      params: { path: { id } },
     });
 
     if (error) {
       throw new RootSignalsError(
-        (error as any)?.status ?? 500,
+        (error as ApiError)?.status ?? 500,
         'DELETE_OBJECTIVE_FAILED',
         error,
-        `Failed to delete objective ${id}`
+        `Failed to delete objective ${id}`,
       );
     }
   }
@@ -149,15 +146,15 @@ export class ObjectivesResource {
    */
   async versions(id: string): Promise<PaginatedResponse<ObjectiveDetail>> {
     const { data, error } = await this._client.GET('/v1/objectives/versions/{id}/', {
-      params: { path: { id } }
+      params: { path: { id } },
     });
 
     if (error) {
       throw new RootSignalsError(
-        (error as any)?.status ?? 500,
+        (error as ApiError)?.status ?? 500,
         'GET_OBJECTIVE_VERSIONS_FAILED',
         error,
-        `Failed to get objective versions for ${id}`
+        `Failed to get objective versions for ${id}`,
       );
     }
 
@@ -165,7 +162,6 @@ export class ObjectivesResource {
       results: data.results,
       next: data.next ?? undefined,
       previous: data.previous ?? undefined,
-      count: data.results.length
     };
   }
 
@@ -175,15 +171,15 @@ export class ObjectivesResource {
   async patch(id: string, data: Partial<UpdateObjectiveData>): Promise<ObjectiveDetail> {
     const { data: responseData, error } = await this._client.PATCH('/v1/objectives/{id}/', {
       params: { path: { id } },
-      body: data
+      body: data,
     });
 
     if (error) {
       throw new RootSignalsError(
-        (error as any)?.status ?? 500,
+        (error as ApiError)?.status ?? 500,
         'PATCH_OBJECTIVE_FAILED',
         error,
-        `Failed to patch objective ${id}`
+        `Failed to patch objective ${id}`,
       );
     }
 

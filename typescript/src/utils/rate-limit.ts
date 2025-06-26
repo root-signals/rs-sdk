@@ -21,7 +21,7 @@ export const DEFAULT_RATE_LIMIT_CONFIG: RateLimitConfig = {
   maxRequests: 100,
   windowMs: 60000, // 1 minute
   strategy: 'queue',
-  maxQueueSize: 50
+  maxQueueSize: 50,
 };
 
 /**
@@ -62,26 +62,26 @@ export class RateLimiter {
   private async waitForSlot(): Promise<void> {
     return new Promise((resolve, reject) => {
       const now = Date.now();
-      
+
       // Clean old requests outside the window
       this.cleanOldRequests(now);
-      
+
       // Check if we can proceed immediately
       if (this.requestTimes.length < this.config.maxRequests) {
         this.requestTimes.push(now);
         resolve();
         return;
       }
-      
+
       // Rate limit exceeded - handle according to strategy
       const remainingTime = this.calculateRemainingTime(now);
       this.config.onRateLimitExceeded?.(remainingTime);
-      
+
       switch (this.config.strategy) {
         case 'throw':
           reject(new RateLimitError(remainingTime));
           break;
-          
+
         case 'queue':
           if (this.queue.length >= (this.config.maxQueueSize ?? 50)) {
             reject(new RateLimitError(remainingTime, 'Queue is full'));
@@ -90,7 +90,7 @@ export class RateLimiter {
             this.processQueue();
           }
           break;
-          
+
         case 'drop':
           reject(new RateLimitError(remainingTime, 'Request dropped due to rate limit'));
           break;
@@ -105,25 +105,25 @@ export class RateLimiter {
     if (this.isProcessingQueue || this.queue.length === 0) {
       return;
     }
-    
+
     this.isProcessingQueue = true;
-    
+
     const processNext = (): void => {
       const now = Date.now();
       this.cleanOldRequests(now);
-      
+
       if (this.queue.length === 0) {
         this.isProcessingQueue = false;
         return;
       }
-      
+
       if (this.requestTimes.length < this.config.maxRequests) {
         const request = this.queue.shift();
         if (request) {
           this.requestTimes.push(now);
           request.resolve();
         }
-        
+
         // Process next request immediately if possible
         if (this.queue.length > 0) {
           if (typeof setImmediate !== 'undefined') {
@@ -148,7 +148,7 @@ export class RateLimiter {
         }
       }
     };
-    
+
     processNext();
   }
 
@@ -157,7 +157,7 @@ export class RateLimiter {
    */
   private cleanOldRequests(now: number): void {
     const cutoff = now - this.config.windowMs;
-    this.requestTimes = this.requestTimes.filter(time => time > cutoff);
+    this.requestTimes = this.requestTimes.filter((time) => time > cutoff);
   }
 
   /**
@@ -168,7 +168,7 @@ export class RateLimiter {
       return 0;
     }
     const oldestRequest = Math.min(...this.requestTimes);
-    return Math.max(0, (oldestRequest + this.config.windowMs) - now);
+    return Math.max(0, oldestRequest + this.config.windowMs - now);
   }
 
   /**
@@ -181,12 +181,12 @@ export class RateLimiter {
   } {
     const now = Date.now();
     this.cleanOldRequests(now);
-    
+
     return {
       requestsRemaining: Math.max(0, this.config.maxRequests - this.requestTimes.length),
-      resetTime: this.requestTimes.length > 0 ? 
-        Math.min(...this.requestTimes) + this.config.windowMs : now,
-      queueSize: this.queue.length
+      resetTime:
+        this.requestTimes.length > 0 ? Math.min(...this.requestTimes) + this.config.windowMs : now,
+      queueSize: this.queue.length,
     };
   }
 
@@ -202,9 +202,7 @@ export class RateLimiter {
    */
   reset(): void {
     this.requestTimes = [];
-    this.queue.forEach(request => 
-      request.reject(new RateLimitError(0, 'Rate limiter reset'))
-    );
+    this.queue.forEach((request) => request.reject(new RateLimitError(0, 'Rate limiter reset')));
     this.queue = [];
     this.isProcessingQueue = false;
   }
@@ -216,7 +214,7 @@ export class RateLimiter {
 export class RateLimitError extends Error {
   constructor(
     public readonly retryAfter: number,
-    message: string = 'Rate limit exceeded'
+    message: string = 'Rate limit exceeded',
   ) {
     super(`${message}. Retry after ${retryAfter}ms`);
     this.name = 'RateLimitError';

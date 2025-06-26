@@ -2,7 +2,7 @@
  * @file Integration tests for the main RootSignals client
  */
 
-import { describe, it, expect, beforeAll, beforeEach, vi, test } from 'vitest';
+import { describe, it, expect, beforeAll, vi } from 'vitest';
 import { RootSignals, RootSignalsError } from '../../src/index';
 
 describe.skipIf(!process.env.ROOTSIGNALS_API_KEY)('RootSignals Client Integration', () => {
@@ -13,22 +13,20 @@ describe.skipIf(!process.env.ROOTSIGNALS_API_KEY)('RootSignals Client Integratio
     if (!apiKey) {
       return;
     }
-    
-    client = new RootSignals({ 
+
+    client = new RootSignals({
       apiKey,
       retry: {
         maxRetries: 2,
-        baseDelay: 1000
+        baseDelay: 1000,
       },
       rateLimit: {
         maxRequests: 50,
         windowMs: 60000,
-        strategy: 'queue'
-      }
+        strategy: 'queue',
+      },
     });
   });
-
-
 
   describe('enhanced utilities', () => {
     it('should provide access to retry manager', () => {
@@ -58,7 +56,7 @@ describe.skipIf(!process.env.ROOTSIGNALS_API_KEY)('RootSignals Client Integratio
 
     it('should provide withRateLimit method', async () => {
       const mockFn = vi.fn().mockResolvedValue('success');
-      
+
       const result = await client.withRateLimit(mockFn);
       expect(result).toBe('success');
       expect(mockFn).toHaveBeenCalledTimes(1);
@@ -79,7 +77,6 @@ describe.skipIf(!process.env.ROOTSIGNALS_API_KEY)('RootSignals Client Integratio
       expect(attemptCount).toBe(2);
     });
   });
-
 
   describe('resource access', () => {
     it('should provide access to all resources', () => {
@@ -102,13 +99,11 @@ describe.skipIf(!process.env.ROOTSIGNALS_API_KEY)('RootSignals Client Integratio
 
     it('should handle rate limiting gracefully', async () => {
       // Test that multiple concurrent requests are handled properly
-      const promises = Array.from({ length: 5 }, () => 
-        client.evaluators.list({ page_size: 1 })
-      );
-      
+      const promises = Array.from({ length: 5 }, () => client.evaluators.list({ page_size: 1 }));
+
       const results = await Promise.all(promises);
       expect(results).toHaveLength(5);
-      results.forEach(result => {
+      results.forEach((result) => {
         expect(result.results).toBeDefined();
       });
     }, 20000);
@@ -125,7 +120,7 @@ describe.skipIf(!process.env.ROOTSIGNALS_API_KEY)('RootSignals Client Integratio
   describe('error handling', () => {
     it('should handle authentication errors', async () => {
       const badClient = new RootSignals({ apiKey: 'invalid-key' });
-      
+
       await expect(badClient.evaluators.list()).rejects.toThrow(RootSignalsError);
     }, 10000);
 
@@ -137,8 +132,8 @@ describe.skipIf(!process.env.ROOTSIGNALS_API_KEY)('RootSignals Client Integratio
         retry: {
           maxRetries: 1,
           baseDelay: 100,
-          retryCondition: () => true
-        }
+          retryCondition: () => true,
+        },
       });
 
       await expect(retryClient.evaluators.list()).rejects.toThrow();
@@ -149,14 +144,14 @@ describe.skipIf(!process.env.ROOTSIGNALS_API_KEY)('RootSignals Client Integratio
     it('should respect custom timeout settings', async () => {
       const timeoutClient = new RootSignals({
         apiKey: process.env.ROOTSIGNALS_API_KEY || 'dummy-key',
-        timeout: 1 // Very short timeout
+        timeout: 1, // Very short timeout
       });
 
       // This might timeout or succeed depending on network conditions
       // We're mainly testing that the timeout is respected
       try {
         await timeoutClient.evaluators.list();
-      } catch (error) {
+      } catch {
         // Timeout errors are expected and acceptable
       }
     }, 5000);
@@ -173,9 +168,9 @@ describe('Client Configuration Edge Cases', () => {
   it('should handle custom base URL', () => {
     const client = new RootSignals({
       apiKey: 'test-key',
-      baseUrl: 'https://custom-api.example.com'
+      baseUrl: 'https://custom-api.example.com',
     });
-    
+
     expect(client).toBeDefined();
     // We can't test actual API calls with a fake URL in integration tests
   });
@@ -183,7 +178,7 @@ describe('Client Configuration Edge Cases', () => {
   it('should provide access to underlying OpenAPI client', () => {
     const client = new RootSignals({ apiKey: 'test-key' });
     const openApiClient = client.getClient();
-    
+
     expect(openApiClient).toBeDefined();
     expect(typeof openApiClient.GET).toBe('function');
     expect(typeof openApiClient.POST).toBe('function');
@@ -198,39 +193,38 @@ describe.skipIf(!process.env.ROOTSIGNALS_API_KEY)('Performance and Reliability',
     if (!apiKey) {
       return;
     }
-    
+
     client = new RootSignals({
       apiKey,
       retry: {
         maxRetries: 3,
-        baseDelay: 500
+        baseDelay: 500,
       },
       rateLimit: {
         maxRequests: 100,
         windowMs: 60000,
-        strategy: 'queue'
-      }
+        strategy: 'queue',
+      },
     });
   });
 
-
   it('should handle concurrent requests efficiently', async () => {
     const startTime = Date.now();
-    
+
     // Make 10 concurrent requests
-    const promises = Array.from({ length: 10 }, (_, i) => 
-      client.evaluators.list({ page_size: 1, search: `test-${i}` })
+    const promises = Array.from({ length: 10 }, (_, i) =>
+      client.evaluators.list({ page_size: 1, search: `test-${i}` }),
     );
-    
+
     const results = await Promise.all(promises);
     const endTime = Date.now();
     const duration = endTime - startTime;
-    
+
     expect(results).toHaveLength(10);
     expect(duration).toBeLessThan(30000); // Should complete within 30 seconds
-    
+
     // All requests should succeed (even if returning empty results)
-    results.forEach(result => {
+    results.forEach((result) => {
       expect(result).toHaveProperty('results');
       expect(Array.isArray(result.results)).toBe(true);
     });
@@ -238,13 +232,13 @@ describe.skipIf(!process.env.ROOTSIGNALS_API_KEY)('Performance and Reliability',
 
   it('should maintain rate limiting across multiple operations', async () => {
     const status1 = client.rateLimiter.getStatus();
-    
+
     // Make a few requests
     await client.evaluators.list({ page_size: 1 });
     await client.evaluators.list({ page_size: 1 });
-    
+
     const status2 = client.rateLimiter.getStatus();
-    
+
     // Requests remaining should have decreased
     expect(status2.requestsRemaining).toBeLessThan(status1.requestsRemaining);
   }, 10000);

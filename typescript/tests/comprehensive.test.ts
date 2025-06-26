@@ -1,13 +1,13 @@
 /**
  * Comprehensive Integration Tests
- * 
+ *
  * These tests run against the actual Root Signals API and require a valid API key.
  * They are automatically skipped in CI/CD environments where no API key is available.
- * 
+ *
  * To run these tests:
  * 1. Set the ROOTSIGNALS_API_KEY environment variable
  * 2. Run: npm test -- tests/comprehensive.test.ts
- * 
+ *
  * Note: These tests may create, modify, and delete resources in your account.
  */
 
@@ -21,10 +21,7 @@ const DEVELOPMENT_KEY = 'B1---------------------------------------------c5';
 
 // Only run comprehensive tests if API key is available and valid
 const runComprehensiveTests = Boolean(
-  API_KEY && 
-  API_KEY !== 'your-api-key-here' && 
-  API_KEY !== 'test-api-key-123' &&
-  API_KEY !== ''
+  API_KEY && API_KEY !== 'your-api-key-here' && API_KEY !== 'test-api-key-123' && API_KEY !== '',
 );
 
 // Use development key only if explicitly set
@@ -40,9 +37,11 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
 
   beforeAll(() => {
     if (!EFFECTIVE_API_KEY) {
-      throw new Error('ROOTSIGNALS_API_KEY environment variable is required for comprehensive tests');
+      throw new Error(
+        'ROOTSIGNALS_API_KEY environment variable is required for comprehensive tests',
+      );
     }
-    
+
     client = new RootSignals({
       apiKey: EFFECTIVE_API_KEY,
     });
@@ -59,16 +58,15 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
   });
 
   describe('Phase 1 - Evaluators Resource', () => {
-    let testEvaluatorId: string;
+    let testEvaluatorId: string | undefined;
 
     test('should list evaluators', async () => {
       const result = await client.evaluators.list({ page_size: 5 });
       expect(result.results).toBeDefined();
       expect(Array.isArray(result.results)).toBe(true);
-      expect(result.count).toBeGreaterThanOrEqual(0);
-      
-      if (result.results.length > 0) {
-        testEvaluatorId = result.results[0].id;
+
+      if (result.results && result.results.length > 0) {
+        testEvaluatorId = result.results[0]?.id;
         expect(testEvaluatorId).toBeDefined();
         expect(typeof testEvaluatorId).toBe('string');
       }
@@ -85,18 +83,19 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
 
     test('should execute evaluator by name (if available)', async () => {
       const evaluators = await client.evaluators.list({ page_size: 10 });
-      const executableEvaluator = evaluators.results.find(e => 
-        e.name?.toLowerCase().includes('answer') || 
-        e.name?.toLowerCase().includes('relevance') ||
-        e.name?.toLowerCase().includes('quality')
+      const executableEvaluator = evaluators.results.find(
+        (e) =>
+          e.name?.toLowerCase().includes('answer') ||
+          e.name?.toLowerCase().includes('relevance') ||
+          e.name?.toLowerCase().includes('quality'),
       );
 
       if (executableEvaluator) {
         try {
           const result = await client.evaluators.executeByName(executableEvaluator.name!, {
-            request: "What is the capital of France?",
-            response: "The capital of France is Paris.",
-            expected_output: "Paris"
+            request: 'What is the capital of France?',
+            response: 'The capital of France is Paris.',
+            expected_output: 'Paris',
           });
           expect(result).toBeDefined();
           expect(result.score).toBeDefined();
@@ -122,17 +121,16 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
   });
 
   describe('Phase 1 - Judges Resource', () => {
-    let testJudgeId: string;
-    let createdJudgeId: string;
+    let testJudgeId: string | undefined;
+    let createdJudgeId: string | undefined;
 
     test('should list judges', async () => {
       const result = await client.judges.list({ page_size: 5 });
       expect(result.results).toBeDefined();
       expect(Array.isArray(result.results)).toBe(true);
-      expect(result.count).toBeGreaterThanOrEqual(0);
-      
-      if (result.results.length > 0) {
-        testJudgeId = result.results[0].id;
+
+      if (result.results && result.results.length > 0) {
+        testJudgeId = result.results[0]?.id;
         expect(testJudgeId).toBeDefined();
         expect(typeof testJudgeId).toBe('string');
       }
@@ -142,8 +140,8 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
       try {
         const judge = await client.judges.create({
           name: `Test Judge ${Date.now()}`,
-          intent: "Test judge for SDK testing purposes",
-          evaluators: []
+          intent: 'Test judge for SDK testing purposes',
+          evaluator_references: [],
         });
         expect(judge.id).toBeDefined();
         createdJudgeId = judge.id;
@@ -168,8 +166,8 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
         try {
           const updated = await client.judges.update(createdJudgeId, {
             name: `Updated Test Judge ${Date.now()}`,
-            intent: "Updated test judge for SDK testing",
-            evaluators: []
+            intent: 'Updated test judge for SDK testing',
+            evaluator_references: [],
           });
           expect(updated.id).toBe(createdJudgeId);
           expect(updated.name).toContain('Updated Test Judge');
@@ -182,17 +180,10 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
     test('should generate judge with AI', async () => {
       try {
         const generated = await client.judges.generate({
-          intent: "Evaluate if a response correctly answers a question about geography",
-          examples: [
-            {
-              input: "What is the capital of France?",
-              good_output: "The capital of France is Paris.",
-              bad_output: "France is a country in Europe."
-            }
-          ]
+          intent: 'Evaluate if a response correctly answers a question about geography',
         });
-        expect(generated.id).toBeDefined();
-        expect(typeof generated.id).toBe('string');
+        expect(generated.judge_id).toBeDefined();
+        expect(typeof generated.judge_id).toBe('string');
       } catch (error) {
         expect(error).toBeInstanceOf(Error);
       }
@@ -203,11 +194,11 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
       if (judgeId) {
         try {
           const result = await client.judges.execute(judgeId, {
-            input: "What is the capital of France?",
-            output: "The capital of France is Paris."
+            request: 'What is the capital of France?',
+            response: 'The capital of France is Paris.',
           });
           expect(result).toBeDefined();
-          expect(result.score).toBeDefined();
+          expect(result.evaluator_results.every((r) => r.score !== undefined)).toBe(true);
         } catch (error) {
           expect(error).toBeInstanceOf(Error);
         }
@@ -242,17 +233,16 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
   });
 
   describe('Phase 2 - Objectives Resource', () => {
-    let testObjectiveId: string;
-    let createdObjectiveId: string;
+    let testObjectiveId: string | undefined;
+    let createdObjectiveId: string | undefined;
 
     test('should list objectives', async () => {
       const result = await client.objectives.list({ page_size: 5 });
       expect(result.results).toBeDefined();
       expect(Array.isArray(result.results)).toBe(true);
-      expect(result.count).toBeGreaterThanOrEqual(0);
-      
-      if (result.results.length > 0) {
-        testObjectiveId = result.results[0].id;
+
+      if (result.results && result.results.length > 0) {
+        testObjectiveId = result.results[0]?.id;
         expect(testObjectiveId).toBeDefined();
         expect(typeof testObjectiveId).toBe('string');
       }
@@ -263,7 +253,7 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
         const objective = await client.objectives.create({
           intent: `Test objective created for SDK testing ${Date.now()}`,
           status: 'unlisted',
-          validators: []
+          validators: [],
         });
         expect(objective.id).toBeDefined();
         createdObjectiveId = objective.id;
@@ -289,7 +279,7 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
           const updated = await client.objectives.update(createdObjectiveId, {
             intent: `Updated test objective ${Date.now()}`,
             status: 'unlisted',
-            validators: []
+            validators: [],
           });
           expect(updated.id).toBe(createdObjectiveId);
           expect(updated.intent).toContain('Updated test objective');
@@ -317,7 +307,7 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
       if (createdObjectiveId) {
         try {
           const patched = await client.objectives.patch(createdObjectiveId, {
-            status: 'listed'
+            status: 'listed',
           });
           expect(patched.id).toBe(createdObjectiveId);
           expect(patched.status).toBe('listed');
@@ -341,17 +331,16 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
   });
 
   describe('Phase 2 - Models Resource', () => {
-    let testModelId: string;
-    let createdModelId: string;
+    let testModelId: string | undefined;
+    let createdModelId: string | undefined;
 
     test('should list models', async () => {
       const result = await client.models.list({ page_size: 5 });
       expect(result.results).toBeDefined();
       expect(Array.isArray(result.results)).toBe(true);
-      expect(result.count).toBeGreaterThanOrEqual(0);
-      
-      if (result.results.length > 0) {
-        testModelId = result.results[0].id;
+
+      if (result.results && result.results.length > 0) {
+        testModelId = result.results[0]?.id;
         expect(testModelId).toBeDefined();
         expect(typeof testModelId).toBe('string');
       }
@@ -363,7 +352,7 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
           name: `Test Model ${Date.now()}`,
           model: 'gpt-3.5-turbo',
           max_token_count: 4096,
-          max_output_token_count: 1024
+          max_output_token_count: 1024,
         });
         expect(model.id).toBeDefined();
         createdModelId = model.id;
@@ -389,7 +378,7 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
           const updated = await client.models.update(createdModelId, {
             name: `Updated Test Model ${Date.now()}`,
             model: 'gpt-3.5-turbo',
-            max_token_count: 8192
+            max_token_count: 8192,
           });
           expect(updated.id).toBe(createdModelId);
           expect(updated.name).toContain('Updated Test Model');
@@ -403,7 +392,7 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
       if (createdModelId) {
         try {
           const patched = await client.models.patch(createdModelId, {
-            max_output_token_count: 2048
+            max_output_token_count: 2048,
           });
           expect(patched.id).toBe(createdModelId);
           expect(patched.max_output_token_count).toBe(2048);
@@ -431,16 +420,17 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
       const result = await client.executionLogs.list({ page_size: 5 });
       expect(result.results).toBeDefined();
       expect(Array.isArray(result.results)).toBe(true);
-      expect(result.count).toBeGreaterThanOrEqual(0);
+
       expect(result.results.length).toBeGreaterThanOrEqual(0);
     });
 
     test('should get execution log details (if available)', async () => {
       const logs = await client.executionLogs.list({ page_size: 1 });
-      if (logs.results.length > 0) {
-        const logId = logs.results[0].id;
+      if (logs.results && logs.results.length > 0) {
+        const logId = logs.results[0]?.id;
         try {
-          const logDetails = await client.executionLogs.get(logId);
+          expect(logId).toBeDefined();
+          const logDetails = await client.executionLogs.get(logId!);
           expect(logDetails.id).toBe(logId);
           expect(typeof logDetails.id).toBe('string');
         } catch (error) {
@@ -452,9 +442,11 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
     test('should filter logs by date range', async () => {
       const endDate = new Date().toISOString();
       const startDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(); // 7 days ago
-      
+
       try {
-        const result = await client.executionLogs.getByDateRange(startDate, endDate, { page_size: 5 });
+        const result = await client.executionLogs.getByDateRange(startDate, endDate, {
+          page_size: 5,
+        });
         expect(result.results).toBeDefined();
         expect(Array.isArray(result.results)).toBe(true);
         expect(result.results.length).toBeGreaterThanOrEqual(0);
@@ -465,7 +457,9 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
 
     test('should filter logs by cost range', async () => {
       try {
-        const result = await client.executionLogs.getByCostRange(0, 1, { page_size: 5 });
+        const result = await client.executionLogs.getByCostRange(0, 1, {
+          page_size: 5,
+        });
         expect(result.results).toBeDefined();
         expect(Array.isArray(result.results)).toBe(true);
         expect(result.results.length).toBeGreaterThanOrEqual(0);
@@ -476,7 +470,9 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
 
     test('should filter logs by score range', async () => {
       try {
-        const result = await client.executionLogs.getByScoreRange(0, 1, { page_size: 5 });
+        const result = await client.executionLogs.getByScoreRange(0, 1, {
+          page_size: 5,
+        });
         expect(result.results).toBeDefined();
         expect(Array.isArray(result.results)).toBe(true);
         expect(result.results.length).toBeGreaterThanOrEqual(0);
@@ -487,10 +483,11 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
 
     test('should filter logs by evaluator (if available)', async () => {
       const evaluators = await client.evaluators.list({ page_size: 1 });
-      if (evaluators.results.length > 0) {
-        const evaluatorId = evaluators.results[0].id;
+      if (evaluators.results && evaluators.results.length > 0) {
+        const evaluatorId = evaluators.results[0]?.id;
         try {
-          const result = await client.executionLogs.getByEvaluator(evaluatorId, { page_size: 5 });
+          expect(evaluatorId).toBeDefined();
+          const result = await client.executionLogs.getByEvaluator(evaluatorId!, { page_size: 5 });
           expect(result.results).toBeDefined();
           expect(Array.isArray(result.results)).toBe(true);
           expect(result.results.length).toBeGreaterThanOrEqual(0);
@@ -517,7 +514,7 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
       expect.assertions(2);
       try {
         await client.evaluators.get('invalid-id-12345');
-        fail('Should have thrown an error');
+        assert.fail('Should have thrown an error');
       } catch (error: any) {
         expect(error.name).toBe('RootSignalsError');
         expect(error).toBeInstanceOf(Error);
@@ -528,7 +525,7 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
       expect.assertions(2);
       try {
         await client.judges.get('invalid-id-12345');
-        fail('Should have thrown an error');
+        assert.fail('Should have thrown an error');
       } catch (error: any) {
         expect(error.name).toBe('RootSignalsError');
         expect(error).toBeInstanceOf(Error);
@@ -539,7 +536,7 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
       expect.assertions(2);
       try {
         await client.objectives.get('invalid-id-12345');
-        fail('Should have thrown an error');
+        assert.fail('Should have thrown an error');
       } catch (error: any) {
         expect(error.name).toBe('RootSignalsError');
         expect(error).toBeInstanceOf(Error);
@@ -550,7 +547,7 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
       expect.assertions(2);
       try {
         await client.models.get('invalid-id-12345');
-        fail('Should have thrown an error');
+        assert.fail('Should have thrown an error');
       } catch (error: any) {
         expect(error.name).toBe('RootSignalsError');
         expect(error).toBeInstanceOf(Error);
@@ -561,7 +558,7 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
       expect.assertions(2);
       try {
         await client.executionLogs.get('invalid-id-12345');
-        fail('Should have thrown an error');
+        assert.fail('Should have thrown an error');
       } catch (error: any) {
         expect(error.name).toBe('RootSignalsError');
         expect(error).toBeInstanceOf(Error);
@@ -573,7 +570,7 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
     test('should handle pagination correctly for evaluators', async () => {
       const firstPage = await client.evaluators.list({ page_size: 2 });
       expect(firstPage.results).toBeDefined();
-      
+
       if (firstPage.next) {
         expect(typeof firstPage.next).toBe('string');
         expect(firstPage.next.length).toBeGreaterThan(0);
@@ -585,7 +582,7 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
     test('should handle pagination correctly for judges', async () => {
       const firstPage = await client.judges.list({ page_size: 2 });
       expect(firstPage.results).toBeDefined();
-      
+
       if (firstPage.next) {
         expect(typeof firstPage.next).toBe('string');
         expect(firstPage.next.length).toBeGreaterThan(0);
@@ -597,7 +594,7 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
     test('should handle pagination correctly for execution logs', async () => {
       const firstPage = await client.executionLogs.list({ page_size: 2 });
       expect(firstPage.results).toBeDefined();
-      
+
       if (firstPage.next) {
         expect(typeof firstPage.next).toBe('string');
         expect(firstPage.next.length).toBeGreaterThan(0);

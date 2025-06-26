@@ -2,25 +2,30 @@
 export { RootSignals } from './client.js';
 
 // Types
-export type { ClientConfig, PaginatedResponse, ListParams, ExecutionPayload } from './types/common.js';
+export type {
+  ClientConfig,
+  PaginatedResponse,
+  ListParams,
+  ExecutionPayload,
+} from './types/common.js';
 export { RootSignalsError } from './types/common.js';
 
 // Resources
-export type { 
-  EvaluatorListItem, 
-  EvaluatorDetail, 
+export type {
+  EvaluatorListItem,
+  EvaluatorDetail,
   ExecutionResult,
-  EvaluatorListParams 
+  EvaluatorListParams,
 } from './resources/evaluators.js';
 
-export type { 
-  Judge, 
-  JudgeDetail, 
+export type {
+  Judge,
+  JudgeDetail,
   JudgeExecutionResult,
   CreateJudgeData,
   UpdateJudgeData,
   JudgeExecutionPayload,
-  JudgeListParams
+  JudgeListParams,
 } from './resources/judges.js';
 
 export type {
@@ -28,7 +33,7 @@ export type {
   ObjectiveDetail,
   CreateObjectiveData,
   UpdateObjectiveData,
-  ObjectiveListParams
+  ObjectiveListParams,
 } from './resources/objectives.js';
 
 export type {
@@ -36,13 +41,13 @@ export type {
   ModelDetail,
   CreateModelData,
   UpdateModelData,
-  ModelListParams
+  ModelListParams,
 } from './resources/models.js';
 
 export type {
   ExecutionLogList,
   ExecutionLogDetails,
-  ExecutionLogListParams
+  ExecutionLogListParams,
 } from './resources/execution-logs.js';
 
 // Additional resources

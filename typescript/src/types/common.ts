@@ -1,5 +1,8 @@
 import { RetryConfig } from '../utils/retry.js';
 import { RateLimitConfig } from '../utils/rate-limit.js';
+import { components } from '../generated/types.js';
+
+type Functions = components['schemas']['EvaluatorExecutionFunctionsRequest'][];
 
 export interface ClientConfig {
   apiKey: string;
@@ -13,7 +16,6 @@ export interface PaginatedResponse<T> {
   results: T[];
   next?: string | undefined;
   previous?: string | undefined;
-  count: number;
 }
 
 export interface ListParams {
@@ -28,7 +30,13 @@ export interface ErrorDetails {
   title?: string;
   detail?: string;
   instance?: string;
-  [key: string]: any;
+  [key: string]: unknown;
+}
+
+export interface ApiError {
+  status: number;
+  code: string;
+  details: ErrorDetails;
 }
 
 export class RootSignalsError extends Error {
@@ -41,7 +49,7 @@ export class RootSignalsError extends Error {
     public readonly status: number,
     public readonly code: string,
     public readonly details: ErrorDetails = {},
-    message?: string
+    message?: string,
   ) {
     super(message ?? details.detail ?? details.title ?? `API Error ${status}: ${code}`);
     this.name = 'RootSignalsError';
@@ -52,9 +60,11 @@ export class RootSignalsError extends Error {
   }
 
   static isAuthenticationError(error: RootSignalsError): boolean {
-    return error.status === 401 || 
-           error.code === 'authentication_failed' || 
-           error.code === 'not_authenticated';
+    return (
+      error.status === 401 ||
+      error.code === 'authentication_failed' ||
+      error.code === 'not_authenticated'
+    );
   }
 
   static isQuotaError(error: RootSignalsError): boolean {
@@ -62,9 +72,7 @@ export class RootSignalsError extends Error {
   }
 
   static isValidationError(error: RootSignalsError): boolean {
-    return error.status === 400 || 
-           error.code === 'invalid' || 
-           error.code === 'parse_error';
+    return error.status === 400 || error.code === 'invalid' || error.code === 'parse_error';
   }
 
   static isNotFoundError(error: RootSignalsError): boolean {
@@ -80,8 +88,8 @@ export interface ExecutionPayload {
   request?: string;
   response?: string;
   contexts?: string[];
-  functions?: any[];
+  functions?: Functions;
   expected_output?: string;
   reference?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }

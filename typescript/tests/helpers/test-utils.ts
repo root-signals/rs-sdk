@@ -9,16 +9,15 @@ import { DatasetsResource } from '../../src/resources/datasets.js';
 
 // Test utilities for creating clients and mock data
 export class TestUtils {
-  
   // Create a mock Root Signals client
   static createMockClient(): RootSignals {
     const client = new RootSignals({
-      apiKey: 'test-api-key-123'
+      apiKey: 'test-api-key-123',
     });
-    
+
     // Replace the internal client with our mock
     (client as any).client = mockClient;
-    
+
     // Re-initialize resources with the mock client
     (client as any).evaluators = new EvaluatorsResource(mockClient);
     (client as any).judges = new JudgesResource(mockClient);
@@ -26,14 +25,14 @@ export class TestUtils {
     (client as any).models = new ModelsResource(mockClient);
     (client as any).executionLogs = new ExecutionLogsResource(mockClient);
     (client as any).datasets = new DatasetsResource(mockClient);
-    
+
     return client;
   }
 
   // Create a real client for integration tests
   static createRealClient(apiKey?: string): RootSignals {
     return new RootSignals({
-      apiKey: apiKey || 'test-api-key'
+      apiKey: apiKey || 'test-api-key',
     });
   }
 
@@ -43,10 +42,7 @@ export class TestUtils {
   }
 
   // Wait for a promise with timeout
-  static async waitFor<T>(
-    fn: () => Promise<T>, 
-    timeout: number = 5000
-  ): Promise<T> {
+  static async waitFor<T>(fn: () => Promise<T>, timeout: number = 5000): Promise<T> {
     return new Promise((resolve, reject) => {
       const timer = setTimeout(() => {
         reject(new Error(`Timeout after ${timeout}ms`));
@@ -66,7 +62,7 @@ export class TestUtils {
   }
 
   // Assert that a response has pagination structure
-  static assertPaginatedResponse<T>(response: any): void {
+  static assertPaginatedResponse(response: any): void {
     expect(response).toHaveProperty('results');
     expect(response).toHaveProperty('count');
     expect(Array.isArray(response.results)).toBe(true);
@@ -75,6 +71,6 @@ export class TestUtils {
 
   // Sleep utility for timing tests
   static sleep(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }

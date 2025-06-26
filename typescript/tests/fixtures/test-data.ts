@@ -1,6 +1,5 @@
 // Test data factories for consistent test data generation
 export class TestDataFactory {
-  
   static createEvaluator(overrides: Partial<any> = {}) {
     return {
       id: `eval-${Date.now()}`,
@@ -10,7 +9,7 @@ export class TestDataFactory {
       requires_functions: false,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
-      ...overrides
+      ...overrides,
     };
   }
 
@@ -22,7 +21,7 @@ export class TestDataFactory {
       evaluators: [],
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
-      ...overrides
+      ...overrides,
     };
   }
 
@@ -36,11 +35,11 @@ export class TestDataFactory {
       created_at: new Date().toISOString(),
       owner: {
         email: 'test@example.com',
-        full_name: 'Test User'
+        full_name: 'Test User',
       },
       version_id: `version-${Date.now()}`,
       test_dataset_id: null,
-      ...overrides
+      ...overrides,
     };
   }
 
@@ -52,7 +51,7 @@ export class TestDataFactory {
       max_token_count: 4096,
       max_output_token_count: 1024,
       created_at: new Date().toISOString(),
-      ...overrides
+      ...overrides,
     };
   }
 
@@ -65,7 +64,7 @@ export class TestDataFactory {
       model: 'gpt-3.5-turbo',
       execution_duration: Math.random() * 5,
       token_count: Math.floor(Math.random() * 1000),
-      ...overrides
+      ...overrides,
     };
   }
 
@@ -77,12 +76,12 @@ export class TestDataFactory {
       tags: ['test', 'sdk'],
       owner: {
         email: 'test@example.com',
-        full_name: 'Test User'
+        full_name: 'Test User',
       },
       created_at: new Date().toISOString(),
       status: 'ready',
       _meta: {},
-      ...overrides
+      ...overrides,
     };
   }
 
@@ -90,7 +89,7 @@ export class TestDataFactory {
     return {
       score: 0.85,
       justification: 'Test evaluation justification explaining the score.',
-      ...overrides
+      ...overrides,
     };
   }
 
@@ -101,10 +100,10 @@ export class TestDataFactory {
           evaluator_id: 'eval-123',
           evaluator_name: 'Test Evaluator',
           score: 0.9,
-          justification: 'Test justification'
-        }
+          justification: 'Test justification',
+        },
       ],
-      ...overrides
+      ...overrides,
     };
   }
 
@@ -114,7 +113,7 @@ export class TestDataFactory {
       next: null,
       previous: null,
       count: results.length,
-      ...overrides
+      ...overrides,
     };
   }
 
@@ -122,7 +121,7 @@ export class TestDataFactory {
     return {
       detail: 'Test error message',
       code: 'TEST_ERROR',
-      ...overrides
+      ...overrides,
     };
   }
 
@@ -130,9 +129,10 @@ export class TestDataFactory {
   static getTestExecutionInputs() {
     return {
       request: 'How do I reset my password?',
-      response: 'You can reset your password by clicking the "Forgot Password" link on the login page.',
+      response:
+        'You can reset your password by clicking the "Forgot Password" link on the login page.',
       expected_output: 'Click forgot password link',
-      contexts: ['Login page information', 'Password reset procedures']
+      contexts: ['Login page information', 'Password reset procedures'],
     };
   }
 
@@ -140,7 +140,7 @@ export class TestDataFactory {
     return {
       input: 'What is the capital of France?',
       output: 'The capital of France is Paris.',
-      context: 'Geography question about European capitals'
+      context: 'Geography question about European capitals',
     };
   }
 }

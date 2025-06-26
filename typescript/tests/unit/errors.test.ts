@@ -7,7 +7,7 @@ describe('RootSignalsError', () => {
         404,
         'RESOURCE_NOT_FOUND',
         { detail: 'Resource not found' },
-        'Custom error message'
+        'Custom error message',
       );
 
       expect(error).toBeInstanceOf(Error);
@@ -34,7 +34,7 @@ describe('RootSignalsError', () => {
         400,
         'VALIDATION_ERROR',
         { field: 'name is required' },
-        'Validation failed'
+        'Validation failed',
       );
 
       expect(error.message).toBe('Validation failed');
@@ -48,7 +48,7 @@ describe('RootSignalsError', () => {
 
     it('should preserve error stack trace', () => {
       const error = new RootSignalsError(500, 'INTERNAL_ERROR');
-      
+
       expect(error.stack).toBeDefined();
       expect(error.stack).toContain('RootSignalsError');
     });
@@ -57,14 +57,14 @@ describe('RootSignalsError', () => {
   describe('error handling patterns', () => {
     it('should handle API error responses', () => {
       const apiResponse = {
-        detail: 'Invalid evaluator ID provided'
+        detail: 'Invalid evaluator ID provided',
       };
-      
+
       const error = new RootSignalsError(
         404,
         'EVALUATOR_NOT_FOUND',
         apiResponse,
-        'Evaluator not found'
+        'Evaluator not found',
       );
 
       expect(error.status).toBe(404);
@@ -74,14 +74,14 @@ describe('RootSignalsError', () => {
     it('should handle validation errors', () => {
       const validationErrors = {
         name: ['This field is required.'],
-        email: ['Enter a valid email address.']
+        email: ['Enter a valid email address.'],
       };
-      
+
       const error = new RootSignalsError(
         400,
         'VALIDATION_ERROR',
         validationErrors,
-        'Validation failed'
+        'Validation failed',
       );
 
       expect(error.status).toBe(400);
@@ -93,7 +93,7 @@ describe('RootSignalsError', () => {
         0,
         'NETWORK_ERROR',
         { cause: 'Connection refused' },
-        'Network connection failed'
+        'Network connection failed',
       );
 
       expect(error.status).toBe(0);

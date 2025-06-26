@@ -3,199 +3,198 @@
  * Do not make direct changes to the file.
  */
 
-
 export interface paths {
-  "/beta/judges/": {
+  '/beta/judges/': {
     /** @description List all accessible judges. Filters can be applied to narrow down the results. */
-    get: operations["beta_judges_list"];
+    get: operations['beta_judges_list'];
     /** @description Create a new judge with a name, intent, and list of evaluators. */
-    post: operations["beta_judges_create"];
+    post: operations['beta_judges_create'];
   };
-  "/beta/judges/{judge_id}/execute/": {
+  '/beta/judges/{judge_id}/execute/': {
     /** @description Execute a Judge. Judges that have a file will use it as a context automatically. See examples how to overwrite the context. */
-    post: operations["beta_judges_execute_create"];
+    post: operations['beta_judges_execute_create'];
   };
-  "/beta/judges/{judge_id}/openai/chat/completions": {
-    post: operations["beta_judges_openai_chat_completions_create_2"];
+  '/beta/judges/{judge_id}/openai/chat/completions': {
+    post: operations['beta_judges_openai_chat_completions_create_2'];
   };
-  "/beta/judges/{judge_id}/refine/": {
+  '/beta/judges/{judge_id}/refine/': {
     /** @description Execute a judge as rectifier to improve the response. The rectifier will analyze the original response using the judge's evaluators and attempt to improve it based on their feedback. */
-    post: operations["beta_judges_refine_create"];
+    post: operations['beta_judges_refine_create'];
   };
-  "/beta/judges/{judge_id}/refine/openai/chat/completions": {
-    post: operations["beta_judges_refine_openai_chat_completions_create"];
+  '/beta/judges/{judge_id}/refine/openai/chat/completions': {
+    post: operations['beta_judges_refine_openai_chat_completions_create'];
   };
-  "/beta/judges/{id}/": {
+  '/beta/judges/{id}/': {
     /** @description Retrieve a specific judge by its ID. */
-    get: operations["beta_judges_retrieve"];
+    get: operations['beta_judges_retrieve'];
     /** @description Update an existing judge. */
-    put: operations["beta_judges_update"];
+    put: operations['beta_judges_update'];
     /** @description Delete a judge. */
-    delete: operations["beta_judges_destroy"];
+    delete: operations['beta_judges_destroy'];
     /** @description Partially update an existing judge. */
-    patch: operations["beta_judges_partial_update"];
+    patch: operations['beta_judges_partial_update'];
   };
-  "/beta/judges/{id}/duplicate/": {
+  '/beta/judges/{id}/duplicate/': {
     /** @description Copy a judge to user */
-    post: operations["beta_judges_duplicate_create"];
+    post: operations['beta_judges_duplicate_create'];
   };
-  "/beta/judges/{id}/invite/": {
+  '/beta/judges/{id}/invite/': {
     /** @description Send email invites to view a specific judge (up to 10 recipients) */
-    post: operations["beta_judges_invite_create"];
+    post: operations['beta_judges_invite_create'];
   };
-  "/beta/judges/generate/": {
+  '/beta/judges/generate/': {
     /** @description Generate a judge */
-    post: operations["beta_judges_generate_create"];
+    post: operations['beta_judges_generate_create'];
   };
-  "/beta/judges/openai/chat/completions": {
-    post: operations["beta_judges_openai_chat_completions_create"];
+  '/beta/judges/openai/chat/completions': {
+    post: operations['beta_judges_openai_chat_completions_create'];
   };
-  "/v1/datasets/": {
+  '/v1/datasets/': {
     /** @description List datasets. */
-    get: operations["v1_datasets_list"];
+    get: operations['v1_datasets_list'];
     /** @description Create a new dataset. */
-    post: operations["v1_datasets_create"];
+    post: operations['v1_datasets_create'];
   };
-  "/v1/datasets/{id}/": {
+  '/v1/datasets/{id}/': {
     /** @description Get dataset details or download the dataset file. */
-    get: operations["v1_datasets_retrieve"];
+    get: operations['v1_datasets_retrieve'];
     /** @description Delete a dataset. */
-    delete: operations["v1_datasets_destroy"];
+    delete: operations['v1_datasets_destroy'];
   };
-  "/v1/datasets/status/{id}/": {
+  '/v1/datasets/status/{id}/': {
     /** @description Change the status of a dataset */
-    put: operations["v1_datasets_status_update"];
+    put: operations['v1_datasets_status_update'];
   };
-  "/v1/evaluators/": {
+  '/v1/evaluators/': {
     /** @description List all evaluators. The response includes a 'requirements' field for each evaluator that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables. */
-    get: operations["v1_evaluators_list"];
+    get: operations['v1_evaluators_list'];
     /** @description Create a new evaluator. */
-    post: operations["v1_evaluators_create"];
+    post: operations['v1_evaluators_create'];
   };
-  "/v1/evaluators/{id}/": {
+  '/v1/evaluators/{id}/': {
     /** @description Get evaluator details. The response includes a 'requirements' field that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables. */
-    get: operations["v1_evaluators_retrieve"];
+    get: operations['v1_evaluators_retrieve'];
     /** @description Update an evaluator. */
-    put: operations["v1_evaluators_update"];
+    put: operations['v1_evaluators_update'];
     /** @description Delete an evaluator. */
-    delete: operations["v1_evaluators_destroy"];
+    delete: operations['v1_evaluators_destroy'];
     /** @description Update an evaluator. All fields are optional. */
-    patch: operations["v1_evaluators_partial_update"];
+    patch: operations['v1_evaluators_partial_update'];
   };
-  "/v1/evaluators/calibrate/": {
+  '/v1/evaluators/calibrate/': {
     /** @description Test an evaluator definition using calibration data */
-    post: operations["v1_evaluators_calibrate_create"];
+    post: operations['v1_evaluators_calibrate_create'];
   };
-  "/v1/evaluators/calibrate/{id}": {
+  '/v1/evaluators/calibrate/{id}': {
     /** @description Test an existing evaluator using calibration data */
-    post: operations["v1_evaluators_calibrate_create_2"];
+    post: operations['v1_evaluators_calibrate_create_2'];
   };
-  "/v1/evaluators/duplicate/{id}/": {
+  '/v1/evaluators/duplicate/{id}/': {
     /** @description Duplicate an evaluator */
-    post: operations["v1_evaluators_duplicate_create"];
+    post: operations['v1_evaluators_duplicate_create'];
   };
-  "/v1/evaluators/execute/{id}/": {
+  '/v1/evaluators/execute/{id}/': {
     /** @description Execute an evaluator. Check the evaluator's requirements to know which parameters are needed for execution. */
-    post: operations["v1_evaluators_execute_create"];
+    post: operations['v1_evaluators_execute_create'];
   };
-  "/v1/evaluators/execute/by-name/": {
+  '/v1/evaluators/execute/by-name/': {
     /** @description Execute an evaluator by name. Check the evaluator's requirements to know which parameters are needed for execution. */
-    post: operations["v1_evaluators_execute_by_name_create"];
+    post: operations['v1_evaluators_execute_by_name_create'];
   };
-  "/v1/evaluators/status/{id}/": {
+  '/v1/evaluators/status/{id}/': {
     /** @description Change the status of an evaluator */
-    put: operations["v1_evaluators_status_update"];
+    put: operations['v1_evaluators_status_update'];
     /** @description Change the status of an evaluator */
-    post: operations["v1_evaluators_status_create"];
+    post: operations['v1_evaluators_status_create'];
   };
-  "/v1/evaluators/versions/{id}/": {
+  '/v1/evaluators/versions/{id}/': {
     /** @description Get a list of all versions of an evaluator */
-    get: operations["v1_evaluators_versions_list"];
+    get: operations['v1_evaluators_versions_list'];
   };
-  "/v1/execution-logs/": {
+  '/v1/execution-logs/': {
     /** @description Get a list of execution logs. An execution log is created every time a skill or an evaluator is executed. */
-    get: operations["v1_execution_logs_list"];
+    get: operations['v1_execution_logs_list'];
   };
-  "/v1/execution-logs/{log_id}/": {
+  '/v1/execution-logs/{log_id}/': {
     /** @description Get the full details of a single execution log. */
-    get: operations["v1_execution_logs_retrieve"];
+    get: operations['v1_execution_logs_retrieve'];
   };
-  "/v1/judges/": {
+  '/v1/judges/': {
     /** @description List all accessible judges. Filters can be applied to narrow down the results. */
-    get: operations["v1_judges_list"];
+    get: operations['v1_judges_list'];
     /** @description Create a new judge with a name, intent, and list of evaluators. */
-    post: operations["v1_judges_create"];
+    post: operations['v1_judges_create'];
   };
-  "/v1/judges/{judge_id}/execute/": {
+  '/v1/judges/{judge_id}/execute/': {
     /** @description Execute a Judge. Judges that have a file will use it as a context automatically. See examples how to overwrite the context. */
-    post: operations["v1_judges_execute_create"];
+    post: operations['v1_judges_execute_create'];
   };
-  "/v1/judges/{judge_id}/openai/chat/completions": {
-    post: operations["v1_judges_openai_chat_completions_create_2"];
+  '/v1/judges/{judge_id}/openai/chat/completions': {
+    post: operations['v1_judges_openai_chat_completions_create_2'];
   };
-  "/v1/judges/{judge_id}/refine/": {
+  '/v1/judges/{judge_id}/refine/': {
     /** @description Execute a judge as rectifier to improve the response. The rectifier will analyze the original response using the judge's evaluators and attempt to improve it based on their feedback. */
-    post: operations["v1_judges_refine_create"];
+    post: operations['v1_judges_refine_create'];
   };
-  "/v1/judges/{judge_id}/refine/openai/chat/completions": {
-    post: operations["v1_judges_refine_openai_chat_completions_create"];
+  '/v1/judges/{judge_id}/refine/openai/chat/completions': {
+    post: operations['v1_judges_refine_openai_chat_completions_create'];
   };
-  "/v1/judges/{id}/": {
+  '/v1/judges/{id}/': {
     /** @description Retrieve a specific judge by its ID. */
-    get: operations["v1_judges_retrieve"];
+    get: operations['v1_judges_retrieve'];
     /** @description Update an existing judge. */
-    put: operations["v1_judges_update"];
+    put: operations['v1_judges_update'];
     /** @description Delete a judge. */
-    delete: operations["v1_judges_destroy"];
+    delete: operations['v1_judges_destroy'];
     /** @description Partially update an existing judge. */
-    patch: operations["v1_judges_partial_update"];
+    patch: operations['v1_judges_partial_update'];
   };
-  "/v1/judges/{id}/duplicate/": {
+  '/v1/judges/{id}/duplicate/': {
     /** @description Copy a judge to user */
-    post: operations["v1_judges_duplicate_create"];
+    post: operations['v1_judges_duplicate_create'];
   };
-  "/v1/judges/{id}/invite/": {
+  '/v1/judges/{id}/invite/': {
     /** @description Send email invites to view a specific judge (up to 10 recipients) */
-    post: operations["v1_judges_invite_create"];
+    post: operations['v1_judges_invite_create'];
   };
-  "/v1/judges/generate/": {
+  '/v1/judges/generate/': {
     /** @description Generate a judge */
-    post: operations["v1_judges_generate_create"];
+    post: operations['v1_judges_generate_create'];
   };
-  "/v1/judges/openai/chat/completions": {
-    post: operations["v1_judges_openai_chat_completions_create"];
+  '/v1/judges/openai/chat/completions': {
+    post: operations['v1_judges_openai_chat_completions_create'];
   };
-  "/v1/models/": {
+  '/v1/models/': {
     /** @description Get all available LLM models. */
-    get: operations["v1_models_list"];
+    get: operations['v1_models_list'];
     /** @description Create a custom LLM model. */
-    post: operations["v1_models_create"];
+    post: operations['v1_models_create'];
   };
-  "/v1/models/{id}/": {
+  '/v1/models/{id}/': {
     /** @description Get model details. */
-    get: operations["v1_models_retrieve"];
+    get: operations['v1_models_retrieve'];
     /** @description Update a custom LLM model. */
-    put: operations["v1_models_update"];
-    delete: operations["v1_models_destroy"];
-    patch: operations["v1_models_partial_update"];
+    put: operations['v1_models_update'];
+    delete: operations['v1_models_destroy'];
+    patch: operations['v1_models_partial_update'];
   };
-  "/v1/objectives/": {
+  '/v1/objectives/': {
     /** @description List Objective definitions. */
-    get: operations["v1_objectives_list"];
+    get: operations['v1_objectives_list'];
     /** @description Create an Objective definition. */
-    post: operations["v1_objectives_create"];
+    post: operations['v1_objectives_create'];
   };
-  "/v1/objectives/{id}/": {
+  '/v1/objectives/{id}/': {
     /** @description Get an Objective definition details. */
-    get: operations["v1_objectives_retrieve"];
+    get: operations['v1_objectives_retrieve'];
     /** @description Update an Objective definition. */
-    put: operations["v1_objectives_update"];
+    put: operations['v1_objectives_update'];
     /** @description Delete an Objective definition. */
-    delete: operations["v1_objectives_destroy"];
-    patch: operations["v1_objectives_partial_update"];
+    delete: operations['v1_objectives_destroy'];
+    patch: operations['v1_objectives_partial_update'];
   };
-  "/v1/objectives/versions/{id}/": {
-    get: operations["v1_objectives_versions_list"];
+  '/v1/objectives/versions/{id}/': {
+    get: operations['v1_objectives_versions_list'];
   };
 }
 
@@ -209,11 +208,11 @@ export interface components {
       name?: string | null;
       /** Format: uri */
       file?: string;
-      type?: components["schemas"]["DataSetType"];
+      type?: components['schemas']['DataSetType'];
       /** Format: uri */
       url?: string;
       tags?: string[];
-      owner: components["schemas"]["NestedUserDetails"];
+      owner: components['schemas']['NestedUserDetails'];
       /** @default false */
       has_header?: boolean;
     };
@@ -223,7 +222,7 @@ export interface components {
       file?: string;
       /** Format: uuid */
       draft_id?: string;
-      type?: components["schemas"]["DataSetType"];
+      type?: components['schemas']['DataSetType'];
       /** Format: uri */
       url?: string;
       tags?: string[];
@@ -234,12 +233,12 @@ export interface components {
       /** Format: uuid */
       id: string;
       name?: string | null;
-      type?: components["schemas"]["DataSetType"];
+      type?: components['schemas']['DataSetType'];
       tags?: string[];
-      owner: components["schemas"]["NestedUserDetails"];
+      owner: components['schemas']['NestedUserDetails'];
       /** Format: date-time */
       created_at: string;
-      status?: components["schemas"]["StatusEnum"];
+      status?: components['schemas']['StatusEnum'];
       /** meta */
       _meta: unknown;
     };
@@ -248,7 +247,7 @@ export interface components {
      * * `test` - TEST
      * @enum {string}
      */
-    DataSetType: "reference" | "test";
+    DataSetType: 'reference' | 'test';
     DatasetRangeRequest: {
       start: number | null;
       end: number | null;
@@ -257,23 +256,23 @@ export interface components {
       change_note?: string | null;
       /** Format: date-time */
       created_at: string;
-      evaluator_demonstrations?: components["schemas"]["EvaluatorDemonstrations"][] | null;
+      evaluator_demonstrations?: components['schemas']['EvaluatorDemonstrations'][] | null;
       /** Format: uuid */
       id: string;
-      input_variables?: components["schemas"]["InputVariable"][];
-      model_params?: components["schemas"]["ModelParams"] | null;
+      input_variables?: components['schemas']['InputVariable'][];
+      model_params?: components['schemas']['ModelParams'] | null;
       models?: string[];
       name: string;
-      objective?: components["schemas"]["Objective"] | null;
-      owner: components["schemas"]["NestedUserDetails"];
+      objective?: components['schemas']['Objective'] | null;
+      owner: components['schemas']['NestedUserDetails'];
       prompt?: string;
-      reference_variables?: components["schemas"]["ReferenceVariable"][];
-      skill_type: components["schemas"]["SkillTypeEnum"];
-      status?: components["schemas"]["StatusEnum"];
+      reference_variables?: components['schemas']['ReferenceVariable'][];
+      skill_type: components['schemas']['SkillTypeEnum'];
+      status?: components['schemas']['StatusEnum'];
       system_message?: string;
       /** Format: date-time */
       updated_at: string | null;
-      updated_by: components["schemas"]["NestedUserDetails"] | null;
+      updated_by: components['schemas']['NestedUserDetails'] | null;
       /** Format: uuid */
       version_id: string;
       /** meta */
@@ -304,10 +303,10 @@ export interface components {
       inputs: {
         [key: string]: {
           /** @enum {string} */
-          type: "string" | "array";
+          type: 'string' | 'array';
           items?: {
             /** @enum {string} */
-            type: "string" | "object";
+            type: 'string' | 'object';
           };
         };
       };
@@ -322,7 +321,7 @@ export interface components {
        */
       model_call_duration?: number;
       row_number: number;
-      result: components["schemas"]["EvaluatorCalibrationResult"];
+      result: components['schemas']['EvaluatorCalibrationResult'];
     };
     EvaluatorCalibrationResult: {
       llm_output: string;
@@ -361,9 +360,9 @@ export interface components {
       };
     };
     EvaluatorExecutionFunctionParameterRequest: {
-      type: components["schemas"]["EvaluatorExecutionFunctionParameterTypeEnum"];
+      type: components['schemas']['EvaluatorExecutionFunctionParameterTypeEnum'];
       properties?: {
-        [key: string]: components["schemas"]["EvaluatorExecutionFunctionParameterPropertyRequest"];
+        [key: string]: components['schemas']['EvaluatorExecutionFunctionParameterPropertyRequest'];
       };
       required?: string[];
     };
@@ -371,28 +370,28 @@ export interface components {
      * @description * `object` - Object
      * @enum {string}
      */
-    EvaluatorExecutionFunctionParameterTypeEnum: "object";
+    EvaluatorExecutionFunctionParameterTypeEnum: 'object';
     EvaluatorExecutionFunctionRequest: {
       name: string;
-      parameters: components["schemas"]["EvaluatorExecutionFunctionParameterRequest"];
+      parameters: components['schemas']['EvaluatorExecutionFunctionParameterRequest'];
       description?: string;
     };
     EvaluatorExecutionFunctionsRequest: {
-      type: components["schemas"]["EvaluatorExecutionFunctionsTypeEnum"];
-      function: components["schemas"]["EvaluatorExecutionFunctionRequest"];
+      type: components['schemas']['EvaluatorExecutionFunctionsTypeEnum'];
+      function: components['schemas']['EvaluatorExecutionFunctionRequest'];
     };
     /**
      * @description * `function` - Function
      * @enum {string}
      */
-    EvaluatorExecutionFunctionsTypeEnum: "function";
+    EvaluatorExecutionFunctionsTypeEnum: 'function';
     EvaluatorExecutionRequest: {
       /** @default */
       request?: string;
       /** @default */
       response?: string;
       contexts?: string[];
-      functions?: components["schemas"]["EvaluatorExecutionFunctionsRequest"][];
+      functions?: components['schemas']['EvaluatorExecutionFunctionsRequest'][];
       expected_output?: string | null;
       tags?: string[];
       evaluator_version_id?: string | null;
@@ -422,13 +421,13 @@ export interface components {
       /** Format: uuid */
       id: string;
       name: string;
-      objective: components["schemas"]["NestedObjectiveList"];
-      owner: components["schemas"]["NestedUserDetails"];
+      objective: components['schemas']['NestedObjectiveList'];
+      owner: components['schemas']['NestedUserDetails'];
       prompt: string;
-      status: components["schemas"]["StatusEnum"];
+      status: components['schemas']['StatusEnum'];
       /** Format: date-time */
       updated_at: string | null;
-      updated_by: components["schemas"]["NestedUserDetails"] | null;
+      updated_by: components['schemas']['NestedUserDetails'] | null;
       version_id: string;
       /**
        * @description Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like functions, contexts, and expected output.
@@ -456,10 +455,10 @@ export interface components {
       inputs: {
         [key: string]: {
           /** @enum {string} */
-          type: "string" | "array";
+          type: 'string' | 'array';
           items?: {
             /** @enum {string} */
-            type: "string" | "object";
+            type: 'string' | 'object';
           };
         };
       };
@@ -484,12 +483,12 @@ export interface components {
     };
     EvaluatorRequest: {
       change_note?: string | null;
-      evaluator_demonstrations?: components["schemas"]["EvaluatorDemonstrationsRequest"][] | null;
-      input_variables?: components["schemas"]["InputVariableRequest"][];
-      model_params?: components["schemas"]["ModelParamsRequest"] | null;
+      evaluator_demonstrations?: components['schemas']['EvaluatorDemonstrationsRequest'][] | null;
+      input_variables?: components['schemas']['InputVariableRequest'][];
+      model_params?: components['schemas']['ModelParamsRequest'] | null;
       models?: string[];
       name: string;
-      objective?: components["schemas"]["ObjectiveRequest"] | null;
+      objective?: components['schemas']['ObjectiveRequest'] | null;
       /** Format: uuid */
       objective_id?: string | null;
       /**
@@ -503,8 +502,8 @@ export interface components {
        */
       overwrite?: boolean;
       prompt?: string;
-      reference_variables?: components["schemas"]["ReferenceVariableRequest"][];
-      status?: components["schemas"]["StatusEnum"];
+      reference_variables?: components['schemas']['ReferenceVariableRequest'][];
+      status?: components['schemas']['StatusEnum'];
       system_message?: string;
     };
     EvaluatorResult: {
@@ -527,10 +526,12 @@ export interface components {
         readonly contexts?: string[];
         readonly expected_output?: string;
       };
-      evaluator_latencies: (readonly {
-          evaluator_name?: string;
-          duration?: number;
-        }[]) | null;
+      evaluator_latencies:
+        | readonly {
+            evaluator_name?: string;
+            duration?: number;
+          }[]
+        | null;
       /** Format: uuid */
       id: string;
       judge: {
@@ -540,14 +541,14 @@ export interface components {
       llm_output: string;
       /** Format: double */
       model_call_duration: number;
-      model_params?: components["schemas"]["ModelParams"] | null;
+      model_params?: components['schemas']['ModelParams'] | null;
       model: string;
       objective: {
         readonly intent?: string;
         /** Format: uuid */
         readonly id?: string;
       };
-      owner: components["schemas"]["NestedUserDetails"];
+      owner: components['schemas']['NestedUserDetails'];
       /** Format: uuid */
       parent_execution_log_id?: string | null;
       rendered_prompt: string;
@@ -573,7 +574,7 @@ export interface components {
         readonly id?: string;
       };
       tags: readonly string[];
-      validation_results: readonly components["schemas"]["SkillExecutionValidatorResult"][];
+      validation_results: readonly components['schemas']['SkillExecutionValidatorResult'][];
       variables: {
         [key: string]: string;
       } | null;
@@ -588,7 +589,7 @@ export interface components {
       judge: {
         readonly name?: string;
       } | null;
-      owner: components["schemas"]["NestedUserDetails"];
+      owner: components['schemas']['NestedUserDetails'];
       /** Format: uuid */
       parent_execution_log_id?: string | null;
       /** Format: double */
@@ -651,17 +652,17 @@ export interface components {
       };
       /** Format: date-time */
       created_at: string | null;
-      evaluators: readonly components["schemas"]["NestedEvaluator"][];
+      evaluators: readonly components['schemas']['NestedEvaluator'][];
       files: readonly {
-          url?: string;
-          name?: string;
-          /** Format: uuid */
-          id?: string;
-        }[];
+        url?: string;
+        name?: string;
+        /** Format: uuid */
+        id?: string;
+      }[];
       /** Format: uuid */
       id: string;
       name: string;
-      objective: components["schemas"]["NestedVectorObjective"];
+      objective: components['schemas']['NestedVectorObjective'];
       stage?: string;
       /**
        * @description Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like functions, contexts, and expected output.
@@ -689,14 +690,14 @@ export interface components {
       inputs: {
         [key: string]: {
           /** @enum {string} */
-          type: "string" | "array";
+          type: 'string' | 'array';
           items?: {
             /** @enum {string} */
-            type: "string" | "object";
+            type: 'string' | 'object';
           };
         };
       };
-      status: components["schemas"]["JudgeStatusEnum"];
+      status: components['schemas']['JudgeStatusEnum'];
     };
     JudgeExecutionRequest: {
       /** @default */
@@ -704,26 +705,26 @@ export interface components {
       /** @default */
       response?: string;
       contexts?: string[];
-      functions?: components["schemas"]["EvaluatorExecutionFunctionsRequest"][];
+      functions?: components['schemas']['EvaluatorExecutionFunctionsRequest'][];
       expected_output?: string | null;
       tags?: string[];
     };
     JudgeExecutionResponse: {
       /** @description List of results from each evaluator */
-      evaluator_results: components["schemas"]["EvaluatorResult"][];
+      evaluator_results: components['schemas']['EvaluatorResult'][];
     };
     JudgeGeneratorRequest: {
       intent: string;
       stage?: string | null;
-      visibility: components["schemas"]["VisibilityEnum"];
+      visibility: components['schemas']['VisibilityEnum'];
       /** Format: uuid */
       file_id?: string | null;
-      extra_contexts?: ({
+      extra_contexts?: {
         [key: string]: string | null;
-      }) | null;
+      } | null;
       /** @default true */
       strict?: boolean;
-      generating_model_params?: components["schemas"]["GenerationModelParamsRequest"] | null;
+      generating_model_params?: components['schemas']['GenerationModelParamsRequest'] | null;
     };
     JudgeGeneratorResponse: {
       /** Format: uuid */
@@ -746,7 +747,7 @@ export interface components {
       intent: string;
       /** Format: date-time */
       created_at: string | null;
-      status: components["schemas"]["JudgeStatusEnum"];
+      status: components['schemas']['JudgeStatusEnum'];
       /**
        * @description Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like functions, contexts, and expected output.
        * @example {
@@ -773,14 +774,14 @@ export interface components {
       inputs: {
         [key: string]: {
           /** @enum {string} */
-          type: "string" | "array";
+          type: 'string' | 'array';
           items?: {
             /** @enum {string} */
-            type: "string" | "object";
+            type: 'string' | 'object';
           };
         };
       };
-      evaluators: readonly components["schemas"]["NestedEvaluator"][];
+      evaluators: readonly components['schemas']['NestedEvaluator'][];
     };
     JudgeRectifierRequestRequest: {
       /** @default */
@@ -788,22 +789,22 @@ export interface components {
       /** @default */
       response?: string;
       contexts?: string[];
-      functions?: components["schemas"]["EvaluatorExecutionFunctionsRequest"][];
+      functions?: components['schemas']['EvaluatorExecutionFunctionsRequest'][];
       expected_output?: string | null;
       tags?: string[];
     };
     JudgeRectifierResponse: {
       /** @description List of results from each evaluator */
-      evaluator_results: components["schemas"]["EvaluatorResult"][];
+      evaluator_results: components['schemas']['EvaluatorResult'][];
       /** @description Improved response from rectifier */
       improved_response: string;
       /** @description Original response before rectification */
       original_response: string;
       /** @description List of evaluation results for the original response */
-      original_evaluator_results: components["schemas"]["EvaluatorResult"][];
+      original_evaluator_results: components['schemas']['EvaluatorResult'][];
     };
     JudgeRequest: {
-      evaluator_references?: components["schemas"]["EvaluatorReferenceRequest"][];
+      evaluator_references?: components['schemas']['EvaluatorReferenceRequest'][];
       /** @description Intent for the judge */
       intent: string;
       name: string;
@@ -816,7 +817,7 @@ export interface components {
      * * `global` - global
      * @enum {string}
      */
-    JudgeStatusEnum: "unlisted" | "listed" | "public" | "global";
+    JudgeStatusEnum: 'unlisted' | 'listed' | 'public' | 'global';
     Model: {
       default_key?: string | null;
       id: string;
@@ -830,8 +831,8 @@ export interface components {
       /** Format: uuid */
       id: string;
       name: string;
-      owner: components["schemas"]["NestedUserDetails"];
-      provider: components["schemas"]["Provider"] | null;
+      owner: components['schemas']['NestedUserDetails'];
+      provider: components['schemas']['Provider'] | null;
     };
     ModelParams: {
       /** Format: double */
@@ -853,7 +854,7 @@ export interface components {
       /** Format: uuid */
       id: string;
       name: string;
-      objective: components["schemas"]["NestedEvaluatorObjective"];
+      objective: components['schemas']['NestedEvaluatorObjective'];
       is_root_evaluator: boolean;
       model: string;
       /** Format: uuid */
@@ -888,8 +889,8 @@ export interface components {
       /** Format: uuid */
       id: string;
       intent?: string;
-      status?: components["schemas"]["StatusEnum"];
-      validators: readonly components["schemas"]["ObjectiveValidator"][];
+      status?: components['schemas']['StatusEnum'];
+      validators: readonly components['schemas']['ObjectiveValidator'][];
     };
     NestedUserDetails: {
       /**
@@ -914,13 +915,13 @@ export interface components {
       /** Format: uuid */
       id: string;
       intent?: string;
-      status?: components["schemas"]["StatusEnum"];
+      status?: components['schemas']['StatusEnum'];
       /** @description Deprecated: Use test_dataset_id instead. */
-      test_set: (readonly string[][]) | null;
-      validators?: components["schemas"]["ObjectiveValidator"][];
+      test_set: readonly string[][] | null;
+      validators?: components['schemas']['ObjectiveValidator'][];
       /** Format: date-time */
       created_at: string;
-      owner: components["schemas"]["NestedUserDetails"];
+      owner: components['schemas']['NestedUserDetails'];
       /** Format: uuid */
       version_id: string;
       /** Format: uuid */
@@ -934,11 +935,11 @@ export interface components {
       /** Format: uuid */
       id: string;
       intent?: string;
-      status?: components["schemas"]["StatusEnum"];
-      owner: components["schemas"]["NestedUserDetails"];
+      status?: components['schemas']['StatusEnum'];
+      owner: components['schemas']['NestedUserDetails'];
       /** Format: date-time */
       created_at: string;
-      validators: readonly components["schemas"]["ObjectiveValidator"][];
+      validators: readonly components['schemas']['ObjectiveValidator'][];
       /** meta */
       _meta: {
         [key: string]: unknown;
@@ -946,15 +947,15 @@ export interface components {
     };
     ObjectiveRequest: {
       intent?: string;
-      status?: components["schemas"]["StatusEnum"];
-      validators?: components["schemas"]["ObjectiveValidatorRequest"][];
+      status?: components['schemas']['StatusEnum'];
+      validators?: components['schemas']['ObjectiveValidatorRequest'][];
       /** @description Force creation of a new objective. Applies only to PUT requests. */
       force_create?: boolean;
       /** Format: uuid */
       test_dataset_id?: string | null;
     };
     ObjectiveValidator: {
-      evaluator: components["schemas"]["NestedObjectiveEvaluator"];
+      evaluator: components['schemas']['NestedObjectiveEvaluator'];
       /** Format: double */
       threshold?: number;
     };
@@ -976,7 +977,7 @@ export interface components {
        * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
        */
       previous?: string | null;
-      results: components["schemas"]["DataSetList"][];
+      results: components['schemas']['DataSetList'][];
     };
     PaginatedEvaluatorList: {
       /**
@@ -989,7 +990,7 @@ export interface components {
        * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
        */
       previous?: string | null;
-      results: components["schemas"]["Evaluator"][];
+      results: components['schemas']['Evaluator'][];
     };
     PaginatedEvaluatorListOutputList: {
       /**
@@ -1002,7 +1003,7 @@ export interface components {
        * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
        */
       previous?: string | null;
-      results: components["schemas"]["EvaluatorListOutput"][];
+      results: components['schemas']['EvaluatorListOutput'][];
     };
     PaginatedExecutionLogListList: {
       /**
@@ -1015,7 +1016,7 @@ export interface components {
        * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
        */
       previous?: string | null;
-      results: components["schemas"]["ExecutionLogList"][];
+      results: components['schemas']['ExecutionLogList'][];
     };
     PaginatedJudgeListList: {
       /**
@@ -1028,7 +1029,7 @@ export interface components {
        * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
        */
       previous?: string | null;
-      results: components["schemas"]["JudgeList"][];
+      results: components['schemas']['JudgeList'][];
     };
     PaginatedModelListList: {
       /**
@@ -1041,7 +1042,7 @@ export interface components {
        * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
        */
       previous?: string | null;
-      results: components["schemas"]["ModelList"][];
+      results: components['schemas']['ModelList'][];
     };
     PaginatedObjectiveList: {
       /**
@@ -1054,7 +1055,7 @@ export interface components {
        * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
        */
       previous?: string | null;
-      results: components["schemas"]["Objective"][];
+      results: components['schemas']['Objective'][];
     };
     PaginatedObjectiveListList: {
       /**
@@ -1067,16 +1068,16 @@ export interface components {
        * @example http://api.example.org/accounts/?cursor=cj0xJnA9NDg3
        */
       previous?: string | null;
-      results: components["schemas"]["ObjectiveList"][];
+      results: components['schemas']['ObjectiveList'][];
     };
     PatchedEvaluatorRequest: {
       change_note?: string | null;
-      evaluator_demonstrations?: components["schemas"]["EvaluatorDemonstrationsRequest"][] | null;
-      input_variables?: components["schemas"]["InputVariableRequest"][];
-      model_params?: components["schemas"]["ModelParamsRequest"] | null;
+      evaluator_demonstrations?: components['schemas']['EvaluatorDemonstrationsRequest'][] | null;
+      input_variables?: components['schemas']['InputVariableRequest'][];
+      model_params?: components['schemas']['ModelParamsRequest'] | null;
       models?: string[];
       name?: string;
-      objective?: components["schemas"]["ObjectiveRequest"] | null;
+      objective?: components['schemas']['ObjectiveRequest'] | null;
       /** Format: uuid */
       objective_id?: string | null;
       /**
@@ -1090,12 +1091,12 @@ export interface components {
        */
       overwrite?: boolean;
       prompt?: string;
-      reference_variables?: components["schemas"]["ReferenceVariableRequest"][];
-      status?: components["schemas"]["StatusEnum"];
+      reference_variables?: components['schemas']['ReferenceVariableRequest'][];
+      status?: components['schemas']['StatusEnum'];
       system_message?: string;
     };
     PatchedJudgeRequest: {
-      evaluator_references?: components["schemas"]["EvaluatorReferenceRequest"][];
+      evaluator_references?: components['schemas']['EvaluatorReferenceRequest'][];
       /** @description Intent for the judge */
       intent?: string;
       name?: string;
@@ -1111,8 +1112,8 @@ export interface components {
     };
     PatchedObjectiveRequest: {
       intent?: string;
-      status?: components["schemas"]["StatusEnum"];
-      validators?: components["schemas"]["ObjectiveValidatorRequest"][];
+      status?: components['schemas']['StatusEnum'];
+      validators?: components['schemas']['ObjectiveValidatorRequest'][];
       /** @description Force creation of a new objective. Applies only to PUT requests. */
       force_create?: boolean;
       /** Format: uuid */
@@ -1153,30 +1154,30 @@ export interface components {
       result: number | null;
       /** Format: double */
       threshold: number;
-      status: components["schemas"]["ValidationResultStatus"];
+      status: components['schemas']['ValidationResultStatus'];
       justification: string;
     };
     SkillTestDataRequest: {
       test_data?: string[][] | null;
       test_dataset_id?: string;
       /** @description Specifies the range of dataset rows to use */
-      dataset_range?: components["schemas"]["DatasetRangeRequest"] | null;
+      dataset_range?: components['schemas']['DatasetRangeRequest'] | null;
     };
     SkillTestInputRequest: {
       test_data?: string[][] | null;
       test_dataset_id?: string;
       /** @description Specifies the range of dataset rows to use */
-      dataset_range?: components["schemas"]["DatasetRangeRequest"] | null;
+      dataset_range?: components['schemas']['DatasetRangeRequest'] | null;
       prompt: string;
       /** @default [] */
-      reference_variables?: components["schemas"]["ReferenceVariableRequest"][];
+      reference_variables?: components['schemas']['ReferenceVariableRequest'][];
       /** @default [] */
-      input_variables?: components["schemas"]["InputVariableRequest"][];
+      input_variables?: components['schemas']['InputVariableRequest'][];
       models?: string[];
       name?: string | null;
       /** @default false */
       pii_filter?: boolean;
-      objective?: components["schemas"]["ObjectiveRequest"] | null;
+      objective?: components['schemas']['ObjectiveRequest'] | null;
       /** @default false */
       is_evaluator?: boolean;
     };
@@ -1185,19 +1186,19 @@ export interface components {
      * * `native` - native
      * @enum {string}
      */
-    SkillTypeEnum: "managed" | "native";
+    SkillTypeEnum: 'managed' | 'native';
     StatusChange: {
-      status: components["schemas"]["StatusChangeStatusEnum"];
+      status: components['schemas']['StatusChangeStatusEnum'];
     };
     StatusChangeRequest: {
-      status: components["schemas"]["StatusChangeStatusEnum"];
+      status: components['schemas']['StatusChangeStatusEnum'];
     };
     /**
      * @description * `unlisted` - unlisted
      * * `listed` - listed
      * @enum {string}
      */
-    StatusChangeStatusEnum: "unlisted" | "listed";
+    StatusChangeStatusEnum: 'unlisted' | 'listed';
     /**
      * @description * `unlisted` - unlisted
      * * `listed` - listed
@@ -1205,20 +1206,20 @@ export interface components {
      * * `public_unlisted` - public_unlisted
      * @enum {string}
      */
-    StatusEnum: "unlisted" | "listed" | "public" | "public_unlisted";
+    StatusEnum: 'unlisted' | 'listed' | 'public' | 'public_unlisted';
     /**
      * @description * `pending` - Pending
      * * `finished` - Finished
      * @enum {string}
      */
-    ValidationResultStatus: "pending" | "finished";
+    ValidationResultStatus: 'pending' | 'finished';
     /**
      * @description * `global` - global
      * * `listed` - listed
      * * `unlisted` - unlisted
      * @enum {string}
      */
-    VisibilityEnum: "global" | "listed" | "unlisted";
+    VisibilityEnum: 'global' | 'listed' | 'unlisted';
   };
   responses: never;
   parameters: never;
@@ -1232,7 +1233,6 @@ export type $defs = Record<string, never>;
 export type external = Record<string, never>;
 
 export interface operations {
-
   /** @description List all accessible judges. Filters can be applied to narrow down the results. */
   beta_judges_list: {
     parameters: {
@@ -1255,7 +1255,7 @@ export interface operations {
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["PaginatedJudgeListList"];
+          'application/json': components['schemas']['PaginatedJudgeListList'];
         };
       };
     };
@@ -1264,15 +1264,15 @@ export interface operations {
   beta_judges_create: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["JudgeRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["JudgeRequest"];
-        "multipart/form-data": components["schemas"]["JudgeRequest"];
+        'application/json': components['schemas']['JudgeRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['JudgeRequest'];
+        'multipart/form-data': components['schemas']['JudgeRequest'];
       };
     };
     responses: {
       201: {
         content: {
-          "application/json": components["schemas"]["Judge"];
+          'application/json': components['schemas']['Judge'];
         };
       };
     };
@@ -1286,15 +1286,15 @@ export interface operations {
     };
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["JudgeExecutionRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["JudgeExecutionRequest"];
-        "multipart/form-data": components["schemas"]["JudgeExecutionRequest"];
+        'application/json': components['schemas']['JudgeExecutionRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['JudgeExecutionRequest'];
+        'multipart/form-data': components['schemas']['JudgeExecutionRequest'];
       };
     };
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["JudgeExecutionResponse"];
+          'application/json': components['schemas']['JudgeExecutionResponse'];
         };
       };
     };
@@ -1321,30 +1321,30 @@ export interface operations {
     };
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["JudgeRectifierRequestRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["JudgeRectifierRequestRequest"];
-        "multipart/form-data": components["schemas"]["JudgeRectifierRequestRequest"];
+        'application/json': components['schemas']['JudgeRectifierRequestRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['JudgeRectifierRequestRequest'];
+        'multipart/form-data': components['schemas']['JudgeRectifierRequestRequest'];
       };
     };
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["JudgeRectifierResponse"];
+          'application/json': components['schemas']['JudgeRectifierResponse'];
         };
       };
       400: {
         content: {
-          "application/json": unknown;
+          'application/json': unknown;
         };
       };
       403: {
         content: {
-          "application/json": unknown;
+          'application/json': unknown;
         };
       };
       404: {
         content: {
-          "application/json": unknown;
+          'application/json': unknown;
         };
       };
     };
@@ -1373,7 +1373,7 @@ export interface operations {
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["Judge"];
+          'application/json': components['schemas']['Judge'];
         };
       };
     };
@@ -1388,15 +1388,15 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["JudgeRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["JudgeRequest"];
-        "multipart/form-data": components["schemas"]["JudgeRequest"];
+        'application/json': components['schemas']['JudgeRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['JudgeRequest'];
+        'multipart/form-data': components['schemas']['JudgeRequest'];
       };
     };
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["Judge"];
+          'application/json': components['schemas']['Judge'];
         };
       };
     };
@@ -1426,15 +1426,15 @@ export interface operations {
     };
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["PatchedJudgeRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["PatchedJudgeRequest"];
-        "multipart/form-data": components["schemas"]["PatchedJudgeRequest"];
+        'application/json': components['schemas']['PatchedJudgeRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['PatchedJudgeRequest'];
+        'multipart/form-data': components['schemas']['PatchedJudgeRequest'];
       };
     };
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["Judge"];
+          'application/json': components['schemas']['Judge'];
         };
       };
     };
@@ -1450,7 +1450,7 @@ export interface operations {
     responses: {
       201: {
         content: {
-          "application/json": components["schemas"]["Judge"];
+          'application/json': components['schemas']['Judge'];
         };
       };
     };
@@ -1465,15 +1465,15 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["JudgeInviteRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["JudgeInviteRequest"];
-        "multipart/form-data": components["schemas"]["JudgeInviteRequest"];
+        'application/json': components['schemas']['JudgeInviteRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['JudgeInviteRequest'];
+        'multipart/form-data': components['schemas']['JudgeInviteRequest'];
       };
     };
     responses: {
       200: {
         content: {
-          "application/json": unknown;
+          'application/json': unknown;
         };
       };
     };
@@ -1482,15 +1482,15 @@ export interface operations {
   beta_judges_generate_create: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["JudgeGeneratorRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["JudgeGeneratorRequest"];
-        "multipart/form-data": components["schemas"]["JudgeGeneratorRequest"];
+        'application/json': components['schemas']['JudgeGeneratorRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['JudgeGeneratorRequest'];
+        'multipart/form-data': components['schemas']['JudgeGeneratorRequest'];
       };
     };
     responses: {
       201: {
         content: {
-          "application/json": components["schemas"]["JudgeGeneratorResponse"];
+          'application/json': components['schemas']['JudgeGeneratorResponse'];
         };
       };
     };
@@ -1522,7 +1522,7 @@ export interface operations {
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["PaginatedDataSetListList"];
+          'application/json': components['schemas']['PaginatedDataSetListList'];
         };
       };
     };
@@ -1531,15 +1531,15 @@ export interface operations {
   v1_datasets_create: {
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["DataSetCreateRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["DataSetCreateRequest"];
-        "multipart/form-data": components["schemas"]["DataSetCreateRequest"];
+        'application/json': components['schemas']['DataSetCreateRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['DataSetCreateRequest'];
+        'multipart/form-data': components['schemas']['DataSetCreateRequest'];
       };
     };
     responses: {
       201: {
         content: {
-          "application/json": components["schemas"]["DataSetCreate"];
+          'application/json': components['schemas']['DataSetCreate'];
         };
       };
     };
@@ -1558,7 +1558,7 @@ export interface operations {
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["DataSetList"];
+          'application/json': components['schemas']['DataSetList'];
         };
       };
     };
@@ -1586,15 +1586,15 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["StatusChangeRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["StatusChangeRequest"];
-        "multipart/form-data": components["schemas"]["StatusChangeRequest"];
+        'application/json': components['schemas']['StatusChangeRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['StatusChangeRequest'];
+        'multipart/form-data': components['schemas']['StatusChangeRequest'];
       };
     };
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["StatusChange"];
+          'application/json': components['schemas']['StatusChange'];
         };
       };
     };
@@ -1623,21 +1623,21 @@ export interface operations {
          * @description * `managed` - managed
          * * `native` - native
          */
-        skill_type?: "managed" | "native";
+        skill_type?: 'managed' | 'native';
         /**
          * @description * `unlisted` - unlisted
          * * `listed` - listed
          * * `public` - public
          * * `public_unlisted` - public_unlisted
          */
-        status?: "listed" | "public" | "public_unlisted" | "unlisted";
+        status?: 'listed' | 'public' | 'public_unlisted' | 'unlisted';
       };
     };
     responses: {
       /** @description List of evaluators with their requirements */
       200: {
         content: {
-          "application/json": components["schemas"]["PaginatedEvaluatorListOutputList"];
+          'application/json': components['schemas']['PaginatedEvaluatorListOutputList'];
         };
       };
     };
@@ -1646,15 +1646,15 @@ export interface operations {
   v1_evaluators_create: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["EvaluatorRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["EvaluatorRequest"];
-        "multipart/form-data": components["schemas"]["EvaluatorRequest"];
+        'application/json': components['schemas']['EvaluatorRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['EvaluatorRequest'];
+        'multipart/form-data': components['schemas']['EvaluatorRequest'];
       };
     };
     responses: {
       201: {
         content: {
-          "application/json": components["schemas"]["Evaluator"];
+          'application/json': components['schemas']['Evaluator'];
         };
       };
     };
@@ -1676,7 +1676,7 @@ export interface operations {
       /** @description Evaluator details with requirements information */
       200: {
         content: {
-          "application/json": components["schemas"]["Evaluator"];
+          'application/json': components['schemas']['Evaluator'];
         };
       };
     };
@@ -1690,15 +1690,15 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["EvaluatorRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["EvaluatorRequest"];
-        "multipart/form-data": components["schemas"]["EvaluatorRequest"];
+        'application/json': components['schemas']['EvaluatorRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['EvaluatorRequest'];
+        'multipart/form-data': components['schemas']['EvaluatorRequest'];
       };
     };
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["Evaluator"];
+          'application/json': components['schemas']['Evaluator'];
         };
       };
     };
@@ -1726,15 +1726,15 @@ export interface operations {
     };
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["PatchedEvaluatorRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["PatchedEvaluatorRequest"];
-        "multipart/form-data": components["schemas"]["PatchedEvaluatorRequest"];
+        'application/json': components['schemas']['PatchedEvaluatorRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['PatchedEvaluatorRequest'];
+        'multipart/form-data': components['schemas']['PatchedEvaluatorRequest'];
       };
     };
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["Evaluator"];
+          'application/json': components['schemas']['Evaluator'];
         };
       };
     };
@@ -1743,15 +1743,15 @@ export interface operations {
   v1_evaluators_calibrate_create: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["SkillTestInputRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["SkillTestInputRequest"];
-        "multipart/form-data": components["schemas"]["SkillTestInputRequest"];
+        'application/json': components['schemas']['SkillTestInputRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['SkillTestInputRequest'];
+        'multipart/form-data': components['schemas']['SkillTestInputRequest'];
       };
     };
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["EvaluatorCalibrationOutput"][];
+          'application/json': components['schemas']['EvaluatorCalibrationOutput'][];
         };
       };
     };
@@ -1765,15 +1765,15 @@ export interface operations {
     };
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["SkillTestDataRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["SkillTestDataRequest"];
-        "multipart/form-data": components["schemas"]["SkillTestDataRequest"];
+        'application/json': components['schemas']['SkillTestDataRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['SkillTestDataRequest'];
+        'multipart/form-data': components['schemas']['SkillTestDataRequest'];
       };
     };
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["EvaluatorCalibrationOutput"][];
+          'application/json': components['schemas']['EvaluatorCalibrationOutput'][];
         };
       };
     };
@@ -1787,15 +1787,15 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["EvaluatorRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["EvaluatorRequest"];
-        "multipart/form-data": components["schemas"]["EvaluatorRequest"];
+        'application/json': components['schemas']['EvaluatorRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['EvaluatorRequest'];
+        'multipart/form-data': components['schemas']['EvaluatorRequest'];
       };
     };
     responses: {
       201: {
         content: {
-          "application/json": components["schemas"]["Evaluator"];
+          'application/json': components['schemas']['Evaluator'];
         };
       };
     };
@@ -1809,15 +1809,15 @@ export interface operations {
     };
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["EvaluatorExecutionRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["EvaluatorExecutionRequest"];
-        "multipart/form-data": components["schemas"]["EvaluatorExecutionRequest"];
+        'application/json': components['schemas']['EvaluatorExecutionRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['EvaluatorExecutionRequest'];
+        'multipart/form-data': components['schemas']['EvaluatorExecutionRequest'];
       };
     };
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["EvaluatorExecutionResult"];
+          'application/json': components['schemas']['EvaluatorExecutionResult'];
         };
       };
     };
@@ -1832,15 +1832,15 @@ export interface operations {
     };
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["EvaluatorExecutionRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["EvaluatorExecutionRequest"];
-        "multipart/form-data": components["schemas"]["EvaluatorExecutionRequest"];
+        'application/json': components['schemas']['EvaluatorExecutionRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['EvaluatorExecutionRequest'];
+        'multipart/form-data': components['schemas']['EvaluatorExecutionRequest'];
       };
     };
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["EvaluatorExecutionResult"];
+          'application/json': components['schemas']['EvaluatorExecutionResult'];
         };
       };
     };
@@ -1854,15 +1854,15 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["StatusChangeRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["StatusChangeRequest"];
-        "multipart/form-data": components["schemas"]["StatusChangeRequest"];
+        'application/json': components['schemas']['StatusChangeRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['StatusChangeRequest'];
+        'multipart/form-data': components['schemas']['StatusChangeRequest'];
       };
     };
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["StatusChange"];
+          'application/json': components['schemas']['StatusChange'];
         };
       };
     };
@@ -1876,15 +1876,15 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["StatusChangeRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["StatusChangeRequest"];
-        "multipart/form-data": components["schemas"]["StatusChangeRequest"];
+        'application/json': components['schemas']['StatusChangeRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['StatusChangeRequest'];
+        'multipart/form-data': components['schemas']['StatusChangeRequest'];
       };
     };
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["StatusChange"];
+          'application/json': components['schemas']['StatusChange'];
         };
       };
     };
@@ -1905,7 +1905,7 @@ export interface operations {
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["PaginatedEvaluatorList"];
+          'application/json': components['schemas']['PaginatedEvaluatorList'];
         };
       };
     };
@@ -1920,7 +1920,7 @@ export interface operations {
          * @description * `runtime` - runtime
          * * `test` - test
          */
-        execution_type?: "runtime" | "test";
+        execution_type?: 'runtime' | 'test';
         /** @description Comma-separated list of additional fields to include in the response. Supports: llm_output, variables, evaluation_context */
         include?: string;
         /** @description Filter logs by maximum score, inclusive, excludes null scores */
@@ -1943,7 +1943,7 @@ export interface operations {
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["PaginatedExecutionLogListList"];
+          'application/json': components['schemas']['PaginatedExecutionLogListList'];
         };
       };
     };
@@ -1958,7 +1958,7 @@ export interface operations {
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["ExecutionLogDetails"];
+          'application/json': components['schemas']['ExecutionLogDetails'];
         };
       };
     };
@@ -1985,7 +1985,7 @@ export interface operations {
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["PaginatedJudgeListList"];
+          'application/json': components['schemas']['PaginatedJudgeListList'];
         };
       };
     };
@@ -1994,15 +1994,15 @@ export interface operations {
   v1_judges_create: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["JudgeRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["JudgeRequest"];
-        "multipart/form-data": components["schemas"]["JudgeRequest"];
+        'application/json': components['schemas']['JudgeRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['JudgeRequest'];
+        'multipart/form-data': components['schemas']['JudgeRequest'];
       };
     };
     responses: {
       201: {
         content: {
-          "application/json": components["schemas"]["Judge"];
+          'application/json': components['schemas']['Judge'];
         };
       };
     };
@@ -2016,15 +2016,15 @@ export interface operations {
     };
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["JudgeExecutionRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["JudgeExecutionRequest"];
-        "multipart/form-data": components["schemas"]["JudgeExecutionRequest"];
+        'application/json': components['schemas']['JudgeExecutionRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['JudgeExecutionRequest'];
+        'multipart/form-data': components['schemas']['JudgeExecutionRequest'];
       };
     };
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["JudgeExecutionResponse"];
+          'application/json': components['schemas']['JudgeExecutionResponse'];
         };
       };
     };
@@ -2051,30 +2051,30 @@ export interface operations {
     };
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["JudgeRectifierRequestRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["JudgeRectifierRequestRequest"];
-        "multipart/form-data": components["schemas"]["JudgeRectifierRequestRequest"];
+        'application/json': components['schemas']['JudgeRectifierRequestRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['JudgeRectifierRequestRequest'];
+        'multipart/form-data': components['schemas']['JudgeRectifierRequestRequest'];
       };
     };
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["JudgeRectifierResponse"];
+          'application/json': components['schemas']['JudgeRectifierResponse'];
         };
       };
       400: {
         content: {
-          "application/json": unknown;
+          'application/json': unknown;
         };
       };
       403: {
         content: {
-          "application/json": unknown;
+          'application/json': unknown;
         };
       };
       404: {
         content: {
-          "application/json": unknown;
+          'application/json': unknown;
         };
       };
     };
@@ -2103,7 +2103,7 @@ export interface operations {
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["Judge"];
+          'application/json': components['schemas']['Judge'];
         };
       };
     };
@@ -2118,15 +2118,15 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["JudgeRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["JudgeRequest"];
-        "multipart/form-data": components["schemas"]["JudgeRequest"];
+        'application/json': components['schemas']['JudgeRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['JudgeRequest'];
+        'multipart/form-data': components['schemas']['JudgeRequest'];
       };
     };
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["Judge"];
+          'application/json': components['schemas']['Judge'];
         };
       };
     };
@@ -2156,15 +2156,15 @@ export interface operations {
     };
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["PatchedJudgeRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["PatchedJudgeRequest"];
-        "multipart/form-data": components["schemas"]["PatchedJudgeRequest"];
+        'application/json': components['schemas']['PatchedJudgeRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['PatchedJudgeRequest'];
+        'multipart/form-data': components['schemas']['PatchedJudgeRequest'];
       };
     };
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["Judge"];
+          'application/json': components['schemas']['Judge'];
         };
       };
     };
@@ -2180,7 +2180,7 @@ export interface operations {
     responses: {
       201: {
         content: {
-          "application/json": components["schemas"]["Judge"];
+          'application/json': components['schemas']['Judge'];
         };
       };
     };
@@ -2195,15 +2195,15 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["JudgeInviteRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["JudgeInviteRequest"];
-        "multipart/form-data": components["schemas"]["JudgeInviteRequest"];
+        'application/json': components['schemas']['JudgeInviteRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['JudgeInviteRequest'];
+        'multipart/form-data': components['schemas']['JudgeInviteRequest'];
       };
     };
     responses: {
       200: {
         content: {
-          "application/json": unknown;
+          'application/json': unknown;
         };
       };
     };
@@ -2212,15 +2212,15 @@ export interface operations {
   v1_judges_generate_create: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["JudgeGeneratorRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["JudgeGeneratorRequest"];
-        "multipart/form-data": components["schemas"]["JudgeGeneratorRequest"];
+        'application/json': components['schemas']['JudgeGeneratorRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['JudgeGeneratorRequest'];
+        'multipart/form-data': components['schemas']['JudgeGeneratorRequest'];
       };
     };
     responses: {
       201: {
         content: {
-          "application/json": components["schemas"]["JudgeGeneratorResponse"];
+          'application/json': components['schemas']['JudgeGeneratorResponse'];
         };
       };
     };
@@ -2250,7 +2250,7 @@ export interface operations {
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["PaginatedModelListList"];
+          'application/json': components['schemas']['PaginatedModelListList'];
         };
       };
     };
@@ -2259,15 +2259,15 @@ export interface operations {
   v1_models_create: {
     requestBody: {
       content: {
-        "application/json": components["schemas"]["ModelRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["ModelRequest"];
-        "multipart/form-data": components["schemas"]["ModelRequest"];
+        'application/json': components['schemas']['ModelRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['ModelRequest'];
+        'multipart/form-data': components['schemas']['ModelRequest'];
       };
     };
     responses: {
       201: {
         content: {
-          "application/json": components["schemas"]["Model"];
+          'application/json': components['schemas']['Model'];
         };
       };
     };
@@ -2283,7 +2283,7 @@ export interface operations {
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["Model"];
+          'application/json': components['schemas']['Model'];
         };
       };
     };
@@ -2298,15 +2298,15 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["ModelRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["ModelRequest"];
-        "multipart/form-data": components["schemas"]["ModelRequest"];
+        'application/json': components['schemas']['ModelRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['ModelRequest'];
+        'multipart/form-data': components['schemas']['ModelRequest'];
       };
     };
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["Model"];
+          'application/json': components['schemas']['Model'];
         };
       };
     };
@@ -2334,15 +2334,15 @@ export interface operations {
     };
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["PatchedModelRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["PatchedModelRequest"];
-        "multipart/form-data": components["schemas"]["PatchedModelRequest"];
+        'application/json': components['schemas']['PatchedModelRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['PatchedModelRequest'];
+        'multipart/form-data': components['schemas']['PatchedModelRequest'];
       };
     };
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["Model"];
+          'application/json': components['schemas']['Model'];
         };
       };
     };
@@ -2368,7 +2368,7 @@ export interface operations {
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["PaginatedObjectiveListList"];
+          'application/json': components['schemas']['PaginatedObjectiveListList'];
         };
       };
     };
@@ -2377,15 +2377,15 @@ export interface operations {
   v1_objectives_create: {
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["ObjectiveRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["ObjectiveRequest"];
-        "multipart/form-data": components["schemas"]["ObjectiveRequest"];
+        'application/json': components['schemas']['ObjectiveRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['ObjectiveRequest'];
+        'multipart/form-data': components['schemas']['ObjectiveRequest'];
       };
     };
     responses: {
       201: {
         content: {
-          "application/json": components["schemas"]["ID"];
+          'application/json': components['schemas']['ID'];
         };
       };
     };
@@ -2400,7 +2400,7 @@ export interface operations {
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["Objective"];
+          'application/json': components['schemas']['Objective'];
         };
       };
     };
@@ -2414,15 +2414,15 @@ export interface operations {
     };
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["ObjectiveRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["ObjectiveRequest"];
-        "multipart/form-data": components["schemas"]["ObjectiveRequest"];
+        'application/json': components['schemas']['ObjectiveRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['ObjectiveRequest'];
+        'multipart/form-data': components['schemas']['ObjectiveRequest'];
       };
     };
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["Objective"];
+          'application/json': components['schemas']['Objective'];
         };
       };
     };
@@ -2449,15 +2449,15 @@ export interface operations {
     };
     requestBody?: {
       content: {
-        "application/json": components["schemas"]["PatchedObjectiveRequest"];
-        "application/x-www-form-urlencoded": components["schemas"]["PatchedObjectiveRequest"];
-        "multipart/form-data": components["schemas"]["PatchedObjectiveRequest"];
+        'application/json': components['schemas']['PatchedObjectiveRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['PatchedObjectiveRequest'];
+        'multipart/form-data': components['schemas']['PatchedObjectiveRequest'];
       };
     };
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["Objective"];
+          'application/json': components['schemas']['Objective'];
         };
       };
     };
@@ -2477,7 +2477,7 @@ export interface operations {
     responses: {
       200: {
         content: {
-          "application/json": components["schemas"]["PaginatedObjectiveList"];
+          'application/json': components['schemas']['PaginatedObjectiveList'];
         };
       };
     };

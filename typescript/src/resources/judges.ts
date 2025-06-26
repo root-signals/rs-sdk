@@ -1,23 +1,24 @@
 import type { paths, components } from '../generated/types.js';
-import { PaginatedResponse, ListParams, RootSignalsError } from '../types/common.js';
+import { PaginatedResponse, ListParams, RootSignalsError, ApiError } from '../types/common.js';
 
 type Client = ReturnType<typeof import('openapi-fetch').default<paths>>;
 
 export type Judge = components['schemas']['JudgeList'];
 export type JudgeDetail = components['schemas']['Judge'];
 export type JudgeExecutionResult = components['schemas']['JudgeExecutionResponse'];
+type Function = components['schemas']['EvaluatorExecutionFunctionsRequest'];
 
 export interface CreateJudgeData {
   name: string;
   intent: string;
-  evaluator_references?: Array<{id: string; version_id?: string}>;
+  evaluator_references?: Array<{ id: string; version_id?: string }>;
   stage?: string;
 }
 
 export interface UpdateJudgeData {
   name?: string;
   intent?: string;
-  evaluator_references?: Array<{id: string; version_id?: string}>;
+  evaluator_references?: Array<{ id: string; version_id?: string }>;
   stage?: string;
 }
 
@@ -25,7 +26,7 @@ export interface JudgeExecutionPayload {
   request?: string;
   response?: string;
   contexts?: string[];
-  functions?: any[];
+  functions?: Function[];
   expected_output?: string;
   tags?: string[];
 }
@@ -36,24 +37,22 @@ export interface JudgeListParams extends ListParams {
 }
 
 export class JudgesResource {
-  constructor(
-    private _client: Client
-  ) {}
+  constructor(private _client: Client) {}
 
   /**
    * List all accessible judges
    */
   async list(params: JudgeListParams = {}): Promise<PaginatedResponse<Judge>> {
-    const { data, error } = await this._client.GET('/beta/judges/', {
-      params: { query: params }
+    const { data, error } = await this._client.GET('/v1/judges/', {
+      params: { query: params },
     });
 
     if (error) {
       throw new RootSignalsError(
-        (error as any)?.status ?? 500,
+        (error as ApiError)?.status ?? 500,
         'LIST_JUDGES_FAILED',
         error,
-        'Failed to list judges'
+        'Failed to list judges',
       );
     }
 
@@ -61,7 +60,6 @@ export class JudgesResource {
       results: data.results,
       next: data.next ?? undefined,
       previous: data.previous ?? undefined,
-      count: (data as any).count ?? data.results.length
     };
   }
 
@@ -69,16 +67,16 @@ export class JudgesResource {
    * Create a new judge
    */
   async create(data: CreateJudgeData): Promise<JudgeDetail> {
-    const { data: responseData, error } = await this._client.POST('/beta/judges/', {
-      body: data
+    const { data: responseData, error } = await this._client.POST('/v1/judges/', {
+      body: data,
     });
 
     if (error) {
       throw new RootSignalsError(
-        (error as any)?.status ?? 500,
+        (error as ApiError)?.status ?? 500,
         'CREATE_JUDGE_FAILED',
         error,
-        'Failed to create judge'
+        'Failed to create judge',
       );
     }
 
@@ -89,16 +87,16 @@ export class JudgesResource {
    * Get a specific judge by ID
    */
   async get(id: string): Promise<JudgeDetail> {
-    const { data, error } = await this._client.GET('/beta/judges/{id}/', {
-      params: { path: { id } }
+    const { data, error } = await this._client.GET('/v1/judges/{id}/', {
+      params: { path: { id } },
     });
 
     if (error) {
       throw new RootSignalsError(
-        (error as any)?.status ?? 500,
+        (error as ApiError)?.status ?? 500,
         'GET_JUDGE_FAILED',
         error,
-        `Failed to get judge ${id}`
+        `Failed to get judge ${id}`,
       );
     }
 
@@ -109,17 +107,17 @@ export class JudgesResource {
    * Update an existing judge (partial update)
    */
   async update(id: string, data: UpdateJudgeData): Promise<JudgeDetail> {
-    const { data: responseData, error } = await this._client.PATCH('/beta/judges/{id}/', {
+    const { data: responseData, error } = await this._client.PATCH('/v1/judges/{id}/', {
       params: { path: { id } },
-      body: data
+      body: data,
     });
 
     if (error) {
       throw new RootSignalsError(
-        (error as any)?.status ?? 500,
+        (error as ApiError)?.status ?? 500,
         'UPDATE_JUDGE_FAILED',
         error,
-        `Failed to update judge ${id}`
+        `Failed to update judge ${id}`,
       );
     }
 
@@ -130,16 +128,16 @@ export class JudgesResource {
    * Delete a judge
    */
   async delete(id: string): Promise<void> {
-    const { error } = await this._client.DELETE('/beta/judges/{id}/', {
-      params: { path: { id } }
+    const { error } = await this._client.DELETE('/v1/judges/{id}/', {
+      params: { path: { id } },
     });
 
     if (error) {
       throw new RootSignalsError(
-        (error as any)?.status ?? 500,
+        (error as ApiError)?.status ?? 500,
         'DELETE_JUDGE_FAILED',
         error,
-        `Failed to delete judge ${id}`
+        `Failed to delete judge ${id}`,
       );
     }
   }
@@ -148,17 +146,17 @@ export class JudgesResource {
    * Execute a judge
    */
   async execute(id: string, payload: JudgeExecutionPayload = {}): Promise<JudgeExecutionResult> {
-    const { data, error } = await this._client.POST('/beta/judges/{judge_id}/execute/', {
+    const { data, error } = await this._client.POST('/v1/judges/{judge_id}/execute/', {
       params: { path: { judge_id: id } },
-      body: payload
+      body: payload,
     });
 
     if (error) {
       throw new RootSignalsError(
-        (error as any)?.status ?? 500,
+        (error as ApiError)?.status ?? 500,
         'EXECUTE_JUDGE_FAILED',
         error,
-        `Failed to execute judge ${id}`
+        `Failed to execute judge ${id}`,
       );
     }
 
@@ -168,21 +166,28 @@ export class JudgesResource {
   /**
    * Generate a new judge using AI
    */
-  async generate(intent: string): Promise<{ judge_id: string; error_code?: string | null }> {
-    const { data, error } = await this._client.POST('/beta/judges/generate/', {
-      body: { 
+  async generate({
+    intent,
+    stage,
+  }: {
+    intent: string;
+    stage?: string;
+  }): Promise<{ judge_id: string; error_code?: string | null }> {
+    const { data, error } = await this._client.POST('/v1/judges/generate/', {
+      body: {
         intent,
         visibility: 'unlisted' as const,
-        strict: true
-      }
+        stage: stage ?? null,
+        strict: true,
+      },
     });
 
     if (error) {
       throw new RootSignalsError(
-        (error as any)?.status ?? 500,
+        (error as ApiError)?.status ?? 500,
         'GENERATE_JUDGE_FAILED',
         error,
-        'Failed to generate judge'
+        'Failed to generate judge',
       );
     }
 
@@ -192,18 +197,21 @@ export class JudgesResource {
   /**
    * Refine a judge using AI feedback
    */
-  async refine(id: string, payload: JudgeExecutionPayload): Promise<components['schemas']['JudgeRectifierResponse'] | undefined> {
-    const { data, error } = await this._client.POST('/beta/judges/{judge_id}/refine/', {
+  async refine(
+    id: string,
+    payload: JudgeExecutionPayload,
+  ): Promise<components['schemas']['JudgeRectifierResponse'] | undefined> {
+    const { data, error } = await this._client.POST('/v1/judges/{judge_id}/refine/', {
       params: { path: { judge_id: id } },
-      body: payload
+      body: payload,
     });
 
     if (error) {
       throw new RootSignalsError(
-        (error as any)?.status ?? 500,
+        (error as ApiError)?.status ?? 500,
         'REFINE_JUDGE_FAILED',
-        error,
-        `Failed to refine judge ${id}`
+        error as never,
+        `Failed to refine judge ${id}`,
       );
     }
 
@@ -214,16 +222,16 @@ export class JudgesResource {
    * Duplicate a judge
    */
   async duplicate(id: string): Promise<JudgeDetail> {
-    const { data, error } = await this._client.POST('/beta/judges/{id}/duplicate/', {
-      params: { path: { id } }
+    const { data, error } = await this._client.POST('/v1/judges/{id}/duplicate/', {
+      params: { path: { id } },
     });
 
     if (error) {
       throw new RootSignalsError(
-        (error as any)?.status ?? 500,
+        (error as ApiError)?.status ?? 500,
         'DUPLICATE_JUDGE_FAILED',
         error,
-        `Failed to duplicate judge ${id}`
+        `Failed to duplicate judge ${id}`,
       );
     }
 

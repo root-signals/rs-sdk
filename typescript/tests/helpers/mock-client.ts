@@ -1,28 +1,15 @@
 import { vi } from 'vitest';
 import type { paths } from '../../src/generated/types';
 
-// Type definitions for openapi-fetch client methods
-type ClientMethod<TPath extends keyof paths, TMethod extends keyof paths[TPath]> = (
-  url: TPath,
-  options?: any
-) => Promise<{
-  data: paths[TPath][TMethod] extends { responses: { 200: { content: { 'application/json': infer TData } } } }
-    ? TData
-    : any;
-  error: paths[TPath][TMethod] extends { responses: infer TResponses }
-    ? TResponses extends Record<string, any>
-      ? Exclude<keyof TResponses, '200'> extends never
-        ? undefined
-        : any
-      : any
-    : any;
-}>;
-
 type GetMethod = <TPath extends keyof paths>(
   url: TPath,
-  options?: paths[TPath]['get'] extends { parameters?: infer TParams } ? { params?: TParams } : never
+  options?: paths[TPath]['get'] extends { parameters?: infer TParams }
+    ? { params?: TParams }
+    : never,
 ) => Promise<{
-  data: paths[TPath]['get'] extends { responses: { 200: { content: { 'application/json': infer TData } } } }
+  data: paths[TPath]['get'] extends {
+    responses: { 200: { content: { 'application/json': infer TData } } };
+  }
     ? TData
     : any;
   error: any;
@@ -30,11 +17,18 @@ type GetMethod = <TPath extends keyof paths>(
 
 type PostMethod = <TPath extends keyof paths>(
   url: TPath,
-  options?: paths[TPath]['post'] extends { requestBody?: { content: { 'application/json': infer TBody } }; parameters?: infer TParams }
+  options?: paths[TPath]['post'] extends {
+    requestBody?: { content: { 'application/json': infer TBody } };
+    parameters?: infer TParams;
+  }
     ? { body?: TBody; params?: TParams }
-    : never
+    : never,
 ) => Promise<{
-  data: paths[TPath]['post'] extends { responses: { 200: { content: { 'application/json': infer TData } } } | { 201: { content: { 'application/json': infer TData } } } }
+  data: paths[TPath]['post'] extends {
+    responses:
+      | { 200: { content: { 'application/json': infer TData } } }
+      | { 201: { content: { 'application/json': infer TData } } };
+  }
     ? TData
     : any;
   error: any;
@@ -42,11 +36,16 @@ type PostMethod = <TPath extends keyof paths>(
 
 type PutMethod = <TPath extends keyof paths>(
   url: TPath,
-  options?: paths[TPath]['put'] extends { requestBody?: { content: { 'application/json': infer TBody } }; parameters?: infer TParams }
+  options?: paths[TPath]['put'] extends {
+    requestBody?: { content: { 'application/json': infer TBody } };
+    parameters?: infer TParams;
+  }
     ? { body?: TBody; params?: TParams }
-    : never
+    : never,
 ) => Promise<{
-  data: paths[TPath]['put'] extends { responses: { 200: { content: { 'application/json': infer TData } } } }
+  data: paths[TPath]['put'] extends {
+    responses: { 200: { content: { 'application/json': infer TData } } };
+  }
     ? TData
     : any;
   error: any;
@@ -54,11 +53,16 @@ type PutMethod = <TPath extends keyof paths>(
 
 type PatchMethod = <TPath extends keyof paths>(
   url: TPath,
-  options?: paths[TPath]['patch'] extends { requestBody?: { content: { 'application/json': infer TBody } }; parameters?: infer TParams }
+  options?: paths[TPath]['patch'] extends {
+    requestBody?: { content: { 'application/json': infer TBody } };
+    parameters?: infer TParams;
+  }
     ? { body?: TBody; params?: TParams }
-    : never
+    : never,
 ) => Promise<{
-  data: paths[TPath]['patch'] extends { responses: { 200: { content: { 'application/json': infer TData } } } }
+  data: paths[TPath]['patch'] extends {
+    responses: { 200: { content: { 'application/json': infer TData } } };
+  }
     ? TData
     : any;
   error: any;
@@ -68,18 +72,16 @@ type DeleteMethod = <TPath extends keyof paths>(
   url: TPath,
   options?: paths[TPath]['delete'] extends { parameters?: infer TParams }
     ? { params?: TParams }
-    : never
+    : never,
 ) => Promise<{
-  data: paths[TPath]['delete'] extends { responses: { 204: any } }
-    ? undefined
-    : any;
+  data: paths[TPath]['delete'] extends { responses: { 204: any } } ? undefined : any;
   error: any;
 }>;
 
 // Mock HTTP client that simulates openapi-fetch behavior
 export class MockClient {
   private mockResponses: Map<string, any> = new Map();
-  
+
   constructor() {
     this.setupDefaultMocks();
   }
@@ -95,38 +97,38 @@ export class MockClient {
             name: 'Test Evaluator',
             requires_expected_output: false,
             requires_contexts: false,
-            requires_functions: false
-          }
+            requires_functions: false,
+          },
         ],
         next: null,
-        previous: null
+        previous: null,
       },
-      error: undefined
+      error: undefined,
     });
 
     // Default judges list response
-    this.mockResponses.set('GET /beta/judges/', {
+    this.mockResponses.set('GET /v1/judges/', {
       data: {
         results: [
           {
             id: 'judge-123',
             name: 'Test Judge',
-            intent: 'Test judge for evaluation'
-          }
+            intent: 'Test judge for evaluation',
+          },
         ],
         next: null,
-        previous: null
+        previous: null,
       },
-      error: undefined
+      error: undefined,
     });
 
     // Default execution response
     this.mockResponses.set('POST /v1/evaluators/eval-123/execute/', {
       data: {
         score: 0.85,
-        justification: 'Test justification'
+        justification: 'Test justification',
       },
-      error: undefined
+      error: undefined,
     });
   }
 
@@ -134,15 +136,15 @@ export class MockClient {
   GET = vi.fn<GetMethod>((url, options) => {
     const key = `GET ${url}`;
     const response = this.mockResponses.get(key);
-    
+
     if (response) {
       return Promise.resolve(response);
     }
-    
+
     // Default success response for unknown endpoints
     return Promise.resolve({
       data: { results: [], next: null, previous: null },
-      error: undefined
+      error: undefined,
     });
   });
 
@@ -150,15 +152,15 @@ export class MockClient {
   POST = vi.fn<PostMethod>((url, options) => {
     const key = `POST ${url}`;
     const response = this.mockResponses.get(key);
-    
+
     if (response) {
       return Promise.resolve(response);
     }
-    
+
     // Default creation response
     return Promise.resolve({
       data: { id: 'created-123', ...options?.body },
-      error: undefined
+      error: undefined,
     });
   });
 
@@ -166,7 +168,7 @@ export class MockClient {
   PUT = vi.fn<PutMethod>((url, options) => {
     return Promise.resolve({
       data: { id: 'updated-123', ...options?.body },
-      error: undefined
+      error: undefined,
     });
   });
 
@@ -174,7 +176,7 @@ export class MockClient {
   PATCH = vi.fn<PatchMethod>((url, options) => {
     return Promise.resolve({
       data: { id: 'patched-123', ...options?.body },
-      error: undefined
+      error: undefined,
     });
   });
 
@@ -182,7 +184,7 @@ export class MockClient {
   DELETE = vi.fn<DeleteMethod>((url, options) => {
     return Promise.resolve({
       data: undefined,
-      error: undefined
+      error: undefined,
     });
   });
 
@@ -195,7 +197,7 @@ export class MockClient {
   setMockError(method: string, url: string, error: any) {
     this.mockResponses.set(`${method} ${url}`, {
       data: undefined,
-      error
+      error,
     });
   }
 

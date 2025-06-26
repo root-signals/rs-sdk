@@ -7,9 +7,9 @@ describe('Authentication', () => {
       const headers = createAuthHeaders(config);
 
       expect(headers).toEqual({
-        'Authorization': 'Api-Key test-api-key-123',
+        Authorization: 'Api-Key test-api-key-123',
         'Content-Type': 'application/json',
-        'User-Agent': '@root-signals/typescript-sdk/0.1.0'
+        'User-Agent': '@root-signals/typescript-sdk/0.1.0',
       });
     });
 

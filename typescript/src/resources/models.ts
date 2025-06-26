@@ -1,5 +1,5 @@
 import type { paths, components } from '../generated/types.js';
-import { PaginatedResponse, ListParams, RootSignalsError } from '../types/common.js';
+import { PaginatedResponse, ListParams, RootSignalsError, ApiError } from '../types/common.js';
 
 type Client = ReturnType<typeof import('openapi-fetch').default<paths>>;
 
@@ -30,24 +30,22 @@ export interface ModelListParams extends ListParams {
 }
 
 export class ModelsResource {
-  constructor(
-    private _client: Client
-  ) {}
+  constructor(private _client: Client) {}
 
   /**
    * List all available models
    */
   async list(params: ModelListParams = {}): Promise<PaginatedResponse<ModelList>> {
     const { data, error } = await this._client.GET('/v1/models/', {
-      params: { query: params }
+      params: { query: params },
     });
 
     if (error) {
       throw new RootSignalsError(
-        (error as any)?.status ?? 500,
+        (error as ApiError)?.status ?? 500,
         'LIST_MODELS_FAILED',
         error,
-        'Failed to list models'
+        'Failed to list models',
       );
     }
 
@@ -55,7 +53,6 @@ export class ModelsResource {
       results: data.results,
       next: data.next ?? undefined,
       previous: data.previous ?? undefined,
-      count: data.results.length
     };
   }
 
@@ -64,15 +61,15 @@ export class ModelsResource {
    */
   async create(data: CreateModelData): Promise<ModelDetail> {
     const { data: responseData, error } = await this._client.POST('/v1/models/', {
-      body: data
+      body: data,
     });
 
     if (error) {
       throw new RootSignalsError(
-        (error as any)?.status ?? 500,
+        (error as ApiError)?.status ?? 500,
         'CREATE_MODEL_FAILED',
         error,
-        'Failed to create model'
+        'Failed to create model',
       );
     }
 
@@ -84,15 +81,15 @@ export class ModelsResource {
    */
   async get(id: string): Promise<ModelDetail> {
     const { data, error } = await this._client.GET('/v1/models/{id}/', {
-      params: { path: { id } }
+      params: { path: { id } },
     });
 
     if (error) {
       throw new RootSignalsError(
-        (error as any)?.status ?? 500,
+        (error as ApiError)?.status ?? 500,
         'GET_MODEL_FAILED',
         error,
-        `Failed to get model ${id}`
+        `Failed to get model ${id}`,
       );
     }
 
@@ -105,15 +102,15 @@ export class ModelsResource {
   async update(id: string, data: UpdateModelData): Promise<ModelDetail> {
     const { data: responseData, error } = await this._client.PUT('/v1/models/{id}/', {
       params: { path: { id } },
-      body: data
+      body: data,
     });
 
     if (error) {
       throw new RootSignalsError(
-        (error as any)?.status ?? 500,
+        (error as ApiError)?.status ?? 500,
         'UPDATE_MODEL_FAILED',
         error,
-        `Failed to update model ${id}`
+        `Failed to update model ${id}`,
       );
     }
 
@@ -125,15 +122,15 @@ export class ModelsResource {
    */
   async delete(id: string): Promise<void> {
     const { error } = await this._client.DELETE('/v1/models/{id}/', {
-      params: { path: { id } }
+      params: { path: { id } },
     });
 
     if (error) {
       throw new RootSignalsError(
-        (error as any)?.status ?? 500,
+        (error as ApiError)?.status ?? 500,
         'DELETE_MODEL_FAILED',
         error,
-        `Failed to delete model ${id}`
+        `Failed to delete model ${id}`,
       );
     }
   }
@@ -144,15 +141,15 @@ export class ModelsResource {
   async patch(id: string, data: Partial<UpdateModelData>): Promise<ModelDetail> {
     const { data: responseData, error } = await this._client.PATCH('/v1/models/{id}/', {
       params: { path: { id } },
-      body: data
+      body: data,
     });
 
     if (error) {
       throw new RootSignalsError(
-        (error as any)?.status ?? 500,
+        (error as ApiError)?.status ?? 500,
         'PATCH_MODEL_FAILED',
         error,
-        `Failed to patch model ${id}`
+        `Failed to patch model ${id}`,
       );
     }
 

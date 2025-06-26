@@ -3,7 +3,9 @@
   "compilerOptions": {
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "types": ["jest", "node"],
+    "types": ["vitest/globals", "node"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "sourceMap": true,
     "inlineSourceMap": false,
     "outDir": "./dist-test"

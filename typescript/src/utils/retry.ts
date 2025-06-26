@@ -1,3 +1,5 @@
+import { ApiError } from '../types/common';
+
 /**
  * Configuration for retry logic with exponential backoff
  */
@@ -31,11 +33,11 @@ export const DEFAULT_RETRY_CONFIG: RetryConfig = {
     }
     // Check for RootSignalsError with retryable status codes
     if ('status' in error) {
-      const status = (error as any).status;
+      const status = (error as unknown as ApiError).status;
       return status >= 500 || status === 429; // Server errors or rate limiting
     }
     return false;
-  }
+  },
 };
 
 /**
@@ -55,34 +57,34 @@ export class RetryManager {
    */
   async execute<T>(fn: () => Promise<T>): Promise<T> {
     let lastError: Error | undefined;
-    
+
     for (let attempt = 0; attempt <= this.config.maxRetries; attempt++) {
       try {
         return await fn();
       } catch (error) {
         lastError = error as Error;
-        
+
         // Don't retry on last attempt
         if (attempt === this.config.maxRetries) {
           break;
         }
-        
+
         // Check if this error should trigger a retry
         if (!this.config.retryCondition?.(lastError, attempt + 1)) {
           break;
         }
-        
+
         // Calculate delay with exponential backoff
         const delay = this.calculateDelay(attempt);
-        
+
         // Call retry callback if provided
         this.config.onRetry?.(lastError, attempt + 1, delay);
-        
+
         // Wait before retrying
         await this.sleep(delay);
       }
     }
-    
+
     throw lastError ?? new Error('Retry attempts exhausted');
   }
 
@@ -98,7 +100,7 @@ export class RetryManager {
    * Sleep for the specified number of milliseconds
    */
   private sleep(ms: number): Promise<void> {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       if (typeof setTimeout !== 'undefined') {
         setTimeout(resolve, ms);
       } else {
@@ -127,8 +129,8 @@ export class RetryManager {
  * Convenience function to retry a function with default configuration
  */
 export async function withRetry<T>(
-  fn: () => Promise<T>, 
-  config?: Partial<RetryConfig>
+  fn: () => Promise<T>,
+  config?: Partial<RetryConfig>,
 ): Promise<T> {
   const retryManager = new RetryManager(config);
   return retryManager.execute(fn);

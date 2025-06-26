@@ -35,7 +35,8 @@ export default [
       'no-console': 'warn',
       'no-debugger': 'error',
       'prefer-const': 'error',
-      'no-var': 'error'
+      'no-var': 'error',
+      'no-unused-vars': 'off'
     }
   },
   {
@@ -62,7 +63,8 @@ export default [
       'no-debugger': 'error',
       'prefer-const': 'error',
       'no-var': 'error',
-      'no-undef': 'off'  // TypeScript handles this
+      'no-undef': 'off',  // TypeScript handles this
+      'no-unused-vars': 'off'
     }
   }
 ];
