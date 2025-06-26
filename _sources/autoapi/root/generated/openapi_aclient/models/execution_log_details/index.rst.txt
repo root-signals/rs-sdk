@@ -55,12 +55,24 @@ Module Contents
       :type:  Optional[List[root.generated.openapi_aclient.models.execution_log_details_evaluator_latencies_inner.ExecutionLogDetailsEvaluatorLatenciesInner]]
 
 
-   .. py:attribute:: id
+   .. py:attribute:: executed_item_id
+      :type:  Optional[pydantic.StrictStr]
+
+
+   .. py:attribute:: executed_item_name
       :type:  pydantic.StrictStr
 
 
-   .. py:attribute:: judge
-      :type:  Optional[root.generated.openapi_aclient.models.execution_log_details_judge.ExecutionLogDetailsJudge]
+   .. py:attribute:: executed_item_version_id
+      :type:  Optional[pydantic.StrictStr]
+
+
+   .. py:attribute:: execution_type
+      :type:  pydantic.StrictStr
+
+
+   .. py:attribute:: id
+      :type:  pydantic.StrictStr
 
 
    .. py:attribute:: justification
@@ -88,10 +100,6 @@ Module Contents
 
 
 
-   .. py:attribute:: objective
-      :type:  root.generated.openapi_aclient.models.execution_log_details_objective.ExecutionLogDetailsObjective
-
-
    .. py:attribute:: owner
       :type:  root.generated.openapi_aclient.models.nested_user_details.NestedUserDetails
 
@@ -102,16 +110,16 @@ Module Contents
 
 
 
+   .. py:attribute:: prompt_template
+      :type:  pydantic.StrictStr
+
+
    .. py:attribute:: rendered_prompt
       :type:  pydantic.StrictStr
 
 
    .. py:attribute:: score
       :type:  Optional[Union[pydantic.StrictFloat, pydantic.StrictInt]]
-
-
-   .. py:attribute:: skill
-      :type:  root.generated.openapi_aclient.models.execution_log_details_skill.ExecutionLogDetailsSkill
 
 
    .. py:attribute:: tags

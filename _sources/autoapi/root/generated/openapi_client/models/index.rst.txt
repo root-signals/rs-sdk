@@ -40,12 +40,8 @@ Submodules
    /autoapi/root/generated/openapi_client/models/execution_log_details/index
    /autoapi/root/generated/openapi_client/models/execution_log_details_evaluation_context/index
    /autoapi/root/generated/openapi_client/models/execution_log_details_evaluator_latencies_inner/index
-   /autoapi/root/generated/openapi_client/models/execution_log_details_judge/index
-   /autoapi/root/generated/openapi_client/models/execution_log_details_objective/index
-   /autoapi/root/generated/openapi_client/models/execution_log_details_skill/index
    /autoapi/root/generated/openapi_client/models/execution_log_list/index
    /autoapi/root/generated/openapi_client/models/execution_log_list_evaluation_context/index
-   /autoapi/root/generated/openapi_client/models/execution_log_list_skill/index
    /autoapi/root/generated/openapi_client/models/id/index
    /autoapi/root/generated/openapi_client/models/input_variable/index
    /autoapi/root/generated/openapi_client/models/judge/index

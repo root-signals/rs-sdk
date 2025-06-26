@@ -47,12 +47,24 @@ Module Contents
       :type:  Optional[root.generated.openapi_client.models.execution_log_list_evaluation_context.ExecutionLogListEvaluationContext]
 
 
-   .. py:attribute:: id
+   .. py:attribute:: executed_item_id
+      :type:  Optional[pydantic.StrictStr]
+
+
+   .. py:attribute:: executed_item_name
       :type:  pydantic.StrictStr
 
 
-   .. py:attribute:: judge
-      :type:  Optional[root.generated.openapi_client.models.execution_log_details_judge.ExecutionLogDetailsJudge]
+   .. py:attribute:: executed_item_version_id
+      :type:  Optional[pydantic.StrictStr]
+
+
+   .. py:attribute:: execution_type
+      :type:  pydantic.StrictStr
+
+
+   .. py:attribute:: id
+      :type:  pydantic.StrictStr
 
 
    .. py:attribute:: llm_output
@@ -76,16 +88,8 @@ Module Contents
       :type:  Optional[Union[pydantic.StrictFloat, pydantic.StrictInt]]
 
 
-   .. py:attribute:: skill
-      :type:  root.generated.openapi_client.models.execution_log_list_skill.ExecutionLogListSkill
-
-
    .. py:attribute:: tags
       :type:  List[pydantic.StrictStr]
-
-
-   .. py:attribute:: validation_result_average
-      :type:  Optional[Union[pydantic.StrictFloat, pydantic.StrictInt]]
 
 
    .. py:attribute:: variables
