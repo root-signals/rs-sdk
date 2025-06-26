@@ -53,7 +53,7 @@ describe('EvaluatorsResource', () => {
   describe('get', () => {
     it('should get evaluator by ID', async () => {
       const evaluatorId = '31a16e18-afc4-4f85-bb16-cc7635fc8829';
-      mockClient.setMockResponse('GET', `/v1/evaluators/${evaluatorId}/`, {
+      mockClient.setMockResponse('GET', '/v1/evaluators/{id}/', {
         data: mockResponses.evaluators.detail,
         error: undefined,
       });
@@ -62,14 +62,14 @@ describe('EvaluatorsResource', () => {
 
       expect(result.id).toBe(evaluatorId);
       expect(result.name).toBe('Precision of Scorers Description');
-      expect(mockClient.GET).toHaveBeenCalledWith(`/v1/evaluators/${evaluatorId}/`, {
+      expect(mockClient.GET).toHaveBeenCalledWith('/v1/evaluators/{id}/', {
         params: { path: { id: evaluatorId } },
       });
     });
 
     it('should handle invalid evaluator ID', async () => {
       const invalidId = 'invalid-id';
-      mockClient.setMockError('GET', `/v1/evaluators/${invalidId}/`, {
+      mockClient.setMockError('GET', '/v1/evaluators/{id}/', {
         detail: 'Not found.',
       });
 
@@ -82,7 +82,7 @@ describe('EvaluatorsResource', () => {
       const evaluatorId = 'eval-123';
       const executionData = TestDataFactory.getTestExecutionInputs();
 
-      mockClient.setMockResponse('POST', `/v1/evaluators/${evaluatorId}/execute/`, {
+      mockClient.setMockResponse('POST', '/v1/evaluators/execute/{id}/', {
         data: mockResponses.evaluators.execution,
         error: undefined,
       });
@@ -91,7 +91,7 @@ describe('EvaluatorsResource', () => {
 
       expect(result.score).toBe(0.85);
       expect(result.justification).toBeDefined();
-      expect(mockClient.POST).toHaveBeenCalledWith(`/v1/evaluators/${evaluatorId}/execute/`, {
+      expect(mockClient.POST).toHaveBeenCalledWith('/v1/evaluators/execute/{id}/', {
         params: { path: { id: evaluatorId } },
         body: executionData,
       });
@@ -99,7 +99,7 @@ describe('EvaluatorsResource', () => {
 
     it('should handle missing required parameters', async () => {
       const evaluatorId = 'eval-123';
-      mockClient.setMockError('POST', `/v1/evaluators/${evaluatorId}/execute/`, {
+      mockClient.setMockError('POST', '/v1/evaluators/execute/{id}/', {
         request: ['This field is required.'],
       });
 
@@ -112,7 +112,7 @@ describe('EvaluatorsResource', () => {
       const evaluatorName = 'Test Evaluator';
       const executionData = TestDataFactory.getTestExecutionInputs();
 
-      mockClient.setMockResponse('POST', `/v1/evaluators/execute/${evaluatorName}/`, {
+      mockClient.setMockResponse('POST', '/v1/evaluators/execute/by-name/', {
         data: mockResponses.evaluators.execution,
         error: undefined,
       });
@@ -125,7 +125,7 @@ describe('EvaluatorsResource', () => {
 
     it('should handle non-existent evaluator name', async () => {
       const invalidName = 'Non Existent Evaluator';
-      mockClient.setMockError('POST', `/v1/evaluators/execute/${invalidName}/`, {
+      mockClient.setMockError('POST', '/v1/evaluators/execute/by-name/', {
         detail: 'Evaluator not found.',
       });
 
@@ -141,7 +141,7 @@ describe('EvaluatorsResource', () => {
         name: 'Test Evaluator (Copy)',
       });
 
-      mockClient.setMockResponse('POST', `/v1/evaluators/duplicate/${evaluatorId}/`, {
+      mockClient.setMockResponse('POST', '/v1/evaluators/duplicate/{id}/', {
         data: duplicatedEvaluator,
         error: undefined,
       });
@@ -150,14 +150,15 @@ describe('EvaluatorsResource', () => {
 
       expect(result.id).toBe('eval-duplicated-456');
       expect(result.name).toContain('Copy');
-      expect(mockClient.POST).toHaveBeenCalledWith(`/v1/evaluators/duplicate/${evaluatorId}/`, {
+      expect(mockClient.POST).toHaveBeenCalledWith('/v1/evaluators/duplicate/{id}/', {
         params: { path: { id: evaluatorId } },
+        body: { name: `Copy of evaluator ${evaluatorId}` },
       });
     });
 
     it('should handle permission errors', async () => {
       const evaluatorId = 'eval-123';
-      mockClient.setMockError('POST', `/v1/evaluators/duplicate/${evaluatorId}/`, {
+      mockClient.setMockError('POST', '/v1/evaluators/duplicate/{id}/', {
         detail: 'Permission denied.',
       });
 
@@ -171,7 +172,7 @@ describe('EvaluatorsResource', () => {
         detail: 'Internal server error',
       });
 
-      await expect(client.evaluators.list()).rejects.toThrow('LIST_EVALUATORS_FAILED');
+      await expect(client.evaluators.list()).rejects.toThrow('Failed to list evaluators');
     });
 
     it('should handle network timeouts', async () => {

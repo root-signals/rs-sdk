@@ -25,7 +25,7 @@ describe('RootSignalsError', () => {
       expect(error.status).toBe(500);
       expect(error.code).toBe('INTERNAL_ERROR');
       expect(error.details).toBeUndefined();
-      expect(error.message).toBe('An error occurred');
+      expect(error.message).toBe(`API Error 500: INTERNAL_ERROR`);
       expect(error.name).toBe('RootSignalsError');
     });
 

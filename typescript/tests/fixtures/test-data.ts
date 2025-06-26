@@ -15,7 +15,7 @@ export class TestDataFactory {
 
   static createJudge(overrides: Partial<any> = {}) {
     return {
-      id: `judge-${Date.now()}`,
+      id: overrides.id || `judge-${Date.now()}`,
       name: 'Test Judge',
       intent: 'Test judge for evaluation purposes',
       evaluators: [],

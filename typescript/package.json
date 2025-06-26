@@ -23,9 +23,9 @@
     "test": "vitest",
     "test:watch": "vitest --watch",
     "test:coverage": "vitest --coverage",
-    "test:unit": "vitest tests/unit",
-    "test:integration": "vitest tests/integration",
-    "test:comprehensive": "vitest tests/comprehensive.test.ts",
+    "test:unit": "vitest run tests/unit",
+    "test:integration": "vitest run tests/integration",
+    "test:comprehensive": "vitest run tests/comprehensive.test.ts",
     "test:examples": "npm run build && node dist/examples/basic-evaluation.js",
     
     "lint": "eslint src/ tests/ examples/",

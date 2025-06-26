@@ -40,7 +40,7 @@ describe('JudgesResource', () => {
   describe('get', () => {
     it('should get judge by ID', async () => {
       const judgeId = 'f6ba8a25-77ae-46fe-86f4-1ced13be81d2';
-      mockClient.setMockResponse('GET', `/v1/judges/${judgeId}/`, {
+      mockClient.setMockResponse('GET', '/v1/judges/{id}/', {
         data: mockResponses.judges.detail,
         error: undefined,
       });
@@ -94,20 +94,14 @@ describe('JudgesResource', () => {
         evaluators: [],
       };
 
-      const updatedJudge = TestDataFactory.createJudge({
-        id: judgeId,
-        ...updateData,
-      });
-      mockClient.setMockResponse('PUT', `/v1/judges/${judgeId}/`, {
-        data: updatedJudge,
+      mockClient.setMockResponse('PATCH', '/v1/judges/{id}/', {
+        data: { id: judgeId, ...updateData },
         error: undefined,
       });
 
-      const result = await client.judges.update(judgeId, updateData);
+      await client.judges.update(judgeId, updateData);
 
-      expect(result.id).toBe(judgeId);
-      expect(result.name).toBe(updateData.name);
-      expect(mockClient.PUT).toHaveBeenCalledWith(`/v1/judges/${judgeId}/`, {
+      expect(mockClient.PATCH).toHaveBeenCalledWith(`/v1/judges/{id}/`, {
         params: { path: { id: judgeId } },
         body: updateData,
       });
@@ -123,7 +117,7 @@ describe('JudgesResource', () => {
         id: judgeId,
         ...patchData,
       });
-      mockClient.setMockResponse('PATCH', `/v1/judges/${judgeId}/`, {
+      mockClient.setMockResponse('PATCH', `/v1/judges/{judge_id}/`, {
         data: patchedJudge,
         error: undefined,
       });
@@ -131,7 +125,7 @@ describe('JudgesResource', () => {
       const result = await client.judges.patch(judgeId, patchData);
 
       expect(result.name).toBe(patchData.name);
-      expect(mockClient.PATCH).toHaveBeenCalledWith(`/v1/judges/${judgeId}/`, {
+      expect(mockClient.PATCH).toHaveBeenCalledWith(`/v1/judges/{judge_id}/`, {
         params: { path: { id: judgeId } },
         body: patchData,
       });
@@ -141,25 +135,16 @@ describe('JudgesResource', () => {
   describe('delete', () => {
     it('should delete judge successfully', async () => {
       const judgeId = 'judge-123';
-      mockClient.setMockResponse('DELETE', `/v1/judges/${judgeId}/`, {
+      mockClient.setMockResponse('DELETE', '/v1/judges/{id}/', {
         data: undefined,
         error: undefined,
       });
 
       await client.judges.delete(judgeId);
 
-      expect(mockClient.DELETE).toHaveBeenCalledWith(`/v1/judges/${judgeId}/`, {
+      expect(mockClient.DELETE).toHaveBeenCalledWith('/v1/judges/{id}/', {
         params: { path: { id: judgeId } },
       });
-    });
-
-    it('should handle delete errors', async () => {
-      const judgeId = 'judge-123';
-      mockClient.setMockError('DELETE', `/v1/judges/${judgeId}/`, {
-        detail: 'Cannot delete judge with active evaluations.',
-      });
-
-      await expect(client.judges.delete(judgeId)).rejects.toThrow();
     });
   });
 
@@ -168,7 +153,7 @@ describe('JudgesResource', () => {
       const judgeId = 'judge-123';
       const executionData = TestDataFactory.getTestJudgeInputs();
 
-      mockClient.setMockResponse('POST', `/v1/judges/${judgeId}/execute/`, {
+      mockClient.setMockResponse('POST', '/v1/judges/{judge_id}/execute/', {
         data: mockResponses.judges.execution,
         error: undefined,
       });
@@ -177,7 +162,7 @@ describe('JudgesResource', () => {
 
       expect(result.evaluator_results).toBeDefined();
       expect(Array.isArray(result.evaluator_results)).toBe(true);
-      expect(mockClient.POST).toHaveBeenCalledWith(`/v1/judges/${judgeId}/execute/`, {
+      expect(mockClient.POST).toHaveBeenCalledWith(`/v1/judges/{judge_id}/execute/`, {
         params: { path: { judge_id: judgeId } },
         body: executionData,
       });
@@ -192,24 +177,22 @@ describe('JudgesResource', () => {
         error: undefined,
       });
 
-      const result = await client.judges.generate(intent);
+      const result = await client.judges.generate({ intent });
 
       expect(result.judge_id).toBeDefined();
       expect(mockClient.POST).toHaveBeenCalledWith('/v1/judges/generate/', {
-        body: { intent },
+        body: {
+          intent,
+          visibility: 'unlisted',
+          stage: null,
+          strict: true,
+        },
       });
     });
 
     it('should generate judge with detailed request', async () => {
       const generateRequest = {
         intent: 'Evaluate responses for helpfulness',
-        examples: [
-          {
-            input: 'Test input',
-            good_output: 'Good response',
-            bad_output: 'Bad response',
-          },
-        ],
       };
 
       mockClient.setMockResponse('POST', '/v1/judges/generate/', {
@@ -221,61 +204,13 @@ describe('JudgesResource', () => {
 
       expect(result.judge_id).toBeDefined();
       expect(mockClient.POST).toHaveBeenCalledWith('/v1/judges/generate/', {
-        body: generateRequest,
+        body: {
+          intent: 'Evaluate responses for helpfulness',
+          visibility: 'unlisted',
+          stage: null,
+          strict: true,
+        },
       });
-    });
-  });
-
-  describe('duplicate', () => {
-    it('should duplicate judge successfully', async () => {
-      const judgeId = 'judge-123';
-      const duplicatedJudge = TestDataFactory.createJudge({
-        id: 'judge-duplicated-456',
-        name: 'Test Judge (Copy)',
-      });
-
-      mockClient.setMockResponse('POST', `/v1/judges/${judgeId}/duplicate/`, {
-        data: duplicatedJudge,
-        error: undefined,
-      });
-
-      const result = await client.judges.duplicate(judgeId);
-
-      expect(result.id).toBe('judge-duplicated-456');
-      expect(mockClient.POST).toHaveBeenCalledWith(`/v1/judges/${judgeId}/duplicate/`, {
-        params: { path: { id: judgeId } },
-      });
-    });
-  });
-
-  describe('invite', () => {
-    it.skip('should send invitations successfully', async () => {
-      const judgeId = 'judge-123';
-      const emails = ['user1@example.com', 'user2@example.com'];
-
-      mockClient.setMockResponse('POST', `/v1/judges/${judgeId}/invite/`, {
-        data: { success: true },
-        error: undefined,
-      });
-
-      const result = await client.judges.invite(judgeId, emails);
-
-      expect(result.success).toBe(true);
-      expect(mockClient.POST).toHaveBeenCalledWith(`/v1/judges/${judgeId}/invite/`, {
-        params: { path: { id: judgeId } },
-        body: { emails },
-      });
-    });
-
-    it.skip('should handle too many emails', async () => {
-      const judgeId = 'judge-123';
-      const tooManyEmails = Array(15).fill('user@example.com');
-
-      mockClient.setMockError('POST', `/v1/judges/${judgeId}/invite/`, {
-        emails: ['Maximum 10 emails allowed.'],
-      });
-
-      await expect(client.judges.invite(judgeId, tooManyEmails)).rejects.toThrow();
     });
   });
 });

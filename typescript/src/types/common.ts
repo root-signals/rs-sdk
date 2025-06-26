@@ -48,15 +48,15 @@ export class RootSignalsError extends Error {
   constructor(
     public readonly status: number,
     public readonly code: string,
-    public readonly details: ErrorDetails = {},
+    public readonly details?: ErrorDetails,
     message?: string,
   ) {
-    super(message ?? details.detail ?? details.title ?? `API Error ${status}: ${code}`);
+    super(message ?? details?.detail ?? details?.title ?? `API Error ${status}: ${code}`);
     this.name = 'RootSignalsError';
-    this.type = details.type;
-    this.title = details.title;
-    this.detail = details.detail;
-    this.instance = details.instance;
+    this.type = details?.type;
+    this.title = details?.title;
+    this.detail = details?.detail;
+    this.instance = details?.instance;
   }
 
   static isAuthenticationError(error: RootSignalsError): boolean {

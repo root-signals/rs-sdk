@@ -57,7 +57,7 @@ describe('DatasetsResource', () => {
       const datasetId = 'dataset-123';
       const mockDataset = TestDataFactory.createDataset({ id: datasetId });
 
-      mockClient.setMockResponse('GET', `/v1/datasets/${datasetId}/`, {
+      mockClient.setMockResponse('GET', '/v1/datasets/{id}/', {
         data: mockDataset,
         error: undefined,
       });
@@ -161,7 +161,7 @@ describe('DatasetsResource', () => {
       const datasetId = 'dataset-123';
       const mockDataset = TestDataFactory.createDataset({ id: datasetId });
 
-      mockClient.setMockResponse('GET', `/v1/datasets/${datasetId}/`, {
+      mockClient.setMockResponse('GET', '/v1/datasets/{id}/', {
         data: mockDataset,
         error: undefined,
       });
@@ -184,7 +184,7 @@ describe('DatasetsResource', () => {
         detail: 'Internal server error',
       });
 
-      await expect(client.datasets.list()).rejects.toThrow('LIST_DATASETS_FAILED');
+      await expect(client.datasets.list()).rejects.toThrow('Failed to list datasets');
     });
   });
 });
