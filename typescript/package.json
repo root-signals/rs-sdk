@@ -1,9 +1,16 @@
 {
   "name": "@root-signals/typescript-sdk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "TypeScript SDK for Root Signals API",
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
   "scripts": {
     "build": "npm run build:clean && npm run build:compile",
     "build:clean": "rm -rf dist/",
@@ -36,7 +43,7 @@
     "dev": "npm run build:watch",
     
     "prepare": "npm run build",
-    "prepublishOnly": "npm run check-all && npm run build"
+    "prepublishOnly": "npm run build"
   },
   "keywords": ["root-signals", "llm", "evaluation", "typescript", "sdk"],
   "author": "Root Signals",

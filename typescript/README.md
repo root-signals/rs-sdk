@@ -267,11 +267,11 @@ const evaluator = await client.evaluators.create({
 const response = await evaluator.execute({ response: "99" });
 
 // Get the execution details
-const log = await client.executionLogs.get({ execution_result: response });
+const log = await client.executionLogs.get(response.execution_log_id);
 console.log(log);
 
-// List all execution logs
-const iterator = await client.executionLogs.list({ limit: 10 });
+// List execution logs
+const iterator = await client.executionLogs.list({ page_size: 10 });
 console.log(iterator.results[0]);
 ```
 

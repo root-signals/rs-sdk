@@ -8,7 +8,8 @@
     "moduleResolution": "bundler",
     "sourceMap": true,
     "inlineSourceMap": false,
-    "outDir": "./dist-test"
+    "outDir": "./dist-test",
+    "rootDir": "."
   },
   "include": [
     "src/**/*",

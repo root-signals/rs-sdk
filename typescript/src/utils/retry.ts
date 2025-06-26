@@ -1,4 +1,4 @@
-import { ApiError } from '../types/common';
+import { ApiError } from '../types/common.js';
 
 /**
  * Configuration for retry logic with exponential backoff

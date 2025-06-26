@@ -1,5 +1,5 @@
-import type { paths } from '../generated/types';
-import { RootSignalsError, PaginatedResponse, ApiError } from '../types/common';
+import type { paths } from '../generated/types.ts';
+import { RootSignalsError, PaginatedResponse, ApiError } from '../types/common.js';
 
 // Extract types from the generated schema
 type DatasetListResponse =
