@@ -1,3 +1,9 @@
+## 1.6.2
+
+### Added
+
+- New execution log fields
+
 ## 1.6.1
 
 ### Added
