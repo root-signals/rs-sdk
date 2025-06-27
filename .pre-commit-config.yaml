@@ -10,8 +10,17 @@ repos:
   - repo: local
     hooks:
       - id: check-sdk-python
-        name: "Run checks"
+        name: "Run Python checks"
         language: system
+        files: ^python/
         types_or: [markdown, python]
         pass_filenames: false
-        entry: make pre-commit
+        entry: make -C python pre-commit
+
+      - id: check-sdk-typescript
+        name: "Run TypeScript checks"
+        language: system
+        files: ^typescript/
+        types_or: [javascript, ts, json, yaml]
+        pass_filenames: false
+        entry: npm --prefix typescript run ci-pr-check

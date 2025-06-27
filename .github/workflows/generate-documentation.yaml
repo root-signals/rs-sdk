@@ -1,0 +1,59 @@
+name: Deploy Docs to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'python/**'
+      - 'typescript/**'
+
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write 
+
+    
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+
+      - name: Setup Python
+        run: make -C python .venv
+
+      - name: Generate Python docs
+        run: make -C python rtd-html
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install TypeScript dependencies
+        run: npm install --prefix typescript
+
+      - name: Generate TypeScript docs
+        run: npm run docs --prefix typescript
+
+      - name: Prepare combined docs for deployment
+        run: |
+          mkdir deploy_docs
+          cp -r python/docs/_build/html/* deploy_docs/
+          mkdir deploy_docs/ts
+          cp -r typescript/docs/* deploy_docs/ts/
+
+      # Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages 🚀
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./deploy_docs
+          cname: sdk.rootsignals.ai

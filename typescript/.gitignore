@@ -84,3 +84,5 @@ src/**/*.js
 # Temporary test files
 mytest.ts
 quick-test.js
+
+docs/
