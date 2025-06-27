@@ -3,7 +3,9 @@ name: Deploy Docs to GitHub Pages
 on:
   push:
     branches:
-      - main  
+      - main
+    paths:
+      - 'python/**'
 
   workflow_dispatch:
 
@@ -13,6 +15,9 @@ jobs:
     permissions:
       contents: write 
 
+    defaults:
+      run:
+        working-directory: python
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
@@ -33,5 +38,5 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs/_build/html
+          publish_dir: ./python/docs/_build/html
           cname: sdk.rootsignals.ai

@@ -48,7 +48,7 @@
   },
   "keywords": ["root-signals", "llm", "evaluation", "typescript", "sdk"],
   "author": "Root Signals",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "dependencies": {
     "openapi-fetch": "^0.12.2"
   },
@@ -69,6 +69,7 @@
   },
   "files": [
     "dist/",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ]
 }
