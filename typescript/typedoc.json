@@ -60,14 +60,9 @@
     "**/*.test.ts",
     "**/*.spec.ts"
   ],
-  "plugin": ["typedoc-plugin-markdown"],
   "githubPages": false,
-  "gaID": "",
-  "gaSite": "auto",
-  "hideInPageTOC": false,
   "navigationLinks": {
     "GitHub": "https://github.com/root-signals/rs-python-sdk",
-    "Documentation": "https://docs.rootsignals.ai",
-    "Discord": "https://discord.gg/EhazTQsFnj"
+    "Documentation": "https://docs.rootsignals.ai"
   }
 }
