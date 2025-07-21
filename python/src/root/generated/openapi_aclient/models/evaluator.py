@@ -44,11 +44,14 @@ class Evaluator(BaseModel):
     id: StrictStr
     input_variables: Optional[List[InputVariable]] = None
     model_params: Optional[ModelParams] = None
-    models: Optional[List[StrictStr]] = None
+    models: Optional[List[StrictStr]] = Field(
+        default=None,
+        description="Primary model (index 0) and an optional list of fallback models to use if the primary model is not available. If not provided, a default model will be used.",
+    )
     name: Annotated[str, Field(min_length=2, strict=True, max_length=1000)]
-    objective: Optional[Objective] = None
+    objective: Optional[Objective]
     owner: NestedUserDetails
-    prompt: Optional[StrictStr] = None
+    prompt: Annotated[str, Field(min_length=2, strict=True, max_length=100000)]
     reference_variables: Optional[List[ReferenceVariable]] = None
     skill_type: SkillTypeEnum
     status: Optional[StatusEnum] = None
@@ -121,11 +124,13 @@ class Evaluator(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
                 "created_at",
                 "id",
+                "objective",
                 "owner",
                 "skill_type",
                 "updated_at",

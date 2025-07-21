@@ -585,3 +585,87 @@ class Judges:
             judge_execution_request=execution_request,
             _request_timeout=_request_timeout,
         )
+
+    @with_sync_client
+    def run_by_name(
+        self,
+        name: str,
+        *,
+        response: str,
+        request: Optional[str] = None,
+        contexts: Optional[List[str]] = None,
+        functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
+        expected_output: Optional[str] = None,
+        tags: Optional[List[str]] = None,
+        _request_timeout: Optional[int] = None,
+        _client: ApiClient,
+    ) -> JudgeExecutionResponse:
+        """
+        Run a judge by name.
+
+        Args:
+          name: Name of the judge to run
+          response: LLM output to evaluate
+          request: The prompt sent to the LLM. Optional.
+          contexts: Optional documents passed to RAG evaluators
+          functions: Optional functions to execute
+          expected_output: Optional expected output
+          tags: Optional tags to add to the judge execution
+          _request_timeout: Optional timeout for the request
+        """
+        api_instance = JudgesApi(_client)
+        execution_request = JudgeExecutionRequest(
+            request=request,
+            response=response,
+            contexts=contexts,
+            functions=functions,
+            expected_output=expected_output,
+            tags=tags,
+        )
+        return api_instance.judges_execute_by_name_create(
+            name=name,
+            judge_execution_request=execution_request,
+            _request_timeout=_request_timeout,
+        )
+
+    @with_async_client
+    async def arun_by_name(
+        self,
+        name: str,
+        *,
+        response: str,
+        request: Optional[str] = None,
+        contexts: Optional[List[str]] = None,
+        functions: Optional[List[AEvaluatorExecutionFunctionsRequest]] = None,
+        expected_output: Optional[str] = None,
+        tags: Optional[List[str]] = None,
+        _request_timeout: Optional[int] = None,
+        _client: AApiClient,
+    ) -> AJudgeExecutionResponse:
+        """
+        Asynchronously run a judge by name.
+
+        Args:
+          name: Name of the judge to run
+          response: LLM output to evaluate
+          request: The prompt sent to the LLM. Optional.
+          contexts: Optional documents passed to RAG evaluators
+          functions: Optional functions to execute
+          expected_output: Optional expected output
+          tags: Optional tags to add to the judge execution
+          _request_timeout: Optional timeout for the request
+        """
+        api_instance = AJudgesApi(_client)
+        execution_request = AJudgeExecutionRequest(
+            contexts=contexts,
+            functions=functions,
+            expected_output=expected_output,
+            request=request,
+            response=response,
+            tags=tags,
+        )
+        return await api_instance.judges_execute_by_name_create(
+            name=name,
+            judge_execution_request=execution_request,
+            _request_timeout=_request_timeout,
+        )

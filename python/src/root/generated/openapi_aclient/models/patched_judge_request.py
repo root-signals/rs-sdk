@@ -33,7 +33,7 @@ class PatchedJudgeRequest(BaseModel):
     intent: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(
         default=None, description="Intent for the judge"
     )
-    name: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=512)]] = None
+    name: Optional[Annotated[str, Field(min_length=3, strict=True, max_length=512)]] = None
     stage: Optional[Annotated[str, Field(strict=True, max_length=255)]] = None
     __properties: ClassVar[List[str]] = ["evaluator_references", "intent", "name", "stage"]
 

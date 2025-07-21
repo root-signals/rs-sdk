@@ -37,6 +37,7 @@ class JudgeGeneratorRequest(BaseModel):
     extra_contexts: Optional[Dict[str, Optional[StrictStr]]] = None
     strict: Optional[StrictBool] = True
     generating_model_params: Optional[GenerationModelParamsRequest] = None
+    judge_id: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = [
         "intent",
         "stage",
@@ -45,6 +46,7 @@ class JudgeGeneratorRequest(BaseModel):
         "extra_contexts",
         "strict",
         "generating_model_params",
+        "judge_id",
     ]
 
     model_config = ConfigDict(
@@ -107,6 +109,11 @@ class JudgeGeneratorRequest(BaseModel):
         if self.generating_model_params is None and "generating_model_params" in self.model_fields_set:
             _dict["generating_model_params"] = None
 
+        # set to None if judge_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.judge_id is None and "judge_id" in self.model_fields_set:
+            _dict["judge_id"] = None
+
         return _dict
 
     @classmethod
@@ -129,6 +136,7 @@ class JudgeGeneratorRequest(BaseModel):
                 "generating_model_params": GenerationModelParamsRequest.from_dict(obj["generating_model_params"])
                 if obj.get("generating_model_params") is not None
                 else None,
+                "judge_id": obj.get("judge_id"),
             }
         )
         return _obj

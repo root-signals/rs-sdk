@@ -39,7 +39,7 @@ class Judge(BaseModel):
     evaluators: List[NestedEvaluator]
     files: List[JudgeFilesInner]
     id: StrictStr
-    name: Annotated[str, Field(strict=True, max_length=512)]
+    name: Annotated[str, Field(min_length=3, strict=True, max_length=512)]
     objective: NestedVectorObjective
     stage: Optional[Annotated[str, Field(strict=True, max_length=255)]] = None
     inputs: Dict[str, EvaluatorInputsValue] = Field(

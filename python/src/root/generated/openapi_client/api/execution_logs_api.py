@@ -12,6 +12,7 @@ Do not edit the class manually.
 """  # noqa: E501
 
 import warnings
+from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 from pydantic import Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator, validate_call
@@ -40,6 +41,12 @@ class ExecutionLogsApi:
     def execution_logs_list(
         self,
         cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
+        date_from: Annotated[
+            Optional[datetime], Field(description="Filter logs created after or at this datetime (inclusive)")
+        ] = None,
+        date_to: Annotated[
+            Optional[datetime], Field(description="Filter logs created before or at this datetime (inclusive)")
+        ] = None,
         executed_item_id: Optional[StrictStr] = None,
         execution_type: Annotated[
             Optional[StrictStr],
@@ -84,6 +91,10 @@ class ExecutionLogsApi:
 
         :param cursor: The pagination cursor value.
         :type cursor: str
+        :param date_from: Filter logs created after or at this datetime (inclusive)
+        :type date_from: datetime
+        :param date_to: Filter logs created before or at this datetime (inclusive)
+        :type date_to: datetime
         :param executed_item_id:
         :type executed_item_id: str
         :param execution_type: * `skill` - skill * `evaluator` - evaluator * `judge` - judge * `experiment` - experiment
@@ -128,6 +139,8 @@ class ExecutionLogsApi:
 
         _param = self._execution_logs_list_serialize(
             cursor=cursor,
+            date_from=date_from,
+            date_to=date_to,
             executed_item_id=executed_item_id,
             execution_type=execution_type,
             include=include,
@@ -158,6 +171,12 @@ class ExecutionLogsApi:
     def execution_logs_list_with_http_info(
         self,
         cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
+        date_from: Annotated[
+            Optional[datetime], Field(description="Filter logs created after or at this datetime (inclusive)")
+        ] = None,
+        date_to: Annotated[
+            Optional[datetime], Field(description="Filter logs created before or at this datetime (inclusive)")
+        ] = None,
         executed_item_id: Optional[StrictStr] = None,
         execution_type: Annotated[
             Optional[StrictStr],
@@ -202,6 +221,10 @@ class ExecutionLogsApi:
 
         :param cursor: The pagination cursor value.
         :type cursor: str
+        :param date_from: Filter logs created after or at this datetime (inclusive)
+        :type date_from: datetime
+        :param date_to: Filter logs created before or at this datetime (inclusive)
+        :type date_to: datetime
         :param executed_item_id:
         :type executed_item_id: str
         :param execution_type: * `skill` - skill * `evaluator` - evaluator * `judge` - judge * `experiment` - experiment
@@ -246,6 +269,8 @@ class ExecutionLogsApi:
 
         _param = self._execution_logs_list_serialize(
             cursor=cursor,
+            date_from=date_from,
+            date_to=date_to,
             executed_item_id=executed_item_id,
             execution_type=execution_type,
             include=include,
@@ -276,6 +301,12 @@ class ExecutionLogsApi:
     def execution_logs_list_without_preload_content(
         self,
         cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
+        date_from: Annotated[
+            Optional[datetime], Field(description="Filter logs created after or at this datetime (inclusive)")
+        ] = None,
+        date_to: Annotated[
+            Optional[datetime], Field(description="Filter logs created before or at this datetime (inclusive)")
+        ] = None,
         executed_item_id: Optional[StrictStr] = None,
         execution_type: Annotated[
             Optional[StrictStr],
@@ -320,6 +351,10 @@ class ExecutionLogsApi:
 
         :param cursor: The pagination cursor value.
         :type cursor: str
+        :param date_from: Filter logs created after or at this datetime (inclusive)
+        :type date_from: datetime
+        :param date_to: Filter logs created before or at this datetime (inclusive)
+        :type date_to: datetime
         :param executed_item_id:
         :type executed_item_id: str
         :param execution_type: * `skill` - skill * `evaluator` - evaluator * `judge` - judge * `experiment` - experiment
@@ -364,6 +399,8 @@ class ExecutionLogsApi:
 
         _param = self._execution_logs_list_serialize(
             cursor=cursor,
+            date_from=date_from,
+            date_to=date_to,
             executed_item_id=executed_item_id,
             execution_type=execution_type,
             include=include,
@@ -389,6 +426,8 @@ class ExecutionLogsApi:
     def _execution_logs_list_serialize(
         self,
         cursor,
+        date_from,
+        date_to,
         executed_item_id,
         execution_type,
         include,
@@ -419,6 +458,18 @@ class ExecutionLogsApi:
         # process the query parameters
         if cursor is not None:
             _query_params.append(("cursor", cursor))
+
+        if date_from is not None:
+            if isinstance(date_from, datetime):
+                _query_params.append(("date_from", date_from.strftime(self.api_client.configuration.datetime_format)))
+            else:
+                _query_params.append(("date_from", date_from))
+
+        if date_to is not None:
+            if isinstance(date_to, datetime):
+                _query_params.append(("date_to", date_to.strftime(self.api_client.configuration.datetime_format)))
+            else:
+                _query_params.append(("date_to", date_to))
 
         if executed_item_id is not None:
             _query_params.append(("executed_item_id", executed_item_id))
