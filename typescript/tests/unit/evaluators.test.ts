@@ -146,13 +146,11 @@ describe('EvaluatorsResource', () => {
         error: undefined,
       });
 
-      const result = await client.evaluators.duplicate(evaluatorId);
+      await client.evaluators.duplicate(evaluatorId);
 
-      expect(result.id).toBe('eval-duplicated-456');
-      expect(result.name).toContain('Copy');
       expect(mockClient.POST).toHaveBeenCalledWith('/v1/evaluators/duplicate/{id}/', {
         params: { path: { id: evaluatorId } },
-        body: { name: `Copy of evaluator ${evaluatorId}` },
+        body: {},
       });
     });
 

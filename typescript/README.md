@@ -234,6 +234,7 @@ const judge = await client.judges.create({
 });
 
 const results = await client.judges.execute(
+  // There is also a executeByName convenience method that runs the judge by name.
   judge.id,
   {
     request: "What's your return policy?",
@@ -399,6 +400,7 @@ The TypeScript SDK provides access to all Root Signals API resources:
   - `create(data)` - Create new judge
   - `get(id)` - Get judge details
   - `execute(id, payload)` - Run judge evaluation
+  - `executeByName(name, payload)` - Run judge by name
   - `generate(intent)` - AI-generated judge
   - `refine(id, payload)` - Improve judge with feedback
   - `duplicate(id)` - Copy judge

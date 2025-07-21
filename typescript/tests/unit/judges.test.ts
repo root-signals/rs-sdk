@@ -151,7 +151,7 @@ describe('JudgesResource', () => {
   describe('execute', () => {
     it('should execute judge successfully', async () => {
       const judgeId = 'judge-123';
-      const executionData = TestDataFactory.getTestJudgeInputs();
+      const executionData = TestDataFactory.getTestExecutionInputs();
 
       mockClient.setMockResponse('POST', '/v1/judges/{judge_id}/execute/', {
         data: mockResponses.judges.execution,
@@ -166,6 +166,38 @@ describe('JudgesResource', () => {
         params: { path: { judge_id: judgeId } },
         body: executionData,
       });
+    });
+  });
+
+  describe('executeByName', () => {
+    it('should execute judge by name successfully', async () => {
+      const judgeName = 'Test Judge Name';
+      const executionData = TestDataFactory.getTestExecutionInputs();
+
+      mockClient.setMockResponse('POST', '/v1/judges/execute/by-name/', {
+        data: mockResponses.judges.execution,
+        error: undefined,
+      });
+
+      const result = await client.judges.executeByName(judgeName, executionData);
+
+      expect(result.evaluator_results).toBeDefined();
+      expect(Array.isArray(result.evaluator_results)).toBe(true);
+      expect(mockClient.POST).toHaveBeenCalledWith('/v1/judges/execute/by-name/', {
+        params: { query: { name: judgeName } },
+        body: executionData,
+      });
+    });
+
+    it('should handle executeByName errors', async () => {
+      const judgeName = 'Non-existent Judge';
+      const executionData = TestDataFactory.getTestExecutionInputs();
+
+      mockClient.setMockError('POST', '/v1/judges/execute/by-name/', {
+        detail: 'Judge not found',
+      });
+
+      await expect(client.judges.executeByName(judgeName, executionData)).rejects.toThrow();
     });
   });
 
