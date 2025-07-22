@@ -24,7 +24,6 @@ from typing_extensions import Annotated, Self
 from root.generated.openapi_aclient.models.evaluator_demonstrations_request import EvaluatorDemonstrationsRequest
 from root.generated.openapi_aclient.models.input_variable_request import InputVariableRequest
 from root.generated.openapi_aclient.models.model_params_request import ModelParamsRequest
-from root.generated.openapi_aclient.models.objective_request import ObjectiveRequest
 from root.generated.openapi_aclient.models.reference_variable_request import ReferenceVariableRequest
 from root.generated.openapi_aclient.models.status_enum import StatusEnum
 
@@ -38,10 +37,12 @@ class EvaluatorRequest(BaseModel):
     evaluator_demonstrations: Optional[List[EvaluatorDemonstrationsRequest]] = None
     input_variables: Optional[List[InputVariableRequest]] = None
     model_params: Optional[ModelParamsRequest] = None
-    models: Optional[List[Annotated[str, Field(min_length=1, strict=True)]]] = None
+    models: Optional[List[Annotated[str, Field(min_length=1, strict=True)]]] = Field(
+        default=None,
+        description="Primary model (index 0) and an optional list of fallback models to use if the primary model is not available. If not provided, a default model will be used.",
+    )
     name: Annotated[str, Field(min_length=2, strict=True, max_length=1000)]
-    objective: Optional[ObjectiveRequest] = None
-    objective_id: Optional[StrictStr] = None
+    objective_id: StrictStr
     objective_version_id: Optional[StrictStr] = Field(
         default=None,
         description="Optionally pin the Skill to a specific version of an Objective. If not provided, the latest version of the objective will be used and followed.",
@@ -49,7 +50,7 @@ class EvaluatorRequest(BaseModel):
     overwrite: Optional[StrictBool] = Field(
         default=False, description="Overwrite existing skill with the same name. Only for POST requests."
     )
-    prompt: Optional[StrictStr] = None
+    prompt: Annotated[str, Field(min_length=2, strict=True, max_length=100000)]
     reference_variables: Optional[List[ReferenceVariableRequest]] = None
     status: Optional[StatusEnum] = None
     system_message: Optional[StrictStr] = None
@@ -60,7 +61,6 @@ class EvaluatorRequest(BaseModel):
         "model_params",
         "models",
         "name",
-        "objective",
         "objective_id",
         "objective_version_id",
         "overwrite",
@@ -124,9 +124,6 @@ class EvaluatorRequest(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of model_params
         if self.model_params:
             _dict["model_params"] = self.model_params.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of objective
-        if self.objective:
-            _dict["objective"] = self.objective.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in reference_variables (list)
         _items = []
         if self.reference_variables:
@@ -148,16 +145,6 @@ class EvaluatorRequest(BaseModel):
         # and model_fields_set contains the field
         if self.model_params is None and "model_params" in self.model_fields_set:
             _dict["model_params"] = None
-
-        # set to None if objective (nullable) is None
-        # and model_fields_set contains the field
-        if self.objective is None and "objective" in self.model_fields_set:
-            _dict["objective"] = None
-
-        # set to None if objective_id (nullable) is None
-        # and model_fields_set contains the field
-        if self.objective_id is None and "objective_id" in self.model_fields_set:
-            _dict["objective_id"] = None
 
         # set to None if objective_version_id (nullable) is None
         # and model_fields_set contains the field
@@ -191,7 +178,6 @@ class EvaluatorRequest(BaseModel):
                 else None,
                 "models": obj.get("models"),
                 "name": obj.get("name"),
-                "objective": ObjectiveRequest.from_dict(obj["objective"]) if obj.get("objective") is not None else None,
                 "objective_id": obj.get("objective_id"),
                 "objective_version_id": obj.get("objective_version_id"),
                 "overwrite": obj.get("overwrite") if obj.get("overwrite") is not None else False,

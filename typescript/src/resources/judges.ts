@@ -6,7 +6,6 @@ type Client = ReturnType<typeof import('openapi-fetch').default<paths>>;
 export type Judge = components['schemas']['JudgeList'];
 export type JudgeDetail = components['schemas']['Judge'];
 export type JudgeExecutionResult = components['schemas']['JudgeExecutionResponse'];
-type Function = components['schemas']['EvaluatorExecutionFunctionsRequest'];
 
 export interface CreateJudgeData {
   name: string;
@@ -22,14 +21,7 @@ export interface UpdateJudgeData {
   stage?: string;
 }
 
-export interface JudgeExecutionPayload {
-  request?: string;
-  response?: string;
-  contexts?: string[];
-  functions?: Function[];
-  expected_output?: string;
-  tags?: string[];
-}
+export type JudgeExecutionPayload = components['schemas']['JudgeExecutionRequest'];
 
 export interface JudgeListParams extends ListParams {
   is_preset?: boolean;
@@ -145,7 +137,7 @@ export class JudgesResource {
   /**
    * Execute a judge
    */
-  async execute(id: string, payload: JudgeExecutionPayload = {}): Promise<JudgeExecutionResult> {
+  async execute(id: string, payload: JudgeExecutionPayload): Promise<JudgeExecutionResult> {
     const { data, error } = await this._client.POST('/v1/judges/{judge_id}/execute/', {
       params: { path: { judge_id: id } },
       body: payload,
@@ -157,6 +149,27 @@ export class JudgesResource {
         'EXECUTE_JUDGE_FAILED',
         error,
         `Failed to execute judge ${id}`,
+      );
+    }
+
+    return data;
+  }
+
+  /**
+   * Execute a judge by name (convenience method)
+   */
+  async executeByName(name: string, payload: JudgeExecutionPayload): Promise<JudgeExecutionResult> {
+    const { data, error } = await this._client.POST('/v1/judges/execute/by-name/', {
+      params: { query: { name } },
+      body: payload,
+    });
+
+    if (error) {
+      throw new RootSignalsError(
+        (error as ApiError)?.status ?? 500,
+        'EXECUTE_JUDGE_BY_NAME_FAILED',
+        error,
+        `Failed to execute judge by name: ${name}`,
       );
     }
 

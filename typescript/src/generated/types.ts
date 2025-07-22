@@ -4,207 +4,538 @@
  */
 
 export interface paths {
-  '/beta/judges/': {
-    /** @description List all accessible judges. Filters can be applied to narrow down the results. */
-    get: operations['beta_judges_list'];
-    /** @description Create a new judge with a name, intent, and list of evaluators. */
-    post: operations['beta_judges_create'];
-  };
-  '/beta/judges/{judge_id}/execute/': {
-    /** @description Execute a Judge. Judges that have a file will use it as a context automatically. See examples how to overwrite the context. */
-    post: operations['beta_judges_execute_create'];
-  };
-  '/beta/judges/{judge_id}/openai/chat/completions': {
-    post: operations['beta_judges_openai_chat_completions_create_2'];
-  };
-  '/beta/judges/{judge_id}/refine/': {
-    /** @description Execute a judge as rectifier to improve the response. The rectifier will analyze the original response using the judge's evaluators and attempt to improve it based on their feedback. */
-    post: operations['beta_judges_refine_create'];
-  };
-  '/beta/judges/{judge_id}/refine/openai/chat/completions': {
-    post: operations['beta_judges_refine_openai_chat_completions_create'];
-  };
-  '/beta/judges/{id}/': {
-    /** @description Retrieve a specific judge by its ID. */
-    get: operations['beta_judges_retrieve'];
-    /** @description Update an existing judge. */
-    put: operations['beta_judges_update'];
-    /** @description Delete a judge. */
-    delete: operations['beta_judges_destroy'];
-    /** @description Partially update an existing judge. */
-    patch: operations['beta_judges_partial_update'];
-  };
-  '/beta/judges/{id}/duplicate/': {
-    /** @description Copy a judge to user */
-    post: operations['beta_judges_duplicate_create'];
-  };
-  '/beta/judges/{id}/invite/': {
-    /** @description Send email invites to view a specific judge (up to 10 recipients) */
-    post: operations['beta_judges_invite_create'];
-  };
-  '/beta/judges/generate/': {
-    /** @description Generate a judge */
-    post: operations['beta_judges_generate_create'];
-  };
-  '/beta/judges/openai/chat/completions': {
-    post: operations['beta_judges_openai_chat_completions_create'];
-  };
   '/v1/datasets/': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     /** @description List datasets. */
-    get: operations['v1_datasets_list'];
+    get: operations['datasets_list'];
+    put?: never;
     /** @description Create a new dataset. */
-    post: operations['v1_datasets_create'];
+    post: operations['datasets_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   '/v1/datasets/{id}/': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     /** @description Get dataset details or download the dataset file. */
-    get: operations['v1_datasets_retrieve'];
+    get: operations['datasets_retrieve'];
+    put?: never;
+    post?: never;
     /** @description Delete a dataset. */
-    delete: operations['v1_datasets_destroy'];
+    delete: operations['datasets_destroy'];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   '/v1/datasets/status/{id}/': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
     /** @description Change the status of a dataset */
-    put: operations['v1_datasets_status_update'];
+    put: operations['datasets_status_update'];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   '/v1/evaluators/': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     /** @description List all evaluators. The response includes a 'requirements' field for each evaluator that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables. */
-    get: operations['v1_evaluators_list'];
+    get: operations['evaluators_list'];
+    put?: never;
     /** @description Create a new evaluator. */
-    post: operations['v1_evaluators_create'];
+    post: operations['evaluators_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   '/v1/evaluators/{id}/': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     /** @description Get evaluator details. The response includes a 'requirements' field that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables. */
-    get: operations['v1_evaluators_retrieve'];
+    get: operations['evaluators_retrieve'];
     /** @description Update an evaluator. */
-    put: operations['v1_evaluators_update'];
+    put: operations['evaluators_update'];
+    post?: never;
     /** @description Delete an evaluator. */
-    delete: operations['v1_evaluators_destroy'];
+    delete: operations['evaluators_destroy'];
+    options?: never;
+    head?: never;
     /** @description Update an evaluator. All fields are optional. */
-    patch: operations['v1_evaluators_partial_update'];
+    patch: operations['evaluators_partial_update'];
+    trace?: never;
   };
   '/v1/evaluators/calibrate/': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
     /** @description Test an evaluator definition using calibration data */
-    post: operations['v1_evaluators_calibrate_create'];
+    post: operations['evaluators_calibrate_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   '/v1/evaluators/calibrate/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
     /** @description Test an existing evaluator using calibration data */
-    post: operations['v1_evaluators_calibrate_create_2'];
+    post: operations['evaluators_calibrate_create_2'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   '/v1/evaluators/duplicate/{id}/': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
     /** @description Duplicate an evaluator */
-    post: operations['v1_evaluators_duplicate_create'];
+    post: operations['evaluators_duplicate_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   '/v1/evaluators/execute/{id}/': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
     /** @description Execute an evaluator. Check the evaluator's requirements to know which parameters are needed for execution. */
-    post: operations['v1_evaluators_execute_create'];
+    post: operations['evaluators_execute_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   '/v1/evaluators/execute/by-name/': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
     /** @description Execute an evaluator by name. Check the evaluator's requirements to know which parameters are needed for execution. */
-    post: operations['v1_evaluators_execute_by_name_create'];
+    post: operations['evaluators_execute_by_name_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   '/v1/evaluators/status/{id}/': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
     /** @description Change the status of an evaluator */
-    put: operations['v1_evaluators_status_update'];
+    put: operations['evaluators_status_update'];
     /** @description Change the status of an evaluator */
-    post: operations['v1_evaluators_status_create'];
+    post: operations['evaluators_status_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   '/v1/evaluators/versions/{id}/': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     /** @description Get a list of all versions of an evaluator */
-    get: operations['v1_evaluators_versions_list'];
+    get: operations['evaluators_versions_list'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   '/v1/execution-logs/': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     /** @description Get a list of execution logs. An execution log is created every time a skill or an evaluator is executed. */
-    get: operations['v1_execution_logs_list'];
+    get: operations['execution_logs_list'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   '/v1/execution-logs/{log_id}/': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     /** @description Get the full details of a single execution log. */
-    get: operations['v1_execution_logs_retrieve'];
+    get: operations['execution_logs_retrieve'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   '/v1/judges/': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     /** @description List all accessible judges. Filters can be applied to narrow down the results. */
-    get: operations['v1_judges_list'];
+    get: operations['judges_list'];
+    put?: never;
     /** @description Create a new judge with a name, intent, and list of evaluators. */
-    post: operations['v1_judges_create'];
+    post: operations['judges_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   '/v1/judges/{judge_id}/execute/': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
     /** @description Execute a Judge. Judges that have a file will use it as a context automatically. See examples how to overwrite the context. */
-    post: operations['v1_judges_execute_create'];
+    post: operations['judges_execute_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   '/v1/judges/{judge_id}/openai/chat/completions': {
-    post: operations['v1_judges_openai_chat_completions_create_2'];
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** @description OpenAI compatible endpoint for running a judge on a LLM interaction. See https://platform.openai.com/docs/api-reference/chat/create for more information. */
+    post: operations['judges_openai_chat_completions_create_2'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   '/v1/judges/{judge_id}/refine/': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
     /** @description Execute a judge as rectifier to improve the response. The rectifier will analyze the original response using the judge's evaluators and attempt to improve it based on their feedback. */
-    post: operations['v1_judges_refine_create'];
+    post: operations['judges_refine_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   '/v1/judges/{judge_id}/refine/openai/chat/completions': {
-    post: operations['v1_judges_refine_openai_chat_completions_create'];
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** @description OpenAI compatible endpoint for running a LLM interaction and refining the response using a judge. See https://platform.openai.com/docs/api-reference/chat/create for more information. */
+    post: operations['judges_refine_openai_chat_completions_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   '/v1/judges/{id}/': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     /** @description Retrieve a specific judge by its ID. */
-    get: operations['v1_judges_retrieve'];
+    get: operations['judges_retrieve'];
     /** @description Update an existing judge. */
-    put: operations['v1_judges_update'];
+    put: operations['judges_update'];
+    post?: never;
     /** @description Delete a judge. */
-    delete: operations['v1_judges_destroy'];
+    delete: operations['judges_destroy'];
+    options?: never;
+    head?: never;
     /** @description Partially update an existing judge. */
-    patch: operations['v1_judges_partial_update'];
+    patch: operations['judges_partial_update'];
+    trace?: never;
   };
   '/v1/judges/{id}/duplicate/': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
     /** @description Copy a judge to user */
-    post: operations['v1_judges_duplicate_create'];
+    post: operations['judges_duplicate_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   '/v1/judges/{id}/invite/': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
     /** @description Send email invites to view a specific judge (up to 10 recipients) */
-    post: operations['v1_judges_invite_create'];
+    post: operations['judges_invite_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/v1/judges/execute/by-name/': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** @description Execute a judge by name. Judges that have a file will use it as a context automatically. See examples how to overwrite the context. */
+    post: operations['judges_execute_by_name_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   '/v1/judges/generate/': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
     /** @description Generate a judge */
-    post: operations['v1_judges_generate_create'];
+    post: operations['judges_generate_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   '/v1/judges/openai/chat/completions': {
-    post: operations['v1_judges_openai_chat_completions_create'];
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** @description OpenAI compatible endpoint for running a judge on a LLM interaction. See https://platform.openai.com/docs/api-reference/chat/create for more information. */
+    post: operations['judges_openai_chat_completions_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   '/v1/models/': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     /** @description Get all available LLM models. */
-    get: operations['v1_models_list'];
+    get: operations['models_list'];
+    put?: never;
     /** @description Create a custom LLM model. */
-    post: operations['v1_models_create'];
+    post: operations['models_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   '/v1/models/{id}/': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     /** @description Get model details. */
-    get: operations['v1_models_retrieve'];
+    get: operations['models_retrieve'];
     /** @description Update a custom LLM model. */
-    put: operations['v1_models_update'];
-    delete: operations['v1_models_destroy'];
-    patch: operations['v1_models_partial_update'];
+    put: operations['models_update'];
+    post?: never;
+    delete: operations['models_destroy'];
+    options?: never;
+    head?: never;
+    patch: operations['models_partial_update'];
+    trace?: never;
   };
   '/v1/objectives/': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     /** @description List Objective definitions. */
-    get: operations['v1_objectives_list'];
+    get: operations['objectives_list'];
+    put?: never;
     /** @description Create an Objective definition. */
-    post: operations['v1_objectives_create'];
+    post: operations['objectives_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
   '/v1/objectives/{id}/': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     /** @description Get an Objective definition details. */
-    get: operations['v1_objectives_retrieve'];
+    get: operations['objectives_retrieve'];
     /** @description Update an Objective definition. */
-    put: operations['v1_objectives_update'];
+    put: operations['objectives_update'];
+    post?: never;
     /** @description Delete an Objective definition. */
-    delete: operations['v1_objectives_destroy'];
-    patch: operations['v1_objectives_partial_update'];
+    delete: operations['objectives_destroy'];
+    options?: never;
+    head?: never;
+    patch: operations['objectives_partial_update'];
+    trace?: never;
   };
   '/v1/objectives/versions/{id}/': {
-    get: operations['v1_objectives_versions_list'];
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations['objectives_versions_list'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
   };
 }
-
 export type webhooks = Record<string, never>;
-
 export interface components {
   schemas: {
     DataSetCreate: {
       /** Format: uuid */
-      id: string;
+      readonly id: string;
       name?: string | null;
       /** Format: uri */
       file?: string;
@@ -212,9 +543,9 @@ export interface components {
       /** Format: uri */
       url?: string;
       tags?: string[];
-      owner: components['schemas']['NestedUserDetails'];
+      readonly owner: components['schemas']['NestedUserDetails'];
       /** @default false */
-      has_header?: boolean;
+      has_header: boolean;
     };
     DataSetCreateRequest: {
       name?: string | null;
@@ -227,24 +558,24 @@ export interface components {
       url?: string;
       tags?: string[];
       /** @default false */
-      has_header?: boolean;
+      has_header: boolean;
     };
     DataSetList: {
       /** Format: uuid */
-      id: string;
+      readonly id: string;
       name?: string | null;
       type?: components['schemas']['DataSetType'];
       tags?: string[];
-      owner: components['schemas']['NestedUserDetails'];
+      readonly owner: components['schemas']['NestedUserDetails'];
       /** Format: date-time */
-      created_at: string;
+      readonly created_at: string;
       status?: components['schemas']['StatusEnum'];
-      /** meta */
-      _meta: unknown;
+      /**  meta */
+      readonly _meta: unknown;
     };
     /**
      * @description * `reference` - REFERENCE
-     * * `test` - TEST
+     *     * `test` - TEST
      * @enum {string}
      */
     DataSetType: 'reference' | 'test';
@@ -255,52 +586,53 @@ export interface components {
     Evaluator: {
       change_note?: string | null;
       /** Format: date-time */
-      created_at: string;
+      readonly created_at: string;
       evaluator_demonstrations?: components['schemas']['EvaluatorDemonstrations'][] | null;
       /** Format: uuid */
-      id: string;
+      readonly id: string;
       input_variables?: components['schemas']['InputVariable'][];
       model_params?: components['schemas']['ModelParams'] | null;
+      /** @description Primary model (index 0) and an optional list of fallback models to use if the primary model is not available. If not provided, a default model will be used. */
       models?: string[];
       name: string;
-      objective?: components['schemas']['Objective'] | null;
-      owner: components['schemas']['NestedUserDetails'];
-      prompt?: string;
+      readonly objective: components['schemas']['Objective'] | null;
+      readonly owner: components['schemas']['NestedUserDetails'];
+      prompt: string;
       reference_variables?: components['schemas']['ReferenceVariable'][];
-      skill_type: components['schemas']['SkillTypeEnum'];
+      readonly skill_type: components['schemas']['SkillTypeEnum'];
       status?: components['schemas']['StatusEnum'];
       system_message?: string;
       /** Format: date-time */
-      updated_at: string | null;
-      updated_by: components['schemas']['NestedUserDetails'] | null;
+      readonly updated_at: string | null;
+      readonly updated_by: components['schemas']['NestedUserDetails'] | null;
       /** Format: uuid */
-      version_id: string;
-      /** meta */
-      _meta: unknown;
+      readonly version_id: string;
+      /**  meta */
+      readonly _meta: unknown;
       /**
        * @description Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like functions, contexts, and expected output.
        * @example {
-       *   "response": {
-       *     "type": "string"
-       *   },
-       *   "functions": {
-       *     "type": "array",
-       *     "items": {
-       *       "type": "object"
+       *       "response": {
+       *         "type": "string"
+       *       },
+       *       "functions": {
+       *         "type": "array",
+       *         "items": {
+       *           "type": "object"
+       *         }
+       *       },
+       *       "contexts": {
+       *         "type": "array",
+       *         "items": {
+       *           "type": "string"
+       *         }
+       *       },
+       *       "my_custom_variable": {
+       *         "type": "string"
+       *       }
        *     }
-       *   },
-       *   "contexts": {
-       *     "type": "array",
-       *     "items": {
-       *       "type": "string"
-       *     }
-       *   },
-       *   "my_custom_variable": {
-       *     "type": "string"
-       *   }
-       * }
        */
-      inputs: {
+      readonly inputs: {
         [key: string]: {
           /** @enum {string} */
           type: 'string' | 'array';
@@ -325,9 +657,9 @@ export interface components {
     };
     EvaluatorCalibrationResult: {
       llm_output: string;
-      model: string;
+      readonly model: string;
       execution_log_id: string;
-      rendered_prompt: string;
+      readonly rendered_prompt: string;
       /** Format: double */
       cost: number | null;
       /** Format: double */
@@ -386,9 +718,9 @@ export interface components {
      */
     EvaluatorExecutionFunctionsTypeEnum: 'function';
     EvaluatorExecutionRequest: {
-      /** @default */
+      /** @default  */
       request?: string;
-      /** @default */
+      /** @default  */
       response?: string;
       contexts?: string[];
       functions?: components['schemas']['EvaluatorExecutionFunctionsRequest'][];
@@ -413,46 +745,46 @@ export interface components {
       justification: string | null;
     };
     EvaluatorListOutput: {
-      /** meta */
-      _meta: unknown;
+      /**  meta */
+      readonly _meta: unknown;
       /** Format: date-time */
-      created_at: string;
-      models: readonly string[];
+      readonly created_at: string;
+      readonly models: string[];
       /** Format: uuid */
-      id: string;
-      name: string;
-      objective: components['schemas']['NestedObjectiveList'];
-      owner: components['schemas']['NestedUserDetails'];
-      prompt: string;
-      status: components['schemas']['StatusEnum'];
+      readonly id: string;
+      readonly name: string;
+      readonly objective: components['schemas']['NestedObjectiveList'];
+      readonly owner: components['schemas']['NestedUserDetails'];
+      readonly prompt: string;
+      readonly status: components['schemas']['StatusEnum'];
       /** Format: date-time */
-      updated_at: string | null;
-      updated_by: components['schemas']['NestedUserDetails'] | null;
-      version_id: string;
+      readonly updated_at: string | null;
+      readonly updated_by: components['schemas']['NestedUserDetails'] | null;
+      readonly version_id: string;
       /**
        * @description Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like functions, contexts, and expected output.
        * @example {
-       *   "response": {
-       *     "type": "string"
-       *   },
-       *   "functions": {
-       *     "type": "array",
-       *     "items": {
-       *       "type": "object"
+       *       "response": {
+       *         "type": "string"
+       *       },
+       *       "functions": {
+       *         "type": "array",
+       *         "items": {
+       *           "type": "object"
+       *         }
+       *       },
+       *       "contexts": {
+       *         "type": "array",
+       *         "items": {
+       *           "type": "string"
+       *         }
+       *       },
+       *       "my_custom_variable": {
+       *         "type": "string"
+       *       }
        *     }
-       *   },
-       *   "contexts": {
-       *     "type": "array",
-       *     "items": {
-       *       "type": "string"
-       *     }
-       *   },
-       *   "my_custom_variable": {
-       *     "type": "string"
-       *   }
-       * }
        */
-      inputs: {
+      readonly inputs: {
         [key: string]: {
           /** @enum {string} */
           type: 'string' | 'array';
@@ -486,11 +818,11 @@ export interface components {
       evaluator_demonstrations?: components['schemas']['EvaluatorDemonstrationsRequest'][] | null;
       input_variables?: components['schemas']['InputVariableRequest'][];
       model_params?: components['schemas']['ModelParamsRequest'] | null;
+      /** @description Primary model (index 0) and an optional list of fallback models to use if the primary model is not available. If not provided, a default model will be used. */
       models?: string[];
       name: string;
-      objective?: components['schemas']['ObjectiveRequest'] | null;
       /** Format: uuid */
-      objective_id?: string | null;
+      objective_id: string;
       /**
        * Format: uuid
        * @description Optionally pin the Skill to a specific version of an Objective. If not provided, the latest version of the objective will be used and followed.
@@ -500,8 +832,8 @@ export interface components {
        * @description Overwrite existing skill with the same name. Only for POST requests.
        * @default false
        */
-      overwrite?: boolean;
-      prompt?: string;
+      overwrite: boolean;
+      prompt: string;
       reference_variables?: components['schemas']['ReferenceVariableRequest'][];
       status?: components['schemas']['StatusEnum'];
       system_message?: string;
@@ -517,109 +849,77 @@ export interface components {
       evaluator_version_id: string;
     };
     ExecutionLogDetails: {
-      chat_id: string | null;
+      readonly chat_id: string | null;
       /** Format: double */
-      cost: number | null;
+      readonly cost: number | null;
       /** Format: date-time */
-      created_at: string | null;
-      evaluation_context: {
-        readonly contexts?: string[];
-        readonly expected_output?: string;
+      readonly created_at: string | null;
+      readonly evaluation_context: {
+        contexts?: string[];
+        expected_output?: string;
       };
-      evaluator_latencies:
-        | readonly {
+      readonly evaluator_latencies:
+        | {
             evaluator_name?: string;
             duration?: number;
           }[]
         | null;
       /** Format: uuid */
-      id: string;
-      judge: {
-        readonly name?: string;
-      } | null;
-      justification: string;
-      llm_output: string;
+      readonly executed_item_id: string | null;
+      readonly executed_item_name: string;
+      /** Format: uuid */
+      readonly executed_item_version_id: string | null;
+      readonly execution_type: string;
+      /** Format: uuid */
+      readonly id: string;
+      readonly justification: string;
+      readonly llm_output: string;
       /** Format: double */
       model_call_duration: number;
       model_params?: components['schemas']['ModelParams'] | null;
-      model: string;
-      objective: {
-        readonly intent?: string;
-        /** Format: uuid */
-        readonly id?: string;
-      };
-      owner: components['schemas']['NestedUserDetails'];
+      readonly model: string;
+      readonly owner: components['schemas']['NestedUserDetails'];
       /** Format: uuid */
       parent_execution_log_id?: string | null;
-      rendered_prompt: string;
+      readonly prompt_template: string;
+      readonly rendered_prompt: string;
       /** Format: double */
-      score: number | null;
-      /**
-       * @example {
-       *   "prompt": "Provide a clear answer to the question: {{question}}",
-       *   "pii_filter": false,
-       *   "version_id": "1234",
-       *   "name": "Skill name",
-       *   "type": "skill",
-       *   "id": "dfd76dd3-1415-4339-9b20-3bc2bbe3e8ce"
-       * }
-       */
-      skill: {
-        readonly prompt?: string;
-        readonly pii_filter?: boolean;
-        readonly version_id?: string;
-        readonly name?: string;
-        readonly type?: string;
-        /** Format: uuid */
-        readonly id?: string;
-      };
-      tags: readonly string[];
-      validation_results: readonly components['schemas']['SkillExecutionValidatorResult'][];
-      variables: {
+      readonly score: number | null;
+      readonly tags: string[];
+      readonly validation_results: components['schemas']['SkillExecutionValidatorResult'][];
+      readonly variables: {
         [key: string]: string;
       } | null;
     };
     ExecutionLogList: {
       /** Format: double */
-      cost: number | null;
+      readonly cost: number | null;
       /** Format: date-time */
-      created_at: string | null;
-      /** Format: uuid */
-      id: string;
-      judge: {
-        readonly name?: string;
+      readonly created_at: string | null;
+      /** @description The evaluation context used in the execution. Only included when explicitly requested with include=evaluation_context parameter. */
+      readonly evaluation_context: {
+        contexts?: string[];
+        expected_output?: string;
       } | null;
-      owner: components['schemas']['NestedUserDetails'];
+      /** Format: uuid */
+      readonly executed_item_id: string | null;
+      readonly executed_item_name: string;
+      /** Format: uuid */
+      readonly executed_item_version_id: string | null;
+      readonly execution_type: string;
+      /** Format: uuid */
+      readonly id: string;
+      /** @description The raw output from the LLM model. Only included when explicitly requested with include=llm_output parameter. */
+      readonly llm_output: string | null;
+      readonly owner: components['schemas']['NestedUserDetails'];
       /** Format: uuid */
       parent_execution_log_id?: string | null;
       /** Format: double */
-      score: number | null;
-      /**
-       * @example {
-       *   "name": "Skill name",
-       *   "type": "skill",
-       *   "id": "dfd76dd3-1415-4339-9b20-3bc2bbe3e8ce"
-       * }
-       */
-      skill: {
-        readonly name?: string;
-        readonly type?: string;
-        /** Format: uuid */
-        readonly id?: string;
-      };
-      tags: readonly string[];
-      /** Format: double */
-      validation_result_average: number | null;
-      /** @description The raw output from the LLM model. Only included when explicitly requested with include=llm_output parameter. */
-      llm_output: string | null;
+      readonly score: number | null;
+      readonly tags: string[];
       /** @description The variables used in the execution. Only included when explicitly requested with include=variables parameter. */
-      variables: {
+      readonly variables: {
         [key: string]: string;
-      } | null;
-      /** @description The evaluation context used in the execution. Only included when explicitly requested with include=evaluation_context parameter. */
-      evaluation_context: {
-        readonly contexts?: string[];
-        readonly expected_output?: string;
       } | null;
     };
     GenerationModelParamsRequest: {
@@ -629,65 +929,65 @@ export interface components {
     };
     ID: {
       /** Format: uuid */
-      id: string;
+      readonly id: string;
     };
     InputVariable: {
       /** Format: uuid */
-      id: string;
+      readonly id: string;
       /** Format: date-time */
-      created_at: string | null;
+      readonly created_at: string | null;
       /** Format: date-time */
-      updated_at: string | null;
+      readonly updated_at: string | null;
       name: string;
       /** Format: uuid */
-      skill: string | null;
+      readonly skill: string | null;
     };
     InputVariableRequest: {
       name: string;
     };
     Judge: {
-      /** meta */
-      _meta: {
+      /**  meta */
+      readonly _meta: {
         [key: string]: unknown;
       };
       /** Format: date-time */
-      created_at: string | null;
-      evaluators: readonly components['schemas']['NestedEvaluator'][];
-      files: readonly {
+      readonly created_at: string | null;
+      readonly evaluators: components['schemas']['NestedEvaluator'][];
+      readonly files: {
         url?: string;
         name?: string;
         /** Format: uuid */
         id?: string;
       }[];
       /** Format: uuid */
-      id: string;
+      readonly id: string;
       name: string;
-      objective: components['schemas']['NestedVectorObjective'];
+      readonly objective: components['schemas']['NestedVectorObjective'];
       stage?: string;
       /**
        * @description Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like functions, contexts, and expected output.
        * @example {
-       *   "response": {
-       *     "type": "string"
-       *   },
-       *   "functions": {
-       *     "type": "array",
-       *     "items": {
-       *       "type": "object"
+       *       "response": {
+       *         "type": "string"
+       *       },
+       *       "functions": {
+       *         "type": "array",
+       *         "items": {
+       *           "type": "object"
+       *         }
+       *       },
+       *       "contexts": {
+       *         "type": "array",
+       *         "items": {
+       *           "type": "string"
+       *         }
+       *       },
+       *       "my_custom_variable": {
+       *         "type": "string"
+       *       }
        *     }
-       *   },
-       *   "contexts": {
-       *     "type": "array",
-       *     "items": {
-       *       "type": "string"
-       *     }
-       *   },
-       *   "my_custom_variable": {
-       *     "type": "string"
-       *   }
-       * }
        */
-      inputs: {
+      readonly inputs: {
         [key: string]: {
           /** @enum {string} */
           type: 'string' | 'array';
@@ -697,13 +997,13 @@ export interface components {
           };
         };
       };
-      status: components['schemas']['JudgeStatusEnum'];
+      readonly status: components['schemas']['JudgeStatusEnum'];
     };
     JudgeExecutionRequest: {
-      /** @default */
-      request?: string;
-      /** @default */
-      response?: string;
+      /** @default  */
+      request: string;
+      /** @default  */
+      response: string;
       contexts?: string[];
       functions?: components['schemas']['EvaluatorExecutionFunctionsRequest'][];
       expected_output?: string | null;
@@ -723,8 +1023,10 @@ export interface components {
         [key: string]: string | null;
       } | null;
       /** @default true */
-      strict?: boolean;
+      strict: boolean;
       generating_model_params?: components['schemas']['GenerationModelParamsRequest'] | null;
+      /** Format: uuid */
+      judge_id?: string | null;
     };
     JudgeGeneratorResponse: {
       /** Format: uuid */
@@ -742,36 +1044,36 @@ export interface components {
     };
     JudgeList: {
       /** Format: uuid */
-      id: string;
+      readonly id: string;
       name: string;
-      intent: string;
+      readonly intent: string;
       /** Format: date-time */
-      created_at: string | null;
-      status: components['schemas']['JudgeStatusEnum'];
+      readonly created_at: string | null;
+      readonly status: components['schemas']['JudgeStatusEnum'];
       /**
        * @description Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like functions, contexts, and expected output.
        * @example {
-       *   "response": {
-       *     "type": "string"
-       *   },
-       *   "functions": {
-       *     "type": "array",
-       *     "items": {
-       *       "type": "object"
+       *       "response": {
+       *         "type": "string"
+       *       },
+       *       "functions": {
+       *         "type": "array",
+       *         "items": {
+       *           "type": "object"
+       *         }
+       *       },
+       *       "contexts": {
+       *         "type": "array",
+       *         "items": {
+       *           "type": "string"
+       *         }
+       *       },
+       *       "my_custom_variable": {
+       *         "type": "string"
+       *       }
        *     }
-       *   },
-       *   "contexts": {
-       *     "type": "array",
-       *     "items": {
-       *       "type": "string"
-       *     }
-       *   },
-       *   "my_custom_variable": {
-       *     "type": "string"
-       *   }
-       * }
        */
-      inputs: {
+      readonly inputs: {
         [key: string]: {
           /** @enum {string} */
           type: 'string' | 'array';
@@ -781,13 +1083,13 @@ export interface components {
           };
         };
       };
-      evaluators: readonly components['schemas']['NestedEvaluator'][];
+      readonly evaluators: components['schemas']['NestedEvaluator'][];
     };
     JudgeRectifierRequestRequest: {
-      /** @default */
-      request?: string;
-      /** @default */
-      response?: string;
+      /** @default  */
+      request: string;
+      /** @default  */
+      response: string;
       contexts?: string[];
       functions?: components['schemas']['EvaluatorExecutionFunctionsRequest'][];
       expected_output?: string | null;
@@ -812,15 +1114,15 @@ export interface components {
     };
     /**
      * @description * `unlisted` - unlisted
-     * * `listed` - listed
-     * * `public` - public
-     * * `global` - global
+     *     * `listed` - listed
+     *     * `public` - public
+     *     * `global` - global
      * @enum {string}
      */
     JudgeStatusEnum: 'unlisted' | 'listed' | 'public' | 'global';
     Model: {
       default_key?: string | null;
-      id: string;
+      readonly id: string;
       max_output_token_count?: number;
       max_token_count?: number | null;
       model?: string;
@@ -829,10 +1131,10 @@ export interface components {
     };
     ModelList: {
       /** Format: uuid */
-      id: string;
+      readonly id: string;
       name: string;
-      owner: components['schemas']['NestedUserDetails'];
-      provider: components['schemas']['Provider'] | null;
+      readonly owner: components['schemas']['NestedUserDetails'];
+      readonly provider: components['schemas']['Provider'] | null;
     };
     ModelParams: {
       /** Format: double */
@@ -854,14 +1156,14 @@ export interface components {
       /** Format: uuid */
       id: string;
       name: string;
-      objective: components['schemas']['NestedEvaluatorObjective'];
+      readonly objective: components['schemas']['NestedEvaluatorObjective'];
       is_root_evaluator: boolean;
-      model: string;
+      readonly model: string;
       /** Format: uuid */
       version_id: string;
     };
     NestedEvaluatorObjective: {
-      intent: string;
+      readonly intent: string;
     };
     NestedEvaluatorRequest: {
       /** Format: uuid */
@@ -873,7 +1175,7 @@ export interface components {
     };
     NestedObjectiveEvaluator: {
       /** Format: uuid */
-      id: string;
+      readonly id: string;
       name?: string;
       requires_expected_output?: boolean;
       requires_contexts?: boolean;
@@ -887,17 +1189,17 @@ export interface components {
     };
     NestedObjectiveList: {
       /** Format: uuid */
-      id: string;
+      readonly id: string;
       intent?: string;
       status?: components['schemas']['StatusEnum'];
-      validators: readonly components['schemas']['ObjectiveValidator'][];
+      readonly validators: components['schemas']['ObjectiveValidator'][];
     };
     NestedUserDetails: {
       /**
        * Email address
        * Format: email
        */
-      email: string;
+      readonly email: string;
       full_name: string;
     };
     NestedUserDetailsRequest: {
@@ -905,7 +1207,7 @@ export interface components {
     };
     NestedVectorObjective: {
       /** Format: uuid */
-      id: string;
+      readonly id: string;
       intent: string;
     };
     NestedVectorObjectiveRequest: {
@@ -913,35 +1215,35 @@ export interface components {
     };
     Objective: {
       /** Format: uuid */
-      id: string;
+      readonly id: string;
       intent?: string;
       status?: components['schemas']['StatusEnum'];
       /** @description Deprecated: Use test_dataset_id instead. */
-      test_set: readonly string[][] | null;
+      readonly test_set: string[][] | null;
       validators?: components['schemas']['ObjectiveValidator'][];
       /** Format: date-time */
-      created_at: string;
-      owner: components['schemas']['NestedUserDetails'];
+      readonly created_at: string;
+      readonly owner: components['schemas']['NestedUserDetails'];
       /** Format: uuid */
-      version_id: string;
+      readonly version_id: string;
       /** Format: uuid */
       test_dataset_id?: string | null;
-      /** meta */
-      _meta: {
+      /**  meta */
+      readonly _meta: {
         [key: string]: unknown;
       };
     };
     ObjectiveList: {
       /** Format: uuid */
-      id: string;
+      readonly id: string;
       intent?: string;
       status?: components['schemas']['StatusEnum'];
-      owner: components['schemas']['NestedUserDetails'];
+      readonly owner: components['schemas']['NestedUserDetails'];
       /** Format: date-time */
-      created_at: string;
-      validators: readonly components['schemas']['ObjectiveValidator'][];
-      /** meta */
-      _meta: {
+      readonly created_at: string;
+      readonly validators: components['schemas']['ObjectiveValidator'][];
+      /**  meta */
+      readonly _meta: {
         [key: string]: unknown;
       };
     };
@@ -955,7 +1257,7 @@ export interface components {
       test_dataset_id?: string | null;
     };
     ObjectiveValidator: {
-      evaluator: components['schemas']['NestedObjectiveEvaluator'];
+      readonly evaluator: components['schemas']['NestedObjectiveEvaluator'];
       /** Format: double */
       threshold?: number;
     };
@@ -1075,11 +1377,11 @@ export interface components {
       evaluator_demonstrations?: components['schemas']['EvaluatorDemonstrationsRequest'][] | null;
       input_variables?: components['schemas']['InputVariableRequest'][];
       model_params?: components['schemas']['ModelParamsRequest'] | null;
+      /** @description Primary model (index 0) and an optional list of fallback models to use if the primary model is not available. If not provided, a default model will be used. */
       models?: string[];
       name?: string;
-      objective?: components['schemas']['ObjectiveRequest'] | null;
       /** Format: uuid */
-      objective_id?: string | null;
+      objective_id?: string;
       /**
        * Format: uuid
        * @description Optionally pin the Skill to a specific version of an Objective. If not provided, the latest version of the objective will be used and followed.
@@ -1089,7 +1391,7 @@ export interface components {
        * @description Overwrite existing skill with the same name. Only for POST requests.
        * @default false
        */
-      overwrite?: boolean;
+      overwrite: boolean;
       prompt?: string;
       reference_variables?: components['schemas']['ReferenceVariableRequest'][];
       status?: components['schemas']['StatusEnum'];
@@ -1120,7 +1422,7 @@ export interface components {
       test_dataset_id?: string | null;
     };
     Provider: {
-      id: string;
+      readonly id: string;
       name: string;
       /** Format: uri */
       logo_light?: string;
@@ -1130,16 +1432,16 @@ export interface components {
     };
     ReferenceVariable: {
       /** Format: uuid */
-      id: string;
+      readonly id: string;
       /** Format: uuid */
       dataset: string;
       /** Format: date-time */
-      created_at: string | null;
+      readonly created_at: string | null;
       /** Format: date-time */
-      updated_at: string | null;
+      readonly updated_at: string | null;
       name: string;
       /** Format: uuid */
-      skill: string | null;
+      readonly skill: string | null;
     };
     ReferenceVariableRequest: {
       /** Format: uuid */
@@ -1148,14 +1450,14 @@ export interface components {
     };
     SkillExecutionValidatorResult: {
       /** Format: uuid */
-      evaluator_id: string | null;
-      evaluator_name: string;
+      readonly evaluator_id: string | null;
+      readonly evaluator_name: string;
       /** Format: double */
-      result: number | null;
+      readonly result: number | null;
       /** Format: double */
-      threshold: number;
-      status: components['schemas']['ValidationResultStatus'];
-      justification: string;
+      readonly threshold: number;
+      readonly status: components['schemas']['ValidationResultStatus'];
+      readonly justification: string;
     };
     SkillTestDataRequest: {
       test_data?: string[][] | null;
@@ -1170,20 +1472,20 @@ export interface components {
       dataset_range?: components['schemas']['DatasetRangeRequest'] | null;
       prompt: string;
       /** @default [] */
-      reference_variables?: components['schemas']['ReferenceVariableRequest'][];
+      reference_variables: components['schemas']['ReferenceVariableRequest'][];
       /** @default [] */
-      input_variables?: components['schemas']['InputVariableRequest'][];
+      input_variables: components['schemas']['InputVariableRequest'][];
       models?: string[];
       name?: string | null;
       /** @default false */
-      pii_filter?: boolean;
+      pii_filter: boolean;
       objective?: components['schemas']['ObjectiveRequest'] | null;
       /** @default false */
-      is_evaluator?: boolean;
+      is_evaluator: boolean;
     };
     /**
      * @description * `managed` - managed
-     * * `native` - native
+     *     * `native` - native
      * @enum {string}
      */
     SkillTypeEnum: 'managed' | 'native';
@@ -1195,28 +1497,28 @@ export interface components {
     };
     /**
      * @description * `unlisted` - unlisted
-     * * `listed` - listed
+     *     * `listed` - listed
      * @enum {string}
      */
     StatusChangeStatusEnum: 'unlisted' | 'listed';
     /**
      * @description * `unlisted` - unlisted
-     * * `listed` - listed
-     * * `public` - public
-     * * `public_unlisted` - public_unlisted
+     *     * `listed` - listed
+     *     * `public` - public
+     *     * `public_unlisted` - public_unlisted
      * @enum {string}
      */
     StatusEnum: 'unlisted' | 'listed' | 'public' | 'public_unlisted';
     /**
      * @description * `pending` - Pending
-     * * `finished` - Finished
+     *     * `finished` - Finished
      * @enum {string}
      */
     ValidationResultStatus: 'pending' | 'finished';
     /**
      * @description * `global` - global
-     * * `listed` - listed
-     * * `unlisted` - unlisted
+     *     * `listed` - listed
+     *     * `unlisted` - unlisted
      * @enum {string}
      */
     VisibilityEnum: 'global' | 'listed' | 'unlisted';
@@ -1227,284 +1529,9 @@ export interface components {
   headers: never;
   pathItems: never;
 }
-
 export type $defs = Record<string, never>;
-
-export type external = Record<string, never>;
-
 export interface operations {
-  /** @description List all accessible judges. Filters can be applied to narrow down the results. */
-  beta_judges_list: {
-    parameters: {
-      query?: {
-        /** @description The pagination cursor value. */
-        cursor?: string;
-        /** @description Filter by is the judge preset or not */
-        is_preset?: boolean;
-        /** @description Filter by is the judge public or not */
-        is_public?: boolean;
-        name?: string;
-        /** @description Which field to use when ordering the results. */
-        ordering?: string;
-        /** @description Number of results to return per page. */
-        page_size?: number;
-        /** @description Search for judge by name, intent... */
-        search?: string;
-      };
-    };
-    responses: {
-      200: {
-        content: {
-          'application/json': components['schemas']['PaginatedJudgeListList'];
-        };
-      };
-    };
-  };
-  /** @description Create a new judge with a name, intent, and list of evaluators. */
-  beta_judges_create: {
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['JudgeRequest'];
-        'application/x-www-form-urlencoded': components['schemas']['JudgeRequest'];
-        'multipart/form-data': components['schemas']['JudgeRequest'];
-      };
-    };
-    responses: {
-      201: {
-        content: {
-          'application/json': components['schemas']['Judge'];
-        };
-      };
-    };
-  };
-  /** @description Execute a Judge. Judges that have a file will use it as a context automatically. See examples how to overwrite the context. */
-  beta_judges_execute_create: {
-    parameters: {
-      path: {
-        judge_id: string;
-      };
-    };
-    requestBody?: {
-      content: {
-        'application/json': components['schemas']['JudgeExecutionRequest'];
-        'application/x-www-form-urlencoded': components['schemas']['JudgeExecutionRequest'];
-        'multipart/form-data': components['schemas']['JudgeExecutionRequest'];
-      };
-    };
-    responses: {
-      200: {
-        content: {
-          'application/json': components['schemas']['JudgeExecutionResponse'];
-        };
-      };
-    };
-  };
-  beta_judges_openai_chat_completions_create_2: {
-    parameters: {
-      path: {
-        judge_id: string;
-      };
-    };
-    responses: {
-      /** @description No response body */
-      200: {
-        content: never;
-      };
-    };
-  };
-  /** @description Execute a judge as rectifier to improve the response. The rectifier will analyze the original response using the judge's evaluators and attempt to improve it based on their feedback. */
-  beta_judges_refine_create: {
-    parameters: {
-      path: {
-        judge_id: string;
-      };
-    };
-    requestBody?: {
-      content: {
-        'application/json': components['schemas']['JudgeRectifierRequestRequest'];
-        'application/x-www-form-urlencoded': components['schemas']['JudgeRectifierRequestRequest'];
-        'multipart/form-data': components['schemas']['JudgeRectifierRequestRequest'];
-      };
-    };
-    responses: {
-      200: {
-        content: {
-          'application/json': components['schemas']['JudgeRectifierResponse'];
-        };
-      };
-      400: {
-        content: {
-          'application/json': unknown;
-        };
-      };
-      403: {
-        content: {
-          'application/json': unknown;
-        };
-      };
-      404: {
-        content: {
-          'application/json': unknown;
-        };
-      };
-    };
-  };
-  beta_judges_refine_openai_chat_completions_create: {
-    parameters: {
-      path: {
-        judge_id: string;
-      };
-    };
-    responses: {
-      /** @description No response body */
-      200: {
-        content: never;
-      };
-    };
-  };
-  /** @description Retrieve a specific judge by its ID. */
-  beta_judges_retrieve: {
-    parameters: {
-      path: {
-        /** @description A UUID string identifying this judge. */
-        id: string;
-      };
-    };
-    responses: {
-      200: {
-        content: {
-          'application/json': components['schemas']['Judge'];
-        };
-      };
-    };
-  };
-  /** @description Update an existing judge. */
-  beta_judges_update: {
-    parameters: {
-      path: {
-        /** @description A UUID string identifying this judge. */
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['JudgeRequest'];
-        'application/x-www-form-urlencoded': components['schemas']['JudgeRequest'];
-        'multipart/form-data': components['schemas']['JudgeRequest'];
-      };
-    };
-    responses: {
-      200: {
-        content: {
-          'application/json': components['schemas']['Judge'];
-        };
-      };
-    };
-  };
-  /** @description Delete a judge. */
-  beta_judges_destroy: {
-    parameters: {
-      path: {
-        /** @description A UUID string identifying this judge. */
-        id: string;
-      };
-    };
-    responses: {
-      /** @description No response body */
-      204: {
-        content: never;
-      };
-    };
-  };
-  /** @description Partially update an existing judge. */
-  beta_judges_partial_update: {
-    parameters: {
-      path: {
-        /** @description A UUID string identifying this judge. */
-        id: string;
-      };
-    };
-    requestBody?: {
-      content: {
-        'application/json': components['schemas']['PatchedJudgeRequest'];
-        'application/x-www-form-urlencoded': components['schemas']['PatchedJudgeRequest'];
-        'multipart/form-data': components['schemas']['PatchedJudgeRequest'];
-      };
-    };
-    responses: {
-      200: {
-        content: {
-          'application/json': components['schemas']['Judge'];
-        };
-      };
-    };
-  };
-  /** @description Copy a judge to user */
-  beta_judges_duplicate_create: {
-    parameters: {
-      path: {
-        /** @description A UUID string identifying this judge. */
-        id: string;
-      };
-    };
-    responses: {
-      201: {
-        content: {
-          'application/json': components['schemas']['Judge'];
-        };
-      };
-    };
-  };
-  /** @description Send email invites to view a specific judge (up to 10 recipients) */
-  beta_judges_invite_create: {
-    parameters: {
-      path: {
-        /** @description A UUID string identifying this judge. */
-        id: string;
-      };
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['JudgeInviteRequest'];
-        'application/x-www-form-urlencoded': components['schemas']['JudgeInviteRequest'];
-        'multipart/form-data': components['schemas']['JudgeInviteRequest'];
-      };
-    };
-    responses: {
-      200: {
-        content: {
-          'application/json': unknown;
-        };
-      };
-    };
-  };
-  /** @description Generate a judge */
-  beta_judges_generate_create: {
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['JudgeGeneratorRequest'];
-        'application/x-www-form-urlencoded': components['schemas']['JudgeGeneratorRequest'];
-        'multipart/form-data': components['schemas']['JudgeGeneratorRequest'];
-      };
-    };
-    responses: {
-      201: {
-        content: {
-          'application/json': components['schemas']['JudgeGeneratorResponse'];
-        };
-      };
-    };
-  };
-  beta_judges_openai_chat_completions_create: {
-    responses: {
-      /** @description No response body */
-      200: {
-        content: never;
-      };
-    };
-  };
-  /** @description List datasets. */
-  v1_datasets_list: {
+  datasets_list: {
     parameters: {
       query?: {
         /** @description The pagination cursor value. */
@@ -1518,17 +1545,29 @@ export interface operations {
         /** @description Filter by type. Possible values: reference, test */
         type?: string;
       };
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['PaginatedDataSetListList'];
         };
       };
     };
   };
-  /** @description Create a new dataset. */
-  v1_datasets_create: {
+  datasets_create: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     requestBody?: {
       content: {
         'application/json': components['schemas']['DataSetCreateRequest'];
@@ -1538,51 +1577,67 @@ export interface operations {
     };
     responses: {
       201: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['DataSetCreate'];
         };
       };
     };
   };
-  /** @description Get dataset details or download the dataset file. */
-  v1_datasets_retrieve: {
+  datasets_retrieve: {
     parameters: {
       query?: {
         /** @description Download the dataset. */
         download?: boolean;
       };
+      header?: never;
       path: {
         id: string;
       };
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['DataSetList'];
         };
       };
     };
   };
-  /** @description Delete a dataset. */
-  v1_datasets_destroy: {
+  datasets_destroy: {
     parameters: {
+      query?: never;
+      header?: never;
       path: {
         id: string;
       };
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       /** @description No response body */
       204: {
-        content: never;
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
       };
     };
   };
-  /** @description Change the status of a dataset */
-  v1_datasets_status_update: {
+  datasets_status_update: {
     parameters: {
+      query?: never;
+      header?: never;
       path: {
         id: string;
       };
+      cookie?: never;
     };
     requestBody: {
       content: {
@@ -1593,14 +1648,16 @@ export interface operations {
     };
     responses: {
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['StatusChange'];
         };
       };
     };
   };
-  /** @description List all evaluators. The response includes a 'requirements' field for each evaluator that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables. */
-  v1_evaluators_list: {
+  evaluators_list: {
     parameters: {
       query?: {
         /** @description The pagination cursor value. */
@@ -1619,31 +1676,39 @@ export interface operations {
         page_size?: number;
         /** @description Search for evaluators by name or description. */
         search?: string;
-        /**
-         * @description * `managed` - managed
-         * * `native` - native
-         */
+        /** @description * `managed` - managed
+         *     * `native` - native */
         skill_type?: 'managed' | 'native';
-        /**
-         * @description * `unlisted` - unlisted
-         * * `listed` - listed
-         * * `public` - public
-         * * `public_unlisted` - public_unlisted
-         */
+        /** @description * `unlisted` - unlisted
+         *     * `listed` - listed
+         *     * `public` - public
+         *     * `public_unlisted` - public_unlisted */
         status?: 'listed' | 'public' | 'public_unlisted' | 'unlisted';
       };
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       /** @description List of evaluators with their requirements */
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['PaginatedEvaluatorListOutputList'];
         };
       };
     };
   };
-  /** @description Create a new evaluator. */
-  v1_evaluators_create: {
+  evaluators_create: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     requestBody: {
       content: {
         'application/json': components['schemas']['EvaluatorRequest'];
@@ -1653,14 +1718,16 @@ export interface operations {
     };
     responses: {
       201: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['Evaluator'];
         };
       };
     };
   };
-  /** @description Get evaluator details. The response includes a 'requirements' field that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables. */
-  v1_evaluators_retrieve: {
+  evaluators_retrieve: {
     parameters: {
       query?: {
         /** @description Include the last N validator results for each validator in the response. */
@@ -1668,25 +1735,33 @@ export interface operations {
         /** @description Get a specific version of the evaluator */
         version_id?: string;
       };
+      header?: never;
       path: {
         id: string;
       };
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       /** @description Evaluator details with requirements information */
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['Evaluator'];
         };
       };
     };
   };
-  /** @description Update an evaluator. */
-  v1_evaluators_update: {
+  evaluators_update: {
     parameters: {
+      query?: never;
+      header?: never;
       path: {
         id: string;
       };
+      cookie?: never;
     };
     requestBody: {
       content: {
@@ -1697,32 +1772,43 @@ export interface operations {
     };
     responses: {
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['Evaluator'];
         };
       };
     };
   };
-  /** @description Delete an evaluator. */
-  v1_evaluators_destroy: {
+  evaluators_destroy: {
     parameters: {
+      query?: never;
+      header?: never;
       path: {
         id: string;
       };
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       /** @description No response body */
       204: {
-        content: never;
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
       };
     };
   };
-  /** @description Update an evaluator. All fields are optional. */
-  v1_evaluators_partial_update: {
+  evaluators_partial_update: {
     parameters: {
+      query?: never;
+      header?: never;
       path: {
         id: string;
       };
+      cookie?: never;
     };
     requestBody?: {
       content: {
@@ -1733,14 +1819,22 @@ export interface operations {
     };
     responses: {
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['Evaluator'];
         };
       };
     };
   };
-  /** @description Test an evaluator definition using calibration data */
-  v1_evaluators_calibrate_create: {
+  evaluators_calibrate_create: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     requestBody: {
       content: {
         'application/json': components['schemas']['SkillTestInputRequest'];
@@ -1750,18 +1844,23 @@ export interface operations {
     };
     responses: {
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['EvaluatorCalibrationOutput'][];
         };
       };
     };
   };
-  /** @description Test an existing evaluator using calibration data */
-  v1_evaluators_calibrate_create_2: {
+  evaluators_calibrate_create_2: {
     parameters: {
+      query?: never;
+      header?: never;
       path: {
         id: string;
       };
+      cookie?: never;
     };
     requestBody?: {
       content: {
@@ -1772,18 +1871,23 @@ export interface operations {
     };
     responses: {
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['EvaluatorCalibrationOutput'][];
         };
       };
     };
   };
-  /** @description Duplicate an evaluator */
-  v1_evaluators_duplicate_create: {
+  evaluators_duplicate_create: {
     parameters: {
+      query?: never;
+      header?: never;
       path: {
         id: string;
       };
+      cookie?: never;
     };
     requestBody: {
       content: {
@@ -1794,18 +1898,23 @@ export interface operations {
     };
     responses: {
       201: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['Evaluator'];
         };
       };
     };
   };
-  /** @description Execute an evaluator. Check the evaluator's requirements to know which parameters are needed for execution. */
-  v1_evaluators_execute_create: {
+  evaluators_execute_create: {
     parameters: {
+      query?: never;
+      header?: never;
       path: {
         id: string;
       };
+      cookie?: never;
     };
     requestBody?: {
       content: {
@@ -1816,19 +1925,24 @@ export interface operations {
     };
     responses: {
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['EvaluatorExecutionResult'];
         };
       };
     };
   };
-  /** @description Execute an evaluator by name. Check the evaluator's requirements to know which parameters are needed for execution. */
-  v1_evaluators_execute_by_name_create: {
+  evaluators_execute_by_name_create: {
     parameters: {
       query: {
         /** @description The name of the evaluator to execute */
         name: string;
       };
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
     requestBody?: {
       content: {
@@ -1839,18 +1953,23 @@ export interface operations {
     };
     responses: {
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['EvaluatorExecutionResult'];
         };
       };
     };
   };
-  /** @description Change the status of an evaluator */
-  v1_evaluators_status_update: {
+  evaluators_status_update: {
     parameters: {
+      query?: never;
+      header?: never;
       path: {
         id: string;
       };
+      cookie?: never;
     };
     requestBody: {
       content: {
@@ -1861,18 +1980,23 @@ export interface operations {
     };
     responses: {
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['StatusChange'];
         };
       };
     };
   };
-  /** @description Change the status of an evaluator */
-  v1_evaluators_status_create: {
+  evaluators_status_create: {
     parameters: {
+      query?: never;
+      header?: never;
       path: {
         id: string;
       };
+      cookie?: never;
     };
     requestBody: {
       content: {
@@ -1883,14 +2007,16 @@ export interface operations {
     };
     responses: {
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['StatusChange'];
         };
       };
     };
   };
-  /** @description Get a list of all versions of an evaluator */
-  v1_evaluators_versions_list: {
+  evaluators_versions_list: {
     parameters: {
       query?: {
         /** @description The pagination cursor value. */
@@ -1898,29 +2024,39 @@ export interface operations {
         /** @description Number of results to return per page. */
         page_size?: number;
       };
+      header?: never;
       path: {
         id: string;
       };
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['PaginatedEvaluatorList'];
         };
       };
     };
   };
-  /** @description Get a list of execution logs. An execution log is created every time a skill or an evaluator is executed. */
-  v1_execution_logs_list: {
+  execution_logs_list: {
     parameters: {
       query?: {
         /** @description The pagination cursor value. */
         cursor?: string;
-        /**
-         * @description * `runtime` - runtime
-         * * `test` - test
-         */
-        execution_type?: 'runtime' | 'test';
+        /** @description Filter logs created after or at this datetime (inclusive) */
+        date_from?: string;
+        /** @description Filter logs created before or at this datetime (inclusive) */
+        date_to?: string;
+        executed_item_id?: string;
+        /** @description * `skill` - skill
+         *     * `evaluator` - evaluator
+         *     * `judge` - judge
+         *     * `experiment` - experiment */
+        execution_type?: 'evaluator' | 'experiment' | 'judge' | 'skill';
         /** @description Comma-separated list of additional fields to include in the response. Supports: llm_output, variables, evaluation_context */
         include?: string;
         /** @description Filter logs by maximum score, inclusive, excludes null scores */
@@ -1933,38 +2069,49 @@ export interface operations {
         page_size?: number;
         /** @description Filter with skill name or id */
         search?: string;
-        skill_data_id?: string;
         /** @description Filter logs by tag names (comma-separated) */
         tags?: string;
         /** @description Return only unique skills */
         unique_skills?: boolean;
       };
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['PaginatedExecutionLogListList'];
         };
       };
     };
   };
-  /** @description Get the full details of a single execution log. */
-  v1_execution_logs_retrieve: {
+  execution_logs_retrieve: {
     parameters: {
+      query?: never;
+      header?: never;
       path: {
         log_id: string;
       };
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['ExecutionLogDetails'];
         };
       };
     };
   };
-  /** @description List all accessible judges. Filters can be applied to narrow down the results. */
-  v1_judges_list: {
+  judges_list: {
     parameters: {
       query?: {
         /** @description The pagination cursor value. */
@@ -1981,17 +2128,29 @@ export interface operations {
         /** @description Search for judge by name, intent... */
         search?: string;
       };
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['PaginatedJudgeListList'];
         };
       };
     };
   };
-  /** @description Create a new judge with a name, intent, and list of evaluators. */
-  v1_judges_create: {
+  judges_create: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     requestBody: {
       content: {
         'application/json': components['schemas']['JudgeRequest'];
@@ -2001,18 +2160,23 @@ export interface operations {
     };
     responses: {
       201: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['Judge'];
         };
       };
     };
   };
-  /** @description Execute a Judge. Judges that have a file will use it as a context automatically. See examples how to overwrite the context. */
-  v1_judges_execute_create: {
+  judges_execute_create: {
     parameters: {
+      query?: never;
+      header?: never;
       path: {
         judge_id: string;
       };
+      cookie?: never;
     };
     requestBody?: {
       content: {
@@ -2023,31 +2187,48 @@ export interface operations {
     };
     responses: {
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['JudgeExecutionResponse'];
         };
       };
     };
   };
-  v1_judges_openai_chat_completions_create_2: {
+  judges_openai_chat_completions_create_2: {
     parameters: {
+      query?: {
+        /** @description Whether to run judge evaluation asynchronously. When true, returns completion response immediately without waiting for judge evaluation. Defaults to false. */
+        async_judge?: boolean;
+        /** @description Whether to include evaluator results in the response metadata. Defaults to true. */
+        rs_metadata?: boolean;
+      };
+      header?: never;
       path: {
         judge_id: string;
       };
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       /** @description No response body */
       200: {
-        content: never;
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
       };
     };
   };
-  /** @description Execute a judge as rectifier to improve the response. The rectifier will analyze the original response using the judge's evaluators and attempt to improve it based on their feedback. */
-  v1_judges_refine_create: {
+  judges_refine_create: {
     parameters: {
+      query?: never;
+      header?: never;
       path: {
         judge_id: string;
       };
+      cookie?: never;
     };
     requestBody?: {
       content: {
@@ -2058,63 +2239,93 @@ export interface operations {
     };
     responses: {
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['JudgeRectifierResponse'];
         };
       };
       400: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': unknown;
         };
       };
       403: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': unknown;
         };
       };
       404: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': unknown;
         };
       };
     };
   };
-  v1_judges_refine_openai_chat_completions_create: {
+  judges_refine_openai_chat_completions_create: {
     parameters: {
+      query?: {
+        /** @description Whether to include evaluator results in the response metadata. Defaults to true. */
+        rs_metadata?: boolean;
+      };
+      header?: never;
       path: {
         judge_id: string;
       };
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       /** @description No response body */
       200: {
-        content: never;
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
       };
     };
   };
-  /** @description Retrieve a specific judge by its ID. */
-  v1_judges_retrieve: {
+  judges_retrieve: {
     parameters: {
+      query?: never;
+      header?: never;
       path: {
         /** @description A UUID string identifying this judge. */
         id: string;
       };
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['Judge'];
         };
       };
     };
   };
-  /** @description Update an existing judge. */
-  v1_judges_update: {
+  judges_update: {
     parameters: {
+      query?: never;
+      header?: never;
       path: {
         /** @description A UUID string identifying this judge. */
         id: string;
       };
+      cookie?: never;
     };
     requestBody: {
       content: {
@@ -2125,34 +2336,45 @@ export interface operations {
     };
     responses: {
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['Judge'];
         };
       };
     };
   };
-  /** @description Delete a judge. */
-  v1_judges_destroy: {
+  judges_destroy: {
     parameters: {
+      query?: never;
+      header?: never;
       path: {
         /** @description A UUID string identifying this judge. */
         id: string;
       };
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       /** @description No response body */
       204: {
-        content: never;
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
       };
     };
   };
-  /** @description Partially update an existing judge. */
-  v1_judges_partial_update: {
+  judges_partial_update: {
     parameters: {
+      query?: never;
+      header?: never;
       path: {
         /** @description A UUID string identifying this judge. */
         id: string;
       };
+      cookie?: never;
     };
     requestBody?: {
       content: {
@@ -2163,35 +2385,46 @@ export interface operations {
     };
     responses: {
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['Judge'];
         };
       };
     };
   };
-  /** @description Copy a judge to user */
-  v1_judges_duplicate_create: {
+  judges_duplicate_create: {
     parameters: {
+      query?: never;
+      header?: never;
       path: {
         /** @description A UUID string identifying this judge. */
         id: string;
       };
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       201: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['Judge'];
         };
       };
     };
   };
-  /** @description Send email invites to view a specific judge (up to 10 recipients) */
-  v1_judges_invite_create: {
+  judges_invite_create: {
     parameters: {
+      query?: never;
+      header?: never;
       path: {
         /** @description A UUID string identifying this judge. */
         id: string;
       };
+      cookie?: never;
     };
     requestBody: {
       content: {
@@ -2202,14 +2435,50 @@ export interface operations {
     };
     responses: {
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': unknown;
         };
       };
     };
   };
-  /** @description Generate a judge */
-  v1_judges_generate_create: {
+  judges_execute_by_name_create: {
+    parameters: {
+      query: {
+        /** @description The name of the judge to execute */
+        name: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: {
+      content: {
+        'application/json': components['schemas']['JudgeExecutionRequest'];
+        'application/x-www-form-urlencoded': components['schemas']['JudgeExecutionRequest'];
+        'multipart/form-data': components['schemas']['JudgeExecutionRequest'];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['JudgeExecutionResponse'];
+        };
+      };
+    };
+  };
+  judges_generate_create: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     requestBody: {
       content: {
         'application/json': components['schemas']['JudgeGeneratorRequest'];
@@ -2219,22 +2488,39 @@ export interface operations {
     };
     responses: {
       201: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['JudgeGeneratorResponse'];
         };
       };
     };
   };
-  v1_judges_openai_chat_completions_create: {
+  judges_openai_chat_completions_create: {
+    parameters: {
+      query?: {
+        /** @description Whether to run judge evaluation asynchronously. When true, returns completion response immediately without waiting for judge evaluation. Defaults to false. */
+        async_judge?: boolean;
+        /** @description Whether to include evaluator results in the response metadata. Defaults to true. */
+        rs_metadata?: boolean;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
     responses: {
       /** @description No response body */
       200: {
-        content: never;
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
       };
     };
   };
-  /** @description Get all available LLM models. */
-  v1_models_list: {
+  models_list: {
     parameters: {
       query?: {
         /** @description Search for models by capabilities. */
@@ -2246,17 +2532,29 @@ export interface operations {
         /** @description Number of results to return per page. */
         page_size?: number;
       };
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['PaginatedModelListList'];
         };
       };
     };
   };
-  /** @description Create a custom LLM model. */
-  v1_models_create: {
+  models_create: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     requestBody: {
       content: {
         'application/json': components['schemas']['ModelRequest'];
@@ -2266,35 +2564,46 @@ export interface operations {
     };
     responses: {
       201: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['Model'];
         };
       };
     };
   };
-  /** @description Get model details. */
-  v1_models_retrieve: {
+  models_retrieve: {
     parameters: {
+      query?: never;
+      header?: never;
       path: {
         /** @description A UUID string identifying this model. */
         id: string;
       };
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['Model'];
         };
       };
     };
   };
-  /** @description Update a custom LLM model. */
-  v1_models_update: {
+  models_update: {
     parameters: {
+      query?: never;
+      header?: never;
       path: {
         /** @description A UUID string identifying this model. */
         id: string;
       };
+      cookie?: never;
     };
     requestBody: {
       content: {
@@ -2305,32 +2614,45 @@ export interface operations {
     };
     responses: {
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['Model'];
         };
       };
     };
   };
-  v1_models_destroy: {
+  models_destroy: {
     parameters: {
+      query?: never;
+      header?: never;
       path: {
         /** @description A UUID string identifying this model. */
         id: string;
       };
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       /** @description No response body */
       204: {
-        content: never;
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
       };
     };
   };
-  v1_models_partial_update: {
+  models_partial_update: {
     parameters: {
+      query?: never;
+      header?: never;
       path: {
         /** @description A UUID string identifying this model. */
         id: string;
       };
+      cookie?: never;
     };
     requestBody?: {
       content: {
@@ -2341,14 +2663,16 @@ export interface operations {
     };
     responses: {
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['Model'];
         };
       };
     };
   };
-  /** @description List Objective definitions. */
-  v1_objectives_list: {
+  objectives_list: {
     parameters: {
       query?: {
         /** @description The pagination cursor value. */
@@ -2364,17 +2688,29 @@ export interface operations {
         /** @description Search for objectives by intent. */
         search?: string;
       };
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['PaginatedObjectiveListList'];
         };
       };
     };
   };
-  /** @description Create an Objective definition. */
-  v1_objectives_create: {
+  objectives_create: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
     requestBody?: {
       content: {
         'application/json': components['schemas']['ObjectiveRequest'];
@@ -2384,33 +2720,44 @@ export interface operations {
     };
     responses: {
       201: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['ID'];
         };
       };
     };
   };
-  /** @description Get an Objective definition details. */
-  v1_objectives_retrieve: {
+  objectives_retrieve: {
     parameters: {
+      query?: never;
+      header?: never;
       path: {
         id: string;
       };
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['Objective'];
         };
       };
     };
   };
-  /** @description Update an Objective definition. */
-  v1_objectives_update: {
+  objectives_update: {
     parameters: {
+      query?: never;
+      header?: never;
       path: {
         id: string;
       };
+      cookie?: never;
     };
     requestBody?: {
       content: {
@@ -2421,31 +2768,43 @@ export interface operations {
     };
     responses: {
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['Objective'];
         };
       };
     };
   };
-  /** @description Delete an Objective definition. */
-  v1_objectives_destroy: {
+  objectives_destroy: {
     parameters: {
+      query?: never;
+      header?: never;
       path: {
         id: string;
       };
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       /** @description No response body */
       204: {
-        content: never;
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
       };
     };
   };
-  v1_objectives_partial_update: {
+  objectives_partial_update: {
     parameters: {
+      query?: never;
+      header?: never;
       path: {
         id: string;
       };
+      cookie?: never;
     };
     requestBody?: {
       content: {
@@ -2456,13 +2815,16 @@ export interface operations {
     };
     responses: {
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['Objective'];
         };
       };
     };
   };
-  v1_objectives_versions_list: {
+  objectives_versions_list: {
     parameters: {
       query?: {
         /** @description The pagination cursor value. */
@@ -2470,12 +2832,18 @@ export interface operations {
         /** @description Number of results to return per page. */
         page_size?: number;
       };
+      header?: never;
       path: {
         id: string;
       };
+      cookie?: never;
     };
+    requestBody?: never;
     responses: {
       200: {
+        headers: {
+          [name: string]: unknown;
+        };
         content: {
           'application/json': components['schemas']['PaginatedObjectiveList'];
         };

@@ -25,7 +25,7 @@ export interface EvaluatorListParams extends ListParams {
 
 export interface EvaluatorCreateParams {
   name: string;
-  predicate?: string;
+  predicate: string;
   intent?: string;
   model?: string;
   models?: string[];
@@ -132,7 +132,8 @@ export class EvaluatorsResource {
   async duplicate(id: string): Promise<EvaluatorDetail> {
     const { data, error } = await this._client.POST('/v1/evaluators/duplicate/{id}/', {
       params: { path: { id } },
-      body: { name: `Copy of evaluator ${id}` },
+      // @ts-expect-error - TODO: fix this
+      body: {},
     });
 
     if (error) {
@@ -148,10 +149,6 @@ export class EvaluatorsResource {
   }
 
   async create(params: EvaluatorCreateParams): Promise<EvaluatorWithExecute> {
-    const requestBody: EvaluatorRequest = {
-      name: params.name,
-    };
-
     if (params.objective_id && params.intent) {
       throw new RootSignalsError(
         400,
@@ -161,7 +158,7 @@ export class EvaluatorsResource {
       );
     }
 
-    let objectiveId: string | undefined;
+    let objectiveId: string;
 
     if (params.intent) {
       const { data: objectiveResponse, error } = await this._client.POST('/v1/objectives/', {
@@ -169,8 +166,6 @@ export class EvaluatorsResource {
           intent: params.intent,
         },
       });
-
-      objectiveId = objectiveResponse?.id;
 
       if (error) {
         throw new RootSignalsError(
@@ -180,13 +175,19 @@ export class EvaluatorsResource {
           'Failed to create objective',
         );
       }
+      objectiveId = objectiveResponse.id;
     } else if (params.objective_id) {
       objectiveId = params.objective_id;
+    } else {
+      throw new RootSignalsError(400, 'INVALID_PARAMS', {}, 'Objective ID or intent is required');
     }
 
-    if (params.predicate) {
-      requestBody.prompt = params.predicate;
-    }
+    const requestBody: EvaluatorRequest = {
+      name: params.name,
+      objective_id: objectiveId,
+      overwrite: params.overwrite ?? false,
+      prompt: params.predicate,
+    };
     if (params.system_message) {
       requestBody.system_message = params.system_message;
     }

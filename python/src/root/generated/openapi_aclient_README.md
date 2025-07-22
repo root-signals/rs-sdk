@@ -97,6 +97,7 @@ Class | Method | HTTP request | Description
 *JudgesApi* | [**judges_create**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_create) | **POST** /v1/judges/ | 
 *JudgesApi* | [**judges_destroy**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_destroy) | **DELETE** /v1/judges/{id}/ | 
 *JudgesApi* | [**judges_duplicate_create**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_duplicate_create) | **POST** /v1/judges/{id}/duplicate/ | 
+*JudgesApi* | [**judges_execute_by_name_create**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_execute_by_name_create) | **POST** /v1/judges/execute/by-name/ | 
 *JudgesApi* | [**judges_execute_create**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_execute_create) | **POST** /v1/judges/{judge_id}/execute/ | 
 *JudgesApi* | [**judges_generate_create**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_generate_create) | **POST** /v1/judges/generate/ | 
 *JudgesApi* | [**judges_invite_create**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_invite_create) | **POST** /v1/judges/{id}/invite/ | 

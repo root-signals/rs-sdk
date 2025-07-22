@@ -701,6 +701,256 @@ class JudgesApi:
         )
 
     @validate_call
+    def judges_execute_by_name_create(
+        self,
+        name: Annotated[StrictStr, Field(description="The name of the judge to execute")],
+        judge_execution_request: Optional[JudgeExecutionRequest] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> JudgeExecutionResponse:
+        """judges_execute_by_name_create
+
+        Execute a judge by name. Judges that have a file will use it as a context automatically. See examples how to overwrite the context.
+
+        :param name: The name of the judge to execute (required)
+        :type name: str
+        :param judge_execution_request:
+        :type judge_execution_request: JudgeExecutionRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """  # noqa: E501
+
+        _param = self._judges_execute_by_name_create_serialize(
+            name=name,
+            judge_execution_request=judge_execution_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            "200": "JudgeExecutionResponse",
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+    @validate_call
+    def judges_execute_by_name_create_with_http_info(
+        self,
+        name: Annotated[StrictStr, Field(description="The name of the judge to execute")],
+        judge_execution_request: Optional[JudgeExecutionRequest] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[JudgeExecutionResponse]:
+        """judges_execute_by_name_create
+
+        Execute a judge by name. Judges that have a file will use it as a context automatically. See examples how to overwrite the context.
+
+        :param name: The name of the judge to execute (required)
+        :type name: str
+        :param judge_execution_request:
+        :type judge_execution_request: JudgeExecutionRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """  # noqa: E501
+
+        _param = self._judges_execute_by_name_create_serialize(
+            name=name,
+            judge_execution_request=judge_execution_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            "200": "JudgeExecutionResponse",
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+    @validate_call
+    def judges_execute_by_name_create_without_preload_content(
+        self,
+        name: Annotated[StrictStr, Field(description="The name of the judge to execute")],
+        judge_execution_request: Optional[JudgeExecutionRequest] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """judges_execute_by_name_create
+
+        Execute a judge by name. Judges that have a file will use it as a context automatically. See examples how to overwrite the context.
+
+        :param name: The name of the judge to execute (required)
+        :type name: str
+        :param judge_execution_request:
+        :type judge_execution_request: JudgeExecutionRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """  # noqa: E501
+
+        _param = self._judges_execute_by_name_create_serialize(
+            name=name,
+            judge_execution_request=judge_execution_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            "200": "JudgeExecutionResponse",
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        return response_data.response
+
+    def _judges_execute_by_name_create_serialize(
+        self,
+        name,
+        judge_execution_request,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+        _host = None
+
+        _collection_formats: Dict[str, str] = {}
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, str] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        if name is not None:
+            _query_params.append(("name", name))
+
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if judge_execution_request is not None:
+            _body_params = judge_execution_request
+
+        # set the HTTP header `Accept`
+        _header_params["Accept"] = self.api_client.select_header_accept(["application/json"])
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params["Content-Type"] = _content_type
+        else:
+            _default_content_type = self.api_client.select_header_content_type(
+                ["application/json", "application/x-www-form-urlencoded", "multipart/form-data"]
+            )
+            if _default_content_type is not None:
+                _header_params["Content-Type"] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = ["publicApiKey"]
+
+        return self.api_client.param_serialize(
+            method="POST",
+            resource_path="/v1/judges/execute/by-name/",
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth,
+        )
+
+    @validate_call
     def judges_execute_create(
         self,
         judge_id: StrictStr,
@@ -1762,6 +2012,16 @@ class JudgesApi:
     @validate_call
     def judges_openai_chat_completions_create(
         self,
+        async_judge: Annotated[
+            Optional[StrictBool],
+            Field(
+                description="Whether to run judge evaluation asynchronously. When true, returns completion response immediately without waiting for judge evaluation. Defaults to false."
+            ),
+        ] = None,
+        rs_metadata: Annotated[
+            Optional[StrictBool],
+            Field(description="Whether to include evaluator results in the response metadata. Defaults to true."),
+        ] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1774,7 +2034,12 @@ class JudgesApi:
     ) -> None:
         """judges_openai_chat_completions_create
 
+        OpenAI compatible endpoint for running a judge on a LLM interaction. See https://platform.openai.com/docs/api-reference/chat/create for more information.
 
+        :param async_judge: Whether to run judge evaluation asynchronously. When true, returns completion response immediately without waiting for judge evaluation. Defaults to false.
+        :type async_judge: bool
+        :param rs_metadata: Whether to include evaluator results in the response metadata. Defaults to true.
+        :type rs_metadata: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1798,7 +2063,12 @@ class JudgesApi:
         """  # noqa: E501
 
         _param = self._judges_openai_chat_completions_create_serialize(
-            _request_auth=_request_auth, _content_type=_content_type, _headers=_headers, _host_index=_host_index
+            async_judge=async_judge,
+            rs_metadata=rs_metadata,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
@@ -1814,6 +2084,16 @@ class JudgesApi:
     @validate_call
     def judges_openai_chat_completions_create_with_http_info(
         self,
+        async_judge: Annotated[
+            Optional[StrictBool],
+            Field(
+                description="Whether to run judge evaluation asynchronously. When true, returns completion response immediately without waiting for judge evaluation. Defaults to false."
+            ),
+        ] = None,
+        rs_metadata: Annotated[
+            Optional[StrictBool],
+            Field(description="Whether to include evaluator results in the response metadata. Defaults to true."),
+        ] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1826,7 +2106,12 @@ class JudgesApi:
     ) -> ApiResponse[None]:
         """judges_openai_chat_completions_create
 
+        OpenAI compatible endpoint for running a judge on a LLM interaction. See https://platform.openai.com/docs/api-reference/chat/create for more information.
 
+        :param async_judge: Whether to run judge evaluation asynchronously. When true, returns completion response immediately without waiting for judge evaluation. Defaults to false.
+        :type async_judge: bool
+        :param rs_metadata: Whether to include evaluator results in the response metadata. Defaults to true.
+        :type rs_metadata: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1850,7 +2135,12 @@ class JudgesApi:
         """  # noqa: E501
 
         _param = self._judges_openai_chat_completions_create_serialize(
-            _request_auth=_request_auth, _content_type=_content_type, _headers=_headers, _host_index=_host_index
+            async_judge=async_judge,
+            rs_metadata=rs_metadata,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
@@ -1866,6 +2156,16 @@ class JudgesApi:
     @validate_call
     def judges_openai_chat_completions_create_without_preload_content(
         self,
+        async_judge: Annotated[
+            Optional[StrictBool],
+            Field(
+                description="Whether to run judge evaluation asynchronously. When true, returns completion response immediately without waiting for judge evaluation. Defaults to false."
+            ),
+        ] = None,
+        rs_metadata: Annotated[
+            Optional[StrictBool],
+            Field(description="Whether to include evaluator results in the response metadata. Defaults to true."),
+        ] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1878,7 +2178,12 @@ class JudgesApi:
     ) -> RESTResponseType:
         """judges_openai_chat_completions_create
 
+        OpenAI compatible endpoint for running a judge on a LLM interaction. See https://platform.openai.com/docs/api-reference/chat/create for more information.
 
+        :param async_judge: Whether to run judge evaluation asynchronously. When true, returns completion response immediately without waiting for judge evaluation. Defaults to false.
+        :type async_judge: bool
+        :param rs_metadata: Whether to include evaluator results in the response metadata. Defaults to true.
+        :type rs_metadata: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1902,7 +2207,12 @@ class JudgesApi:
         """  # noqa: E501
 
         _param = self._judges_openai_chat_completions_create_serialize(
-            _request_auth=_request_auth, _content_type=_content_type, _headers=_headers, _host_index=_host_index
+            async_judge=async_judge,
+            rs_metadata=rs_metadata,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
@@ -1913,6 +2223,8 @@ class JudgesApi:
 
     def _judges_openai_chat_completions_create_serialize(
         self,
+        async_judge,
+        rs_metadata,
         _request_auth,
         _content_type,
         _headers,
@@ -1931,6 +2243,12 @@ class JudgesApi:
 
         # process the path parameters
         # process the query parameters
+        if async_judge is not None:
+            _query_params.append(("async_judge", async_judge))
+
+        if rs_metadata is not None:
+            _query_params.append(("rs_metadata", rs_metadata))
+
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -1957,6 +2275,16 @@ class JudgesApi:
     def judges_openai_chat_completions_create2(
         self,
         judge_id: StrictStr,
+        async_judge: Annotated[
+            Optional[StrictBool],
+            Field(
+                description="Whether to run judge evaluation asynchronously. When true, returns completion response immediately without waiting for judge evaluation. Defaults to false."
+            ),
+        ] = None,
+        rs_metadata: Annotated[
+            Optional[StrictBool],
+            Field(description="Whether to include evaluator results in the response metadata. Defaults to true."),
+        ] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1969,9 +2297,14 @@ class JudgesApi:
     ) -> None:
         """judges_openai_chat_completions_create2
 
+        OpenAI compatible endpoint for running a judge on a LLM interaction. See https://platform.openai.com/docs/api-reference/chat/create for more information.
 
         :param judge_id: (required)
         :type judge_id: str
+        :param async_judge: Whether to run judge evaluation asynchronously. When true, returns completion response immediately without waiting for judge evaluation. Defaults to false.
+        :type async_judge: bool
+        :param rs_metadata: Whether to include evaluator results in the response metadata. Defaults to true.
+        :type rs_metadata: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1996,6 +2329,8 @@ class JudgesApi:
 
         _param = self._judges_openai_chat_completions_create2_serialize(
             judge_id=judge_id,
+            async_judge=async_judge,
+            rs_metadata=rs_metadata,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2016,6 +2351,16 @@ class JudgesApi:
     def judges_openai_chat_completions_create2_with_http_info(
         self,
         judge_id: StrictStr,
+        async_judge: Annotated[
+            Optional[StrictBool],
+            Field(
+                description="Whether to run judge evaluation asynchronously. When true, returns completion response immediately without waiting for judge evaluation. Defaults to false."
+            ),
+        ] = None,
+        rs_metadata: Annotated[
+            Optional[StrictBool],
+            Field(description="Whether to include evaluator results in the response metadata. Defaults to true."),
+        ] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2028,9 +2373,14 @@ class JudgesApi:
     ) -> ApiResponse[None]:
         """judges_openai_chat_completions_create2
 
+        OpenAI compatible endpoint for running a judge on a LLM interaction. See https://platform.openai.com/docs/api-reference/chat/create for more information.
 
         :param judge_id: (required)
         :type judge_id: str
+        :param async_judge: Whether to run judge evaluation asynchronously. When true, returns completion response immediately without waiting for judge evaluation. Defaults to false.
+        :type async_judge: bool
+        :param rs_metadata: Whether to include evaluator results in the response metadata. Defaults to true.
+        :type rs_metadata: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2055,6 +2405,8 @@ class JudgesApi:
 
         _param = self._judges_openai_chat_completions_create2_serialize(
             judge_id=judge_id,
+            async_judge=async_judge,
+            rs_metadata=rs_metadata,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2075,6 +2427,16 @@ class JudgesApi:
     def judges_openai_chat_completions_create2_without_preload_content(
         self,
         judge_id: StrictStr,
+        async_judge: Annotated[
+            Optional[StrictBool],
+            Field(
+                description="Whether to run judge evaluation asynchronously. When true, returns completion response immediately without waiting for judge evaluation. Defaults to false."
+            ),
+        ] = None,
+        rs_metadata: Annotated[
+            Optional[StrictBool],
+            Field(description="Whether to include evaluator results in the response metadata. Defaults to true."),
+        ] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2087,9 +2449,14 @@ class JudgesApi:
     ) -> RESTResponseType:
         """judges_openai_chat_completions_create2
 
+        OpenAI compatible endpoint for running a judge on a LLM interaction. See https://platform.openai.com/docs/api-reference/chat/create for more information.
 
         :param judge_id: (required)
         :type judge_id: str
+        :param async_judge: Whether to run judge evaluation asynchronously. When true, returns completion response immediately without waiting for judge evaluation. Defaults to false.
+        :type async_judge: bool
+        :param rs_metadata: Whether to include evaluator results in the response metadata. Defaults to true.
+        :type rs_metadata: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2114,6 +2481,8 @@ class JudgesApi:
 
         _param = self._judges_openai_chat_completions_create2_serialize(
             judge_id=judge_id,
+            async_judge=async_judge,
+            rs_metadata=rs_metadata,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2129,6 +2498,8 @@ class JudgesApi:
     def _judges_openai_chat_completions_create2_serialize(
         self,
         judge_id,
+        async_judge,
+        rs_metadata,
         _request_auth,
         _content_type,
         _headers,
@@ -2149,6 +2520,12 @@ class JudgesApi:
         if judge_id is not None:
             _path_params["judge_id"] = judge_id
         # process the query parameters
+        if async_judge is not None:
+            _query_params.append(("async_judge", async_judge))
+
+        if rs_metadata is not None:
+            _query_params.append(("rs_metadata", rs_metadata))
+
         # process the header parameters
         # process the form parameters
         # process the body parameter
@@ -2682,6 +3059,10 @@ class JudgesApi:
     def judges_refine_openai_chat_completions_create(
         self,
         judge_id: StrictStr,
+        rs_metadata: Annotated[
+            Optional[StrictBool],
+            Field(description="Whether to include evaluator results in the response metadata. Defaults to true."),
+        ] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2694,9 +3075,12 @@ class JudgesApi:
     ) -> None:
         """judges_refine_openai_chat_completions_create
 
+        OpenAI compatible endpoint for running a LLM interaction and refining the response using a judge. See https://platform.openai.com/docs/api-reference/chat/create for more information.
 
         :param judge_id: (required)
         :type judge_id: str
+        :param rs_metadata: Whether to include evaluator results in the response metadata. Defaults to true.
+        :type rs_metadata: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2721,6 +3105,7 @@ class JudgesApi:
 
         _param = self._judges_refine_openai_chat_completions_create_serialize(
             judge_id=judge_id,
+            rs_metadata=rs_metadata,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2741,6 +3126,10 @@ class JudgesApi:
     def judges_refine_openai_chat_completions_create_with_http_info(
         self,
         judge_id: StrictStr,
+        rs_metadata: Annotated[
+            Optional[StrictBool],
+            Field(description="Whether to include evaluator results in the response metadata. Defaults to true."),
+        ] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2753,9 +3142,12 @@ class JudgesApi:
     ) -> ApiResponse[None]:
         """judges_refine_openai_chat_completions_create
 
+        OpenAI compatible endpoint for running a LLM interaction and refining the response using a judge. See https://platform.openai.com/docs/api-reference/chat/create for more information.
 
         :param judge_id: (required)
         :type judge_id: str
+        :param rs_metadata: Whether to include evaluator results in the response metadata. Defaults to true.
+        :type rs_metadata: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2780,6 +3172,7 @@ class JudgesApi:
 
         _param = self._judges_refine_openai_chat_completions_create_serialize(
             judge_id=judge_id,
+            rs_metadata=rs_metadata,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2800,6 +3193,10 @@ class JudgesApi:
     def judges_refine_openai_chat_completions_create_without_preload_content(
         self,
         judge_id: StrictStr,
+        rs_metadata: Annotated[
+            Optional[StrictBool],
+            Field(description="Whether to include evaluator results in the response metadata. Defaults to true."),
+        ] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2812,9 +3209,12 @@ class JudgesApi:
     ) -> RESTResponseType:
         """judges_refine_openai_chat_completions_create
 
+        OpenAI compatible endpoint for running a LLM interaction and refining the response using a judge. See https://platform.openai.com/docs/api-reference/chat/create for more information.
 
         :param judge_id: (required)
         :type judge_id: str
+        :param rs_metadata: Whether to include evaluator results in the response metadata. Defaults to true.
+        :type rs_metadata: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2839,6 +3239,7 @@ class JudgesApi:
 
         _param = self._judges_refine_openai_chat_completions_create_serialize(
             judge_id=judge_id,
+            rs_metadata=rs_metadata,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2854,6 +3255,7 @@ class JudgesApi:
     def _judges_refine_openai_chat_completions_create_serialize(
         self,
         judge_id,
+        rs_metadata,
         _request_auth,
         _content_type,
         _headers,
@@ -2874,6 +3276,9 @@ class JudgesApi:
         if judge_id is not None:
             _path_params["judge_id"] = judge_id
         # process the query parameters
+        if rs_metadata is not None:
+            _query_params.append(("rs_metadata", rs_metadata))
+
         # process the header parameters
         # process the form parameters
         # process the body parameter

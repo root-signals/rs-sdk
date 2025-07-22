@@ -795,6 +795,18 @@ paths:
         schema:
           type: string
       - in: query
+        name: date_from
+        schema:
+          type: string
+          format: date-time
+        description: Filter logs created after or at this datetime (inclusive)
+      - in: query
+        name: date_to
+        schema:
+          type: string
+          format: date-time
+        description: Filter logs created before or at this datetime (inclusive)
+      - in: query
         name: executed_item_id
         schema:
           type: string
@@ -982,6 +994,7 @@ paths:
         name: judge_id
         schema:
           type: string
+          format: uuid
         required: true
       tags:
       - judges
@@ -1027,13 +1040,28 @@ paths:
   /v1/judges/{judge_id}/openai/chat/completions:
     post:
       operationId: judges_openai_chat_completions_create_2
+      description: OpenAI compatible endpoint for running a judge on a LLM interaction.
+        See https://platform.openai.com/docs/api-reference/chat/create for more information.
       parameters:
+      - in: query
+        name: async_judge
+        schema:
+          type: boolean
+        description: Whether to run judge evaluation asynchronously. When true, returns
+          completion response immediately without waiting for judge evaluation. Defaults
+          to false.
       - in: path
         name: judge_id
         schema:
           type: string
           format: uuid
         required: true
+      - in: query
+        name: rs_metadata
+        schema:
+          type: boolean
+        description: Whether to include evaluator results in the response metadata.
+          Defaults to true.
       tags:
       - judges
       responses:
@@ -1050,6 +1078,7 @@ paths:
         name: judge_id
         schema:
           type: string
+          format: uuid
         required: true
       tags:
       - judges
@@ -1151,6 +1180,9 @@ paths:
   /v1/judges/{judge_id}/refine/openai/chat/completions:
     post:
       operationId: judges_refine_openai_chat_completions_create
+      description: OpenAI compatible endpoint for running a LLM interaction and refining
+        the response using a judge. See https://platform.openai.com/docs/api-reference/chat/create
+        for more information.
       parameters:
       - in: path
         name: judge_id
@@ -1158,6 +1190,12 @@ paths:
           type: string
           format: uuid
         required: true
+      - in: query
+        name: rs_metadata
+        schema:
+          type: boolean
+        description: Whether to include evaluator results in the response metadata.
+          Defaults to true.
       tags:
       - judges
       responses:
@@ -1329,6 +1367,59 @@ paths:
               schema:
                 description: Invitations sent successfully
           description: ''
+  /v1/judges/execute/by-name/:
+    post:
+      operationId: judges_execute_by_name_create
+      description: Execute a judge by name. Judges that have a file will use it as
+        a context automatically. See examples how to overwrite the context.
+      parameters:
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: The name of the judge to execute
+        required: true
+      tags:
+      - judges
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JudgeExecutionRequest'
+            examples:
+              ExecuteASimpleJudgeByName:
+                value:
+                  request: Tell me about a subject
+                  response: As an LLM, I will tell you about a subject
+                  tags:
+                  - dev
+                summary: Execute a simple judge by name
+              ExecuteAJudgeByNameWithContext:
+                value:
+                  request: Can I get a refund for my purchase?
+                  response: You can get a refund if you have a receipt and the product
+                    is in good condition.
+                  contexts:
+                  - Here is a policy document containing information about the returns
+                    policy. Users can return products...
+                summary: Execute a judge by name with context
+                description: The context is a list of strings that will be used to
+                  help the LLM answer the question.
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/JudgeExecutionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/JudgeExecutionRequest'
+      security:
+      - publicApiKey: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JudgeExecutionResponse'
+          description: ''
   /v1/judges/generate/:
     post:
       operationId: judges_generate_create
@@ -1359,6 +1450,22 @@ paths:
   /v1/judges/openai/chat/completions:
     post:
       operationId: judges_openai_chat_completions_create
+      description: OpenAI compatible endpoint for running a judge on a LLM interaction.
+        See https://platform.openai.com/docs/api-reference/chat/create for more information.
+      parameters:
+      - in: query
+        name: async_judge
+        schema:
+          type: boolean
+        description: Whether to run judge evaluation asynchronously. When true, returns
+          completion response immediately without waiting for judge evaluation. Defaults
+          to false.
+      - in: query
+        name: rs_metadata
+        schema:
+          type: boolean
+        description: Whether to include evaluator results in the response metadata.
+          Defaults to true.
       tags:
       - judges
       responses:
@@ -1931,6 +2038,9 @@ components:
           type: array
           items:
             type: string
+          description: Primary model (index 0) and an optional list of fallback models
+            to use if the primary model is not available. If not provided, a default
+            model will be used.
         name:
           type: string
           maxLength: 1000
@@ -1938,6 +2048,7 @@ components:
         objective:
           allOf:
           - $ref: '#/components/schemas/Objective'
+          readOnly: true
           nullable: true
         owner:
           allOf:
@@ -1945,6 +2056,8 @@ components:
           readOnly: true
         prompt:
           type: string
+          maxLength: 100000
+          minLength: 2
         reference_variables:
           type: array
           items:
@@ -2019,7 +2132,9 @@ components:
       - id
       - inputs
       - name
+      - objective
       - owner
+      - prompt
       - skill_type
       - updated_at
       - updated_by
@@ -2401,19 +2516,17 @@ components:
           items:
             type: string
             minLength: 1
+          description: Primary model (index 0) and an optional list of fallback models
+            to use if the primary model is not available. If not provided, a default
+            model will be used.
         name:
           type: string
           minLength: 2
           maxLength: 1000
-        objective:
-          allOf:
-          - $ref: '#/components/schemas/ObjectiveRequest'
-          nullable: true
         objective_id:
           type: string
           format: uuid
           writeOnly: true
-          nullable: true
         objective_version_id:
           type: string
           format: uuid
@@ -2430,6 +2543,8 @@ components:
             requests.
         prompt:
           type: string
+          minLength: 2
+          maxLength: 100000
         reference_variables:
           type: array
           items:
@@ -2440,6 +2555,8 @@ components:
           type: string
       required:
       - name
+      - objective_id
+      - prompt
     EvaluatorResult:
       type: object
       properties:
@@ -2784,6 +2901,7 @@ components:
         name:
           type: string
           maxLength: 512
+          minLength: 3
         objective:
           allOf:
           - $ref: '#/components/schemas/NestedVectorObjective'
@@ -2913,6 +3031,10 @@ components:
         generating_model_params:
           allOf:
           - $ref: '#/components/schemas/GenerationModelParamsRequest'
+          nullable: true
+        judge_id:
+          type: string
+          format: uuid
           nullable: true
       required:
       - intent
@@ -3088,7 +3210,7 @@ components:
           description: Intent for the judge
         name:
           type: string
-          minLength: 1
+          minLength: 3
           maxLength: 512
         stage:
           type: string
@@ -3666,19 +3788,17 @@ components:
           items:
             type: string
             minLength: 1
+          description: Primary model (index 0) and an optional list of fallback models
+            to use if the primary model is not available. If not provided, a default
+            model will be used.
         name:
           type: string
           minLength: 2
           maxLength: 1000
-        objective:
-          allOf:
-          - $ref: '#/components/schemas/ObjectiveRequest'
-          nullable: true
         objective_id:
           type: string
           format: uuid
           writeOnly: true
-          nullable: true
         objective_version_id:
           type: string
           format: uuid
@@ -3695,6 +3815,8 @@ components:
             requests.
         prompt:
           type: string
+          minLength: 2
+          maxLength: 100000
         reference_variables:
           type: array
           items:
@@ -3718,7 +3840,7 @@ components:
           description: Intent for the judge
         name:
           type: string
-          minLength: 1
+          minLength: 3
           maxLength: 512
         stage:
           type: string
