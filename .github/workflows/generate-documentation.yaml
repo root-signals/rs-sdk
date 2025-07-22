@@ -7,6 +7,7 @@ on:
     paths:
       - 'python/**'
       - 'typescript/**'
+      - 'cli/**'
 
   workflow_dispatch:
 
@@ -49,6 +50,9 @@ jobs:
           cp -r python/docs/_build/html/* deploy_docs/
           mkdir deploy_docs/ts
           cp -r typescript/docs/* deploy_docs/ts/
+          mkdir deploy_docs/cli
+          cp cli/install.sh deploy_docs/cli/install.sh
+          cp cli/cli.py deploy_docs/cli/cli.py
 
       # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages 🚀
