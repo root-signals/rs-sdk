@@ -168,6 +168,23 @@ Module Contents
 
 
 
+   .. py:method:: arun_by_name(name: str, *, response: str, request: Optional[str] = None, contexts: Optional[List[str]] = None, functions: Optional[List[root.generated.openapi_aclient.models.evaluator_execution_functions_request.EvaluatorExecutionFunctionsRequest]] = None, expected_output: Optional[str] = None, tags: Optional[List[str]] = None, _request_timeout: Optional[int] = None, _client: root.generated.openapi_aclient.ApiClient) -> root.generated.openapi_aclient.models.judge_execution_response.JudgeExecutionResponse
+      :async:
+
+
+      Asynchronously run a judge by name.
+
+      :param name: Name of the judge to run
+      :param response: LLM output to evaluate
+      :param request: The prompt sent to the LLM. Optional.
+      :param contexts: Optional documents passed to RAG evaluators
+      :param functions: Optional functions to execute
+      :param expected_output: Optional expected output
+      :param tags: Optional tags to add to the judge execution
+      :param _request_timeout: Optional timeout for the request
+
+
+
    .. py:method:: aupdate(judge_id: str, *, name: Optional[str] = None, evaluator_references: Optional[List[root.generated.openapi_aclient.models.evaluator_reference_request.EvaluatorReferenceRequest]] = None, _request_timeout: Optional[int] = None, _client: root.generated.openapi_aclient.ApiClient) -> AJudge
       :async:
 
@@ -239,6 +256,21 @@ Module Contents
       Run a judge directly by ID.
 
       :param judge_id: ID of the judge to run
+      :param response: LLM output to evaluate
+      :param request: The prompt sent to the LLM. Optional.
+      :param contexts: Optional documents passed to RAG evaluators
+      :param functions: Optional functions to execute
+      :param expected_output: Optional expected output
+      :param tags: Optional tags to add to the judge execution
+      :param _request_timeout: Optional timeout for the request
+
+
+
+   .. py:method:: run_by_name(name: str, *, response: str, request: Optional[str] = None, contexts: Optional[List[str]] = None, functions: Optional[List[root.generated.openapi_client.models.evaluator_execution_functions_request.EvaluatorExecutionFunctionsRequest]] = None, expected_output: Optional[str] = None, tags: Optional[List[str]] = None, _request_timeout: Optional[int] = None, _client: root.generated.openapi_client.ApiClient) -> root.generated.openapi_client.models.judge_execution_response.JudgeExecutionResponse
+
+      Run a judge by name.
+
+      :param name: Name of the judge to run
       :param response: LLM output to evaluate
       :param request: The prompt sent to the LLM. Optional.
       :param contexts: Optional documents passed to RAG evaluators
