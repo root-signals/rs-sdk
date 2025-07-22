@@ -339,6 +339,51 @@ class TestJudgeExecute:
         assert result.exit_code == 0
         assert "Invalid JSON for --functions" in result.output
 
+    def test_execute_judge_with_stdin_input(self, runner, mock_api_key):
+        mock_response = {"result": "success", "score": 0.95}
+        stdin_content = "Test response from stdin"
+
+        # Test the core function directly with mocked stdin
+        import io
+
+        mock_stdin = io.StringIO(stdin_content)
+
+        with patch("cli._request", return_value=mock_response) as mock_req:
+            with patch("cli.sys.stdin", mock_stdin):
+                with patch("cli.sys.stdin.isatty", return_value=False):
+                    from cli import _execute_judge
+
+                    _execute_judge("judge-123", None, None, None, None, None, None)
+
+                    # Verify that _request was called with stdin content as response
+                    mock_req.assert_called_once()
+                    call_args = mock_req.call_args[1]
+                    assert call_args["data"]["response"] == stdin_content
+
+    def test_execute_judge_stdin_priority_over_flag(self, runner, mock_api_key):
+        mock_response = {"result": "success", "score": 0.95}
+        flag_response = "Response from flag"
+        stdin_content = "stdin content"
+
+        # Test that flag takes priority over stdin
+        import io
+
+        mock_stdin = io.StringIO(stdin_content)
+
+        with patch("cli._request", return_value=mock_response) as mock_req:
+            with patch("cli.sys.stdin", mock_stdin):
+                with patch("cli.sys.stdin.isatty", return_value=False):
+                    from cli import _execute_judge
+
+                    _execute_judge(
+                        "judge-123", None, flag_response, None, None, None, None
+                    )
+
+                    # Verify that _request was called with flag content, not stdin
+                    mock_req.assert_called_once()
+                    call_args = mock_req.call_args[1]
+                    assert call_args["data"]["response"] == flag_response
+
 
 class TestJudgeExecuteByName:
     def test_execute_judge_by_name_success(self, runner, mock_api_key):
@@ -355,6 +400,53 @@ class TestJudgeExecuteByName:
         result = runner.invoke(cli, ["judge", "execute-by-name", "Test Judge"])
         assert result.exit_code == 0
         assert "Either --request or --response must be provided" in result.output
+
+    def test_execute_judge_by_name_with_stdin_input(self, runner, mock_api_key):
+        mock_response = {"result": "success", "score": 0.88}
+        stdin_content = "Test response from stdin for named judge"
+
+        # Test the core function directly with mocked stdin
+        import io
+
+        mock_stdin = io.StringIO(stdin_content)
+
+        with patch("cli._request", return_value=mock_response) as mock_req:
+            with patch("cli.sys.stdin", mock_stdin):
+                with patch("cli.sys.stdin.isatty", return_value=False):
+                    from cli import _execute_judge_by_name
+
+                    _execute_judge_by_name(
+                        "Test Judge", None, None, None, None, None, None
+                    )
+
+                    # Verify that _request was called with stdin content as response
+                    mock_req.assert_called_once()
+                    call_args = mock_req.call_args[1]
+                    assert call_args["data"]["response"] == stdin_content
+
+    def test_execute_judge_by_name_stdin_priority_over_flag(self, runner, mock_api_key):
+        mock_response = {"result": "success", "score": 0.88}
+        flag_response = "Response from flag for named judge"
+        stdin_content = "stdin content"
+
+        # Test that flag takes priority over stdin
+        import io
+
+        mock_stdin = io.StringIO(stdin_content)
+
+        with patch("cli._request", return_value=mock_response) as mock_req:
+            with patch("cli.sys.stdin", mock_stdin):
+                with patch("cli.sys.stdin.isatty", return_value=False):
+                    from cli import _execute_judge_by_name
+
+                    _execute_judge_by_name(
+                        "Test Judge", None, flag_response, None, None, None, None
+                    )
+
+                    # Verify that _request was called with flag content, not stdin
+                    mock_req.assert_called_once()
+                    call_args = mock_req.call_args[1]
+                    assert call_args["data"]["response"] == flag_response
 
 
 class TestJudgeDuplicate:
