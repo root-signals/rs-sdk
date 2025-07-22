@@ -9,22 +9,6 @@
 </p>
 
 <p align="center">
-    <a href="https://pypi.org/project/root-signals/">
-      <img alt="Supported Python versions" src="https://img.shields.io/badge/Python-3.10%20to%203.13-yellow?style=for-the-badge&logo=python&logoColor=yellow">
-    </a>
-</p>
-
-<p align="center">
-  <a href="https://pypi.org/project/root-signals">
-    <img src="https://img.shields.io/pypi/v/root-signals" alt="PyPI">
-  </a>
-  <img src="https://img.shields.io/pypi/dm/root-signals?color=orange" alt="Downloads">
-  <a href="https://github.com/root-signals/rs-python-sdk/blob/main/LICENSE">
-    <img src="https://img.shields.io/github/license/root-signals/rs-python-sdk.svg" alt="License">
-  </a>
-</p>
-
-<p align="center">
   <a href="https://app.rootsignals.ai/register">
     <img src="https://img.shields.io/badge/Get_Started-2E6AFB?style=for-the-badge&logo=rocket&logoColor=white&scale=2" />
   </a>
@@ -169,6 +153,18 @@ roots judge execute <judge_id> --request "What is the capital of France?" --resp
 *   `--expected-output`: Expected output text.
 *   `--tag`: Add one or more tags.
 
+**Using stdin input:**
+
+You can pipe input directly to the `--response` parameter:
+
+```bash
+echo "Paris" | roots judge execute <judge_id> --request "What is the capital of France?"
+```
+
+```bash
+cat response.txt | roots judge execute <judge_id>
+```
+
 #### `execute-by-name`
 
 Execute a Judge by its name.
@@ -176,6 +172,9 @@ Execute a Judge by its name.
 ```bash
 roots judge execute-by-name "My New Judge" --request "What is the capital of France?" --response "Paris"
 ```
+
+Input can also be piped in similar way as with `execute`.
+
 
 
 ## Development

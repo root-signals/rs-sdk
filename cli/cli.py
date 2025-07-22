@@ -10,6 +10,7 @@
 
 import json
 import os
+import sys
 from typing import List, Optional, Union
 
 import click
@@ -322,7 +323,9 @@ def _execute_judge(
     judge_id, request, response, contexts_json, functions_json, expected_output, tags
 ):  # noqa: C901
     """Executes a judge."""
-    # Validate that at least one of request or response is provided
+    if not response and not sys.stdin.isatty():
+        response = sys.stdin.read().strip()
+
     if not request and not response:
         print_error("Either --request or --response must be provided.")
         return
@@ -363,7 +366,9 @@ def _execute_judge_by_name(
     judge_name, request, response, contexts_json, functions_json, expected_output, tags
 ):  # noqa: C901
     """Executes a judge by name."""
-    # Validate that at least one of request or response is provided
+    if not response and not sys.stdin.isatty():
+        response = sys.stdin.read().strip()
+
     if not request and not response:
         print_error("Either --request or --response must be provided.")
         return

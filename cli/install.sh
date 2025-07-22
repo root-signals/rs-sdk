@@ -12,7 +12,7 @@
 set -e
 
 # --- Configuration ---
-SOURCE_URL="https://app.rootsignals.ai/cli/cli.py"
+SOURCE_URL="https://sdk.rootsignals.ai/cli/cli.py"
 INSTALL_NAME="roots"
 INSTALL_DIR="/usr/local/bin"
 INSTALL_PATH="$INSTALL_DIR/$INSTALL_NAME"
