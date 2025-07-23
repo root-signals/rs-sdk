@@ -54,7 +54,7 @@
   },
   "optionalDependencies": {
     "form-data": "^4.0.4",
-    "undici": "^6.0.0"
+    "undici": "^7.12.0"
   },
   "devDependencies": {
     "@types/node": "^22.8.7",
