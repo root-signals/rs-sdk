@@ -557,18 +557,6 @@ paths:
         required: true
       tags:
       - evaluators
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/EvaluatorRequest'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/EvaluatorRequest'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/EvaluatorRequest'
-        required: true
       security:
       - publicApiKey: []
       responses:
@@ -994,7 +982,6 @@ paths:
         name: judge_id
         schema:
           type: string
-          format: uuid
         required: true
       tags:
       - judges
@@ -1054,7 +1041,6 @@ paths:
         name: judge_id
         schema:
           type: string
-          format: uuid
         required: true
       - in: query
         name: rs_metadata
@@ -1078,7 +1064,6 @@ paths:
         name: judge_id
         schema:
           type: string
-          format: uuid
         required: true
       tags:
       - judges
@@ -1188,7 +1173,6 @@ paths:
         name: judge_id
         schema:
           type: string
-          format: uuid
         required: true
       - in: query
         name: rs_metadata
@@ -2057,7 +2041,6 @@ components:
         prompt:
           type: string
           maxLength: 100000
-          minLength: 2
         reference_variables:
           type: array
           items:
@@ -2543,7 +2526,7 @@ components:
             requests.
         prompt:
           type: string
-          minLength: 2
+          minLength: 1
           maxLength: 100000
         reference_variables:
           type: array
@@ -3815,7 +3798,7 @@ components:
             requests.
         prompt:
           type: string
-          minLength: 2
+          minLength: 1
           maxLength: 100000
         reference_variables:
           type: array

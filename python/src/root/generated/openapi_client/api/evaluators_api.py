@@ -976,7 +976,6 @@ class EvaluatorsApi:
     def evaluators_duplicate_create(
         self,
         id: StrictStr,
-        evaluator_request: EvaluatorRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -993,8 +992,6 @@ class EvaluatorsApi:
 
         :param id: (required)
         :type id: str
-        :param evaluator_request: (required)
-        :type evaluator_request: EvaluatorRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1018,12 +1015,7 @@ class EvaluatorsApi:
         """  # noqa: E501
 
         _param = self._evaluators_duplicate_create_serialize(
-            id=id,
-            evaluator_request=evaluator_request,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index,
+            id=id, _request_auth=_request_auth, _content_type=_content_type, _headers=_headers, _host_index=_host_index
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
@@ -1040,7 +1032,6 @@ class EvaluatorsApi:
     def evaluators_duplicate_create_with_http_info(
         self,
         id: StrictStr,
-        evaluator_request: EvaluatorRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1057,8 +1048,6 @@ class EvaluatorsApi:
 
         :param id: (required)
         :type id: str
-        :param evaluator_request: (required)
-        :type evaluator_request: EvaluatorRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1082,12 +1071,7 @@ class EvaluatorsApi:
         """  # noqa: E501
 
         _param = self._evaluators_duplicate_create_serialize(
-            id=id,
-            evaluator_request=evaluator_request,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index,
+            id=id, _request_auth=_request_auth, _content_type=_content_type, _headers=_headers, _host_index=_host_index
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
@@ -1104,7 +1088,6 @@ class EvaluatorsApi:
     def evaluators_duplicate_create_without_preload_content(
         self,
         id: StrictStr,
-        evaluator_request: EvaluatorRequest,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1121,8 +1104,6 @@ class EvaluatorsApi:
 
         :param id: (required)
         :type id: str
-        :param evaluator_request: (required)
-        :type evaluator_request: EvaluatorRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1146,12 +1127,7 @@ class EvaluatorsApi:
         """  # noqa: E501
 
         _param = self._evaluators_duplicate_create_serialize(
-            id=id,
-            evaluator_request=evaluator_request,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index,
+            id=id, _request_auth=_request_auth, _content_type=_content_type, _headers=_headers, _host_index=_host_index
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
@@ -1163,7 +1139,6 @@ class EvaluatorsApi:
     def _evaluators_duplicate_create_serialize(
         self,
         id,
-        evaluator_request,
         _request_auth,
         _content_type,
         _headers,
@@ -1187,21 +1162,9 @@ class EvaluatorsApi:
         # process the header parameters
         # process the form parameters
         # process the body parameter
-        if evaluator_request is not None:
-            _body_params = evaluator_request
 
         # set the HTTP header `Accept`
         _header_params["Accept"] = self.api_client.select_header_accept(["application/json"])
-
-        # set the HTTP header `Content-Type`
-        if _content_type:
-            _header_params["Content-Type"] = _content_type
-        else:
-            _default_content_type = self.api_client.select_header_content_type(
-                ["application/json", "application/x-www-form-urlencoded", "multipart/form-data"]
-            )
-            if _default_content_type is not None:
-                _header_params["Content-Type"] = _default_content_type
 
         # authentication setting
         _auth_settings: List[str] = ["publicApiKey"]
