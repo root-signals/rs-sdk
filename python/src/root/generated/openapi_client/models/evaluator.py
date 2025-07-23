@@ -51,7 +51,7 @@ class Evaluator(BaseModel):
     name: Annotated[str, Field(min_length=2, strict=True, max_length=1000)]
     objective: Optional[Objective]
     owner: NestedUserDetails
-    prompt: Annotated[str, Field(min_length=2, strict=True, max_length=100000)]
+    prompt: Annotated[str, Field(strict=True, max_length=100000)]
     reference_variables: Optional[List[ReferenceVariable]] = None
     skill_type: SkillTypeEnum
     status: Optional[StatusEnum] = None

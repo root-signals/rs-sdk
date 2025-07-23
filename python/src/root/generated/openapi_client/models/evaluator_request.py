@@ -50,7 +50,7 @@ class EvaluatorRequest(BaseModel):
     overwrite: Optional[StrictBool] = Field(
         default=False, description="Overwrite existing skill with the same name. Only for POST requests."
     )
-    prompt: Annotated[str, Field(min_length=2, strict=True, max_length=100000)]
+    prompt: Annotated[str, Field(min_length=1, strict=True, max_length=100000)]
     reference_variables: Optional[List[ReferenceVariableRequest]] = None
     status: Optional[StatusEnum] = None
     system_message: Optional[StrictStr] = None
