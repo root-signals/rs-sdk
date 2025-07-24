@@ -576,8 +576,8 @@ Full list of examples is available <a class="reference external" href="https://g
 </pre></div>
 </div>
 </section>
-<section id="forming-a-judge">
-<h2>Forming a judge<a class="headerlink" href="#forming-a-judge" title="Link to this heading">¶</a></h2>
+<section id="generate-a-judge">
+<h2>Generate a judge<a class="headerlink" href="#generate-a-judge" title="Link to this heading">¶</a></h2>
 <p>You can form a judge by describing your application and optionally the stage you want to evaluate. A judge is a collection of evaluators that can evaluate a component of your application.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">root</span><span class="w"> </span><span class="kn">import</span> <span class="n">RootSignals</span>
 
@@ -609,9 +609,9 @@ Full list of examples is available <a class="reference external" href="https://g
 </pre></div>
 </div>
 </section>
-<section id="creating-a-judge">
-<h2>Creating a judge<a class="headerlink" href="#creating-a-judge" title="Link to this heading">¶</a></h2>
-<p>You can create a judge by giving the name, intent and list of evaluators.</p>
+<section id="create-a-judge">
+<h2>Create a judge<a class="headerlink" href="#create-a-judge" title="Link to this heading">¶</a></h2>
+<p>If you already have a set of evaluators you wish to use for a specific use case, you can create a judge by giving the name, intent and list of evaluators.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">root</span><span class="w"> </span><span class="kn">import</span> <span class="n">RootSignals</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">root.generated.openapi_client.models.evaluator_reference_request</span><span class="w"> </span><span class="kn">import</span> <span class="n">EvaluatorReferenceRequest</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">root.skills</span><span class="w"> </span><span class="kn">import</span> <span class="n">Evaluators</span>
@@ -768,8 +768,8 @@ Full list of examples is available <a class="reference external" href="https://g
 <li><a class="reference internal" href="#custom-evaluator">Custom evaluator</a></li>
 <li><a class="reference internal" href="#adjust-evaluator-behavior">Adjust evaluator behavior</a></li>
 <li><a class="reference internal" href="#retrieval-augmented-generation-rag-evaluation">Retrieval Augmented Generation (RAG) evaluation</a></li>
-<li><a class="reference internal" href="#forming-a-judge">Forming a judge</a></li>
-<li><a class="reference internal" href="#creating-a-judge">Creating a judge</a></li>
+<li><a class="reference internal" href="#generate-a-judge">Generate a judge</a></li>
+<li><a class="reference internal" href="#create-a-judge">Create a judge</a></li>
 <li><a class="reference internal" href="#monitoring-llm-pipelines-with-tags">Monitoring LLM pipelines with tags</a></li>
 <li><a class="reference internal" href="#add-a-model">Add a model</a></li>
 </ul>
