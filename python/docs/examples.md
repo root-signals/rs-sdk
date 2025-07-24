@@ -49,14 +49,15 @@ For RAG, there are special evaluators that can separately measure the different 
 ```{literalinclude} ../examples/run_rag.py
 ```
 
-## Forming a judge
+## Generate a judge
 
 You can form a judge by describing your application and optionally the stage you want to evaluate. A judge is a collection of evaluators that can evaluate a component of your application.
 
 ```{literalinclude} ../examples/simple_judge.py
 ```
-## Creating a judge
-You can create a judge by giving the name, intent and list of evaluators.
+
+## Create a judge
+If you already have a set of evaluators you wish to use for a specific use case, you can create a judge by giving the name, intent and list of evaluators.
 ```{literalinclude} ../examples/create_judge.py
 ```
 
