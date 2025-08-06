@@ -1,8 +1,20 @@
 import json
+import os
+import tempfile
+import yaml
 import pytest
 from unittest.mock import Mock, patch
 from click.testing import CliRunner
-from cli import cli, _request, Judge, JudgeListResponse, EvaluatorReference
+from cli import (
+    cli,
+    _request,
+    Judge,
+    JudgeListResponse,
+    EvaluatorReference,
+    Experiment,
+    Task,
+    _run_experiment,
+)
 
 
 @pytest.fixture
@@ -519,6 +531,36 @@ class TestApiRequest:
         result = _request("GET", "judges")
         assert result is None
 
+    @patch("cli.session.request")
+    @patch("cli.API_KEY", "test-key")
+    def test_request_validation_error_default_behavior(self, mock_request):
+        """Test that validation errors return None by default (backward compatibility)."""
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.raise_for_status.return_value = None
+        mock_response.json.return_value = {
+            "invalid": "data"
+        }  # This will fail validation
+        mock_request.return_value = mock_response
+
+        result = _request("GET", "judges")
+        assert result is None
+
+    @patch("cli.session.request")
+    @patch("cli.API_KEY", "test-key")
+    def test_request_validation_error_with_raise_flag(self, mock_request):
+        """Test that validation errors are raised when raise_on_validation_error=True."""
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.raise_for_status.return_value = None
+        mock_response.json.return_value = {
+            "invalid": "data"
+        }  # This will fail validation
+        mock_request.return_value = mock_response
+
+        with pytest.raises(Exception):  # Should raise validation error
+            _request("GET", "judges", raise_on_validation_error=True)
+
 
 class TestHelperFunctions:
     def test_print_functions(self, capsys):
@@ -539,3 +581,183 @@ class TestHelperFunctions:
         print_warning("Test warning")
         captured = capsys.readouterr()
         assert "Warning:" in captured.out
+
+
+class TestExperimentOperations:
+    """Test suite for experiment-related CLI operations."""
+
+    def test_run_experiment_success(self, mock_api_key):
+        """Test successful experiment execution."""
+        # Mock experiment response
+        mock_experiment = Experiment(
+            id="exp-123",
+            model="gpt-4o-mini",
+            prompt="Test prompt: {{input}}",
+            tasks=[
+                Task(
+                    id="task-1",
+                    status="completed",
+                    cost="$0.001",
+                    llm_output="Test output",
+                    model_call_duration=1.5,
+                    variables={"input": "test value"},
+                )
+            ],
+        )
+
+        # Create a temporary config file
+        config_data = {
+            "prompts": ["Test prompt: {{input}}"],
+            "inputs": [{"input": "test value"}],
+            "models": ["gpt-4o-mini"],
+            "evaluators": [{"name": "Test Evaluator"}],
+        }
+
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
+            yaml.dump(config_data, f)
+            config_path = f.name
+
+        try:
+            with patch("cli._request", return_value=mock_experiment):
+                with patch("cli.time.sleep"):  # Speed up the test
+                    _run_experiment(config_path=config_path)
+        finally:
+            os.unlink(config_path)
+
+    def test_run_experiment_with_response_schema(self, mock_api_key):
+        """Test experiment execution with response schema."""
+        mock_experiment = Experiment(
+            id="exp-456",
+            model="gpt-4o-mini",
+            prompt="Extract info: {{text}}",
+            tasks=[
+                Task(
+                    id="task-2",
+                    status="completed",
+                    cost="$0.002",
+                    llm_output='{"name": "John", "email": "john@example.com"}',
+                    variables={"text": "John Doe, john@example.com"},
+                )
+            ],
+        )
+
+        config_data = {
+            "prompts": ["Extract info: {{text}}"],
+            "inputs": [{"text": "John Doe, john@example.com"}],
+            "models": ["gpt-4o-mini"],
+            "evaluators": [{"name": "Extraction Quality"}],
+            "response_schema": {
+                "type": "object",
+                "properties": {"name": {"type": "string"}, "email": {"type": "string"}},
+            },
+        }
+
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
+            yaml.dump(config_data, f)
+            config_path = f.name
+
+        try:
+            with patch("cli._request", return_value=mock_experiment):
+                with patch("cli.time.sleep"):  # Speed up the test
+                    _run_experiment(config_path=config_path)
+        finally:
+            os.unlink(config_path)
+
+    def test_run_experiment_with_dataset_id(self, mock_api_key):
+        """Test experiment execution with dataset ID instead of inputs."""
+        mock_experiment = Experiment(
+            id="exp-789",
+            model="claude-3-5-haiku",
+            prompt="Process: {{data}}",
+            tasks=[
+                Task(
+                    id="task-3",
+                    status="completed",
+                    cost="$0.003",
+                    llm_output="Processed data result",
+                    variables={"data": "dataset value"},
+                )
+            ],
+        )
+
+        config_data = {
+            "prompts": ["Process: {{data}}"],
+            "inputs": [
+                {"data": "fallback"}
+            ],  # Should be ignored when dataset_id is present
+            "models": ["claude-3-5-haiku"],
+            "evaluators": [{"name": "Processing Quality"}],
+            "dataset_id": "dataset-123",
+        }
+
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
+            yaml.dump(config_data, f)
+            config_path = f.name
+
+        try:
+            with patch("cli._request", return_value=mock_experiment) as mock_request:
+                with patch("cli.time.sleep"):  # Speed up the test
+                    _run_experiment(config_path=config_path)
+                    # Verify dataset_id was included in the request
+                    mock_request.assert_called()
+                    # Check that any call included dataset_id in the payload
+                    found_dataset_id = False
+                    for call in mock_request.call_args_list:
+                        if (
+                            len(call) > 1
+                            and "data" in call[1]
+                            and "dataset_id" in call[1]["data"]
+                        ):
+                            found_dataset_id = True
+                            assert call[1]["data"]["dataset_id"] == "dataset-123"
+                            break
+                    assert found_dataset_id, "dataset_id was not found in any API call"
+        finally:
+            os.unlink(config_path)
+
+    def test_exp_init_command(self, runner, mock_api_key):
+        """Test experiment init command via CLI."""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            os.path.join(temp_dir, "experiments.yaml")
+
+            with patch("cli.os.path.exists", return_value=False):
+                with patch("builtins.open", create=True) as mock_open:
+                    result = runner.invoke(cli, ["exp", "init"])
+                    assert result.exit_code == 0
+                    mock_open.assert_called()
+
+    def test_exp_run_command_with_custom_config(self, runner, mock_api_key):
+        """Test experiment run command with custom config file."""
+        mock_experiment = Experiment(
+            id="exp-cli-test",
+            model="gpt-4o-mini",
+            prompt="CLI test prompt",
+            tasks=[
+                Task(
+                    id="task-cli",
+                    status="completed",
+                    cost="$0.001",
+                    llm_output="CLI test output",
+                    variables={"test": "value"},
+                )
+            ],
+        )
+
+        config_data = {
+            "prompts": ["CLI test prompt"],
+            "inputs": [{"test": "value"}],
+            "models": ["gpt-4o-mini"],
+            "evaluators": [{"name": "CLI Test"}],
+        }
+
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
+            yaml.dump(config_data, f)
+            config_path = f.name
+
+        try:
+            with patch("cli._request", return_value=mock_experiment):
+                with patch("cli.time.sleep"):  # Speed up the test by mocking sleep
+                    result = runner.invoke(cli, ["exp", "run", "-c", config_path])
+                    assert result.exit_code == 0
+        finally:
+            os.unlink(config_path)

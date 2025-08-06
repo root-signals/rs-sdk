@@ -4,19 +4,24 @@
 #   "click",
 #   "requests",
 #   "pydantic",
-#   "rich"
+#   "rich",
+#   "pyyaml"
 # ]
 # ///
 
 import json
 import os
 import sys
-from typing import List, Optional, Union
+import time
+from typing import Any, Optional, Union
 
 import click
 import requests
-from pydantic import BaseModel
+import yaml
+from pydantic import BaseModel, model_validator
 from rich.console import Console
+from rich.live import Live
+from rich.spinner import Spinner
 from rich.syntax import Syntax
 from rich.table import Table
 
@@ -41,13 +46,13 @@ class Judge(BaseModel):
     created_at: str
     status: Optional[str] = None
     stage: Optional[str] = None
-    evaluator_references: Optional[List[EvaluatorReference]] = None
+    evaluator_references: Optional[list[EvaluatorReference]] = None
 
 
 class JudgeListResponse(BaseModel):
     """Model for paginated judge list response."""
 
-    results: List[Judge]
+    results: list[Judge]
     next: Optional[str] = None
 
 
@@ -62,6 +67,61 @@ class ApiResponse(BaseModel):
     """Generic API response model that allows any additional fields."""
 
     model_config = {"extra": "allow"}
+
+
+class EvaluatorConfig(BaseModel):
+    id: Optional[str] = None
+    name: Optional[str] = None
+    version_id: Optional[str] = None
+
+    @model_validator(mode="after")
+    def check_id_or_name(self):
+        if self.name is None and self.id is None:
+            raise ValueError('Either "id" or "name" must be provided for an evaluator.')
+        if self.name is not None and self.id is not None:
+            raise ValueError(
+                'Provide either "id" or "name" for an evaluator, not both.'
+            )
+        return self
+
+
+class ExperimentConfig(BaseModel):
+    prompts: list[str]
+    inputs: list[dict[str, Any]]
+    models: list[str]
+    evaluators: list[EvaluatorConfig]
+    response_schema: Optional[dict[str, Any]] = None
+    dataset_id: Optional[str] = None
+
+
+class ExperimentEvaluatorReference(BaseModel):
+    id: str
+    name: str
+
+
+class EvaluationResult(ExperimentEvaluatorReference):
+    score: float | None
+    justification: str | None
+
+
+class Task(BaseModel):
+    id: str
+    status: str
+    cost: Optional[str] = None
+    llm_output: Optional[str] = None
+    model_call_duration: Optional[float] = None
+    evaluation_results: list[EvaluationResult] = []
+    variables: dict[str, Any] = {}
+
+
+class Experiment(BaseModel):
+    id: str
+    model: str
+    prompt: str
+    tasks: list[Task] = []
+    avg_cost: Optional[str] = None
+    avg_model_call_duration: Optional[float] = None
+    evaluators: list[ExperimentEvaluatorReference] = []
 
 
 # --- Helper Functions ---
@@ -94,19 +154,20 @@ def print_warning(msg):
 
 
 API_KEY = os.getenv("ROOTSIGNALS_API_KEY")
-BASE_URL = "https://api.app.rootsignals.ai"
+BASE_URL = os.getenv("ROOTSIGNALS_API_URL", "https://api.app.rootsignals.ai")
 
 session = requests.Session()
 
 # --- API Helper Functions ---
 
 
-def _request(  # noqa: C901
+def _request(
     method: str,
     endpoint_segment: str,
     data: Optional[dict] = None,
     params: Optional[dict] = None,
     response_model: Optional[type[BaseModel]] = None,
+    raise_on_validation_error: bool = False,
 ) -> Union[BaseModel, str, None]:
     """A centralized function to handle all API requests with typed responses."""
     # Ensure the session is configured before the first request
@@ -166,11 +227,10 @@ def _request(  # noqa: C901
                 # Generic response for other endpoints
                 return ApiResponse.model_validate(json_data)
         except Exception as validation_error:
-            print_warning(
-                f"Failed to validate response with Pydantic model: {validation_error}"
-            )
-            print_info("Returning raw JSON data as fallback.")
-            return json_data
+            print_error(validation_error)
+            if raise_on_validation_error:
+                raise validation_error
+            return None
 
     except requests.exceptions.HTTPError as e:
         print_error(
@@ -194,9 +254,16 @@ def _request(  # noqa: C901
 
 
 def _list_judges(
-    page_size, cursor, search, name, ordering, is_preset, is_public, show_global
+    page_size,
+    cursor,
+    search,
+    name,
+    ordering,
+    is_preset,
+    is_public,
+    show_global,
 ):
-    """Lists judges based on provided query parameters."""
+    """lists judges based on provided query parameters."""
     params = {
         "page_size": page_size,
         "cursor": cursor,
@@ -320,7 +387,13 @@ def _delete_judge(judge_id):
 
 
 def _execute_judge(
-    judge_id, request, response, contexts_json, functions_json, expected_output, tags
+    judge_id,
+    request,
+    response,
+    contexts_json,
+    functions_json,
+    expected_output,
+    tags,
 ):  # noqa: C901
     """Executes a judge."""
     if not response and not sys.stdin.isatty():
@@ -363,7 +436,13 @@ def _execute_judge(
 
 
 def _execute_judge_by_name(
-    judge_name, request, response, contexts_json, functions_json, expected_output, tags
+    judge_name,
+    request,
+    response,
+    contexts_json,
+    functions_json,
+    expected_output,
+    tags,
 ):  # noqa: C901
     """Executes a judge by name."""
     if not response and not sys.stdin.isatty():
@@ -459,6 +538,215 @@ def _execute_openai_judge(judge_id_in_path, model, messages_json, extra_body_jso
         print_json(result.model_dump() if isinstance(result, BaseModel) else result)
 
 
+def _run_experiment(output_file=None, config_path="experiments.yaml"):
+    if not os.path.exists(config_path):
+        print_error(
+            f"'{config_path}' not found. Please run `exp init` first or specify a different config file with -c."
+        )
+        sys.exit(1)
+
+    try:
+        with open(config_path, "r") as f:
+            config_data = yaml.safe_load(f)
+        config = ExperimentConfig(**config_data)
+    except (yaml.YAMLError, ValueError) as e:
+        print_error(f"Error reading or validating '{config_path}': {e}")
+        sys.exit(1)
+
+    print_info("Starting experiments")
+
+    experiments_to_track = {}  # Store experiment data by ID
+
+    for prompt in config.prompts:
+        for model in config.models:
+            evaluators_payload = [
+                eval_config.model_dump(exclude_none=True)
+                for eval_config in config.evaluators
+            ]
+            payload = {
+                "prompt": prompt,
+                "inputs": config.inputs,
+                "model": model,
+                "evaluators": evaluators_payload,
+            }
+            if config.response_schema:
+                payload["response_schema"] = config.response_schema
+            if config.dataset_id:
+                payload["dataset_id"] = config.dataset_id
+
+            response = _request(
+                "POST",
+                "experiments/prompt-model/",
+                data=payload,
+                response_model=Experiment,
+            )
+            if response:
+                experiments_to_track[response.id] = response
+                print_success(
+                    f"Successfully created experiment for model '{model}' with ID: {response.id}"
+                )
+            else:
+                print_warning(
+                    f"Failed to create experiment for model '{model}' with prompt: {prompt}"
+                )
+
+    if not experiments_to_track:
+        print_error("No experiments were created. Aborting.")
+        sys.exit(1)
+
+    print_info("Waiting for experiments to complete...")
+
+    completed_experiments = {}
+
+    with Live(console=console, screen=False, auto_refresh=False) as live:
+        while len(completed_experiments) < len(experiments_to_track):
+            all_experiments_data = []
+            for exp_id in list(experiments_to_track.keys()):
+                if exp_id in completed_experiments:
+                    all_experiments_data.append(completed_experiments[exp_id])
+                    continue
+
+                exp_data = _request(
+                    "GET",
+                    f"experiments/prompt-model/{exp_id}/",
+                    response_model=Experiment,
+                )
+                if not exp_data:
+                    print_warning(f"Could not retrieve status for experiment {exp_id}")
+                    # Create a placeholder to keep it in the list
+                    all_experiments_data.append(experiments_to_track[exp_id])
+                    continue
+
+                all_experiments_data.append(exp_data)
+
+                # Let's refine the logic: An experiment is complete if it has tasks and all of them are in a terminal state.
+                if exp_data.tasks and all(
+                    task.status in ["completed", "failed"] for task in exp_data.tasks
+                ):
+                    completed_experiments[exp_id] = exp_data
+                    print_success(f"Experiment {exp_id} completed.")
+
+            # Generate and display the progress table
+            live.update(_generate_progress_table(all_experiments_data), refresh=True)
+
+            if len(completed_experiments) == len(experiments_to_track):
+                break
+            time.sleep(1)
+
+    print_success("All experiments completed.")
+    final_experiments = sorted(list(completed_experiments.values()), key=lambda x: x.id)
+    _display_aggregated_results(final_experiments)
+
+    if output_file:
+        try:
+            output_data = [exp.model_dump() for exp in final_experiments]
+            with open(output_file, "w") as f:
+                json.dump(output_data, f, indent=2)
+            print_success(f"Results saved to {output_file}")
+        except IOError as e:
+            print_error(f"Failed to write results to {output_file}: {e}")
+
+    experiment_ids = [exp.id for exp in final_experiments]
+    url = f"https://app.rootsignals.ai/experiments/playground/compare?ids={','.join(experiment_ids)}"
+    print_info(f"\nView full results in the browser:\n{url}")
+
+
+def _is_experiment_complete(experiment: Experiment) -> bool:
+    """Checks if an experiment is complete by looking at its tasks."""
+    if not experiment.tasks:
+        return False  # No tasks yet, so not complete
+
+    return all(task.status in ["completed", "failed"] for task in experiment.tasks)
+
+
+def _generate_progress_table(experiments: list[Experiment]) -> Table:
+    """Generates a table showing the progress of all experiments."""
+    table = Table(title="Experiment Progress")
+    table.add_column("Experiment ID", style="cyan")
+    table.add_column("Status", style="yellow")
+    table.add_column("Tasks Completed", style="magenta")
+
+    for exp in experiments:
+        completed_tasks = sum(
+            1 for task in exp.tasks if task.status in ["completed", "failed"]
+        )
+        total_tasks = len(exp.tasks) if exp.tasks else 0
+
+        is_complete = _is_experiment_complete(exp)
+
+        if is_complete:
+            status_display = "✅ Completed"
+        else:
+            status_display = Spinner("dots", text="Running")
+
+        table.add_row(exp.id, status_display, f"{completed_tasks}/{total_tasks}")
+    return table
+
+
+def _display_aggregated_results(experiments: list[Experiment]):
+    """Displays the aggregated results of all experiments in a single table."""
+    if not experiments:
+        print_warning("No experiment results to display.")
+        return
+
+    table = Table(title="Aggregated Experiment Results")
+    table.add_column("Inputs", style="cyan")
+    table.add_column("Prompt", style="blue")
+    table.add_column("Model", style="green")
+    table.add_column("Cost", style="yellow")
+    table.add_column("Latency (s)", style="yellow")
+    table.add_column("Output", style="magenta", overflow="fold")
+
+    # Collect all unique evaluators from all experiments
+    all_evaluators = {}
+    for exp in experiments:
+        for e in exp.evaluators:
+            if e.id not in all_evaluators:
+                all_evaluators[e.id] = e.name
+
+    sorted_evaluator_ids = sorted(all_evaluators.keys())
+
+    for eval_id in sorted_evaluator_ids:
+        table.add_column(f"{all_evaluators[eval_id]}")
+
+    for exp in experiments:
+        if not exp.tasks:
+            continue
+
+        for task in exp.tasks:
+            inputs_str = "\n".join(f"{k}: {v}" for k, v in task.variables.items())
+            cost_str = task.cost if task.cost else "N/A"
+            latency_str = (
+                f"{task.model_call_duration:.3f}" if task.model_call_duration else "N/A"
+            )
+
+            row = [
+                inputs_str,
+                exp.prompt,
+                exp.model,
+                cost_str,
+                latency_str,
+                task.llm_output or "",
+            ]
+
+            scores = {res.id: res.score for res in task.evaluation_results}
+            for eval_id in sorted_evaluator_ids:
+                score = scores.get(eval_id, "N/A")
+                if score == "N/A":
+                    row.append(str(score))
+                else:
+                    if score > 0.8:
+                        row.append(f"[green]{score}[/green]")
+                    elif score <= 0.2:
+                        row.append(f"[red]{score}[/red]")
+                    else:
+                        row.append(f"[yellow]{score}[/yellow]")
+
+            table.add_row(*row)
+
+    console.print(table)
+
+
 # --- Click CLI Definition ---
 
 
@@ -472,6 +760,92 @@ def cli():
 def judge():
     """Judge management commands."""
     pass
+
+
+@cli.group()
+def exp():
+    """Experiment management commands."""
+    pass
+
+
+@exp.command("init")
+def init_exp_config():
+    """Initializes a new experiments.yaml file in the current directory."""
+    config_path = "experiments.yaml"
+    if os.path.exists(config_path):
+        print_warning(f"'{config_path}' already exists in the current directory.")
+        if not click.confirm("Do you want to overwrite it?"):
+            print_info("Aborted.")
+            return
+    try:
+        with open(config_path, "w") as f:
+            f.write("""# Experiment Configuration
+# This file defines experiments to run with different prompts, inputs, models, and evaluators
+
+# List of prompt templates to test (use {{variable}} for input substitution)
+prompts:
+  - "Extract user information from the following text: {{text}}"
+  - "Identify and extract the name, username, and email from: {{text}}"
+
+# Input data for the experiments (each input will be tested with each prompt and model)
+inputs:
+  - text: "John Doe, @johndoe, john@example.com"
+  - text: "Contact: Jane Smith (email: jane.smith@company.org, handle: @janesmith)"
+
+# Alternative to inputs: Use a dataset by ID
+# Uncomment the line below and comment out the inputs section to use a dataset instead
+# dataset_id: "<uuid>"
+
+# Models to test (each will be run with all prompt/input combinations)
+models:
+  - "gemini-2.5-flash-lite"
+  - "gpt-4o-mini"
+
+# Evaluators to assess the quality of responses
+evaluators:
+  - name: "Precision"
+  - name: "Confidentiality"
+
+# Optional: Response schema for structured output (JSON Schema format)
+# Uncomment and modify the section below to enforce structured responses from the LLM
+# response_schema:
+#   type: "object"
+#   required: ["name", "username", "email"]
+#   properties:
+#     name:
+#       type: "string"
+#       description: "The name of the user"
+#     email:
+#       type: "string"
+#       format: "email"
+#       description: "The email of the user"
+#     username:
+#       type: "string"
+#       pattern: "^@[a-zA-Z0-9_]+$"
+#       description: "The username of the user. Must start with @"
+#   additionalProperties: false
+""")
+        print_success(f"'{config_path}' created successfully.")
+        print_info("Update the file with your experiment details and run `exp run`.")
+    except IOError as e:
+        print_error(f"Failed to write to '{config_path}': {e}")
+
+
+@exp.command("run")
+@click.option(
+    "--output",
+    "-o",
+    help="Output file path to save experiment results as JSON (e.g., results.json)",
+)
+@click.option(
+    "--config",
+    "-c",
+    default="experiments.yaml",
+    help="Path to experiment configuration file (default: experiments.yaml)",
+)
+def run_cmd(output, config):
+    """Runs an experiment from the experiments.yaml file."""
+    _run_experiment(output, config)
 
 
 @judge.command("list")
@@ -490,7 +864,7 @@ def judge():
     "--show-global/--not-show-global", default=None, help="Filter by global status."
 )
 def list_cmd(**kwargs):
-    """List judges with optional filters."""
+    """list judges with optional filters."""
     _list_judges(**kwargs)
 
 
@@ -508,7 +882,7 @@ def get_cmd(judge_id):
 @click.option(
     "--evaluator-references",
     "evaluator_references_json",
-    help="""'JSON string for evaluator references. E.g., '[{"id": "eval-id"}]""" "",
+    help="""JSON string for evaluator references. E.g., '[{"id": "eval-id"}]""",
 )
 def create_cmd(name, intent, stage, evaluator_references_json):
     """Create a new judge."""
@@ -522,7 +896,7 @@ def create_cmd(name, intent, stage, evaluator_references_json):
 @click.option(
     "--evaluator-references",
     "evaluator_references_json",
-    help="""'JSON string to update evaluator references. Use "[]" to clear.""" "",
+    help="""JSON string to update evaluator references. Use "[]" to clear.""",
 )
 def update_cmd(judge_id, name, stage, evaluator_references_json):
     """Update an existing judge (PATCH)."""
@@ -550,12 +924,12 @@ def delete_cmd(judge_id):
 @click.option(
     "--contexts",
     "contexts_json",
-    help="""'JSON list of context strings. E.g., '["ctx1"]""" "",
+    help="""JSON list of context strings. E.g., '["ctx1"]""",
 )
 @click.option(
     "--functions",
     "functions_json",
-    help="""'JSON array for the "functions" field.""" "",
+    help="""JSON array for the "functions" field.""",
 )
 @click.option("--expected-output", help="Expected output text.")
 @click.option("--tag", "tags", multiple=True, help="Add one or more tags.")
@@ -571,12 +945,12 @@ def execute_cmd(**kwargs):
 @click.option(
     "--contexts",
     "contexts_json",
-    help="""'JSON list of context strings. E.g., '["ctx1"]""" "",
+    help="""JSON list of context strings. E.g., '["ctx1"]""",
 )
 @click.option(
     "--functions",
     "functions_json",
-    help="""'JSON array for the "functions" field.""" "",
+    help="""JSON array for the "functions" field.""",
 )
 @click.option("--expected-output", help="Expected output text.")
 @click.option("--tag", "tags", multiple=True, help="Add one or more tags.")
