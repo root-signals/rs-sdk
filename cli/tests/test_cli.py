@@ -11,9 +11,9 @@ from cli import (
     Judge,
     JudgeListResponse,
     EvaluatorReference,
-    Experiment,
+    PromptTest,
     Task,
-    _run_experiment,
+    _run_prompt_tests,
 )
 
 
@@ -370,7 +370,7 @@ class TestJudgeExecute:
                     # Verify that _request was called with stdin content as response
                     mock_req.assert_called_once()
                     call_args = mock_req.call_args[1]
-                    assert call_args["data"]["response"] == stdin_content
+                    assert call_args["payload"]["response"] == stdin_content
 
     def test_execute_judge_stdin_priority_over_flag(self, runner, mock_api_key):
         mock_response = {"result": "success", "score": 0.95}
@@ -394,7 +394,7 @@ class TestJudgeExecute:
                     # Verify that _request was called with flag content, not stdin
                     mock_req.assert_called_once()
                     call_args = mock_req.call_args[1]
-                    assert call_args["data"]["response"] == flag_response
+                    assert call_args["payload"]["response"] == flag_response
 
 
 class TestJudgeExecuteByName:
@@ -434,7 +434,7 @@ class TestJudgeExecuteByName:
                     # Verify that _request was called with stdin content as response
                     mock_req.assert_called_once()
                     call_args = mock_req.call_args[1]
-                    assert call_args["data"]["response"] == stdin_content
+                    assert call_args["payload"]["response"] == stdin_content
 
     def test_execute_judge_by_name_stdin_priority_over_flag(self, runner, mock_api_key):
         mock_response = {"result": "success", "score": 0.88}
@@ -458,7 +458,7 @@ class TestJudgeExecuteByName:
                     # Verify that _request was called with flag content, not stdin
                     mock_req.assert_called_once()
                     call_args = mock_req.call_args[1]
-                    assert call_args["data"]["response"] == flag_response
+                    assert call_args["payload"]["response"] == flag_response
 
 
 class TestJudgeDuplicate:
@@ -539,7 +539,7 @@ class TestApiRequest:
         mock_response.status_code = 200
         mock_response.raise_for_status.return_value = None
         mock_response.json.return_value = {
-            "invalid": "data"
+            "invalid": "payload"
         }  # This will fail validation
         mock_request.return_value = mock_response
 
@@ -554,7 +554,7 @@ class TestApiRequest:
         mock_response.status_code = 200
         mock_response.raise_for_status.return_value = None
         mock_response.json.return_value = {
-            "invalid": "data"
+            "invalid": "payload"
         }  # This will fail validation
         mock_request.return_value = mock_response
 
@@ -583,13 +583,13 @@ class TestHelperFunctions:
         assert "Warning:" in captured.out
 
 
-class TestExperimentOperations:
-    """Test suite for experiment-related CLI operations."""
+class TestPromptTestingOperations:
+    """Test suite for prompt testing CLI operations."""
 
     def test_run_experiment_success(self, mock_api_key):
-        """Test successful experiment execution."""
+        """Test successful prompt testing execution."""
         # Mock experiment response
-        mock_experiment = Experiment(
+        mock_experiment = PromptTest(
             id="exp-123",
             model="gpt-4o-mini",
             prompt="Test prompt: {{input}}",
@@ -620,13 +620,13 @@ class TestExperimentOperations:
         try:
             with patch("cli._request", return_value=mock_experiment):
                 with patch("cli.time.sleep"):  # Speed up the test
-                    _run_experiment(config_path=config_path)
+                    _run_prompt_tests(config_path=config_path)
         finally:
             os.unlink(config_path)
 
     def test_run_experiment_with_response_schema(self, mock_api_key):
-        """Test experiment execution with response schema."""
-        mock_experiment = Experiment(
+        """Test prompt testing execution with response schema."""
+        mock_experiment = PromptTest(
             id="exp-456",
             model="gpt-4o-mini",
             prompt="Extract info: {{text}}",
@@ -659,13 +659,13 @@ class TestExperimentOperations:
         try:
             with patch("cli._request", return_value=mock_experiment):
                 with patch("cli.time.sleep"):  # Speed up the test
-                    _run_experiment(config_path=config_path)
+                    _run_prompt_tests(config_path=config_path)
         finally:
             os.unlink(config_path)
 
     def test_run_experiment_with_dataset_id(self, mock_api_key):
-        """Test experiment execution with dataset ID instead of inputs."""
-        mock_experiment = Experiment(
+        """Test prompt testing execution with dataset ID instead of inputs."""
+        mock_experiment = PromptTest(
             id="exp-789",
             model="claude-3-5-haiku",
             prompt="Process: {{data}}",
@@ -697,7 +697,7 @@ class TestExperimentOperations:
         try:
             with patch("cli._request", return_value=mock_experiment) as mock_request:
                 with patch("cli.time.sleep"):  # Speed up the test
-                    _run_experiment(config_path=config_path)
+                    _run_prompt_tests(config_path=config_path)
                     # Verify dataset_id was included in the request
                     mock_request.assert_called()
                     # Check that any call included dataset_id in the payload
@@ -705,30 +705,30 @@ class TestExperimentOperations:
                     for call in mock_request.call_args_list:
                         if (
                             len(call) > 1
-                            and "data" in call[1]
-                            and "dataset_id" in call[1]["data"]
+                            and "payload" in call[1]
+                            and "dataset_id" in call[1]["payload"]
                         ):
                             found_dataset_id = True
-                            assert call[1]["data"]["dataset_id"] == "dataset-123"
+                            assert call[1]["payload"]["dataset_id"] == "dataset-123"
                             break
                     assert found_dataset_id, "dataset_id was not found in any API call"
         finally:
             os.unlink(config_path)
 
     def test_exp_init_command(self, runner, mock_api_key):
-        """Test experiment init command via CLI."""
+        """Test prompt testing init command via CLI."""
         with tempfile.TemporaryDirectory() as temp_dir:
-            os.path.join(temp_dir, "experiments.yaml")
+            os.path.join(temp_dir, "prompt-tests.yaml")
 
             with patch("cli.os.path.exists", return_value=False):
                 with patch("builtins.open", create=True) as mock_open:
-                    result = runner.invoke(cli, ["exp", "init"])
+                    result = runner.invoke(cli, ["pt", "init"])
                     assert result.exit_code == 0
                     mock_open.assert_called()
 
     def test_exp_run_command_with_custom_config(self, runner, mock_api_key):
-        """Test experiment run command with custom config file."""
-        mock_experiment = Experiment(
+        """Test prompt testing run command with custom config file."""
+        mock_experiment = PromptTest(
             id="exp-cli-test",
             model="gpt-4o-mini",
             prompt="CLI test prompt",
@@ -757,7 +757,53 @@ class TestExperimentOperations:
         try:
             with patch("cli._request", return_value=mock_experiment):
                 with patch("cli.time.sleep"):  # Speed up the test by mocking sleep
-                    result = runner.invoke(cli, ["exp", "run", "-c", config_path])
+                    result = runner.invoke(cli, ["pt", "run", "-c", config_path])
+                    assert result.exit_code == 0
+        finally:
+            os.unlink(config_path)
+
+    def test_prompt_test_alias_init_command(self, runner, mock_api_key):
+        with patch("cli.os.path.exists", return_value=False):
+            with patch("builtins.open", create=True) as mock_open:
+                result = runner.invoke(cli, ["prompt-test", "init"])
+                assert result.exit_code == 0
+                mock_open.assert_called()
+
+    def test_prompt_test_alias_run_command_with_custom_config(
+        self, runner, mock_api_key
+    ):
+        mock_experiment = PromptTest(
+            id="exp-cli-test",
+            model="gpt-4o-mini",
+            prompt="CLI test prompt",
+            tasks=[
+                Task(
+                    id="task-cli",
+                    status="completed",
+                    cost="$0.001",
+                    llm_output="CLI test output",
+                    variables={"test": "value"},
+                )
+            ],
+        )
+
+        config_data = {
+            "prompts": ["CLI test prompt"],
+            "inputs": [{"test": "value"}],
+            "models": ["gpt-4o-mini"],
+            "evaluators": [{"name": "CLI Test"}],
+        }
+
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
+            yaml.dump(config_data, f)
+            config_path = f.name
+
+        try:
+            with patch("cli._request", return_value=mock_experiment):
+                with patch("cli.time.sleep"):
+                    result = runner.invoke(
+                        cli, ["prompt-test", "run", "-c", config_path]
+                    )
                     assert result.exit_code == 0
         finally:
             os.unlink(config_path)

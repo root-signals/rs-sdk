@@ -85,7 +85,7 @@ class EvaluatorConfig(BaseModel):
         return self
 
 
-class ExperimentConfig(BaseModel):
+class PromptTestConfig(BaseModel):
     prompts: list[str]
     inputs: list[dict[str, Any]]
     models: list[str]
@@ -94,12 +94,12 @@ class ExperimentConfig(BaseModel):
     dataset_id: Optional[str] = None
 
 
-class ExperimentEvaluatorReference(BaseModel):
+class PromptTestEvaluatorReference(BaseModel):
     id: str
     name: str
 
 
-class EvaluationResult(ExperimentEvaluatorReference):
+class EvaluationResult(PromptTestEvaluatorReference):
     score: float | None
     justification: str | None
 
@@ -114,14 +114,14 @@ class Task(BaseModel):
     variables: dict[str, Any] = {}
 
 
-class Experiment(BaseModel):
+class PromptTest(BaseModel):
     id: str
     model: str
     prompt: str
     tasks: list[Task] = []
     avg_cost: Optional[str] = None
     avg_model_call_duration: Optional[float] = None
-    evaluators: list[ExperimentEvaluatorReference] = []
+    evaluators: list[PromptTestEvaluatorReference] = []
 
 
 # --- Helper Functions ---
@@ -335,7 +335,7 @@ def _create_judge(name, intent, stage, evaluator_references_json):
 
     print_info("Attempting to create judge with payload:")
     print_json(payload)
-    new_judge = _request("POST", "judges", data=payload)
+    new_judge = _request("POST", "judges", payload=payload)
     if isinstance(new_judge, Judge):
         print_success("Judge created successfully!")
         print_json(new_judge.model_dump())
@@ -366,7 +366,7 @@ def _update_judge(judge_id, name, stage, evaluator_references_json):
 
     print_info(f"Attempting to update judge {judge_id} with PATCH payload:")
     print_json(payload)
-    updated_judge = _request("PATCH", f"judges/{judge_id}", data=payload)
+    updated_judge = _request("PATCH", f"judges/{judge_id}", payload=payload)
     if isinstance(updated_judge, Judge):
         print_success(f"Judge {judge_id} updated successfully!")
         print_json(updated_judge.model_dump())
@@ -429,7 +429,7 @@ def _execute_judge(
 
     print_info(f"Attempting to execute judge {judge_id} with payload:")
     print_json(payload)
-    result = _request("POST", f"judges/{judge_id}/execute", data=payload)
+    result = _request("POST", f"judges/{judge_id}/execute", payload=payload)
     if result:
         print_success("Judge execution successful!")
         print_json(result.model_dump() if isinstance(result, BaseModel) else result)
@@ -479,7 +479,7 @@ def _execute_judge_by_name(
     print_info(f"Attempting to execute judge '{judge_name}' with payload:")
     print_json(payload)
     result = _request(
-        "POST", "judges/execute/by-name", data=payload, params={"name": judge_name}
+        "POST", "judges/execute/by-name", payload=payload, params={"name": judge_name}
     )
     if result:
         print_success("Judge execution by name successful!")
@@ -532,30 +532,30 @@ def _execute_openai_judge(judge_id_in_path, model, messages_json, extra_body_jso
 
     print_info("Attempting to execute with OpenAI compatible payload:")
     print_json(payload)
-    result = _request("POST", endpoint_path, data=payload)
+    result = _request("POST", endpoint_path, payload=payload)
     if result:
         print_success("OpenAI compatible execution successful!")
         print_json(result.model_dump() if isinstance(result, BaseModel) else result)
 
 
-def _run_experiment(output_file=None, config_path="experiments.yaml"):
+def _run_prompt_tests(output_file=None, config_path="prompt-tests.yaml"):
     if not os.path.exists(config_path):
         print_error(
-            f"'{config_path}' not found. Please run `exp init` first or specify a different config file with -c."
+            f"'{config_path}' not found. Please run `pt init` first or specify a different config file with -c."
         )
         sys.exit(1)
 
     try:
         with open(config_path, "r") as f:
             config_data = yaml.safe_load(f)
-        config = ExperimentConfig(**config_data)
+        config = PromptTestConfig(**config_data)
     except (yaml.YAMLError, ValueError) as e:
         print_error(f"Error reading or validating '{config_path}': {e}")
         sys.exit(1)
 
-    print_info("Starting experiments")
+    print_info("Starting prompt tests")
 
-    experiments_to_track = {}  # Store experiment data by ID
+    experiments_to_track = {}  # Store prompt test data by ID
 
     for prompt in config.prompts:
         for model in config.models:
@@ -576,25 +576,25 @@ def _run_experiment(output_file=None, config_path="experiments.yaml"):
 
             response = _request(
                 "POST",
-                "experiments/prompt-model/",
-                data=payload,
-                response_model=Experiment,
+                "prompt-tests",
+                payload=payload,
+                response_model=PromptTest,
             )
             if response:
                 experiments_to_track[response.id] = response
                 print_success(
-                    f"Successfully created experiment for model '{model}' with ID: {response.id}"
+                    f"Successfully created prompt test for model '{model}' with ID: {response.id}"
                 )
             else:
                 print_warning(
-                    f"Failed to create experiment for model '{model}' with prompt: {prompt}"
+                    f"Failed to create prompt test for model '{model}' with prompt: {prompt}"
                 )
 
     if not experiments_to_track:
-        print_error("No experiments were created. Aborting.")
+        print_error("No prompt tests were created. Aborting.")
         sys.exit(1)
 
-    print_info("Waiting for experiments to complete...")
+    print_info("Waiting for prompt tests to complete...")
 
     completed_experiments = {}
 
@@ -608,23 +608,23 @@ def _run_experiment(output_file=None, config_path="experiments.yaml"):
 
                 exp_data = _request(
                     "GET",
-                    f"experiments/prompt-model/{exp_id}/",
-                    response_model=Experiment,
+                    f"prompt-tests/{exp_id}/",
+                    response_model=PromptTest,
                 )
                 if not exp_data:
-                    print_warning(f"Could not retrieve status for experiment {exp_id}")
+                    print_warning(f"Could not retrieve status for prompt test {exp_id}")
                     # Create a placeholder to keep it in the list
                     all_experiments_data.append(experiments_to_track[exp_id])
                     continue
 
                 all_experiments_data.append(exp_data)
 
-                # Let's refine the logic: An experiment is complete if it has tasks and all of them are in a terminal state.
+                # A prompt test is complete if it has tasks and all of them are in a terminal state.
                 if exp_data.tasks and all(
                     task.status in ["completed", "failed"] for task in exp_data.tasks
                 ):
                     completed_experiments[exp_id] = exp_data
-                    print_success(f"Experiment {exp_id} completed.")
+                    print_success(f"Prompt test {exp_id} completed.")
 
             # Generate and display the progress table
             live.update(_generate_progress_table(all_experiments_data), refresh=True)
@@ -633,25 +633,27 @@ def _run_experiment(output_file=None, config_path="experiments.yaml"):
                 break
             time.sleep(1)
 
-    print_success("All experiments completed.")
-    final_experiments = sorted(list(completed_experiments.values()), key=lambda x: x.id)
-    _display_aggregated_results(final_experiments)
+    print_success("All prompt tests completed.")
+    final_prompt_tests = sorted(
+        list(completed_experiments.values()), key=lambda x: x.id
+    )
+    _display_aggregated_results(final_prompt_tests)
 
     if output_file:
         try:
-            output_data = [exp.model_dump() for exp in final_experiments]
+            output_data = [exp.model_dump() for exp in final_prompt_tests]
             with open(output_file, "w") as f:
                 json.dump(output_data, f, indent=2)
             print_success(f"Results saved to {output_file}")
         except IOError as e:
             print_error(f"Failed to write results to {output_file}: {e}")
 
-    experiment_ids = [exp.id for exp in final_experiments]
-    url = f"https://app.rootsignals.ai/experiments/playground/compare?ids={','.join(experiment_ids)}"
+    prompt_test_ids = [exp.id for exp in final_prompt_tests]
+    url = f"https://app.rootsignals.ai/prompt-testing/compare?ids={','.join(prompt_test_ids)}"
     print_info(f"\nView full results in the browser:\n{url}")
 
 
-def _is_experiment_complete(experiment: Experiment) -> bool:
+def _is_prompt_test_complete(experiment: PromptTest) -> bool:
     """Checks if an experiment is complete by looking at its tasks."""
     if not experiment.tasks:
         return False  # No tasks yet, so not complete
@@ -659,10 +661,10 @@ def _is_experiment_complete(experiment: Experiment) -> bool:
     return all(task.status in ["completed", "failed"] for task in experiment.tasks)
 
 
-def _generate_progress_table(experiments: list[Experiment]) -> Table:
+def _generate_progress_table(experiments: list[PromptTest]) -> Table:
     """Generates a table showing the progress of all experiments."""
-    table = Table(title="Experiment Progress")
-    table.add_column("Experiment ID", style="cyan")
+    table = Table(title="Prompt Test Progress")
+    table.add_column("Prompt Test ID", style="cyan")
     table.add_column("Status", style="yellow")
     table.add_column("Tasks Completed", style="magenta")
 
@@ -672,7 +674,7 @@ def _generate_progress_table(experiments: list[Experiment]) -> Table:
         )
         total_tasks = len(exp.tasks) if exp.tasks else 0
 
-        is_complete = _is_experiment_complete(exp)
+        is_complete = _is_prompt_test_complete(exp)
 
         if is_complete:
             status_display = "✅ Completed"
@@ -683,13 +685,13 @@ def _generate_progress_table(experiments: list[Experiment]) -> Table:
     return table
 
 
-def _display_aggregated_results(experiments: list[Experiment]):
+def _display_aggregated_results(experiments: list[PromptTest]):
     """Displays the aggregated results of all experiments in a single table."""
     if not experiments:
-        print_warning("No experiment results to display.")
+        print_warning("No prompt test results to display.")
         return
 
-    table = Table(title="Aggregated Experiment Results")
+    table = Table(title="Aggregated Prompt Test Results")
     table.add_column("Inputs", style="cyan")
     table.add_column("Prompt", style="blue")
     table.add_column("Model", style="green")
@@ -763,15 +765,18 @@ def judge():
 
 
 @cli.group()
-def exp():
-    """Experiment management commands."""
+def pt():
+    """Prompt testing management commands."""
     pass
 
 
-@exp.command("init")
-def init_exp_config():
-    """Initializes a new experiments.yaml file in the current directory."""
-    config_path = "experiments.yaml"
+cli.add_command(pt, name="prompt-test")
+
+
+@pt.command("init")
+def init_pt_config():
+    """Initializes a new prompt-tests.yaml file in the current directory."""
+    config_path = "prompt-tests.yaml"
     if os.path.exists(config_path):
         print_warning(f"'{config_path}' already exists in the current directory.")
         if not click.confirm("Do you want to overwrite it?"):
@@ -779,15 +784,15 @@ def init_exp_config():
             return
     try:
         with open(config_path, "w") as f:
-            f.write("""# Experiment Configuration
-# This file defines experiments to run with different prompts, inputs, models, and evaluators
+            f.write("""# Prompt Testing Configuration
+# This file defines a test suite of prompt and model combinations, with optional evaluators.
 
 # List of prompt templates to test (use {{variable}} for input substitution)
 prompts:
   - "Extract user information from the following text: {{text}}"
   - "Identify and extract the name, username, and email from: {{text}}"
 
-# Input data for the experiments (each input will be tested with each prompt and model)
+# Input data for the prompt tests (each input will be tested with each prompt and model)
 inputs:
   - text: "John Doe, @johndoe, john@example.com"
   - text: "Contact: Jane Smith (email: jane.smith@company.org, handle: @janesmith)"
@@ -826,26 +831,26 @@ evaluators:
 #   additionalProperties: false
 """)
         print_success(f"'{config_path}' created successfully.")
-        print_info("Update the file with your experiment details and run `exp run`.")
+        print_info("Update the file with your prompt test details and run `pt run`.")
     except IOError as e:
         print_error(f"Failed to write to '{config_path}': {e}")
 
 
-@exp.command("run")
+@pt.command("run")
 @click.option(
     "--output",
     "-o",
-    help="Output file path to save experiment results as JSON (e.g., results.json)",
+    help="Output file path to save prompt test results as JSON (e.g., results.json)",
 )
 @click.option(
     "--config",
     "-c",
-    default="experiments.yaml",
-    help="Path to experiment configuration file (default: experiments.yaml)",
+    default="prompt-tests.yaml",
+    help="Path to prompt testing configuration file (default: prompt-tests.yaml)",
 )
 def run_cmd(output, config):
-    """Runs an experiment from the experiments.yaml file."""
-    _run_experiment(output, config)
+    """Runs prompt tests from the prompt-tests.yaml file."""
+    _run_prompt_tests(output, config)
 
 
 @judge.command("list")
