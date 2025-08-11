@@ -807,3 +807,32 @@ class TestPromptTestingOperations:
                     assert result.exit_code == 0
         finally:
             os.unlink(config_path)
+
+
+class TestSettingsTemporaryKey:
+    def test_settings_temporary_api_key_used(self, runner, sample_judge_list):
+        with patch.dict("os.environ", {}, clear=True):
+            with tempfile.TemporaryDirectory() as td:
+                settings_dir = os.path.join(td, ".rootsignals")
+                os.makedirs(settings_dir, exist_ok=True)
+                settings_path = os.path.join(settings_dir, "settings.json")
+                with open(settings_path, "w") as f:
+                    json.dump({"temporary_api_key": "tmpkey-123"}, f)
+                with patch("cli._settings_path", return_value=settings_path):
+                    from cli import session
+
+                    session.headers.clear()
+                    mock_response = Mock()
+                    mock_response.status_code = 200
+                    mock_response.raise_for_status.return_value = None
+                    mock_response.json.return_value = sample_judge_list.model_dump()
+                    with patch("cli.session.request", return_value=mock_response):
+                        result = runner.invoke(cli, ["judge", "list"])
+                        assert result.exit_code == 0
+                        assert (
+                            "Test Judge 1" in result.output
+                            or "Test Judge 2" in result.output
+                        )
+                        assert (
+                            session.headers.get("Authorization") == "Api-Key tmpkey-123"
+                        )

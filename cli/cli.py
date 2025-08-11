@@ -13,6 +13,7 @@ import json
 import os
 import sys
 import time
+import tempfile
 from typing import Any, Optional, Union
 
 import click
@@ -158,13 +159,56 @@ BASE_URL = os.getenv("ROOTSIGNALS_API_URL", "https://api.app.rootsignals.ai")
 
 session = requests.Session()
 
+
+def _config_dir() -> str:
+    return os.path.join(os.path.expanduser("~"), ".rootsignals")
+
+
+def _settings_path() -> str:
+    return os.path.join(_config_dir(), "settings.json")
+
+
+def _load_settings() -> dict:
+    try:
+        path = _settings_path()
+        if not os.path.exists(path):
+            return {}
+        with open(path, "r") as f:
+            data = json.load(f)
+            if isinstance(data, dict):
+                return data
+            return {}
+    except Exception:
+        return {}
+
+
+def _save_settings(settings: dict) -> None:
+    try:
+        cfg_dir = _config_dir()
+        os.makedirs(cfg_dir, mode=0o700, exist_ok=True)
+        fd, tmp_path = tempfile.mkstemp(dir=cfg_dir)
+        try:
+            with os.fdopen(fd, "w") as tmp:
+                json.dump(settings, tmp, indent=2)
+            os.chmod(tmp_path, 0o600)
+            os.replace(tmp_path, _settings_path())
+        finally:
+            if os.path.exists(tmp_path):
+                try:
+                    os.remove(tmp_path)
+                except Exception:
+                    pass
+    except Exception:
+        pass
+
+
 # --- API Helper Functions ---
 
 
 def _request(
     method: str,
     endpoint_segment: str,
-    data: Optional[dict] = None,
+    payload: Optional[dict] = None,
     params: Optional[dict] = None,
     response_model: Optional[type[BaseModel]] = None,
     raise_on_validation_error: bool = False,
@@ -172,17 +216,71 @@ def _request(
     """A centralized function to handle all API requests with typed responses."""
     # Ensure the session is configured before the first request
     if not session.headers.get("Authorization"):
-        if not API_KEY:
-            import sys
-
+        effective_api_key = API_KEY or os.getenv("ROOTSIGNALS_API_KEY")
+        if not effective_api_key:
+            settings = _load_settings()
+            if settings:
+                effective_api_key = settings.get("temporary_api_key")
+        if not effective_api_key:
             print_error("ROOTSIGNALS_API_KEY environment variable not set.")
-            print_info(
-                "Please set it and try again. E.g., export ROOTSIGNALS_API_KEY='your_key'"
-            )
-            sys.exit(1)  # Exit if API key is not configured
+            shell = os.environ.get("SHELL", "")
+            if "fish" in shell:
+                print_info("Run: set -x ROOTSIGNALS_API_KEY <your_key>")
+            else:
+                print_info("Run: export ROOTSIGNALS_API_KEY='<your_key>'")
+            if sys.stdin.isatty() and sys.stdout.isatty():
+                if click.confirm(
+                    "No API key found. Create a temporary key now?", default=True
+                ):
+                    try:
+                        resp = requests.post(
+                            f"{BASE_URL}/create-demo-user/", timeout=60
+                        )
+                        resp.raise_for_status()
+                        demo_user_contents = resp.json()
+                        temp_key = demo_user_contents.get("api_key")
+                        if temp_key:
+                            os.environ["ROOTSIGNALS_API_KEY"] = temp_key
+                            effective_api_key = temp_key
+                            try:
+                                current = _load_settings()
+                                if not isinstance(current, dict):
+                                    current = {}
+                                current["temporary_api_key"] = temp_key
+                                _save_settings(current)
+                                print_success(
+                                    "Temporary API key saved to ~/.rootsignals/settings.json"
+                                )
+                            except Exception:
+                                pass
+                            shell = os.environ.get("SHELL", "")
+                            if "fish" in shell:
+                                print_info(
+                                    "To persist in your shell: set -x ROOTSIGNALS_API_KEY <paste_key_here>"
+                                )
+                            else:
+                                print_info(
+                                    "To persist in your shell: export ROOTSIGNALS_API_KEY='<paste_key_here>'"
+                                )
+                        else:
+                            print_error(
+                                "Temporary key response did not include 'api_key'."
+                            )
+                            sys.exit(1)
+                    except requests.RequestException as e:
+                        print_error(f"Failed to create temporary API key: {e}")
+                        sys.exit(1)
+                else:
+                    print_info("Aborted. Please set ROOTSIGNALS_API_KEY and try again.")
+                    sys.exit(1)
+            else:
+                print_info(
+                    "Set ROOTSIGNALS_API_KEY and retry. Non-interactive session cannot prompt."
+                )
+                sys.exit(1)
         session.headers.update(
             {
-                "Authorization": f"Api-Key {API_KEY}",
+                "Authorization": f"Api-Key {effective_api_key}",
                 "Content-Type": "application/json",
                 "Accept": "application/json",
                 "User-Agent": "root-signals-cli/1.0",
@@ -195,7 +293,7 @@ def _request(
     url = f"{BASE_URL}/{endpoint_segment}"
 
     try:
-        response = session.request(method, url, params, json=data, timeout=60)
+        response = session.request(method, url, params, json=payload, timeout=60)
         response.raise_for_status()
         if response.status_code == 204:  # No Content
             return None
