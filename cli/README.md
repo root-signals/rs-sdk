@@ -51,8 +51,13 @@ uvx root-signals-cli judge list
 Before using the CLI, you must set your Root Signals API key as an environment variable:
 
 ```bash
+# Sign up for a free account at https://app.rootsignals.ai/register
 export ROOTSIGNALS_API_KEY="your-api-key"
 ```
+
+### Temporary API keys
+
+If no API key is set, the CLI can create a temporary key interactively and save it to `~/.rootsignals/settings.json` as `temporary_api_key`. Permanent keys should be set via the `ROOTSIGNALS_API_KEY` environment variable, which takes precedence.
 
 ## Usage
 
@@ -175,7 +180,14 @@ roots judge execute-by-name "My New Judge" --request "What is the capital of Fra
 
 Input can also be piped in similar way as with `execute`.
 
+### Prompt testing
 
+Initialize a prompt testing experiment config and run it.
+
+```bash
+roots prompt-test init
+roots prompt-test run
+```
 
 ## Development
 
