@@ -34,3 +34,4 @@
 
 - [Python SDK](./python/README.md)
 - [TypeScript SDK](./typescript/README.md)
+- [CLI](./cli/README.md)

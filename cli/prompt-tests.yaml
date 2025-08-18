@@ -1,0 +1,45 @@
+# Prompt Testing Configuration
+# This file defines a test suite of prompt and model combinations, with optional evaluators.
+
+# List of prompt templates to test (use {{variable}} for input substitution)
+prompts:
+  - "Extract user information from the following text: {{text}}"
+  - "Identify and extract the name, username, and email from: {{text}}"
+
+# Input data for the prompt tests (each input will be tested with each prompt and model)
+inputs:
+  - text: "John Doe, @johndoe, john@example.com"
+  - text: "Contact: Jane Smith (email: jane.smith@company.org, handle: @janesmith)"
+
+# Alternative to inputs: Use a dataset by ID
+# Uncomment the line below and comment out the inputs section to use a dataset instead
+# dataset_id: "<uuid>"
+
+# Models to test (each will be run with all prompt/input combinations)
+models:
+  - "gemini-2.5-flash-lite"
+  - "gpt-4o-mini"
+
+# Evaluators to assess the quality of responses
+evaluators:
+  - name: "Precision"
+  - name: "Confidentiality"
+
+# Optional: Response schema for structured output (JSON Schema format)
+# Uncomment and modify the section below to enforce structured responses from the LLM
+# response_schema:
+#   type: "object"
+#   required: ["name", "username", "email"]
+#   properties:
+#     name:
+#       type: "string"
+#       description: "The name of the user"
+#     email:
+#       type: "string"
+#       format: "email"
+#       description: "The email of the user"
+#     username:
+#       type: "string"
+#       pattern: "^@[a-zA-Z0-9_]+$"
+#       description: "The username of the user. Must start with @"
+#   additionalProperties: false
