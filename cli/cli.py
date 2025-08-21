@@ -86,9 +86,13 @@ class EvaluatorConfig(BaseModel):
         return self
 
 
+class PromptTestInput(BaseModel):
+    vars: dict[str, Any]
+
+
 class PromptTestConfig(BaseModel):
     prompts: list[str]
-    inputs: list[dict[str, Any]]
+    inputs: list[PromptTestInput]
     models: list[str]
     evaluators: list[EvaluatorConfig]
     response_schema: Optional[dict[str, Any]] = None
@@ -663,7 +667,7 @@ def _run_prompt_tests(output_file=None, config_path="prompt-tests.yaml"):
             ]
             payload = {
                 "prompt": prompt,
-                "inputs": config.inputs,
+                "inputs": [item.vars for item in config.inputs],
                 "model": model,
                 "evaluators": evaluators_payload,
             }
@@ -892,8 +896,10 @@ prompts:
 
 # Input data for the prompt tests (each input will be tested with each prompt and model)
 inputs:
-  - text: "John Doe, @johndoe, john@example.com"
-  - text: "Contact: Jane Smith (email: jane.smith@company.org, handle: @janesmith)"
+  - vars:
+      text: "John Doe, @johndoe, john@example.com"
+  - vars:
+      text: "Contact: Jane Smith (email: jane.smith@company.org, handle: @janesmith)"
 
 # Alternative to inputs: Use a dataset by ID
 # Uncomment the line below and comment out the inputs section to use a dataset instead
