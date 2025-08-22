@@ -15,10 +15,14 @@ from root.generated.openapi_aclient.models.judge_generator_response import (
 from root.generated.openapi_aclient.models.judge_request import (
     JudgeRequest as AJudgeRequest,
 )
+from root.generated.openapi_aclient.models.status_enum import (
+    StatusEnum as AStatusEnum,
+)
 from root.generated.openapi_aclient.models.visibility_enum import VisibilityEnum as AVisibilityEnum
 from root.generated.openapi_client.models.judge_generator_request import JudgeGeneratorRequest
 from root.generated.openapi_client.models.judge_generator_response import JudgeGeneratorResponse
 from root.generated.openapi_client.models.judge_request import JudgeRequest
+from root.generated.openapi_client.models.status_enum import StatusEnum
 from root.generated.openapi_client.models.visibility_enum import VisibilityEnum
 
 from .generated.openapi_aclient import ApiClient as AApiClient
@@ -280,6 +284,7 @@ class Judges:
         intent: str,
         evaluator_references: Optional[List[EvaluatorReferenceRequest]] = None,
         stage: Optional[str] = None,
+        status: Literal["unlisted", "listed", "public", "public_unlisted"] = "unlisted",
         _request_timeout: Optional[int] = None,
         _client: ApiClient,
     ) -> Judge:
@@ -291,6 +296,7 @@ class Judges:
           intent: Intent for the judge
           evaluator_references: List of evaluator references to include in the judge
           stage: Stage for the judge
+          status: Status of the judge
           _request_timeout: Optional timeout for the request
         """
         api_instance = JudgesApi(_client)
@@ -299,6 +305,7 @@ class Judges:
             intent=intent,
             evaluator_references=evaluator_references,
             stage=stage,
+            status=StatusEnum(status),
         )
         return Judge._wrap(
             api_instance.judges_create(judge_request=request, _request_timeout=_request_timeout),
@@ -313,6 +320,7 @@ class Judges:
         intent: str,
         evaluator_references: Optional[List[AEvaluatorReferenceRequest]] = None,
         stage: Optional[str] = None,
+        status: Literal["unlisted", "listed", "public", "public_unlisted"] = "unlisted",
         _request_timeout: Optional[int] = None,
         _client: AApiClient,
     ) -> AJudge:
@@ -324,6 +332,7 @@ class Judges:
           intent: Intent for the judge
           evaluator_references: List of evaluator references to include in the judge
           stage: Stage for the judge
+          status: Status of the judge
           _request_timeout: Optional timeout for the request
         """
         api_instance = AJudgesApi(_client)
@@ -332,6 +341,7 @@ class Judges:
             intent=intent,
             evaluator_references=evaluator_references,
             stage=stage,
+            status=AStatusEnum(status),
         )
         return await AJudge._awrap(
             await api_instance.judges_create(judge_request=request, _request_timeout=_request_timeout),

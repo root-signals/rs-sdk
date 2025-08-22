@@ -21,13 +21,14 @@ from typing_extensions import Self
 
 class VisibilityEnum(str, Enum):
     """
-    * `global` - global * `listed` - listed * `unlisted` - unlisted
+    * `global` - global * `public` - public * `listed` - listed * `unlisted` - unlisted
     """
 
     """
     allowed enum values
     """
     GLOBAL = "global"
+    PUBLIC = "public"
     LISTED = "listed"
     UNLISTED = "unlisted"
 

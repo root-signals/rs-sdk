@@ -23,8 +23,8 @@ from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing_extensions import Self
 
 from root.generated.openapi_aclient.models.evaluator_inputs_value import EvaluatorInputsValue
-from root.generated.openapi_aclient.models.judge_status_enum import JudgeStatusEnum
 from root.generated.openapi_aclient.models.nested_evaluator import NestedEvaluator
+from root.generated.openapi_aclient.models.status_enum import StatusEnum
 
 
 class JudgeList(BaseModel):
@@ -36,12 +36,22 @@ class JudgeList(BaseModel):
     name: StrictStr
     intent: StrictStr
     created_at: Optional[datetime]
-    status: JudgeStatusEnum
+    status: StatusEnum
     inputs: Dict[str, EvaluatorInputsValue] = Field(
         description="Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like functions, contexts, and expected output."
     )
     evaluators: List[NestedEvaluator]
-    __properties: ClassVar[List[str]] = ["id", "name", "intent", "created_at", "status", "inputs", "evaluators"]
+    meta: Dict[str, Any] = Field(alias="_meta")
+    __properties: ClassVar[List[str]] = [
+        "id",
+        "name",
+        "intent",
+        "created_at",
+        "status",
+        "inputs",
+        "evaluators",
+        "_meta",
+    ]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -78,6 +88,7 @@ class JudgeList(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
@@ -87,6 +98,7 @@ class JudgeList(BaseModel):
                 "status",
                 "inputs",
                 "evaluators",
+                "meta",
             ]
         )
 
@@ -138,6 +150,7 @@ class JudgeList(BaseModel):
                 "evaluators": [NestedEvaluator.from_dict(_item) for _item in obj["evaluators"]]
                 if obj.get("evaluators") is not None
                 else None,
+                "_meta": obj.get("_meta"),
             }
         )
         return _obj
