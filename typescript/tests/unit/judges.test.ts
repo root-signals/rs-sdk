@@ -59,6 +59,7 @@ describe('JudgesResource', () => {
         name: 'New Test Judge',
         intent: 'Test judge for evaluation',
         evaluators: [],
+        status: 'public',
       };
 
       const createdJudge = TestDataFactory.createJudge(judgeData);

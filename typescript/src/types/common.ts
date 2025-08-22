@@ -91,5 +91,6 @@ export interface ExecutionPayload {
   functions?: Functions;
   expected_output?: string;
   reference?: string;
+  variables?: Record<string, string>;
   [key: string]: unknown;
 }
