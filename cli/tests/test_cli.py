@@ -476,7 +476,10 @@ class TestJudgeDuplicate:
 class TestApiRequest:
     def test_request_missing_api_key(self, runner):
         with patch.dict("os.environ", {}, clear=True):
-            result = runner.invoke(cli, ["judge", "list"])
+            with tempfile.TemporaryDirectory() as td:
+                settings_path = os.path.join(td, "settings.json")
+                with patch("cli._settings_path", return_value=settings_path):
+                    result = runner.invoke(cli, ["judge", "list"])
             assert result.exit_code == 1
             assert "ROOTSIGNALS_API_KEY environment variable not set" in result.output
 
@@ -608,7 +611,7 @@ class TestPromptTestingOperations:
         # Create a temporary config file
         config_data = {
             "prompts": ["Test prompt: {{input}}"],
-            "inputs": [{"input": "test value"}],
+            "inputs": [{"vars": {"input": "test value"}}],
             "models": ["gpt-4o-mini"],
             "evaluators": [{"name": "Test Evaluator"}],
         }
@@ -643,7 +646,7 @@ class TestPromptTestingOperations:
 
         config_data = {
             "prompts": ["Extract info: {{text}}"],
-            "inputs": [{"text": "John Doe, john@example.com"}],
+            "inputs": [{"vars": {"text": "John Doe, john@example.com"}}],
             "models": ["gpt-4o-mini"],
             "evaluators": [{"name": "Extraction Quality"}],
             "response_schema": {
@@ -683,7 +686,7 @@ class TestPromptTestingOperations:
         config_data = {
             "prompts": ["Process: {{data}}"],
             "inputs": [
-                {"data": "fallback"}
+                {"vars": {"data": "fallback"}}
             ],  # Should be ignored when dataset_id is present
             "models": ["claude-3-5-haiku"],
             "evaluators": [{"name": "Processing Quality"}],
@@ -745,7 +748,7 @@ class TestPromptTestingOperations:
 
         config_data = {
             "prompts": ["CLI test prompt"],
-            "inputs": [{"test": "value"}],
+            "inputs": [{"vars": {"test": "value"}}],
             "models": ["gpt-4o-mini"],
             "evaluators": [{"name": "CLI Test"}],
         }
@@ -789,7 +792,7 @@ class TestPromptTestingOperations:
 
         config_data = {
             "prompts": ["CLI test prompt"],
-            "inputs": [{"test": "value"}],
+            "inputs": [{"vars": {"test": "value"}}],
             "models": ["gpt-4o-mini"],
             "evaluators": [{"name": "CLI Test"}],
         }
