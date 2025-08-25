@@ -50,7 +50,6 @@ Submodules
    /autoapi/root/generated/openapi_client/models/judge_generator_response/index
    /autoapi/root/generated/openapi_client/models/judge_list/index
    /autoapi/root/generated/openapi_client/models/judge_rectifier_response/index
-   /autoapi/root/generated/openapi_client/models/judge_status_enum/index
    /autoapi/root/generated/openapi_client/models/model/index
    /autoapi/root/generated/openapi_client/models/model_list/index
    /autoapi/root/generated/openapi_client/models/model_params/index

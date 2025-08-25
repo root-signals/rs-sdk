@@ -55,6 +55,10 @@ Module Contents
       :type:  pydantic.StrictStr
 
 
+   .. py:attribute:: meta
+      :type:  Dict[str, Any]
+
+
    .. py:attribute:: model_config
 
 
@@ -63,6 +67,6 @@ Module Contents
 
 
    .. py:attribute:: status
-      :type:  root.generated.openapi_client.models.judge_status_enum.JudgeStatusEnum
+      :type:  root.generated.openapi_client.models.status_enum.StatusEnum
 
 

@@ -87,7 +87,7 @@ Module Contents
       accessing an attribute of a :class:`root.client.RootSignals` instance.
 
 
-   .. py:method:: acreate(*, name: str, intent: str, evaluator_references: Optional[List[root.generated.openapi_aclient.models.evaluator_reference_request.EvaluatorReferenceRequest]] = None, stage: Optional[str] = None, _request_timeout: Optional[int] = None, _client: root.generated.openapi_aclient.ApiClient) -> AJudge
+   .. py:method:: acreate(*, name: str, intent: str, evaluator_references: Optional[List[root.generated.openapi_aclient.models.evaluator_reference_request.EvaluatorReferenceRequest]] = None, stage: Optional[str] = None, status: Literal['unlisted', 'listed', 'public', 'public_unlisted'] = 'unlisted', _request_timeout: Optional[int] = None, _client: root.generated.openapi_aclient.ApiClient) -> AJudge
       :async:
 
 
@@ -97,6 +97,7 @@ Module Contents
       :param intent: Intent for the judge
       :param evaluator_references: List of evaluator references to include in the judge
       :param stage: Stage for the judge
+      :param status: Status of the judge
       :param _request_timeout: Optional timeout for the request
 
 
@@ -197,7 +198,7 @@ Module Contents
 
 
 
-   .. py:method:: create(*, name: str, intent: str, evaluator_references: Optional[List[root.generated.openapi_client.models.evaluator_reference_request.EvaluatorReferenceRequest]] = None, stage: Optional[str] = None, _request_timeout: Optional[int] = None, _client: root.generated.openapi_client.ApiClient) -> Judge
+   .. py:method:: create(*, name: str, intent: str, evaluator_references: Optional[List[root.generated.openapi_client.models.evaluator_reference_request.EvaluatorReferenceRequest]] = None, stage: Optional[str] = None, status: Literal['unlisted', 'listed', 'public', 'public_unlisted'] = 'unlisted', _request_timeout: Optional[int] = None, _client: root.generated.openapi_client.ApiClient) -> Judge
 
       Create a new judge with a name, intent, and list of evaluators.
 
@@ -205,6 +206,7 @@ Module Contents
       :param intent: Intent for the judge
       :param evaluator_references: List of evaluator references to include in the judge
       :param stage: Stage for the judge
+      :param status: Status of the judge
       :param _request_timeout: Optional timeout for the request
 
 
