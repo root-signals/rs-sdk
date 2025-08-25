@@ -1,3 +1,9 @@
+## 0.1.3
+
+### Added
+
+- Status field to judges
+
 ## 0.1.2
 
 ### Changed
