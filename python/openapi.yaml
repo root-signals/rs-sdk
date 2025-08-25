@@ -807,12 +807,16 @@ paths:
           - evaluator
           - experiment
           - judge
+          - proxy
           - skill
+          - test
         description: |-
           * `skill` - skill
           * `evaluator` - evaluator
           * `judge` - judge
           * `experiment` - experiment
+          * `test` - test
+          * `proxy` - proxy
       - in: query
         name: include
         schema:
@@ -904,6 +908,12 @@ paths:
         description: The pagination cursor value.
         schema:
           type: string
+      - in: query
+        name: intent_evaluability_score_gte
+        schema:
+          type: number
+        description: Filter judges where intent_evaluability_score is greater than
+          or equal to the given value
       - in: query
         name: is_preset
         schema:
@@ -2932,9 +2942,7 @@ components:
               type: string
           readOnly: true
         status:
-          allOf:
-          - $ref: '#/components/schemas/JudgeStatusEnum'
-          readOnly: true
+          $ref: '#/components/schemas/StatusEnum'
       required:
       - _meta
       - created_at
@@ -3072,7 +3080,7 @@ components:
           nullable: true
         status:
           allOf:
-          - $ref: '#/components/schemas/JudgeStatusEnum'
+          - $ref: '#/components/schemas/StatusEnum'
           readOnly: true
         inputs:
           type: object
@@ -3118,7 +3126,13 @@ components:
           items:
             $ref: '#/components/schemas/NestedEvaluator'
           readOnly: true
+        _meta:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+          title: ' meta'
       required:
+      - _meta
       - created_at
       - evaluators
       - id
@@ -3198,21 +3212,12 @@ components:
         stage:
           type: string
           maxLength: 255
+        status:
+          $ref: '#/components/schemas/StatusEnum'
       required:
       - intent
       - name
-    JudgeStatusEnum:
-      enum:
-      - unlisted
-      - listed
-      - public
-      - global
-      type: string
-      description: |-
-        * `unlisted` - unlisted
-        * `listed` - listed
-        * `public` - public
-        * `global` - global
+      - status
     Model:
       type: object
       properties:
@@ -3828,6 +3833,8 @@ components:
         stage:
           type: string
           maxLength: 255
+        status:
+          $ref: '#/components/schemas/StatusEnum'
     PatchedModelRequest:
       type: object
       properties:
@@ -4105,11 +4112,13 @@ components:
     VisibilityEnum:
       enum:
       - global
+      - public
       - listed
       - unlisted
       type: string
       description: |-
         * `global` - global
+        * `public` - public
         * `listed` - listed
         * `unlisted` - unlisted
   securitySchemes:

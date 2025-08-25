@@ -22,6 +22,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from typing_extensions import Annotated, Self
 
 from root.generated.openapi_aclient.models.evaluator_reference_request import EvaluatorReferenceRequest
+from root.generated.openapi_aclient.models.status_enum import StatusEnum
 
 
 class JudgeRequest(BaseModel):
@@ -33,7 +34,8 @@ class JudgeRequest(BaseModel):
     intent: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Intent for the judge")
     name: Annotated[str, Field(min_length=3, strict=True, max_length=512)]
     stage: Optional[Annotated[str, Field(strict=True, max_length=255)]] = None
-    __properties: ClassVar[List[str]] = ["evaluator_references", "intent", "name", "stage"]
+    status: StatusEnum
+    __properties: ClassVar[List[str]] = ["evaluator_references", "intent", "name", "stage", "status"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -100,6 +102,7 @@ class JudgeRequest(BaseModel):
                 "intent": obj.get("intent"),
                 "name": obj.get("name"),
                 "stage": obj.get("stage"),
+                "status": obj.get("status"),
             }
         )
         return _obj

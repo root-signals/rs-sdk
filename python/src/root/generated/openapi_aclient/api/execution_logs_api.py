@@ -51,7 +51,7 @@ class ExecutionLogsApi:
         execution_type: Annotated[
             Optional[StrictStr],
             Field(
-                description="* `skill` - skill * `evaluator` - evaluator * `judge` - judge * `experiment` - experiment"
+                description="* `skill` - skill * `evaluator` - evaluator * `judge` - judge * `experiment` - experiment * `test` - test * `proxy` - proxy"
             ),
         ] = None,
         include: Annotated[
@@ -97,7 +97,7 @@ class ExecutionLogsApi:
         :type date_to: datetime
         :param executed_item_id:
         :type executed_item_id: str
-        :param execution_type: * `skill` - skill * `evaluator` - evaluator * `judge` - judge * `experiment` - experiment
+        :param execution_type: * `skill` - skill * `evaluator` - evaluator * `judge` - judge * `experiment` - experiment * `test` - test * `proxy` - proxy
         :type execution_type: str
         :param include: Comma-separated list of additional fields to include in the response. Supports: llm_output, variables, evaluation_context
         :type include: str
@@ -181,7 +181,7 @@ class ExecutionLogsApi:
         execution_type: Annotated[
             Optional[StrictStr],
             Field(
-                description="* `skill` - skill * `evaluator` - evaluator * `judge` - judge * `experiment` - experiment"
+                description="* `skill` - skill * `evaluator` - evaluator * `judge` - judge * `experiment` - experiment * `test` - test * `proxy` - proxy"
             ),
         ] = None,
         include: Annotated[
@@ -227,7 +227,7 @@ class ExecutionLogsApi:
         :type date_to: datetime
         :param executed_item_id:
         :type executed_item_id: str
-        :param execution_type: * `skill` - skill * `evaluator` - evaluator * `judge` - judge * `experiment` - experiment
+        :param execution_type: * `skill` - skill * `evaluator` - evaluator * `judge` - judge * `experiment` - experiment * `test` - test * `proxy` - proxy
         :type execution_type: str
         :param include: Comma-separated list of additional fields to include in the response. Supports: llm_output, variables, evaluation_context
         :type include: str
@@ -311,7 +311,7 @@ class ExecutionLogsApi:
         execution_type: Annotated[
             Optional[StrictStr],
             Field(
-                description="* `skill` - skill * `evaluator` - evaluator * `judge` - judge * `experiment` - experiment"
+                description="* `skill` - skill * `evaluator` - evaluator * `judge` - judge * `experiment` - experiment * `test` - test * `proxy` - proxy"
             ),
         ] = None,
         include: Annotated[
@@ -357,7 +357,7 @@ class ExecutionLogsApi:
         :type date_to: datetime
         :param executed_item_id:
         :type executed_item_id: str
-        :param execution_type: * `skill` - skill * `evaluator` - evaluator * `judge` - judge * `experiment` - experiment
+        :param execution_type: * `skill` - skill * `evaluator` - evaluator * `judge` - judge * `experiment` - experiment * `test` - test * `proxy` - proxy
         :type execution_type: str
         :param include: Comma-separated list of additional fields to include in the response. Supports: llm_output, variables, evaluation_context
         :type include: str

@@ -170,7 +170,6 @@ Class | Method | HTTP request | Description
  - [JudgeRectifierRequestRequest](root/generated/openapi_client/docs/JudgeRectifierRequestRequest.md)
  - [JudgeRectifierResponse](root/generated/openapi_client/docs/JudgeRectifierResponse.md)
  - [JudgeRequest](root/generated/openapi_client/docs/JudgeRequest.md)
- - [JudgeStatusEnum](root/generated/openapi_client/docs/JudgeStatusEnum.md)
  - [Model](root/generated/openapi_client/docs/Model.md)
  - [ModelList](root/generated/openapi_client/docs/ModelList.md)
  - [ModelParams](root/generated/openapi_client/docs/ModelParams.md)

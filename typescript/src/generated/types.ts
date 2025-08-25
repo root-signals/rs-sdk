@@ -997,7 +997,7 @@ export interface components {
           };
         };
       };
-      readonly status: components['schemas']['JudgeStatusEnum'];
+      status: components['schemas']['StatusEnum'];
     };
     JudgeExecutionRequest: {
       /** @default  */
@@ -1049,7 +1049,7 @@ export interface components {
       readonly intent: string;
       /** Format: date-time */
       readonly created_at: string | null;
-      readonly status: components['schemas']['JudgeStatusEnum'];
+      readonly status: components['schemas']['StatusEnum'];
       /**
        * @description Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like functions, contexts, and expected output.
        * @example {
@@ -1084,6 +1084,10 @@ export interface components {
         };
       };
       readonly evaluators: components['schemas']['NestedEvaluator'][];
+      /**  meta */
+      readonly _meta: {
+        [key: string]: unknown;
+      };
     };
     JudgeRectifierRequestRequest: {
       /** @default  */
@@ -1111,15 +1115,8 @@ export interface components {
       intent: string;
       name: string;
       stage?: string;
+      status: components['schemas']['StatusEnum'];
     };
-    /**
-     * @description * `unlisted` - unlisted
-     *     * `listed` - listed
-     *     * `public` - public
-     *     * `global` - global
-     * @enum {string}
-     */
-    JudgeStatusEnum: 'unlisted' | 'listed' | 'public' | 'global';
     Model: {
       default_key?: string | null;
       readonly id: string;
@@ -1403,6 +1400,7 @@ export interface components {
       intent?: string;
       name?: string;
       stage?: string;
+      status?: components['schemas']['StatusEnum'];
     };
     PatchedModelRequest: {
       default_key?: string | null;
@@ -1517,11 +1515,12 @@ export interface components {
     ValidationResultStatus: 'pending' | 'finished';
     /**
      * @description * `global` - global
+     *     * `public` - public
      *     * `listed` - listed
      *     * `unlisted` - unlisted
      * @enum {string}
      */
-    VisibilityEnum: 'global' | 'listed' | 'unlisted';
+    VisibilityEnum: 'global' | 'public' | 'listed' | 'unlisted';
   };
   responses: never;
   parameters: never;
@@ -1889,13 +1888,7 @@ export interface operations {
       };
       cookie?: never;
     };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['EvaluatorRequest'];
-        'application/x-www-form-urlencoded': components['schemas']['EvaluatorRequest'];
-        'multipart/form-data': components['schemas']['EvaluatorRequest'];
-      };
-    };
+    requestBody?: never;
     responses: {
       201: {
         headers: {
@@ -2055,8 +2048,10 @@ export interface operations {
         /** @description * `skill` - skill
          *     * `evaluator` - evaluator
          *     * `judge` - judge
-         *     * `experiment` - experiment */
-        execution_type?: 'evaluator' | 'experiment' | 'judge' | 'skill';
+         *     * `experiment` - experiment
+         *     * `test` - test
+         *     * `proxy` - proxy */
+        execution_type?: 'evaluator' | 'experiment' | 'judge' | 'proxy' | 'skill' | 'test';
         /** @description Comma-separated list of additional fields to include in the response. Supports: llm_output, variables, evaluation_context */
         include?: string;
         /** @description Filter logs by maximum score, inclusive, excludes null scores */
@@ -2116,6 +2111,8 @@ export interface operations {
       query?: {
         /** @description The pagination cursor value. */
         cursor?: string;
+        /** @description Filter judges where intent_evaluability_score is greater than or equal to the given value */
+        intent_evaluability_score_gte?: number;
         /** @description Filter by is the judge preset or not */
         is_preset?: boolean;
         /** @description Filter by is the judge public or not */

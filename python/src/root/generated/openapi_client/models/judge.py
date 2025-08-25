@@ -24,9 +24,9 @@ from typing_extensions import Annotated, Self
 
 from root.generated.openapi_client.models.evaluator_inputs_value import EvaluatorInputsValue
 from root.generated.openapi_client.models.judge_files_inner import JudgeFilesInner
-from root.generated.openapi_client.models.judge_status_enum import JudgeStatusEnum
 from root.generated.openapi_client.models.nested_evaluator import NestedEvaluator
 from root.generated.openapi_client.models.nested_vector_objective import NestedVectorObjective
+from root.generated.openapi_client.models.status_enum import StatusEnum
 
 
 class Judge(BaseModel):
@@ -45,7 +45,7 @@ class Judge(BaseModel):
     inputs: Dict[str, EvaluatorInputsValue] = Field(
         description="Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like functions, contexts, and expected output."
     )
-    status: JudgeStatusEnum
+    status: StatusEnum
     __properties: ClassVar[List[str]] = [
         "_meta",
         "created_at",
@@ -95,7 +95,6 @@ class Judge(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
-        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
@@ -106,7 +105,6 @@ class Judge(BaseModel):
                 "id",
                 "objective",
                 "inputs",
-                "status",
             ]
         )
 

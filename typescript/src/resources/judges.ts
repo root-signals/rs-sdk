@@ -12,6 +12,7 @@ export interface CreateJudgeData {
   intent: string;
   evaluator_references?: Array<{ id: string; version_id?: string }>;
   stage?: string;
+  status?: components['schemas']['StatusEnum'];
 }
 
 export interface UpdateJudgeData {
@@ -60,7 +61,10 @@ export class JudgesResource {
    */
   async create(data: CreateJudgeData): Promise<JudgeDetail> {
     const { data: responseData, error } = await this._client.POST('/v1/judges/', {
-      body: data,
+      body: {
+        ...data,
+        status: data.status ?? 'unlisted',
+      },
     });
 
     if (error) {

@@ -1686,6 +1686,12 @@ class JudgesApi:
     def judges_list(
         self,
         cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
+        intent_evaluability_score_gte: Annotated[
+            Optional[Union[StrictFloat, StrictInt]],
+            Field(
+                description="Filter judges where intent_evaluability_score is greater than or equal to the given value"
+            ),
+        ] = None,
         is_preset: Annotated[Optional[StrictBool], Field(description="Filter by is the judge preset or not")] = None,
         is_public: Annotated[Optional[StrictBool], Field(description="Filter by is the judge public or not")] = None,
         name: Optional[StrictStr] = None,
@@ -1710,6 +1716,8 @@ class JudgesApi:
 
         :param cursor: The pagination cursor value.
         :type cursor: str
+        :param intent_evaluability_score_gte: Filter judges where intent_evaluability_score is greater than or equal to the given value
+        :type intent_evaluability_score_gte: float
         :param is_preset: Filter by is the judge preset or not
         :type is_preset: bool
         :param is_public: Filter by is the judge public or not
@@ -1746,6 +1754,7 @@ class JudgesApi:
 
         _param = self._judges_list_serialize(
             cursor=cursor,
+            intent_evaluability_score_gte=intent_evaluability_score_gte,
             is_preset=is_preset,
             is_public=is_public,
             name=name,
@@ -1772,6 +1781,12 @@ class JudgesApi:
     def judges_list_with_http_info(
         self,
         cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
+        intent_evaluability_score_gte: Annotated[
+            Optional[Union[StrictFloat, StrictInt]],
+            Field(
+                description="Filter judges where intent_evaluability_score is greater than or equal to the given value"
+            ),
+        ] = None,
         is_preset: Annotated[Optional[StrictBool], Field(description="Filter by is the judge preset or not")] = None,
         is_public: Annotated[Optional[StrictBool], Field(description="Filter by is the judge public or not")] = None,
         name: Optional[StrictStr] = None,
@@ -1796,6 +1811,8 @@ class JudgesApi:
 
         :param cursor: The pagination cursor value.
         :type cursor: str
+        :param intent_evaluability_score_gte: Filter judges where intent_evaluability_score is greater than or equal to the given value
+        :type intent_evaluability_score_gte: float
         :param is_preset: Filter by is the judge preset or not
         :type is_preset: bool
         :param is_public: Filter by is the judge public or not
@@ -1832,6 +1849,7 @@ class JudgesApi:
 
         _param = self._judges_list_serialize(
             cursor=cursor,
+            intent_evaluability_score_gte=intent_evaluability_score_gte,
             is_preset=is_preset,
             is_public=is_public,
             name=name,
@@ -1858,6 +1876,12 @@ class JudgesApi:
     def judges_list_without_preload_content(
         self,
         cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
+        intent_evaluability_score_gte: Annotated[
+            Optional[Union[StrictFloat, StrictInt]],
+            Field(
+                description="Filter judges where intent_evaluability_score is greater than or equal to the given value"
+            ),
+        ] = None,
         is_preset: Annotated[Optional[StrictBool], Field(description="Filter by is the judge preset or not")] = None,
         is_public: Annotated[Optional[StrictBool], Field(description="Filter by is the judge public or not")] = None,
         name: Optional[StrictStr] = None,
@@ -1882,6 +1906,8 @@ class JudgesApi:
 
         :param cursor: The pagination cursor value.
         :type cursor: str
+        :param intent_evaluability_score_gte: Filter judges where intent_evaluability_score is greater than or equal to the given value
+        :type intent_evaluability_score_gte: float
         :param is_preset: Filter by is the judge preset or not
         :type is_preset: bool
         :param is_public: Filter by is the judge public or not
@@ -1918,6 +1944,7 @@ class JudgesApi:
 
         _param = self._judges_list_serialize(
             cursor=cursor,
+            intent_evaluability_score_gte=intent_evaluability_score_gte,
             is_preset=is_preset,
             is_public=is_public,
             name=name,
@@ -1939,6 +1966,7 @@ class JudgesApi:
     def _judges_list_serialize(
         self,
         cursor,
+        intent_evaluability_score_gte,
         is_preset,
         is_public,
         name,
@@ -1965,6 +1993,9 @@ class JudgesApi:
         # process the query parameters
         if cursor is not None:
             _query_params.append(("cursor", cursor))
+
+        if intent_evaluability_score_gte is not None:
+            _query_params.append(("intent_evaluability_score_gte", intent_evaluability_score_gte))
 
         if is_preset is not None:
             _query_params.append(("is_preset", is_preset))

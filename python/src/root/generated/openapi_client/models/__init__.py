@@ -72,7 +72,6 @@ from root.generated.openapi_client.models.judge_list import JudgeList
 from root.generated.openapi_client.models.judge_rectifier_request_request import JudgeRectifierRequestRequest
 from root.generated.openapi_client.models.judge_rectifier_response import JudgeRectifierResponse
 from root.generated.openapi_client.models.judge_request import JudgeRequest
-from root.generated.openapi_client.models.judge_status_enum import JudgeStatusEnum
 from root.generated.openapi_client.models.model import Model
 from root.generated.openapi_client.models.model_list import ModelList
 from root.generated.openapi_client.models.model_params import ModelParams
