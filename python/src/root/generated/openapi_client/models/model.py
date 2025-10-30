@@ -27,22 +27,13 @@ class Model(BaseModel):
     Model
     """  # noqa: E501
 
-    default_key: Optional[Annotated[str, Field(strict=True, max_length=4000)]] = None
     id: StrictStr
     max_output_token_count: Optional[Annotated[int, Field(strict=True, ge=800)]] = None
     max_token_count: Optional[Annotated[int, Field(le=2147483647, strict=True, ge=0)]] = None
     model: Optional[StrictStr] = None
     name: Annotated[str, Field(strict=True, max_length=100)]
     url: Optional[Annotated[str, Field(strict=True, max_length=1024)]] = None
-    __properties: ClassVar[List[str]] = [
-        "default_key",
-        "id",
-        "max_output_token_count",
-        "max_token_count",
-        "model",
-        "name",
-        "url",
-    ]
+    __properties: ClassVar[List[str]] = ["id", "max_output_token_count", "max_token_count", "model", "name", "url"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -86,11 +77,6 @@ class Model(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if default_key (nullable) is None
-        # and model_fields_set contains the field
-        if self.default_key is None and "default_key" in self.model_fields_set:
-            _dict["default_key"] = None
-
         # set to None if max_token_count (nullable) is None
         # and model_fields_set contains the field
         if self.max_token_count is None and "max_token_count" in self.model_fields_set:
@@ -114,7 +100,6 @@ class Model(BaseModel):
 
         _obj = cls.model_validate(
             {
-                "default_key": obj.get("default_key"),
                 "id": obj.get("id"),
                 "max_output_token_count": obj.get("max_output_token_count"),
                 "max_token_count": obj.get("max_token_count"),

@@ -12,6 +12,7 @@ Do not edit the class manually.
 """  # noqa: E501
 
 import warnings
+from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 from pydantic import Field, StrictBool, StrictFloat, StrictInt, StrictStr, validate_call
@@ -20,6 +21,9 @@ from typing_extensions import Annotated
 from root.generated.openapi_client.api_client import ApiClient, RequestSerialized
 from root.generated.openapi_client.api_response import ApiResponse
 from root.generated.openapi_client.models.judge import Judge
+from root.generated.openapi_client.models.judge_batch_execution_detail import JudgeBatchExecutionDetail
+from root.generated.openapi_client.models.judge_batch_execution_request import JudgeBatchExecutionRequest
+from root.generated.openapi_client.models.judge_batch_execution_response import JudgeBatchExecutionResponse
 from root.generated.openapi_client.models.judge_execution_request import JudgeExecutionRequest
 from root.generated.openapi_client.models.judge_execution_response import JudgeExecutionResponse
 from root.generated.openapi_client.models.judge_generator_request import JudgeGeneratorRequest
@@ -28,6 +32,9 @@ from root.generated.openapi_client.models.judge_invite_request import JudgeInvit
 from root.generated.openapi_client.models.judge_rectifier_request_request import JudgeRectifierRequestRequest
 from root.generated.openapi_client.models.judge_rectifier_response import JudgeRectifierResponse
 from root.generated.openapi_client.models.judge_request import JudgeRequest
+from root.generated.openapi_client.models.paginated_judge_batch_execution_list_item_list import (
+    PaginatedJudgeBatchExecutionListItemList,
+)
 from root.generated.openapi_client.models.paginated_judge_list_list import PaginatedJudgeListList
 from root.generated.openapi_client.models.patched_judge_request import PatchedJudgeRequest
 from root.generated.openapi_client.rest import RESTResponseType
@@ -44,6 +51,790 @@ class JudgesApi:
         if api_client is None:
             api_client = ApiClient.get_default()
         self.api_client = api_client
+
+    @validate_call
+    def judges_batch_execute_create(
+        self,
+        judge_id: StrictStr,
+        judge_batch_execution_request: JudgeBatchExecutionRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> JudgeBatchExecutionResponse:
+        """judges_batch_execute_create
+
+        Execute a judge with multiple inputs in parallel. Returns immediately with batch ID for polling.
+
+        :param judge_id: (required)
+        :type judge_id: str
+        :param judge_batch_execution_request: (required)
+        :type judge_batch_execution_request: JudgeBatchExecutionRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """  # noqa: E501
+
+        _param = self._judges_batch_execute_create_serialize(
+            judge_id=judge_id,
+            judge_batch_execution_request=judge_batch_execution_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            "202": "JudgeBatchExecutionResponse",
+            "400": "object",
+            "401": "object",
+            "403": "object",
+            "429": "object",
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+    @validate_call
+    def judges_batch_execute_create_with_http_info(
+        self,
+        judge_id: StrictStr,
+        judge_batch_execution_request: JudgeBatchExecutionRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[JudgeBatchExecutionResponse]:
+        """judges_batch_execute_create
+
+        Execute a judge with multiple inputs in parallel. Returns immediately with batch ID for polling.
+
+        :param judge_id: (required)
+        :type judge_id: str
+        :param judge_batch_execution_request: (required)
+        :type judge_batch_execution_request: JudgeBatchExecutionRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """  # noqa: E501
+
+        _param = self._judges_batch_execute_create_serialize(
+            judge_id=judge_id,
+            judge_batch_execution_request=judge_batch_execution_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            "202": "JudgeBatchExecutionResponse",
+            "400": "object",
+            "401": "object",
+            "403": "object",
+            "429": "object",
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+    @validate_call
+    def judges_batch_execute_create_without_preload_content(
+        self,
+        judge_id: StrictStr,
+        judge_batch_execution_request: JudgeBatchExecutionRequest,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """judges_batch_execute_create
+
+        Execute a judge with multiple inputs in parallel. Returns immediately with batch ID for polling.
+
+        :param judge_id: (required)
+        :type judge_id: str
+        :param judge_batch_execution_request: (required)
+        :type judge_batch_execution_request: JudgeBatchExecutionRequest
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """  # noqa: E501
+
+        _param = self._judges_batch_execute_create_serialize(
+            judge_id=judge_id,
+            judge_batch_execution_request=judge_batch_execution_request,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            "202": "JudgeBatchExecutionResponse",
+            "400": "object",
+            "401": "object",
+            "403": "object",
+            "429": "object",
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        return response_data.response
+
+    def _judges_batch_execute_create_serialize(
+        self,
+        judge_id,
+        judge_batch_execution_request,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+        _host = None
+
+        _collection_formats: Dict[str, str] = {}
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, str] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if judge_id is not None:
+            _path_params["judge_id"] = judge_id
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+        if judge_batch_execution_request is not None:
+            _body_params = judge_batch_execution_request
+
+        # set the HTTP header `Accept`
+        _header_params["Accept"] = self.api_client.select_header_accept(["application/json"])
+
+        # set the HTTP header `Content-Type`
+        if _content_type:
+            _header_params["Content-Type"] = _content_type
+        else:
+            _default_content_type = self.api_client.select_header_content_type(
+                ["application/json", "application/x-www-form-urlencoded", "multipart/form-data"]
+            )
+            if _default_content_type is not None:
+                _header_params["Content-Type"] = _default_content_type
+
+        # authentication setting
+        _auth_settings: List[str] = ["publicApiKey"]
+
+        return self.api_client.param_serialize(
+            method="POST",
+            resource_path="/v1/judges/{judge_id}/batch-execute/",
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth,
+        )
+
+    @validate_call
+    def judges_batch_executions_list(
+        self,
+        cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
+        date_from: Annotated[Optional[datetime], Field(description="Filter by creation date (ISO 8601)")] = None,
+        date_to: Annotated[Optional[datetime], Field(description="Filter by creation date (ISO 8601)")] = None,
+        judge_id: Annotated[Optional[StrictStr], Field(description="Filter by judge UUID")] = None,
+        page_size: Annotated[Optional[StrictInt], Field(description="Number of results to return per page.")] = None,
+        status: Annotated[Optional[StrictStr], Field(description="Filter by status")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> PaginatedJudgeBatchExecutionListItemList:
+        """judges_batch_executions_list
+
+        List batch judge executions
+
+        :param cursor: The pagination cursor value.
+        :type cursor: str
+        :param date_from: Filter by creation date (ISO 8601)
+        :type date_from: datetime
+        :param date_to: Filter by creation date (ISO 8601)
+        :type date_to: datetime
+        :param judge_id: Filter by judge UUID
+        :type judge_id: str
+        :param page_size: Number of results to return per page.
+        :type page_size: int
+        :param status: Filter by status
+        :type status: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """  # noqa: E501
+
+        _param = self._judges_batch_executions_list_serialize(
+            cursor=cursor,
+            date_from=date_from,
+            date_to=date_to,
+            judge_id=judge_id,
+            page_size=page_size,
+            status=status,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            "200": "PaginatedJudgeBatchExecutionListItemList",
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+    @validate_call
+    def judges_batch_executions_list_with_http_info(
+        self,
+        cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
+        date_from: Annotated[Optional[datetime], Field(description="Filter by creation date (ISO 8601)")] = None,
+        date_to: Annotated[Optional[datetime], Field(description="Filter by creation date (ISO 8601)")] = None,
+        judge_id: Annotated[Optional[StrictStr], Field(description="Filter by judge UUID")] = None,
+        page_size: Annotated[Optional[StrictInt], Field(description="Number of results to return per page.")] = None,
+        status: Annotated[Optional[StrictStr], Field(description="Filter by status")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[PaginatedJudgeBatchExecutionListItemList]:
+        """judges_batch_executions_list
+
+        List batch judge executions
+
+        :param cursor: The pagination cursor value.
+        :type cursor: str
+        :param date_from: Filter by creation date (ISO 8601)
+        :type date_from: datetime
+        :param date_to: Filter by creation date (ISO 8601)
+        :type date_to: datetime
+        :param judge_id: Filter by judge UUID
+        :type judge_id: str
+        :param page_size: Number of results to return per page.
+        :type page_size: int
+        :param status: Filter by status
+        :type status: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """  # noqa: E501
+
+        _param = self._judges_batch_executions_list_serialize(
+            cursor=cursor,
+            date_from=date_from,
+            date_to=date_to,
+            judge_id=judge_id,
+            page_size=page_size,
+            status=status,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            "200": "PaginatedJudgeBatchExecutionListItemList",
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+    @validate_call
+    def judges_batch_executions_list_without_preload_content(
+        self,
+        cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
+        date_from: Annotated[Optional[datetime], Field(description="Filter by creation date (ISO 8601)")] = None,
+        date_to: Annotated[Optional[datetime], Field(description="Filter by creation date (ISO 8601)")] = None,
+        judge_id: Annotated[Optional[StrictStr], Field(description="Filter by judge UUID")] = None,
+        page_size: Annotated[Optional[StrictInt], Field(description="Number of results to return per page.")] = None,
+        status: Annotated[Optional[StrictStr], Field(description="Filter by status")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """judges_batch_executions_list
+
+        List batch judge executions
+
+        :param cursor: The pagination cursor value.
+        :type cursor: str
+        :param date_from: Filter by creation date (ISO 8601)
+        :type date_from: datetime
+        :param date_to: Filter by creation date (ISO 8601)
+        :type date_to: datetime
+        :param judge_id: Filter by judge UUID
+        :type judge_id: str
+        :param page_size: Number of results to return per page.
+        :type page_size: int
+        :param status: Filter by status
+        :type status: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """  # noqa: E501
+
+        _param = self._judges_batch_executions_list_serialize(
+            cursor=cursor,
+            date_from=date_from,
+            date_to=date_to,
+            judge_id=judge_id,
+            page_size=page_size,
+            status=status,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index,
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            "200": "PaginatedJudgeBatchExecutionListItemList",
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        return response_data.response
+
+    def _judges_batch_executions_list_serialize(
+        self,
+        cursor,
+        date_from,
+        date_to,
+        judge_id,
+        page_size,
+        status,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+        _host = None
+
+        _collection_formats: Dict[str, str] = {}
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, str] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        if cursor is not None:
+            _query_params.append(("cursor", cursor))
+
+        if date_from is not None:
+            if isinstance(date_from, datetime):
+                _query_params.append(("date_from", date_from.strftime(self.api_client.configuration.datetime_format)))
+            else:
+                _query_params.append(("date_from", date_from))
+
+        if date_to is not None:
+            if isinstance(date_to, datetime):
+                _query_params.append(("date_to", date_to.strftime(self.api_client.configuration.datetime_format)))
+            else:
+                _query_params.append(("date_to", date_to))
+
+        if judge_id is not None:
+            _query_params.append(("judge_id", judge_id))
+
+        if page_size is not None:
+            _query_params.append(("page_size", page_size))
+
+        if status is not None:
+            _query_params.append(("status", status))
+
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+        # set the HTTP header `Accept`
+        _header_params["Accept"] = self.api_client.select_header_accept(["application/json"])
+
+        # authentication setting
+        _auth_settings: List[str] = ["publicApiKey"]
+
+        return self.api_client.param_serialize(
+            method="GET",
+            resource_path="/v1/judges/batch-executions/",
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth,
+        )
+
+    @validate_call
+    def judges_batch_executions_retrieve(
+        self,
+        id: StrictStr,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> JudgeBatchExecutionDetail:
+        """judges_batch_executions_retrieve
+
+        Get batch execution status and results. Returns all items (max 100).
+
+        :param id: (required)
+        :type id: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """  # noqa: E501
+
+        _param = self._judges_batch_executions_retrieve_serialize(
+            id=id, _request_auth=_request_auth, _content_type=_content_type, _headers=_headers, _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            "200": "JudgeBatchExecutionDetail",
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+    @validate_call
+    def judges_batch_executions_retrieve_with_http_info(
+        self,
+        id: StrictStr,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[JudgeBatchExecutionDetail]:
+        """judges_batch_executions_retrieve
+
+        Get batch execution status and results. Returns all items (max 100).
+
+        :param id: (required)
+        :type id: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """  # noqa: E501
+
+        _param = self._judges_batch_executions_retrieve_serialize(
+            id=id, _request_auth=_request_auth, _content_type=_content_type, _headers=_headers, _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            "200": "JudgeBatchExecutionDetail",
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+    @validate_call
+    def judges_batch_executions_retrieve_without_preload_content(
+        self,
+        id: StrictStr,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[Annotated[StrictFloat, Field(gt=0)], Annotated[StrictFloat, Field(gt=0)]],
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """judges_batch_executions_retrieve
+
+        Get batch execution status and results. Returns all items (max 100).
+
+        :param id: (required)
+        :type id: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """  # noqa: E501
+
+        _param = self._judges_batch_executions_retrieve_serialize(
+            id=id, _request_auth=_request_auth, _content_type=_content_type, _headers=_headers, _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            "200": "JudgeBatchExecutionDetail",
+        }
+        response_data = self.api_client.call_api(*_param, _request_timeout=_request_timeout)
+        return response_data.response
+
+    def _judges_batch_executions_retrieve_serialize(
+        self,
+        id,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+        _host = None
+
+        _collection_formats: Dict[str, str] = {}
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, str] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if id is not None:
+            _path_params["id"] = id
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+        # set the HTTP header `Accept`
+        _header_params["Accept"] = self.api_client.select_header_accept(["application/json"])
+
+        # authentication setting
+        _auth_settings: List[str] = ["publicApiKey"]
+
+        return self.api_client.param_serialize(
+            method="GET",
+            resource_path="/v1/judges/batch-executions/{id}/",
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth,
+        )
 
     @validate_call
     def judges_create(
@@ -1686,6 +2477,13 @@ class JudgesApi:
     def judges_list(
         self,
         cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
+        executed_at_gte: Annotated[
+            Optional[datetime],
+            Field(
+                description="Filter judges that have been executed at or after the given datetime for the current user's organization"
+            ),
+        ] = None,
+        featured: Annotated[Optional[StrictBool], Field(description="Filter by is the judge featured or not")] = None,
         intent_evaluability_score_gte: Annotated[
             Optional[Union[StrictFloat, StrictInt]],
             Field(
@@ -1716,6 +2514,10 @@ class JudgesApi:
 
         :param cursor: The pagination cursor value.
         :type cursor: str
+        :param executed_at_gte: Filter judges that have been executed at or after the given datetime for the current user's organization
+        :type executed_at_gte: datetime
+        :param featured: Filter by is the judge featured or not
+        :type featured: bool
         :param intent_evaluability_score_gte: Filter judges where intent_evaluability_score is greater than or equal to the given value
         :type intent_evaluability_score_gte: float
         :param is_preset: Filter by is the judge preset or not
@@ -1754,6 +2556,8 @@ class JudgesApi:
 
         _param = self._judges_list_serialize(
             cursor=cursor,
+            executed_at_gte=executed_at_gte,
+            featured=featured,
             intent_evaluability_score_gte=intent_evaluability_score_gte,
             is_preset=is_preset,
             is_public=is_public,
@@ -1781,6 +2585,13 @@ class JudgesApi:
     def judges_list_with_http_info(
         self,
         cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
+        executed_at_gte: Annotated[
+            Optional[datetime],
+            Field(
+                description="Filter judges that have been executed at or after the given datetime for the current user's organization"
+            ),
+        ] = None,
+        featured: Annotated[Optional[StrictBool], Field(description="Filter by is the judge featured or not")] = None,
         intent_evaluability_score_gte: Annotated[
             Optional[Union[StrictFloat, StrictInt]],
             Field(
@@ -1811,6 +2622,10 @@ class JudgesApi:
 
         :param cursor: The pagination cursor value.
         :type cursor: str
+        :param executed_at_gte: Filter judges that have been executed at or after the given datetime for the current user's organization
+        :type executed_at_gte: datetime
+        :param featured: Filter by is the judge featured or not
+        :type featured: bool
         :param intent_evaluability_score_gte: Filter judges where intent_evaluability_score is greater than or equal to the given value
         :type intent_evaluability_score_gte: float
         :param is_preset: Filter by is the judge preset or not
@@ -1849,6 +2664,8 @@ class JudgesApi:
 
         _param = self._judges_list_serialize(
             cursor=cursor,
+            executed_at_gte=executed_at_gte,
+            featured=featured,
             intent_evaluability_score_gte=intent_evaluability_score_gte,
             is_preset=is_preset,
             is_public=is_public,
@@ -1876,6 +2693,13 @@ class JudgesApi:
     def judges_list_without_preload_content(
         self,
         cursor: Annotated[Optional[StrictStr], Field(description="The pagination cursor value.")] = None,
+        executed_at_gte: Annotated[
+            Optional[datetime],
+            Field(
+                description="Filter judges that have been executed at or after the given datetime for the current user's organization"
+            ),
+        ] = None,
+        featured: Annotated[Optional[StrictBool], Field(description="Filter by is the judge featured or not")] = None,
         intent_evaluability_score_gte: Annotated[
             Optional[Union[StrictFloat, StrictInt]],
             Field(
@@ -1906,6 +2730,10 @@ class JudgesApi:
 
         :param cursor: The pagination cursor value.
         :type cursor: str
+        :param executed_at_gte: Filter judges that have been executed at or after the given datetime for the current user's organization
+        :type executed_at_gte: datetime
+        :param featured: Filter by is the judge featured or not
+        :type featured: bool
         :param intent_evaluability_score_gte: Filter judges where intent_evaluability_score is greater than or equal to the given value
         :type intent_evaluability_score_gte: float
         :param is_preset: Filter by is the judge preset or not
@@ -1944,6 +2772,8 @@ class JudgesApi:
 
         _param = self._judges_list_serialize(
             cursor=cursor,
+            executed_at_gte=executed_at_gte,
+            featured=featured,
             intent_evaluability_score_gte=intent_evaluability_score_gte,
             is_preset=is_preset,
             is_public=is_public,
@@ -1966,6 +2796,8 @@ class JudgesApi:
     def _judges_list_serialize(
         self,
         cursor,
+        executed_at_gte,
+        featured,
         intent_evaluability_score_gte,
         is_preset,
         is_public,
@@ -1993,6 +2825,17 @@ class JudgesApi:
         # process the query parameters
         if cursor is not None:
             _query_params.append(("cursor", cursor))
+
+        if executed_at_gte is not None:
+            if isinstance(executed_at_gte, datetime):
+                _query_params.append(
+                    ("executed_at_gte", executed_at_gte.strftime(self.api_client.configuration.datetime_format))
+                )
+            else:
+                _query_params.append(("executed_at_gte", executed_at_gte))
+
+        if featured is not None:
+            _query_params.append(("featured", featured))
 
         if intent_evaluability_score_gte is not None:
             _query_params.append(("intent_evaluability_score_gte", intent_evaluability_score_gte))

@@ -28,8 +28,9 @@ class JudgeGeneratorResponse(BaseModel):
     """  # noqa: E501
 
     judge_id: StrictStr
+    judge_version_id: StrictStr
     error_code: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["judge_id", "error_code"]
+    __properties: ClassVar[List[str]] = ["judge_id", "judge_version_id", "error_code"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -84,5 +85,11 @@ class JudgeGeneratorResponse(BaseModel):
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
 
-        _obj = cls.model_validate({"judge_id": obj.get("judge_id"), "error_code": obj.get("error_code")})
+        _obj = cls.model_validate(
+            {
+                "judge_id": obj.get("judge_id"),
+                "judge_version_id": obj.get("judge_version_id"),
+                "error_code": obj.get("error_code"),
+            }
+        )
         return _obj

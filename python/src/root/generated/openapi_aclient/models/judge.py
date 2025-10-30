@@ -35,28 +35,30 @@ class Judge(BaseModel):
     """  # noqa: E501
 
     meta: Dict[str, Any] = Field(alias="_meta")
-    created_at: Optional[datetime]
+    created_at: datetime
     evaluators: List[NestedEvaluator]
     files: List[JudgeFilesInner]
     id: StrictStr
-    name: Annotated[str, Field(min_length=3, strict=True, max_length=512)]
-    objective: NestedVectorObjective
-    stage: Optional[Annotated[str, Field(strict=True, max_length=255)]] = None
     inputs: Dict[str, EvaluatorInputsValue] = Field(
         description="Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like functions, contexts, and expected output."
     )
+    name: Annotated[str, Field(min_length=3, strict=True, max_length=512)]
+    objective: NestedVectorObjective
+    stage: Optional[Annotated[str, Field(strict=True, max_length=255)]] = None
     status: StatusEnum
+    version_id: StrictStr
     __properties: ClassVar[List[str]] = [
         "_meta",
         "created_at",
         "evaluators",
         "files",
         "id",
+        "inputs",
         "name",
         "objective",
         "stage",
-        "inputs",
         "status",
+        "version_id",
     ]
 
     model_config = ConfigDict(
@@ -95,6 +97,7 @@ class Judge(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set(
             [
@@ -103,8 +106,9 @@ class Judge(BaseModel):
                 "evaluators",
                 "files",
                 "id",
-                "objective",
                 "inputs",
+                "objective",
+                "version_id",
             ]
         )
 
@@ -127,9 +131,6 @@ class Judge(BaseModel):
                 if _item:
                     _items.append(_item.to_dict())
             _dict["files"] = _items
-        # override the default output from pydantic by calling `to_dict()` of objective
-        if self.objective:
-            _dict["objective"] = self.objective.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each value in inputs (dict)
         _field_dict = {}
         if self.inputs:
@@ -137,11 +138,9 @@ class Judge(BaseModel):
                 if self.inputs[_key]:
                     _field_dict[_key] = self.inputs[_key].to_dict()
             _dict["inputs"] = _field_dict
-        # set to None if created_at (nullable) is None
-        # and model_fields_set contains the field
-        if self.created_at is None and "created_at" in self.model_fields_set:
-            _dict["created_at"] = None
-
+        # override the default output from pydantic by calling `to_dict()` of objective
+        if self.objective:
+            _dict["objective"] = self.objective.to_dict()
         return _dict
 
     @classmethod
@@ -164,15 +163,16 @@ class Judge(BaseModel):
                 if obj.get("files") is not None
                 else None,
                 "id": obj.get("id"),
+                "inputs": dict((_k, EvaluatorInputsValue.from_dict(_v)) for _k, _v in obj["inputs"].items())
+                if obj.get("inputs") is not None
+                else None,
                 "name": obj.get("name"),
                 "objective": NestedVectorObjective.from_dict(obj["objective"])
                 if obj.get("objective") is not None
                 else None,
                 "stage": obj.get("stage"),
-                "inputs": dict((_k, EvaluatorInputsValue.from_dict(_v)) for _k, _v in obj["inputs"].items())
-                if obj.get("inputs") is not None
-                else None,
                 "status": obj.get("status"),
+                "version_id": obj.get("version_id"),
             }
         )
         return _obj

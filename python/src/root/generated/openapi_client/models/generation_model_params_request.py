@@ -21,6 +21,8 @@ from typing import Any, ClassVar, Dict, List, Optional, Set, Union
 from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt
 from typing_extensions import Self
 
+from root.generated.openapi_client.models.reasoning_effort_enum import ReasoningEffortEnum
+
 
 class GenerationModelParamsRequest(BaseModel):
     """
@@ -29,7 +31,8 @@ class GenerationModelParamsRequest(BaseModel):
 
     seed: Optional[StrictInt] = None
     temperature: Optional[Union[StrictFloat, StrictInt]] = None
-    __properties: ClassVar[List[str]] = ["seed", "temperature"]
+    reasoning_effort: Optional[ReasoningEffortEnum] = None
+    __properties: ClassVar[List[str]] = ["seed", "temperature", "reasoning_effort"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -89,5 +92,11 @@ class GenerationModelParamsRequest(BaseModel):
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
 
-        _obj = cls.model_validate({"seed": obj.get("seed"), "temperature": obj.get("temperature")})
+        _obj = cls.model_validate(
+            {
+                "seed": obj.get("seed"),
+                "temperature": obj.get("temperature"),
+                "reasoning_effort": obj.get("reasoning_effort"),
+            }
+        )
         return _obj

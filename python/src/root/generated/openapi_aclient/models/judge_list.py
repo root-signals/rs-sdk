@@ -35,7 +35,7 @@ class JudgeList(BaseModel):
     id: StrictStr
     name: StrictStr
     intent: StrictStr
-    created_at: Optional[datetime]
+    created_at: datetime
     status: StatusEnum
     inputs: Dict[str, EvaluatorInputsValue] = Field(
         description="Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like functions, contexts, and expected output."
@@ -121,11 +121,6 @@ class JudgeList(BaseModel):
                 if _item:
                     _items.append(_item.to_dict())
             _dict["evaluators"] = _items
-        # set to None if created_at (nullable) is None
-        # and model_fields_set contains the field
-        if self.created_at is None and "created_at" in self.model_fields_set:
-            _dict["created_at"] = None
-
         return _dict
 
     @classmethod

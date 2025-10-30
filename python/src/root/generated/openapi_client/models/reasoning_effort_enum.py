@@ -19,20 +19,20 @@ from enum import Enum
 from typing_extensions import Self
 
 
-class VisibilityEnum(str, Enum):
+class ReasoningEffortEnum(str, Enum):
     """
-    * `global` - global * `public` - public * `listed` - listed * `unlisted` - unlisted
+    * `off` - off * `low` - low * `medium` - medium * `high` - high
     """
 
     """
     allowed enum values
     """
-    GLOBAL = "global"
-    PUBLIC = "public"
-    LISTED = "listed"
-    UNLISTED = "unlisted"
+    OFF = "off"
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
-        """Create an instance of VisibilityEnum from a JSON string"""
+        """Create an instance of ReasoningEffortEnum from a JSON string"""
         return cls(json.loads(json_str))
