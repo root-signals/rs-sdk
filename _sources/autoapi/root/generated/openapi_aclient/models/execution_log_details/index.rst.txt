@@ -55,6 +55,10 @@ Module Contents
       :type:  Optional[List[root.generated.openapi_aclient.models.execution_log_details_evaluator_latencies_inner.ExecutionLogDetailsEvaluatorLatenciesInner]]
 
 
+   .. py:attribute:: evaluator_results
+      :type:  List[root.generated.openapi_aclient.models.skill_execution_validator_result.SkillExecutionValidatorResult]
+
+
    .. py:attribute:: executed_item_id
       :type:  Optional[pydantic.StrictStr]
 
@@ -124,10 +128,6 @@ Module Contents
 
    .. py:attribute:: tags
       :type:  List[pydantic.StrictStr]
-
-
-   .. py:attribute:: validation_results
-      :type:  List[root.generated.openapi_aclient.models.skill_execution_validator_result.SkillExecutionValidatorResult]
 
 
    .. py:attribute:: variables

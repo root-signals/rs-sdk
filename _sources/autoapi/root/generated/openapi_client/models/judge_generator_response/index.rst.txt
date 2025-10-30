@@ -45,6 +45,10 @@ Module Contents
       :type:  pydantic.StrictStr
 
 
+   .. py:attribute:: judge_version_id
+      :type:  pydantic.StrictStr
+
+
    .. py:attribute:: model_config
 
 

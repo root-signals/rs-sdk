@@ -54,3 +54,9 @@ Module Contents
       :type:  Optional[root.generated.openapi_aclient.models.provider.Provider]
 
 
+   .. py:attribute:: visibility
+      :type:  Optional[root.generated.openapi_aclient.models.model_list_visibility_enum.ModelListVisibilityEnum]
+      :value: None
+
+
+

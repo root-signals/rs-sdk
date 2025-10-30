@@ -35,12 +35,6 @@ Module Contents
    Model
 
 
-   .. py:attribute:: default_key
-      :type:  Optional[typing_extensions.Annotated[str, Field(strict=True, max_length=4000)]]
-      :value: None
-
-
-
    .. py:attribute:: id
       :type:  pydantic.StrictStr
 
