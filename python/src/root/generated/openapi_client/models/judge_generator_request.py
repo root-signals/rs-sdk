@@ -22,7 +22,7 @@ from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing_extensions import Annotated, Self
 
 from root.generated.openapi_client.models.generation_model_params_request import GenerationModelParamsRequest
-from root.generated.openapi_client.models.visibility_enum import VisibilityEnum
+from root.generated.openapi_client.models.judge_generator_visibility_enum import JudgeGeneratorVisibilityEnum
 
 
 class JudgeGeneratorRequest(BaseModel):
@@ -30,20 +30,20 @@ class JudgeGeneratorRequest(BaseModel):
     JudgeGeneratorRequest
     """  # noqa: E501
 
-    intent: Annotated[str, Field(min_length=10, strict=True, max_length=20000)]
-    stage: Optional[StrictStr] = None
-    visibility: VisibilityEnum
-    file_id: Optional[StrictStr] = None
     extra_contexts: Optional[Dict[str, Optional[StrictStr]]] = None
+    intent: Annotated[str, Field(min_length=10, strict=True, max_length=20000)]
+    stage: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
+    visibility: JudgeGeneratorVisibilityEnum
+    file_id: Optional[StrictStr] = None
     strict: Optional[StrictBool] = True
     generating_model_params: Optional[GenerationModelParamsRequest] = None
     judge_id: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = [
+        "extra_contexts",
         "intent",
         "stage",
         "visibility",
         "file_id",
-        "extra_contexts",
         "strict",
         "generating_model_params",
         "judge_id",
@@ -89,6 +89,11 @@ class JudgeGeneratorRequest(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of generating_model_params
         if self.generating_model_params:
             _dict["generating_model_params"] = self.generating_model_params.to_dict()
+        # set to None if extra_contexts (nullable) is None
+        # and model_fields_set contains the field
+        if self.extra_contexts is None and "extra_contexts" in self.model_fields_set:
+            _dict["extra_contexts"] = None
+
         # set to None if stage (nullable) is None
         # and model_fields_set contains the field
         if self.stage is None and "stage" in self.model_fields_set:
@@ -99,10 +104,10 @@ class JudgeGeneratorRequest(BaseModel):
         if self.file_id is None and "file_id" in self.model_fields_set:
             _dict["file_id"] = None
 
-        # set to None if extra_contexts (nullable) is None
+        # set to None if strict (nullable) is None
         # and model_fields_set contains the field
-        if self.extra_contexts is None and "extra_contexts" in self.model_fields_set:
-            _dict["extra_contexts"] = None
+        if self.strict is None and "strict" in self.model_fields_set:
+            _dict["strict"] = None
 
         # set to None if generating_model_params (nullable) is None
         # and model_fields_set contains the field
@@ -127,11 +132,11 @@ class JudgeGeneratorRequest(BaseModel):
 
         _obj = cls.model_validate(
             {
+                "extra_contexts": obj.get("extra_contexts"),
                 "intent": obj.get("intent"),
                 "stage": obj.get("stage"),
                 "visibility": obj.get("visibility"),
                 "file_id": obj.get("file_id"),
-                "extra_contexts": obj.get("extra_contexts"),
                 "strict": obj.get("strict") if obj.get("strict") is not None else True,
                 "generating_model_params": GenerationModelParamsRequest.from_dict(obj["generating_model_params"])
                 if obj.get("generating_model_params") is not None

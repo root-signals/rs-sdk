@@ -21,6 +21,7 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing_extensions import Annotated, Self
 
+from root.generated.openapi_aclient.models.model_list_visibility_enum import ModelListVisibilityEnum
 from root.generated.openapi_aclient.models.nested_user_details import NestedUserDetails
 from root.generated.openapi_aclient.models.provider import Provider
 
@@ -34,7 +35,8 @@ class ModelList(BaseModel):
     name: Annotated[str, Field(strict=True, max_length=100)]
     owner: NestedUserDetails
     provider: Optional[Provider]
-    __properties: ClassVar[List[str]] = ["id", "name", "owner", "provider"]
+    visibility: Optional[ModelListVisibilityEnum] = None
+    __properties: ClassVar[List[str]] = ["id", "name", "owner", "provider", "visibility"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -110,6 +112,7 @@ class ModelList(BaseModel):
                 "name": obj.get("name"),
                 "owner": NestedUserDetails.from_dict(obj["owner"]) if obj.get("owner") is not None else None,
                 "provider": Provider.from_dict(obj["provider"]) if obj.get("provider") is not None else None,
+                "visibility": obj.get("visibility"),
             }
         )
         return _obj

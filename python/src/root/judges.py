@@ -12,18 +12,20 @@ from root.generated.openapi_aclient.models.judge_generator_request import (
 from root.generated.openapi_aclient.models.judge_generator_response import (
     JudgeGeneratorResponse as AJudgeGeneratorResponse,
 )
+from root.generated.openapi_aclient.models.judge_generator_visibility_enum import (
+    JudgeGeneratorVisibilityEnum as AJudgeGeneratorVisibilityEnum,
+)
 from root.generated.openapi_aclient.models.judge_request import (
     JudgeRequest as AJudgeRequest,
 )
 from root.generated.openapi_aclient.models.status_enum import (
     StatusEnum as AStatusEnum,
 )
-from root.generated.openapi_aclient.models.visibility_enum import VisibilityEnum as AVisibilityEnum
 from root.generated.openapi_client.models.judge_generator_request import JudgeGeneratorRequest
 from root.generated.openapi_client.models.judge_generator_response import JudgeGeneratorResponse
+from root.generated.openapi_client.models.judge_generator_visibility_enum import JudgeGeneratorVisibilityEnum
 from root.generated.openapi_client.models.judge_request import JudgeRequest
 from root.generated.openapi_client.models.status_enum import StatusEnum
-from root.generated.openapi_client.models.visibility_enum import VisibilityEnum
 
 from .generated.openapi_aclient import ApiClient as AApiClient
 from .generated.openapi_aclient.api.judges_api import JudgesApi as AJudgesApi
@@ -229,7 +231,9 @@ class Judges:
             stage=stage,
             extra_contexts=extra_contexts,
             strict=strict,
-            visibility=VisibilityEnum.GLOBAL if visibility == "public" else VisibilityEnum.UNLISTED,
+            visibility=JudgeGeneratorVisibilityEnum.GLOBAL
+            if visibility == "public"
+            else JudgeGeneratorVisibilityEnum.UNLISTED,
         )
         return api_instance.judges_generate_create(
             judge_generator_request=judge_request, _request_timeout=_request_timeout
@@ -270,7 +274,9 @@ class Judges:
             stage=stage,
             extra_contexts=extra_contexts,
             strict=strict,
-            visibility=AVisibilityEnum.GLOBAL if visibility == "public" else AVisibilityEnum.UNLISTED,
+            visibility=AJudgeGeneratorVisibilityEnum.GLOBAL
+            if visibility == "public"
+            else AJudgeGeneratorVisibilityEnum.UNLISTED,
         )
         return await api_instance.judges_generate_create(
             judge_generator_request=judge_request, _request_timeout=_request_timeout

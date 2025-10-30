@@ -27,7 +27,7 @@ class PatchedModelRequest(BaseModel):
     PatchedModelRequest
     """  # noqa: E501
 
-    default_key: Optional[Annotated[str, Field(strict=True, max_length=4000)]] = None
+    default_key: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
     max_output_token_count: Optional[Annotated[int, Field(strict=True, ge=800)]] = None
     max_token_count: Optional[Annotated[int, Field(le=2147483647, strict=True, ge=0)]] = None
     model: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None

@@ -34,10 +34,10 @@ import root.generated.openapi_aclient
 from root.generated.openapi_aclient.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to https://api.app.rootsignals.ai
+# Defining the host is optional and defaults to https://api.localhost:8000
 # See configuration.py for a list of all supported configuration parameters.
 configuration = root.generated.openapi_aclient.Configuration(
-    host = "https://api.app.rootsignals.ai"
+    host = "https://api.localhost:8000"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -55,24 +55,36 @@ configuration.api_key['publicApiKey'] = os.environ["API_KEY"]
 # Enter a context with an instance of the API client
 async with root.generated.openapi_aclient.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = root.generated.openapi_aclient.DatasetsApi(api_client)
-    data_set_create_request = {"name":"My data set","url":"https://example.com"} # DataSetCreateRequest |  (optional)
+    api_instance = root.generated.openapi_aclient.BetaApi(api_client)
+    evaluation_agent_request = root.generated.openapi_aclient.EvaluationAgentRequest() # EvaluationAgentRequest | 
 
     try:
-        api_response = await api_instance.datasets_create(data_set_create_request=data_set_create_request)
-        print("The response of DatasetsApi->datasets_create:\n")
+        api_response = await api_instance.beta_evaluation_agents_create(evaluation_agent_request)
+        print("The response of BetaApi->beta_evaluation_agents_create:\n")
         pprint(api_response)
     except ApiException as e:
-        print("Exception when calling DatasetsApi->datasets_create: %s\n" % e)
+        print("Exception when calling BetaApi->beta_evaluation_agents_create: %s\n" % e)
 
 ```
 
 ## Documentation for API Endpoints
 
-All URIs are relative to *https://api.app.rootsignals.ai*
+All URIs are relative to *https://api.localhost:8000*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+*BetaApi* | [**beta_evaluation_agents_create**](root/generated/openapi_aclient/docs/BetaApi.md#beta_evaluation_agents_create) | **POST** /v1/beta/evaluation-agents/ | 
+*BetaApi* | [**beta_evaluation_agents_destroy**](root/generated/openapi_aclient/docs/BetaApi.md#beta_evaluation_agents_destroy) | **DELETE** /v1/beta/evaluation-agents/{id}/ | 
+*BetaApi* | [**beta_evaluation_agents_execute_create**](root/generated/openapi_aclient/docs/BetaApi.md#beta_evaluation_agents_execute_create) | **POST** /v1/beta/evaluation-agents/{id}/execute/ | 
+*BetaApi* | [**beta_evaluation_agents_generate_create**](root/generated/openapi_aclient/docs/BetaApi.md#beta_evaluation_agents_generate_create) | **POST** /v1/beta/evaluation-agents/generate/ | 
+*BetaApi* | [**beta_evaluation_agents_list**](root/generated/openapi_aclient/docs/BetaApi.md#beta_evaluation_agents_list) | **GET** /v1/beta/evaluation-agents/ | 
+*BetaApi* | [**beta_evaluation_agents_partial_update**](root/generated/openapi_aclient/docs/BetaApi.md#beta_evaluation_agents_partial_update) | **PATCH** /v1/beta/evaluation-agents/{id}/ | 
+*BetaApi* | [**beta_evaluation_agents_retrieve**](root/generated/openapi_aclient/docs/BetaApi.md#beta_evaluation_agents_retrieve) | **GET** /v1/beta/evaluation-agents/{id}/ | 
+*BetaApi* | [**beta_evaluation_agents_update**](root/generated/openapi_aclient/docs/BetaApi.md#beta_evaluation_agents_update) | **PUT** /v1/beta/evaluation-agents/{id}/ | 
+*BetaApi* | [**beta_evaluation_agents_versions_list**](root/generated/openapi_aclient/docs/BetaApi.md#beta_evaluation_agents_versions_list) | **GET** /v1/beta/evaluation-agents/{id}/versions/ | 
+*BetaApi* | [**create_batch_evaluation_job**](root/generated/openapi_aclient/docs/BetaApi.md#create_batch_evaluation_job) | **POST** /v1/beta/evaluation-jobs/ | 
+*BetaApi* | [**get_evaluation_batch_job_results**](root/generated/openapi_aclient/docs/BetaApi.md#get_evaluation_batch_job_results) | **GET** /v1/beta/evaluation-jobs/{job_id}/results/ | 
+*BetaApi* | [**list_batch_evaluation_jobs**](root/generated/openapi_aclient/docs/BetaApi.md#list_batch_evaluation_jobs) | **GET** /v1/beta/evaluation-jobs/ | 
 *DatasetsApi* | [**datasets_create**](root/generated/openapi_aclient/docs/DatasetsApi.md#datasets_create) | **POST** /v1/datasets/ | 
 *DatasetsApi* | [**datasets_destroy**](root/generated/openapi_aclient/docs/DatasetsApi.md#datasets_destroy) | **DELETE** /v1/datasets/{id}/ | 
 *DatasetsApi* | [**datasets_list**](root/generated/openapi_aclient/docs/DatasetsApi.md#datasets_list) | **GET** /v1/datasets/ | 
@@ -94,6 +106,9 @@ Class | Method | HTTP request | Description
 *EvaluatorsApi* | [**evaluators_versions_list**](root/generated/openapi_aclient/docs/EvaluatorsApi.md#evaluators_versions_list) | **GET** /v1/evaluators/versions/{id}/ | 
 *ExecutionLogsApi* | [**execution_logs_list**](root/generated/openapi_aclient/docs/ExecutionLogsApi.md#execution_logs_list) | **GET** /v1/execution-logs/ | 
 *ExecutionLogsApi* | [**execution_logs_retrieve**](root/generated/openapi_aclient/docs/ExecutionLogsApi.md#execution_logs_retrieve) | **GET** /v1/execution-logs/{log_id}/ | 
+*JudgesApi* | [**judges_batch_execute_create**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_batch_execute_create) | **POST** /v1/judges/{judge_id}/batch-execute/ | 
+*JudgesApi* | [**judges_batch_executions_list**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_batch_executions_list) | **GET** /v1/judges/batch-executions/ | 
+*JudgesApi* | [**judges_batch_executions_retrieve**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_batch_executions_retrieve) | **GET** /v1/judges/batch-executions/{id}/ | 
 *JudgesApi* | [**judges_create**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_create) | **POST** /v1/judges/ | 
 *JudgesApi* | [**judges_destroy**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_destroy) | **DELETE** /v1/judges/{id}/ | 
 *JudgesApi* | [**judges_duplicate_create**](root/generated/openapi_aclient/docs/JudgesApi.md#judges_duplicate_create) | **POST** /v1/judges/{id}/duplicate/ | 
@@ -115,6 +130,7 @@ Class | Method | HTTP request | Description
 *ModelsApi* | [**models_partial_update**](root/generated/openapi_aclient/docs/ModelsApi.md#models_partial_update) | **PATCH** /v1/models/{id}/ | 
 *ModelsApi* | [**models_retrieve**](root/generated/openapi_aclient/docs/ModelsApi.md#models_retrieve) | **GET** /v1/models/{id}/ | 
 *ModelsApi* | [**models_update**](root/generated/openapi_aclient/docs/ModelsApi.md#models_update) | **PUT** /v1/models/{id}/ | 
+*ModelsApi* | [**models_verify_create**](root/generated/openapi_aclient/docs/ModelsApi.md#models_verify_create) | **POST** /v1/models/verify/ | 
 *ObjectivesApi* | [**objectives_create**](root/generated/openapi_aclient/docs/ObjectivesApi.md#objectives_create) | **POST** /v1/objectives/ | 
 *ObjectivesApi* | [**objectives_destroy**](root/generated/openapi_aclient/docs/ObjectivesApi.md#objectives_destroy) | **DELETE** /v1/objectives/{id}/ | 
 *ObjectivesApi* | [**objectives_list**](root/generated/openapi_aclient/docs/ObjectivesApi.md#objectives_list) | **GET** /v1/objectives/ | 
@@ -131,6 +147,17 @@ Class | Method | HTTP request | Description
  - [DataSetList](root/generated/openapi_aclient/docs/DataSetList.md)
  - [DataSetType](root/generated/openapi_aclient/docs/DataSetType.md)
  - [DatasetRangeRequest](root/generated/openapi_aclient/docs/DatasetRangeRequest.md)
+ - [EvaluationAgent](root/generated/openapi_aclient/docs/EvaluationAgent.md)
+ - [EvaluationAgentEvaluationApproachEnum](root/generated/openapi_aclient/docs/EvaluationAgentEvaluationApproachEnum.md)
+ - [EvaluationAgentExecuteRequestRequest](root/generated/openapi_aclient/docs/EvaluationAgentExecuteRequestRequest.md)
+ - [EvaluationAgentExecuteResponse](root/generated/openapi_aclient/docs/EvaluationAgentExecuteResponse.md)
+ - [EvaluationAgentGenerateExampleRequest](root/generated/openapi_aclient/docs/EvaluationAgentGenerateExampleRequest.md)
+ - [EvaluationAgentGenerateRequestEvaluationApproachEnum](root/generated/openapi_aclient/docs/EvaluationAgentGenerateRequestEvaluationApproachEnum.md)
+ - [EvaluationAgentGenerateRequestRequest](root/generated/openapi_aclient/docs/EvaluationAgentGenerateRequestRequest.md)
+ - [EvaluationAgentRequest](root/generated/openapi_aclient/docs/EvaluationAgentRequest.md)
+ - [EvaluationBatchJobSerializer](root/generated/openapi_aclient/docs/EvaluationBatchJobSerializer.md)
+ - [EvaluationJobRequestRequest](root/generated/openapi_aclient/docs/EvaluationJobRequestRequest.md)
+ - [EvaluationJobResponse](root/generated/openapi_aclient/docs/EvaluationJobResponse.md)
  - [Evaluator](root/generated/openapi_aclient/docs/Evaluator.md)
  - [EvaluatorCalibrationOutput](root/generated/openapi_aclient/docs/EvaluatorCalibrationOutput.md)
  - [EvaluatorCalibrationResult](root/generated/openapi_aclient/docs/EvaluatorCalibrationResult.md)
@@ -158,27 +185,45 @@ Class | Method | HTTP request | Description
  - [ExecutionLogListEvaluationContext](root/generated/openapi_aclient/docs/ExecutionLogListEvaluationContext.md)
  - [GenerationModelParamsRequest](root/generated/openapi_aclient/docs/GenerationModelParamsRequest.md)
  - [ID](root/generated/openapi_aclient/docs/ID.md)
+ - [InputOutputPairInputRequest](root/generated/openapi_aclient/docs/InputOutputPairInputRequest.md)
  - [InputVariable](root/generated/openapi_aclient/docs/InputVariable.md)
  - [InputVariableRequest](root/generated/openapi_aclient/docs/InputVariableRequest.md)
+ - [JobStatus](root/generated/openapi_aclient/docs/JobStatus.md)
  - [Judge](root/generated/openapi_aclient/docs/Judge.md)
+ - [JudgeBatchExecutionDetail](root/generated/openapi_aclient/docs/JudgeBatchExecutionDetail.md)
+ - [JudgeBatchExecutionInputRequest](root/generated/openapi_aclient/docs/JudgeBatchExecutionInputRequest.md)
+ - [JudgeBatchExecutionItem](root/generated/openapi_aclient/docs/JudgeBatchExecutionItem.md)
+ - [JudgeBatchExecutionItemInput](root/generated/openapi_aclient/docs/JudgeBatchExecutionItemInput.md)
+ - [JudgeBatchExecutionItemStatusEnum](root/generated/openapi_aclient/docs/JudgeBatchExecutionItemStatusEnum.md)
+ - [JudgeBatchExecutionListItem](root/generated/openapi_aclient/docs/JudgeBatchExecutionListItem.md)
+ - [JudgeBatchExecutionRequest](root/generated/openapi_aclient/docs/JudgeBatchExecutionRequest.md)
+ - [JudgeBatchExecutionResponse](root/generated/openapi_aclient/docs/JudgeBatchExecutionResponse.md)
  - [JudgeExecutionRequest](root/generated/openapi_aclient/docs/JudgeExecutionRequest.md)
  - [JudgeExecutionResponse](root/generated/openapi_aclient/docs/JudgeExecutionResponse.md)
  - [JudgeFilesInner](root/generated/openapi_aclient/docs/JudgeFilesInner.md)
  - [JudgeGeneratorRequest](root/generated/openapi_aclient/docs/JudgeGeneratorRequest.md)
  - [JudgeGeneratorResponse](root/generated/openapi_aclient/docs/JudgeGeneratorResponse.md)
+ - [JudgeGeneratorVisibilityEnum](root/generated/openapi_aclient/docs/JudgeGeneratorVisibilityEnum.md)
  - [JudgeInviteRequest](root/generated/openapi_aclient/docs/JudgeInviteRequest.md)
  - [JudgeList](root/generated/openapi_aclient/docs/JudgeList.md)
  - [JudgeRectifierRequestRequest](root/generated/openapi_aclient/docs/JudgeRectifierRequestRequest.md)
  - [JudgeRectifierResponse](root/generated/openapi_aclient/docs/JudgeRectifierResponse.md)
  - [JudgeRequest](root/generated/openapi_aclient/docs/JudgeRequest.md)
+ - [KindEnum](root/generated/openapi_aclient/docs/KindEnum.md)
  - [Model](root/generated/openapi_aclient/docs/Model.md)
+ - [ModelEnum](root/generated/openapi_aclient/docs/ModelEnum.md)
  - [ModelList](root/generated/openapi_aclient/docs/ModelList.md)
+ - [ModelListVisibilityEnum](root/generated/openapi_aclient/docs/ModelListVisibilityEnum.md)
  - [ModelParams](root/generated/openapi_aclient/docs/ModelParams.md)
  - [ModelParamsRequest](root/generated/openapi_aclient/docs/ModelParamsRequest.md)
  - [ModelRequest](root/generated/openapi_aclient/docs/ModelRequest.md)
+ - [ModelTestRequestRequest](root/generated/openapi_aclient/docs/ModelTestRequestRequest.md)
+ - [ModelTestResponse](root/generated/openapi_aclient/docs/ModelTestResponse.md)
  - [NestedEvaluator](root/generated/openapi_aclient/docs/NestedEvaluator.md)
  - [NestedEvaluatorObjective](root/generated/openapi_aclient/docs/NestedEvaluatorObjective.md)
  - [NestedEvaluatorRequest](root/generated/openapi_aclient/docs/NestedEvaluatorRequest.md)
+ - [NestedJudge](root/generated/openapi_aclient/docs/NestedJudge.md)
+ - [NestedObjective](root/generated/openapi_aclient/docs/NestedObjective.md)
  - [NestedObjectiveEvaluator](root/generated/openapi_aclient/docs/NestedObjectiveEvaluator.md)
  - [NestedObjectiveEvaluatorRequest](root/generated/openapi_aclient/docs/NestedObjectiveEvaluatorRequest.md)
  - [NestedObjectiveList](root/generated/openapi_aclient/docs/NestedObjectiveList.md)
@@ -186,37 +231,45 @@ Class | Method | HTTP request | Description
  - [NestedUserDetailsRequest](root/generated/openapi_aclient/docs/NestedUserDetailsRequest.md)
  - [NestedVectorObjective](root/generated/openapi_aclient/docs/NestedVectorObjective.md)
  - [NestedVectorObjectiveRequest](root/generated/openapi_aclient/docs/NestedVectorObjectiveRequest.md)
+ - [NullEnum](root/generated/openapi_aclient/docs/NullEnum.md)
  - [Objective](root/generated/openapi_aclient/docs/Objective.md)
  - [ObjectiveList](root/generated/openapi_aclient/docs/ObjectiveList.md)
  - [ObjectiveRequest](root/generated/openapi_aclient/docs/ObjectiveRequest.md)
  - [ObjectiveValidator](root/generated/openapi_aclient/docs/ObjectiveValidator.md)
  - [ObjectiveValidatorRequest](root/generated/openapi_aclient/docs/ObjectiveValidatorRequest.md)
  - [PaginatedDataSetListList](root/generated/openapi_aclient/docs/PaginatedDataSetListList.md)
+ - [PaginatedEvaluationAgentList](root/generated/openapi_aclient/docs/PaginatedEvaluationAgentList.md)
+ - [PaginatedEvaluationBatchJobSerializerList](root/generated/openapi_aclient/docs/PaginatedEvaluationBatchJobSerializerList.md)
  - [PaginatedEvaluatorList](root/generated/openapi_aclient/docs/PaginatedEvaluatorList.md)
  - [PaginatedEvaluatorListOutputList](root/generated/openapi_aclient/docs/PaginatedEvaluatorListOutputList.md)
  - [PaginatedExecutionLogListList](root/generated/openapi_aclient/docs/PaginatedExecutionLogListList.md)
+ - [PaginatedJudgeBatchExecutionListItemList](root/generated/openapi_aclient/docs/PaginatedJudgeBatchExecutionListItemList.md)
  - [PaginatedJudgeListList](root/generated/openapi_aclient/docs/PaginatedJudgeListList.md)
  - [PaginatedModelListList](root/generated/openapi_aclient/docs/PaginatedModelListList.md)
  - [PaginatedObjectiveList](root/generated/openapi_aclient/docs/PaginatedObjectiveList.md)
  - [PaginatedObjectiveListList](root/generated/openapi_aclient/docs/PaginatedObjectiveListList.md)
+ - [PatchedEvaluationAgentRequest](root/generated/openapi_aclient/docs/PatchedEvaluationAgentRequest.md)
  - [PatchedEvaluatorRequest](root/generated/openapi_aclient/docs/PatchedEvaluatorRequest.md)
  - [PatchedJudgeRequest](root/generated/openapi_aclient/docs/PatchedJudgeRequest.md)
  - [PatchedModelRequest](root/generated/openapi_aclient/docs/PatchedModelRequest.md)
  - [PatchedObjectiveRequest](root/generated/openapi_aclient/docs/PatchedObjectiveRequest.md)
  - [Provider](root/generated/openapi_aclient/docs/Provider.md)
+ - [ReasoningEffortEnum](root/generated/openapi_aclient/docs/ReasoningEffortEnum.md)
  - [ReferenceVariable](root/generated/openapi_aclient/docs/ReferenceVariable.md)
  - [ReferenceVariableRequest](root/generated/openapi_aclient/docs/ReferenceVariableRequest.md)
+ - [ResultPreferenceSignifierEvaluationApproachEnum](root/generated/openapi_aclient/docs/ResultPreferenceSignifierEvaluationApproachEnum.md)
+ - [ResultPreferenceSignifierRequest](root/generated/openapi_aclient/docs/ResultPreferenceSignifierRequest.md)
  - [SkillExecutionValidatorResult](root/generated/openapi_aclient/docs/SkillExecutionValidatorResult.md)
  - [SkillTestDataRequest](root/generated/openapi_aclient/docs/SkillTestDataRequest.md)
  - [SkillTestDataRequestDatasetRange](root/generated/openapi_aclient/docs/SkillTestDataRequestDatasetRange.md)
  - [SkillTestInputRequest](root/generated/openapi_aclient/docs/SkillTestInputRequest.md)
  - [SkillTypeEnum](root/generated/openapi_aclient/docs/SkillTypeEnum.md)
+ - [Status776Enum](root/generated/openapi_aclient/docs/Status776Enum.md)
  - [StatusChange](root/generated/openapi_aclient/docs/StatusChange.md)
  - [StatusChangeRequest](root/generated/openapi_aclient/docs/StatusChangeRequest.md)
  - [StatusChangeStatusEnum](root/generated/openapi_aclient/docs/StatusChangeStatusEnum.md)
  - [StatusEnum](root/generated/openapi_aclient/docs/StatusEnum.md)
  - [ValidationResultStatus](root/generated/openapi_aclient/docs/ValidationResultStatus.md)
- - [VisibilityEnum](root/generated/openapi_aclient/docs/VisibilityEnum.md)
 
 
 <a id="documentation-for-authorization"></a>

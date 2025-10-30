@@ -18,6 +18,27 @@ from root.generated.openapi_aclient.models.data_set_create_request import DataSe
 from root.generated.openapi_aclient.models.data_set_list import DataSetList
 from root.generated.openapi_aclient.models.data_set_type import DataSetType
 from root.generated.openapi_aclient.models.dataset_range_request import DatasetRangeRequest
+from root.generated.openapi_aclient.models.evaluation_agent import EvaluationAgent
+from root.generated.openapi_aclient.models.evaluation_agent_evaluation_approach_enum import (
+    EvaluationAgentEvaluationApproachEnum,
+)
+from root.generated.openapi_aclient.models.evaluation_agent_execute_request_request import (
+    EvaluationAgentExecuteRequestRequest,
+)
+from root.generated.openapi_aclient.models.evaluation_agent_execute_response import EvaluationAgentExecuteResponse
+from root.generated.openapi_aclient.models.evaluation_agent_generate_example_request import (
+    EvaluationAgentGenerateExampleRequest,
+)
+from root.generated.openapi_aclient.models.evaluation_agent_generate_request_evaluation_approach_enum import (
+    EvaluationAgentGenerateRequestEvaluationApproachEnum,
+)
+from root.generated.openapi_aclient.models.evaluation_agent_generate_request_request import (
+    EvaluationAgentGenerateRequestRequest,
+)
+from root.generated.openapi_aclient.models.evaluation_agent_request import EvaluationAgentRequest
+from root.generated.openapi_aclient.models.evaluation_batch_job_serializer import EvaluationBatchJobSerializer
+from root.generated.openapi_aclient.models.evaluation_job_request_request import EvaluationJobRequestRequest
+from root.generated.openapi_aclient.models.evaluation_job_response import EvaluationJobResponse
 from root.generated.openapi_aclient.models.evaluator import Evaluator
 from root.generated.openapi_aclient.models.evaluator_calibration_output import EvaluatorCalibrationOutput
 from root.generated.openapi_aclient.models.evaluator_calibration_result import EvaluatorCalibrationResult
@@ -61,27 +82,47 @@ from root.generated.openapi_aclient.models.execution_log_list_evaluation_context
 )
 from root.generated.openapi_aclient.models.generation_model_params_request import GenerationModelParamsRequest
 from root.generated.openapi_aclient.models.id import ID
+from root.generated.openapi_aclient.models.input_output_pair_input_request import InputOutputPairInputRequest
 from root.generated.openapi_aclient.models.input_variable import InputVariable
 from root.generated.openapi_aclient.models.input_variable_request import InputVariableRequest
+from root.generated.openapi_aclient.models.job_status import JobStatus
 from root.generated.openapi_aclient.models.judge import Judge
+from root.generated.openapi_aclient.models.judge_batch_execution_detail import JudgeBatchExecutionDetail
+from root.generated.openapi_aclient.models.judge_batch_execution_input_request import JudgeBatchExecutionInputRequest
+from root.generated.openapi_aclient.models.judge_batch_execution_item import JudgeBatchExecutionItem
+from root.generated.openapi_aclient.models.judge_batch_execution_item_input import JudgeBatchExecutionItemInput
+from root.generated.openapi_aclient.models.judge_batch_execution_item_status_enum import (
+    JudgeBatchExecutionItemStatusEnum,
+)
+from root.generated.openapi_aclient.models.judge_batch_execution_list_item import JudgeBatchExecutionListItem
+from root.generated.openapi_aclient.models.judge_batch_execution_request import JudgeBatchExecutionRequest
+from root.generated.openapi_aclient.models.judge_batch_execution_response import JudgeBatchExecutionResponse
 from root.generated.openapi_aclient.models.judge_execution_request import JudgeExecutionRequest
 from root.generated.openapi_aclient.models.judge_execution_response import JudgeExecutionResponse
 from root.generated.openapi_aclient.models.judge_files_inner import JudgeFilesInner
 from root.generated.openapi_aclient.models.judge_generator_request import JudgeGeneratorRequest
 from root.generated.openapi_aclient.models.judge_generator_response import JudgeGeneratorResponse
+from root.generated.openapi_aclient.models.judge_generator_visibility_enum import JudgeGeneratorVisibilityEnum
 from root.generated.openapi_aclient.models.judge_invite_request import JudgeInviteRequest
 from root.generated.openapi_aclient.models.judge_list import JudgeList
 from root.generated.openapi_aclient.models.judge_rectifier_request_request import JudgeRectifierRequestRequest
 from root.generated.openapi_aclient.models.judge_rectifier_response import JudgeRectifierResponse
 from root.generated.openapi_aclient.models.judge_request import JudgeRequest
+from root.generated.openapi_aclient.models.kind_enum import KindEnum
 from root.generated.openapi_aclient.models.model import Model
+from root.generated.openapi_aclient.models.model_enum import ModelEnum
 from root.generated.openapi_aclient.models.model_list import ModelList
+from root.generated.openapi_aclient.models.model_list_visibility_enum import ModelListVisibilityEnum
 from root.generated.openapi_aclient.models.model_params import ModelParams
 from root.generated.openapi_aclient.models.model_params_request import ModelParamsRequest
 from root.generated.openapi_aclient.models.model_request import ModelRequest
+from root.generated.openapi_aclient.models.model_test_request_request import ModelTestRequestRequest
+from root.generated.openapi_aclient.models.model_test_response import ModelTestResponse
 from root.generated.openapi_aclient.models.nested_evaluator import NestedEvaluator
 from root.generated.openapi_aclient.models.nested_evaluator_objective import NestedEvaluatorObjective
 from root.generated.openapi_aclient.models.nested_evaluator_request import NestedEvaluatorRequest
+from root.generated.openapi_aclient.models.nested_judge import NestedJudge
+from root.generated.openapi_aclient.models.nested_objective import NestedObjective
 from root.generated.openapi_aclient.models.nested_objective_evaluator import NestedObjectiveEvaluator
 from root.generated.openapi_aclient.models.nested_objective_evaluator_request import NestedObjectiveEvaluatorRequest
 from root.generated.openapi_aclient.models.nested_objective_list import NestedObjectiveList
@@ -89,34 +130,48 @@ from root.generated.openapi_aclient.models.nested_user_details import NestedUser
 from root.generated.openapi_aclient.models.nested_user_details_request import NestedUserDetailsRequest
 from root.generated.openapi_aclient.models.nested_vector_objective import NestedVectorObjective
 from root.generated.openapi_aclient.models.nested_vector_objective_request import NestedVectorObjectiveRequest
+from root.generated.openapi_aclient.models.null_enum import NullEnum
 from root.generated.openapi_aclient.models.objective import Objective
 from root.generated.openapi_aclient.models.objective_list import ObjectiveList
 from root.generated.openapi_aclient.models.objective_request import ObjectiveRequest
 from root.generated.openapi_aclient.models.objective_validator import ObjectiveValidator
 from root.generated.openapi_aclient.models.objective_validator_request import ObjectiveValidatorRequest
 from root.generated.openapi_aclient.models.paginated_data_set_list_list import PaginatedDataSetListList
+from root.generated.openapi_aclient.models.paginated_evaluation_agent_list import PaginatedEvaluationAgentList
+from root.generated.openapi_aclient.models.paginated_evaluation_batch_job_serializer_list import (
+    PaginatedEvaluationBatchJobSerializerList,
+)
 from root.generated.openapi_aclient.models.paginated_evaluator_list import PaginatedEvaluatorList
 from root.generated.openapi_aclient.models.paginated_evaluator_list_output_list import PaginatedEvaluatorListOutputList
 from root.generated.openapi_aclient.models.paginated_execution_log_list_list import PaginatedExecutionLogListList
+from root.generated.openapi_aclient.models.paginated_judge_batch_execution_list_item_list import (
+    PaginatedJudgeBatchExecutionListItemList,
+)
 from root.generated.openapi_aclient.models.paginated_judge_list_list import PaginatedJudgeListList
 from root.generated.openapi_aclient.models.paginated_model_list_list import PaginatedModelListList
 from root.generated.openapi_aclient.models.paginated_objective_list import PaginatedObjectiveList
 from root.generated.openapi_aclient.models.paginated_objective_list_list import PaginatedObjectiveListList
+from root.generated.openapi_aclient.models.patched_evaluation_agent_request import PatchedEvaluationAgentRequest
 from root.generated.openapi_aclient.models.patched_evaluator_request import PatchedEvaluatorRequest
 from root.generated.openapi_aclient.models.patched_judge_request import PatchedJudgeRequest
 from root.generated.openapi_aclient.models.patched_model_request import PatchedModelRequest
 from root.generated.openapi_aclient.models.patched_objective_request import PatchedObjectiveRequest
 from root.generated.openapi_aclient.models.provider import Provider
+from root.generated.openapi_aclient.models.reasoning_effort_enum import ReasoningEffortEnum
 from root.generated.openapi_aclient.models.reference_variable import ReferenceVariable
 from root.generated.openapi_aclient.models.reference_variable_request import ReferenceVariableRequest
+from root.generated.openapi_aclient.models.result_preference_signifier_evaluation_approach_enum import (
+    ResultPreferenceSignifierEvaluationApproachEnum,
+)
+from root.generated.openapi_aclient.models.result_preference_signifier_request import ResultPreferenceSignifierRequest
 from root.generated.openapi_aclient.models.skill_execution_validator_result import SkillExecutionValidatorResult
 from root.generated.openapi_aclient.models.skill_test_data_request import SkillTestDataRequest
 from root.generated.openapi_aclient.models.skill_test_data_request_dataset_range import SkillTestDataRequestDatasetRange
 from root.generated.openapi_aclient.models.skill_test_input_request import SkillTestInputRequest
 from root.generated.openapi_aclient.models.skill_type_enum import SkillTypeEnum
+from root.generated.openapi_aclient.models.status776_enum import Status776Enum
 from root.generated.openapi_aclient.models.status_change import StatusChange
 from root.generated.openapi_aclient.models.status_change_request import StatusChangeRequest
 from root.generated.openapi_aclient.models.status_change_status_enum import StatusChangeStatusEnum
 from root.generated.openapi_aclient.models.status_enum import StatusEnum
 from root.generated.openapi_aclient.models.validation_result_status import ValidationResultStatus
-from root.generated.openapi_aclient.models.visibility_enum import VisibilityEnum

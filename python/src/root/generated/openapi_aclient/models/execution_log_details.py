@@ -59,7 +59,7 @@ class ExecutionLogDetails(BaseModel):
     rendered_prompt: StrictStr
     score: Optional[Union[StrictFloat, StrictInt]]
     tags: List[StrictStr]
-    validation_results: List[SkillExecutionValidatorResult]
+    evaluator_results: List[SkillExecutionValidatorResult]
     variables: Optional[Dict[str, StrictStr]]
     __properties: ClassVar[List[str]] = [
         "chat_id",
@@ -83,7 +83,7 @@ class ExecutionLogDetails(BaseModel):
         "rendered_prompt",
         "score",
         "tags",
-        "validation_results",
+        "evaluator_results",
         "variables",
     ]
 
@@ -155,7 +155,7 @@ class ExecutionLogDetails(BaseModel):
                 "rendered_prompt",
                 "score",
                 "tags",
-                "validation_results",
+                "evaluator_results",
                 "variables",
             ]
         )
@@ -181,13 +181,13 @@ class ExecutionLogDetails(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of owner
         if self.owner:
             _dict["owner"] = self.owner.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of each item in validation_results (list)
+        # override the default output from pydantic by calling `to_dict()` of each item in evaluator_results (list)
         _items = []
-        if self.validation_results:
-            for _item in self.validation_results:
+        if self.evaluator_results:
+            for _item in self.evaluator_results:
                 if _item:
                     _items.append(_item.to_dict())
-            _dict["validation_results"] = _items
+            _dict["evaluator_results"] = _items
         # set to None if chat_id (nullable) is None
         # and model_fields_set contains the field
         if self.chat_id is None and "chat_id" in self.model_fields_set:
@@ -280,10 +280,10 @@ class ExecutionLogDetails(BaseModel):
                 "rendered_prompt": obj.get("rendered_prompt"),
                 "score": obj.get("score"),
                 "tags": obj.get("tags"),
-                "validation_results": [
-                    SkillExecutionValidatorResult.from_dict(_item) for _item in obj["validation_results"]
+                "evaluator_results": [
+                    SkillExecutionValidatorResult.from_dict(_item) for _item in obj["evaluator_results"]
                 ]
-                if obj.get("validation_results") is not None
+                if obj.get("evaluator_results") is not None
                 else None,
                 "variables": obj.get("variables"),
             }
