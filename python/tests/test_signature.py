@@ -3,11 +3,11 @@ from functools import partial
 
 import pytest
 
-from root.execution_logs import ExecutionLogs
-from root.judges import AJudge, Judge, Judges
-from root.models import Models
-from root.objectives import AObjective, Objective, Objectives
-from root.skills import AEvaluator, Evaluator, Evaluators
+from scorable.execution_logs import ExecutionLogs
+from scorable.judges import AJudge, Judge, Judges
+from scorable.models import Models
+from scorable.objectives import AObjective, Objective, Objectives
+from scorable.skills import AEvaluator, Evaluator, Evaluators
 
 
 def _get_method_info(method):

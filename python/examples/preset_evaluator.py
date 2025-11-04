@@ -1,7 +1,7 @@
-from root import RootSignals
+from scorable import Scorable
 
-# Connect to the Root Signals API
-client = RootSignals()
+# Connect to the Scorable API
+client = Scorable()
 
 result = client.evaluators.Helpfulness(
     request="Where can I find the application instructions?",

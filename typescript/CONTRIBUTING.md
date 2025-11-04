@@ -1,12 +1,12 @@
-# Contributing to Root Signals TypeScript SDK
+# Contributing to Scorable TypeScript SDK
 
-Thank you for contributing to Root Signals TypeScript SDK! 🙏
+Thank you for contributing to Scorable TypeScript SDK! 🙏
 
 We appreciate all contributions, whether you're fixing bugs, adding new features, improving documentation, or helping other users.
 
 ## Why Contribute?
 
-You might want to contribute to Root Signals TypeScript SDK for several reasons:
+You might want to contribute to Scorable TypeScript SDK for several reasons:
 
 - **Fix a bug** you encountered
 - **Add a new feature** that would be useful for your use case
@@ -18,7 +18,7 @@ You might want to contribute to Root Signals TypeScript SDK for several reasons:
 
 1. **Fork the repository** and clone your fork
 2. **Install dependencies**: `npm install`
-3. **Set up your API key**: `export ROOTSIGNALS_API_KEY="your-key"`
+3. **Set up your API key**: `export SCORABLE_API_KEY="your-key"`
 4. **Run tests**: `npm test`
 5. **Build the project**: `npm run build`
 

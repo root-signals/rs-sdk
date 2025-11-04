@@ -1,9 +1,9 @@
-import { RootSignalsError } from '../../src/types/common';
+import { ScorableError } from '../../src/types/common';
 
-describe('RootSignalsError', () => {
+describe('ScorableError', () => {
   describe('constructor', () => {
     it('should create error with all parameters', () => {
-      const error = new RootSignalsError(
+      const error = new ScorableError(
         404,
         'RESOURCE_NOT_FOUND',
         { detail: 'Resource not found' },
@@ -11,26 +11,26 @@ describe('RootSignalsError', () => {
       );
 
       expect(error).toBeInstanceOf(Error);
-      expect(error).toBeInstanceOf(RootSignalsError);
+      expect(error).toBeInstanceOf(ScorableError);
       expect(error.status).toBe(404);
       expect(error.code).toBe('RESOURCE_NOT_FOUND');
       expect(error.details).toEqual({ detail: 'Resource not found' });
       expect(error.message).toBe('Custom error message');
-      expect(error.name).toBe('RootSignalsError');
+      expect(error.name).toBe('ScorableError');
     });
 
     it('should create error with minimal parameters', () => {
-      const error = new RootSignalsError(500, 'INTERNAL_ERROR');
+      const error = new ScorableError(500, 'INTERNAL_ERROR');
 
       expect(error.status).toBe(500);
       expect(error.code).toBe('INTERNAL_ERROR');
       expect(error.details).toBeUndefined();
       expect(error.message).toBe(`API Error 500: INTERNAL_ERROR`);
-      expect(error.name).toBe('RootSignalsError');
+      expect(error.name).toBe('ScorableError');
     });
 
     it('should use custom message when provided', () => {
-      const error = new RootSignalsError(
+      const error = new ScorableError(
         400,
         'VALIDATION_ERROR',
         { field: 'name is required' },
@@ -42,15 +42,15 @@ describe('RootSignalsError', () => {
 
     it('should be throwable', () => {
       expect(() => {
-        throw new RootSignalsError(404, 'NOT_FOUND');
-      }).toThrow(RootSignalsError);
+        throw new ScorableError(404, 'NOT_FOUND');
+      }).toThrow(ScorableError);
     });
 
     it('should preserve error stack trace', () => {
-      const error = new RootSignalsError(500, 'INTERNAL_ERROR');
+      const error = new ScorableError(500, 'INTERNAL_ERROR');
 
       expect(error.stack).toBeDefined();
-      expect(error.stack).toContain('RootSignalsError');
+      expect(error.stack).toContain('ScorableError');
     });
   });
 
@@ -60,7 +60,7 @@ describe('RootSignalsError', () => {
         detail: 'Invalid evaluator ID provided',
       };
 
-      const error = new RootSignalsError(
+      const error = new ScorableError(
         404,
         'EVALUATOR_NOT_FOUND',
         apiResponse,
@@ -77,7 +77,7 @@ describe('RootSignalsError', () => {
         email: ['Enter a valid email address.'],
       };
 
-      const error = new RootSignalsError(
+      const error = new ScorableError(
         400,
         'VALIDATION_ERROR',
         validationErrors,
@@ -89,7 +89,7 @@ describe('RootSignalsError', () => {
     });
 
     it('should handle network errors', () => {
-      const error = new RootSignalsError(
+      const error = new ScorableError(
         0,
         'NETWORK_ERROR',
         { cause: 'Connection refused' },

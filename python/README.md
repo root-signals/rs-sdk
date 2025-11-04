@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img width="600" alt="Root Signals logo" src="https://app.rootsignals.ai/images/root-signals-color.svg" loading="lazy">
+  <img width="600" alt="Scorable logo" src="https://scorable.ai/images/root-signals-color.svg" loading="lazy">
 </h1>
 
   <!-- This is commented so it is easier to sync with the docs/index.rst -->
@@ -9,23 +9,23 @@
 </p>
 
 <p align="center">
-    <a href="https://pypi.org/project/root-signals/">
+    <a href="https://pypi.org/project/scorable/">
       <img alt="Supported Python versions" src="https://img.shields.io/badge/Python-3.10%20to%203.13-yellow?style=for-the-badge&logo=python&logoColor=yellow">
     </a>
 </p>
 
 <p align="center">
-  <a href="https://pypi.org/project/root-signals">
-    <img src="https://img.shields.io/pypi/v/root-signals" alt="PyPI">
+  <a href="https://pypi.org/project/scorable">
+    <img src="https://img.shields.io/pypi/v/scorable" alt="PyPI">
   </a>
-  <img src="https://img.shields.io/pypi/dm/root-signals?color=orange" alt="Downloads">
-  <a href="https://github.com/root-signals/rs-python-sdk/blob/main/LICENSE">
-    <img src="https://img.shields.io/github/license/root-signals/rs-python-sdk.svg" alt="License">
+  <img src="https://img.shields.io/pypi/dm/scorable?color=orange" alt="Downloads">
+  <a href="https://github.com/root-signals/rs-sdk/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/root-signals/rs-sdk.svg" alt="License">
   </a>
 </p>
 
 <p align="center">
-  <a href="https://app.rootsignals.ai/register">
+  <a href="https://scorable.ai/register">
     <img src="https://img.shields.io/badge/Get_Started-2E6AFB?style=for-the-badge&logo=rocket&logoColor=white&scale=2" />
   </a>
 
@@ -37,46 +37,46 @@
     <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white&scale=2" />
   </a>
 
-  <a href="https://sdk.rootsignals.ai/en/latest/">
+  <a href="https://sdk.scorable.ai/en/latest/">
     <img src="https://img.shields.io/badge/Documentation-E53935?style=for-the-badge&logo=readthedocs&logoColor=white&scale=2" />
   </a>
 
-  <a href="https://app.rootsignals.ai/demo-user">
+  <a href="https://scorable.ai/demo-user">
     <img src="https://img.shields.io/badge/Temporary_API_Key-15a20b?style=for-the-badge&logo=keycdn&logoColor=white&scale=2" />
   </a>
 </p>
 
-**Root Signals** streamlines the evaluation of your LLM and agentic pipelines. We provide a holistic approach to GenAI measurability & observability with **carefully-crafted ready-to-use evaluators** based on cutting-edge LLM research as well as a framework for systematically adding **your own custom evaluators**.
+**Scorable** streamlines the evaluation of your LLM and agentic pipelines. We provide a holistic approach to GenAI measurability & observability with **carefully-crafted ready-to-use evaluators** based on cutting-edge LLM research as well as a framework for systematically adding **your own custom evaluators**.
 
-With Root Signals you can develop your LLM application reliably, deploy them in confidence, and ensure optimal performance with continuous monitoring.
+With Scorable you can develop your LLM application reliably, deploy them in confidence, and ensure optimal performance with continuous monitoring.
 
 ## 📦 Install
 
 ```bash
-pip install root-signals
+pip install scorable
 ```
 
 ## ⚡ Quickstart
 
 ### 🔑 Get Your API Key
-[Sign up & create a key](https://app.rootsignals.ai/settings/api-keys) or [generate a temporary key](https://app.rootsignals.ai/demo-user)
+[Sign up & create a key](https://scorable.ai/settings/api-keys) or [generate a temporary key](https://scorable.ai/demo-user)
 
 **Setup Option 1: Environment Variable**
 ```bash
-export ROOTSIGNALS_API_KEY=your-Root-API-key
+export SCORABLE_API_KEY=your-scorable-api-key
 ```
 
 **Setup Option 2: `.env` File**
 ```bash
-echo ROOTSIGNALS_API_KEY=your-Root-API-key >> .env
+echo SCORABLE_API_KEY=your-scorable-api-key >> .env
 ```
 
 ### *Root* Evaluators
 ```python
-from root import RootSignals
+from scorable import Scorable
 
-# Connect to Root Signals API
-client = RootSignals()
+# Connect to Scorable API
+client = Scorable()
 
 # Run any of our ready-made evaluators
 result = client.evaluators.Politeness(
@@ -90,16 +90,16 @@ result = client.evaluators.Politeness(
 #   }
 ```
 
-Check the full list of *Root* evaluators from the [Root evaluators documentation](https://docs.rootsignals.ai/quick-start/usage/evaluators#list-of-evaluators-maintained-by-root-signals). You can also [add your own custom evaluators](https://sdk.rootsignals.ai/en/latest/examples.html#custom-evaluator).
+Check the full list of *Root* evaluators from the [Root evaluators documentation](https://docs.scorable.ai/quick-start/usage/evaluators#list-of-evaluators-maintained-by-root-signals). You can also [add your own custom evaluators](https://sdk.scorable.ai/en/latest/examples.html#custom-evaluator).
 
 
 ## 📖 Documentation
 
 | Resource | Link |
 |----------|------|
-| 🐍 Python SDK | [View Documentation](https://sdk.rootsignals.ai) |
-| 📘 Product Docs | [View Documentation](https://docs.rootsignals.ai) |
-| 📑 API Docs | [View Documentation](https://api.docs.rootsignals.ai/) |
+| 🐍 Python SDK | [View Documentation](https://sdk.scorable.ai) |
+| 📘 Product Docs | [View Documentation](https://docs.scorable.ai) |
+| 📑 API Docs | [View Documentation](https://api.docs.scorable.ai/) |
 | 🔌 MCP | [View Repo](https://github.com/root-signals/root-signals-mcp) |
 
 <table>

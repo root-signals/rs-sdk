@@ -32,7 +32,7 @@ if TYPE_CHECKING:
 
 
 def _get_api_key(*, dot_env: str = ".env") -> str:
-    var = "ROOTSIGNALS_API_KEY"
+    var = "SCORABLE_API_KEY"
     api_key = os.environ.get(var)
     if api_key is not None:
         return api_key
@@ -43,8 +43,8 @@ def _get_api_key(*, dot_env: str = ".env") -> str:
                 return m.group(1)
     raise ValueError(
         textwrap.dedent("""
-    Root Signals API key cannot be found.
-    It can be provided in client invocation, using ROOTSIGNALS_API_KEY environment variable or .env file line
+    Scorable API key cannot be found.
+    It can be provided in client invocation, using SCORABLE_API_KEY environment variable or .env file line
     """)
     )
 
@@ -69,17 +69,17 @@ class Beta:
         return Judges(self._get_client_context)
 
 
-class RootSignals:
-    """Root Signals API Python client.
+class Scorable:
+    """Scorable API Python client.
 
     The API key must be provided via one of the following methods - the code uses the first one that is found:
 
-    1. as an argument to RootSignals constructor,
-    2. environment variable `ROOTSIGNALS_API_KEY`, or
-    3. .env file containing `ROOTSIGNALS_API_KEY=`
+    1. as an argument to Scorable constructor,
+    2. environment variable `SCORABLE_API_KEY`, or
+    3. .env file containing `SCORABLE_API_KEY=`
 
     Args:
-        api_key: Root Signals API Key (if not provided from environment)
+        api_key: Scorable API Key (if not provided from environment)
         run_async: Whether to run the API client asynchronously
     """
 
@@ -95,7 +95,7 @@ class RootSignals:
         if api_key is None:
             api_key = _get_api_key()
         if base_url is None:
-            base_url = os.environ.get("ROOTSIGNALS_API_URL", "https://api.app.rootsignals.ai")
+            base_url = os.environ.get("SCORABLE_API_URL", "https://api.scorable.ai")
         self.base_url = base_url
         self.api_key = api_key
         self._api_client_arg = _api_client

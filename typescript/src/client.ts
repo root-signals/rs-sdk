@@ -11,7 +11,7 @@ import { ModelsResource } from './resources/models.js';
 import { ExecutionLogsResource } from './resources/execution-logs.js';
 import { DatasetsResource } from './resources/datasets.js';
 
-export class RootSignals {
+export class Scorable {
   private client: ReturnType<typeof createClient<paths>>;
   private config: ClientConfig;
   public readonly retryManager: RetryManager;
@@ -26,13 +26,13 @@ export class RootSignals {
 
   constructor(config: ClientConfig) {
     this.config = {
-      baseUrl: 'https://api.app.rootsignals.ai',
+      baseUrl: 'https://api.scorable.ai',
       timeout: 30000,
       ...config,
     };
 
     this.client = createClient<paths>({
-      baseUrl: this.config.baseUrl ?? 'https://api.app.rootsignals.ai',
+      baseUrl: this.config.baseUrl ?? 'https://api.scorable.ai',
       headers: createAuthHeaders(this.config),
     });
 

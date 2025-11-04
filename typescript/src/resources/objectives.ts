@@ -1,5 +1,5 @@
 import type { paths, components } from '../generated/types.js';
-import { PaginatedResponse, ListParams, RootSignalsError, ApiError } from '../types/common.js';
+import { PaginatedResponse, ListParams, ScorableError, ApiError } from '../types/common.js';
 
 type Client = ReturnType<typeof import('openapi-fetch').default<paths>>;
 
@@ -47,7 +47,7 @@ export class ObjectivesResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'LIST_OBJECTIVES_FAILED',
         error,
@@ -71,7 +71,7 @@ export class ObjectivesResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'CREATE_OBJECTIVE_FAILED',
         error,
@@ -91,7 +91,7 @@ export class ObjectivesResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'GET_OBJECTIVE_FAILED',
         error,
@@ -112,7 +112,7 @@ export class ObjectivesResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'UPDATE_OBJECTIVE_FAILED',
         error,
@@ -132,7 +132,7 @@ export class ObjectivesResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'DELETE_OBJECTIVE_FAILED',
         error,
@@ -150,7 +150,7 @@ export class ObjectivesResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'GET_OBJECTIVE_VERSIONS_FAILED',
         error,
@@ -175,7 +175,7 @@ export class ObjectivesResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'PATCH_OBJECTIVE_FAILED',
         error,

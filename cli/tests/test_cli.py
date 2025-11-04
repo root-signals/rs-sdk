@@ -24,7 +24,7 @@ def runner():
 
 @pytest.fixture
 def mock_api_key():
-    with patch.dict("os.environ", {"ROOTSIGNALS_API_KEY": "test-api-key"}):
+    with patch.dict("os.environ", {"SCORABLE_API_KEY": "test-api-key"}):
         yield
 
 
@@ -481,7 +481,7 @@ class TestApiRequest:
                 with patch("cli._settings_path", return_value=settings_path):
                     result = runner.invoke(cli, ["judge", "list"])
             assert result.exit_code == 1
-            assert "ROOTSIGNALS_API_KEY environment variable not set" in result.output
+            assert "SCORABLE_API_KEY environment variable not set" in result.output
 
     @patch("cli.session.request")
     @patch("cli.API_KEY", "test-key")
@@ -816,7 +816,7 @@ class TestSettingsTemporaryKey:
     def test_settings_temporary_api_key_used(self, runner, sample_judge_list):
         with patch.dict("os.environ", {}, clear=True):
             with tempfile.TemporaryDirectory() as td:
-                settings_dir = os.path.join(td, ".rootsignals")
+                settings_dir = os.path.join(td, ".scorable")
                 os.makedirs(settings_dir, exist_ok=True)
                 settings_path = os.path.join(settings_dir, "settings.json")
                 with open(settings_path, "w") as f:

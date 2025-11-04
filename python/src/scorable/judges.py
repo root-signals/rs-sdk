@@ -6,26 +6,26 @@ from typing import AsyncIterator, Dict, Iterator, List, Literal, Optional, Union
 
 from pydantic import StrictStr
 
-from root.generated.openapi_aclient.models.judge_generator_request import (
+from scorable.generated.openapi_aclient.models.judge_generator_request import (
     JudgeGeneratorRequest as AJudgeGeneratorRequest,
 )
-from root.generated.openapi_aclient.models.judge_generator_response import (
+from scorable.generated.openapi_aclient.models.judge_generator_response import (
     JudgeGeneratorResponse as AJudgeGeneratorResponse,
 )
-from root.generated.openapi_aclient.models.judge_generator_visibility_enum import (
+from scorable.generated.openapi_aclient.models.judge_generator_visibility_enum import (
     JudgeGeneratorVisibilityEnum as AJudgeGeneratorVisibilityEnum,
 )
-from root.generated.openapi_aclient.models.judge_request import (
+from scorable.generated.openapi_aclient.models.judge_request import (
     JudgeRequest as AJudgeRequest,
 )
-from root.generated.openapi_aclient.models.status_enum import (
+from scorable.generated.openapi_aclient.models.status_enum import (
     StatusEnum as AStatusEnum,
 )
-from root.generated.openapi_client.models.judge_generator_request import JudgeGeneratorRequest
-from root.generated.openapi_client.models.judge_generator_response import JudgeGeneratorResponse
-from root.generated.openapi_client.models.judge_generator_visibility_enum import JudgeGeneratorVisibilityEnum
-from root.generated.openapi_client.models.judge_request import JudgeRequest
-from root.generated.openapi_client.models.status_enum import StatusEnum
+from scorable.generated.openapi_client.models.judge_generator_request import JudgeGeneratorRequest
+from scorable.generated.openapi_client.models.judge_generator_response import JudgeGeneratorResponse
+from scorable.generated.openapi_client.models.judge_generator_visibility_enum import JudgeGeneratorVisibilityEnum
+from scorable.generated.openapi_client.models.judge_request import JudgeRequest
+from scorable.generated.openapi_client.models.status_enum import StatusEnum
 
 from .generated.openapi_aclient import ApiClient as AApiClient
 from .generated.openapi_aclient.api.judges_api import JudgesApi as AJudgesApi
@@ -190,7 +190,7 @@ class Judges:
 
     Note:
         The construction of the API instance should be handled by
-        accessing an attribute of a :class:`root.client.RootSignals` instance.
+        accessing an attribute of a :class:`root.client.Scorable` instance.
     """
 
     def __init__(self, client_context: ClientContextCallable):

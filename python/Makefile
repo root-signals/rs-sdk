@@ -1,5 +1,5 @@
 #
-# Author: Markus Stenberg <markus.stenberg@rootsignals.ai>
+# Author: Markus Stenberg <ari@scorable.ai>
 #
 # Copyright (c) 2024 Root Signals Ltd
 #
@@ -59,36 +59,36 @@ openapi-unchanged:
 		( echo "OpenAPI has changed. Please run 'make generate-openapi generate' and commit the changes." && exit 1 )
 	rm openapi.yaml.new
 
-src/root/generated/__init__.py: openapi.yaml
+src/scorable/generated/__init__.py: openapi.yaml
 	make generate-openapi-client
 
 .PHONY: generate-openapi-client
 generate-openapi-client:
-	rm -rf src/root/generated
-	rm -rf src/root/generated
+	rm -rf src/scorable/generated
+	rm -rf src/scorable/generated
 	docker run --rm \
 		-u $(shell id -u):$(shell id -g) \
 		-v ${PWD}:/local openapitools/openapi-generator-cli:v7.4.0 \
 		generate -i /local/openapi.yaml \
 		-g python -o /local/src \
 		--skip-validate-spec \
-		--additional-properties=generateSourceCodeOnly=true,packageName=root.generated.openapi_client
+		--additional-properties=generateSourceCodeOnly=true,packageName=scorable.generated.openapi_client
 	docker run --rm \
 		-u $(shell id -u):$(shell id -g) \
 		-v ${PWD}:/local openapitools/openapi-generator-cli:v7.4.0 \
 		generate -i /local/openapi.yaml \
 		-g python -o /local/src \
 		--skip-validate-spec \
-		--additional-properties=generateSourceCodeOnly=true,packageName=root.generated.openapi_aclient,library=asyncio
+		--additional-properties=generateSourceCodeOnly=true,packageName=scorable.generated.openapi_aclient,library=asyncio
 
 .PHONY: fix-openapi-client
 fix-openapi-client:
 	echo "Fixing sync client"
-	echo "from .api_client import ApiClient" > src/root/generated/openapi_client/__init__.py
-	echo > src/root/generated/openapi_client/api/__init__.py
+	echo "from .api_client import ApiClient" > src/scorable/generated/openapi_client/__init__.py
+	echo > src/scorable/generated/openapi_client/api/__init__.py
 	echo "Fixing async client"
-	echo "from .api_client import ApiClient" > src/root/generated/openapi_aclient/__init__.py
-	echo > src/root/generated/openapi_aclient/api/__init__.py
+	echo "from .api_client import ApiClient" > src/scorable/generated/openapi_aclient/__init__.py
+	echo > src/scorable/generated/openapi_aclient/api/__init__.py
 	make ruff || make ruff
 
 # Some comments about ^: These 2 echo lines are necessary as by
@@ -98,7 +98,7 @@ fix-openapi-client:
 # There's a ticket to fix this in upstream code: https://github.com/OpenAPITools/openapi-generator/issues/18144
 #
 # Unfortunately models/ wildcard importing is necessary, as deserializer imports classes from
-# root.generated.openapi_client.models.
+# scorable.generated.openapi_client.models.
 #
 # About the additional-properties,
 # c.f. https://openapi-generator.tech/docs/generators/python:
@@ -123,7 +123,7 @@ rtd-html: docs/.venv/bin/activate
 
 # Actual release targets
 
-dist: .venv Makefile README.md $(wildcard src/root/*.py)
+dist: .venv Makefile README.md $(wildcard src/scorable/*.py)
 	rm -rf dist
 	$(IN_VENV) hatch build
 

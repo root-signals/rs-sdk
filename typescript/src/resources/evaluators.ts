@@ -2,7 +2,7 @@ import type { paths, components } from '../generated/types.js';
 import {
   PaginatedResponse,
   ListParams,
-  RootSignalsError,
+  ScorableError,
   ExecutionPayload,
   ApiError,
 } from '../types/common.js';
@@ -49,7 +49,7 @@ export class EvaluatorsResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'LIST_EVALUATORS_FAILED',
         error,
@@ -73,7 +73,7 @@ export class EvaluatorsResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'GET_EVALUATOR_FAILED',
         error,
@@ -94,7 +94,7 @@ export class EvaluatorsResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'EXECUTE_EVALUATOR_FAILED',
         error,
@@ -115,7 +115,7 @@ export class EvaluatorsResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'EXECUTE_EVALUATOR_BY_NAME_FAILED',
         error,
@@ -137,7 +137,7 @@ export class EvaluatorsResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'DUPLICATE_EVALUATOR_FAILED',
         error,
@@ -150,7 +150,7 @@ export class EvaluatorsResource {
 
   async create(params: EvaluatorCreateParams): Promise<EvaluatorWithExecute> {
     if (params.objective_id && params.intent) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         400,
         'INVALID_PARAMS',
         {},
@@ -168,7 +168,7 @@ export class EvaluatorsResource {
       });
 
       if (error) {
-        throw new RootSignalsError(
+        throw new ScorableError(
           (error as ApiError)?.status ?? 500,
           'CREATE_OBJECTIVE_FAILED',
           error,
@@ -179,7 +179,7 @@ export class EvaluatorsResource {
     } else if (params.objective_id) {
       objectiveId = params.objective_id;
     } else {
-      throw new RootSignalsError(400, 'INVALID_PARAMS', {}, 'Objective ID or intent is required');
+      throw new ScorableError(400, 'INVALID_PARAMS', {}, 'Objective ID or intent is required');
     }
 
     const requestBody: EvaluatorRequest = {
@@ -213,7 +213,7 @@ export class EvaluatorsResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'CREATE_EVALUATOR_FAILED',
         error,

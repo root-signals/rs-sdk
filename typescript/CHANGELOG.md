@@ -1,3 +1,7 @@
+## 0.1.4
+
+- Rebrand to scorable
+
 ## 0.1.3
 
 ### Added

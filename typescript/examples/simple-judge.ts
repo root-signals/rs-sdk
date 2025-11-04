@@ -1,7 +1,7 @@
-import { RootSignals } from '../src/index.js';
+import { Scorable } from '../src/index.js';
 
-// Connect to the Root Signals API
-const client = new RootSignals({ apiKey: process.env.ROOTSIGNALS_API_KEY! });
+// Connect to the Scorable API
+const client = new Scorable({ apiKey: process.env.SCORABLE_API_KEY! });
 
 // Generate a judge by describing your application and the stage you want to evaluate.
 const judgeDefinition = await client.judges.generate({

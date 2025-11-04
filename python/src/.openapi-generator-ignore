@@ -18,31 +18,31 @@
 
 # You can also negate patterns with an exclamation (!).
 # For example, you can ignore all files in a docs folder with the file extension .md:
-root/generated/openapi_aclient/docs/*.md
-root/generated/openapi_aclient/test/*
-# root/generated/openapi_aclient/api/auth*
-# root/generated/openapi_aclient/api/health*
-# root/generated/openapi_aclient/api/apikeys*
-# root/generated/openapi_aclient/api/chatbot*
-# root/generated/openapi_aclient/api/dataset_drafts*
-# root/generated/openapi_aclient/api/organizations*
-# root/generated/openapi_aclient/models/api_key*
-# root/generated/openapi_aclient/models/password*
-# root/generated/openapi_aclient/models/social*
-# root/generated/openapi_aclient/models/verify_email*
-root/__init__.py
-root/generated/openapi_client/docs/*.md
-root/generated/openapi_client/test/*
-# root/generated/openapi_client/api/auth*
-# root/generated/openapi_client/api/health*
-# root/generated/openapi_client/api/apikeys*
-# root/generated/openapi_client/api/chatbot*
-# root/generated/openapi_client/api/dataset_drafts*
-# root/generated/openapi_client/api/organizations*
-# root/generated/openapi_client/models/api_key*
-# root/generated/openapi_client/models/password*
-# root/generated/openapi_client/models/social*
-# root/generated/openapi_client/models/verify_email*
+scorable/generated/openapi_aclient/docs/*.md
+scorable/generated/openapi_aclient/test/*
+# scorable/generated/openapi_aclient/api/auth*
+# scorable/generated/openapi_aclient/api/health*
+# scorable/generated/openapi_aclient/api/apikeys*
+# scorable/generated/openapi_aclient/api/chatbot*
+# scorable/generated/openapi_aclient/api/dataset_drafts*
+# scorable/generated/openapi_aclient/api/organizations*
+# scorable/generated/openapi_aclient/models/api_key*
+# scorable/generated/openapi_aclient/models/password*
+# scorable/generated/openapi_aclient/models/social*
+# scorable/generated/openapi_aclient/models/verify_email*
+scorable/__init__.py
+scorable/generated/openapi_client/docs/*.md
+scorable/generated/openapi_client/test/*
+# scorable/generated/openapi_client/api/auth*
+# scorable/generated/openapi_client/api/health*
+# scorable/generated/openapi_client/api/apikeys*
+# scorable/generated/openapi_client/api/chatbot*
+# scorable/generated/openapi_client/api/dataset_drafts*
+# scorable/generated/openapi_client/api/organizations*
+# scorable/generated/openapi_client/models/api_key*
+# scorable/generated/openapi_client/models/password*
+# scorable/generated/openapi_client/models/social*
+# scorable/generated/openapi_client/models/verify_email*
 
 # Then explicitly reverse the ignore rule for a single file:
 #!docs/README.md

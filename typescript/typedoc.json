@@ -2,7 +2,7 @@
   "entryPoints": ["src/index.ts"],
   "out": "docs",
   "theme": "default",
-  "name": "Root Signals TypeScript SDK",
+  "name": "Scorable TypeScript SDK",
   "readme": "README.md",
   "includeVersion": true,
   "excludeExternals": true,
@@ -62,7 +62,7 @@
   ],
   "githubPages": false,
   "navigationLinks": {
-    "GitHub": "https://github.com/root-signals/rs-python-sdk",
-    "Documentation": "https://docs.rootsignals.ai"
+    "GitHub": "https://github.com/root-signals/rs-sdk",
+    "Documentation": "https://docs.scorable.ai"
   }
 }

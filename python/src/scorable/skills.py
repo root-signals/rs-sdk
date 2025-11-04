@@ -11,15 +11,15 @@ from typing import TYPE_CHECKING, AsyncIterator, Dict, Iterator, List, Literal, 
 
 from pydantic import BaseModel, StrictStr
 
-from root.generated.openapi_aclient.models.evaluator_request import EvaluatorRequest as AEvaluatorRequest
-from root.generated.openapi_aclient.models.paginated_evaluator_list import (
+from scorable.generated.openapi_aclient.models.evaluator_request import EvaluatorRequest as AEvaluatorRequest
+from scorable.generated.openapi_aclient.models.paginated_evaluator_list import (
     PaginatedEvaluatorList as APaginatedEvaluatorList,
 )
-from root.generated.openapi_aclient.models.paginated_evaluator_list_output_list import (
+from scorable.generated.openapi_aclient.models.paginated_evaluator_list_output_list import (
     PaginatedEvaluatorListOutputList as APaginatedEvaluatorListOutputList,
 )
-from root.generated.openapi_client.models.evaluator_request import EvaluatorRequest
-from root.generated.openapi_client.models.paginated_evaluator_list import PaginatedEvaluatorList
+from scorable.generated.openapi_client.models.evaluator_request import EvaluatorRequest
+from scorable.generated.openapi_client.models.paginated_evaluator_list import PaginatedEvaluatorList
 
 from .generated.openapi_aclient import ApiClient as AApiClient
 from .generated.openapi_aclient.api.evaluators_api import EvaluatorsApi as AEvaluatorsApi
@@ -588,7 +588,7 @@ class Evaluators:
     Note:
 
       The construction of the API instance should be handled by
-      accesing an attribute of a :class:`root.client.RootSignals` instance.
+      accesing an attribute of a :class:`root.client.Scorable` instance.
     """
 
     def _validate_create_params_sanitize_name(
@@ -1174,7 +1174,7 @@ class Evaluators:
           intent: The intent of the evaluator (defaulting to name); not available if objective_id is set.
 
           model: The model to use (defaults to 'root', which means
-            Root Signals default at the time of evaluator creation)
+            Scorable default at the time of evaluator creation)
 
           fallback_models: The fallback models to use in case the primary model fails.
 
@@ -1254,7 +1254,7 @@ class Evaluators:
           intent: The intent of the evaluator (defaulting to name); not available if objective_id is set.
 
           model: The model to use (defaults to 'root', which means
-            Root Signals default at the time of evaluator creation)
+            Scorable default at the time of evaluator creation)
 
           fallback_models: The fallback models to use in case the primary model fails.
 
@@ -1445,7 +1445,7 @@ class Evaluators:
           search_term: Can be used to limit returned evaluators.
           limit: Number of entries to iterate through at most.
           name: Specific name the returned evaluators must match.
-          only_root_evaluators: Returns only Root Signals defined evaluators.
+          only_root_evaluators: Returns only Scorable defined evaluators.
         """
 
         api_instance = EvaluatorsApi(_client)
@@ -1474,7 +1474,7 @@ class Evaluators:
           search_term: Can be used to limit returned evaluators.
           limit: Number of entries to iterate through at most.
           name: Specific name the returned evaluators must match.
-          only_root_evaluators: Returns only Root Signals defined evaluators.
+          only_root_evaluators: Returns only Scorable defined evaluators.
         """
 
         context = self.client_context()

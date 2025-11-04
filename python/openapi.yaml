@@ -1,8 +1,8 @@
 openapi: 3.0.3
 info:
-  title: Root Signals API
+  title: Scorable API
   version: 1.0.0 (latest)
-  description: Root Signals JSON API provides a way to access Root Signals using provisioned
+  description: Scorable JSON API provides a way to access Scorable using provisioned
     API token
 paths:
   /v1/beta/evaluation-agents/:
@@ -592,7 +592,7 @@ paths:
         schema:
           type: boolean
           default: false
-        description: Return only Root Signals defined evaluators.
+        description: Return only Scorable defined evaluators.
       - in: query
         name: name
         schema:
@@ -5531,4 +5531,4 @@ components:
       description: Token-based authentication with required prefix "Api-Key"
       x-default: Api-Key <your-api-key>
 servers:
-- url: https://api.app.rootsignals.ai
+- url: https://api.scorable.ai

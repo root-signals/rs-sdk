@@ -1,20 +1,20 @@
 /**
- * @file Integration tests for the main RootSignals client
+ * @file Integration tests for the main Scorable client
  */
 
 import { describe, it, expect, beforeAll, vi } from 'vitest';
-import { RootSignals, RootSignalsError } from '../../src/index';
+import { Scorable, ScorableError } from '../../src/index';
 
-describe.skipIf(!process.env.ROOTSIGNALS_API_KEY)('RootSignals Client Integration', () => {
-  let client: RootSignals;
+describe.skipIf(!process.env.SCORABLE_API_KEY)('Scorable Client Integration', () => {
+  let client: Scorable;
 
   beforeAll(() => {
-    const apiKey = process.env.ROOTSIGNALS_API_KEY;
+    const apiKey = process.env.SCORABLE_API_KEY;
     if (!apiKey) {
       return;
     }
 
-    client = new RootSignals({
+    client = new Scorable({
       apiKey,
       retry: {
         maxRetries: 2,
@@ -119,15 +119,15 @@ describe.skipIf(!process.env.ROOTSIGNALS_API_KEY)('RootSignals Client Integratio
 
   describe('error handling', () => {
     it('should handle authentication errors', async () => {
-      const badClient = new RootSignals({ apiKey: 'invalid-key' });
+      const badClient = new Scorable({ apiKey: 'invalid-key' });
 
-      await expect(badClient.evaluators.list()).rejects.toThrow(RootSignalsError);
+      await expect(badClient.evaluators.list()).rejects.toThrow(ScorableError);
     }, 10000);
 
     it('should handle network errors with retry', async () => {
       // Create client with very aggressive retry for testing
-      const retryClient = new RootSignals({
-        apiKey: process.env.ROOTSIGNALS_API_KEY || 'dummy-key',
+      const retryClient = new Scorable({
+        apiKey: process.env.SCORABLE_API_KEY || 'dummy-key',
         baseUrl: 'https://invalid-domain-that-does-not-exist.com',
         retry: {
           maxRetries: 1,
@@ -142,8 +142,8 @@ describe.skipIf(!process.env.ROOTSIGNALS_API_KEY)('RootSignals Client Integratio
 
   describe('configuration', () => {
     it('should respect custom timeout settings', async () => {
-      const timeoutClient = new RootSignals({
-        apiKey: process.env.ROOTSIGNALS_API_KEY || 'dummy-key',
+      const timeoutClient = new Scorable({
+        apiKey: process.env.SCORABLE_API_KEY || 'dummy-key',
         timeout: 1, // Very short timeout
       });
 
@@ -161,12 +161,12 @@ describe.skipIf(!process.env.ROOTSIGNALS_API_KEY)('RootSignals Client Integratio
 describe('Client Configuration Edge Cases', () => {
   it('should handle missing API key gracefully', () => {
     expect(() => {
-      new RootSignals({ apiKey: '' });
+      new Scorable({ apiKey: '' });
     }).not.toThrow(); // Client creation should succeed, but API calls will fail
   });
 
   it('should handle custom base URL', () => {
-    const client = new RootSignals({
+    const client = new Scorable({
       apiKey: 'test-key',
       baseUrl: 'https://custom-api.example.com',
     });
@@ -176,7 +176,7 @@ describe('Client Configuration Edge Cases', () => {
   });
 
   it('should provide access to underlying OpenAPI client', () => {
-    const client = new RootSignals({ apiKey: 'test-key' });
+    const client = new Scorable({ apiKey: 'test-key' });
     const openApiClient = client.getClient();
 
     expect(openApiClient).toBeDefined();
@@ -185,16 +185,16 @@ describe('Client Configuration Edge Cases', () => {
   });
 });
 
-describe.skipIf(!process.env.ROOTSIGNALS_API_KEY)('Performance and Reliability', () => {
-  let client: RootSignals;
+describe.skipIf(!process.env.SCORABLE_API_KEY)('Performance and Reliability', () => {
+  let client: Scorable;
 
   beforeAll(() => {
-    const apiKey = process.env.ROOTSIGNALS_API_KEY;
+    const apiKey = process.env.SCORABLE_API_KEY;
     if (!apiKey) {
       return;
     }
 
-    client = new RootSignals({
+    client = new Scorable({
       apiKey,
       retry: {
         maxRetries: 3,

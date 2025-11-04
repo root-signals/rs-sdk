@@ -1,6 +1,6 @@
-import { RootSignals } from '../src/index.js';
+import { Scorable } from '../src/index.js';
 
-const client = new RootSignals({ apiKey: process.env.ROOTSIGNALS_API_KEY! });
+const client = new Scorable({ apiKey: process.env.SCORABLE_API_KEY! });
 
 const networkTroubleshootingEvaluator = await client.evaluators.create({
   name: 'Network Troubleshooting',

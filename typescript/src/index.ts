@@ -1,5 +1,5 @@
 // Main exports
-export { RootSignals } from './client.js';
+export { Scorable } from './client.js';
 
 // Types
 export type {
@@ -8,7 +8,7 @@ export type {
   ListParams,
   ExecutionPayload,
 } from './types/common.js';
-export { RootSignalsError } from './types/common.js';
+export { ScorableError } from './types/common.js';
 
 // Resources
 export type {

@@ -1,9 +1,9 @@
 import asyncio
 
-from root import RootSignals
+from scorable import Scorable
 
-# Connect to the Root Signals API
-aclient = RootSignals(run_async=True)
+# Connect to the Scorable API
+aclient = Scorable(run_async=True)
 
 
 async def main():

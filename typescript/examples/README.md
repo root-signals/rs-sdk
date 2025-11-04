@@ -1,6 +1,6 @@
-# Root Signals SDK Examples
+# Scorable SDK Examples
 
-This directory contains practical examples for the Root Signals TypeScript SDK.
+This directory contains practical examples for the Scorable TypeScript SDK.
 
 ## Available Examples
 
@@ -30,7 +30,7 @@ npm install
 
 2. Set your API key:
 ```bash
-export ROOTSIGNALS_API_KEY="your-api-key-here"
+export SCORABLE_API_KEY="your-api-key-here"
 ```
 
 3. Build the SDK:
@@ -56,7 +56,7 @@ Copy and adapt the examples for your specific use cases.
 ## Example Categories
 
 ### 🎯 Basic Evaluation
-Learn the fundamentals of using Root Signals evaluators:
+Learn the fundamentals of using Scorable evaluators:
 - Connecting to the API with proper configuration
 - Listing and exploring available evaluators
 - Executing evaluations with comprehensive error handling
@@ -103,5 +103,5 @@ Each example demonstrates:
 If you have questions about any example:
 1. Check the inline comments in the example code
 2. Review the main [README](../README.md) for SDK documentation
-3. Visit our [documentation](https://docs.rootsignals.ai)
-4. Contact support at support@rootsignals.ai
+3. Visit our [documentation](https://docs.scorable.ai)
+4. Contact support at support@scorable.ai

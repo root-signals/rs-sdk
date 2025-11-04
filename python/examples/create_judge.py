@@ -1,9 +1,9 @@
-from root import RootSignals
-from root.generated.openapi_client.models.evaluator_reference_request import EvaluatorReferenceRequest
-from root.skills import Evaluators
+from scorable import Scorable
+from scorable.generated.openapi_client.models.evaluator_reference_request import EvaluatorReferenceRequest
+from scorable.skills import Evaluators
 
-# Connect to the Root Signals API
-client = RootSignals()
+# Connect to the Scorable API
+client = Scorable()
 
 evaluator_references = [
     EvaluatorReferenceRequest(id=Evaluators.Eval.Truthfulness.value),

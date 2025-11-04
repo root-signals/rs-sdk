@@ -1,14 +1,14 @@
 /**
  * Real-World Integration Example
  *
- * This example demonstrates how to integrate Root Signals into a real application:
+ * This example demonstrates how to integrate Scorable into a real application:
  * - Production-ready configuration
  * - Comprehensive monitoring and analytics
  * - Integration with logging systems
  * - A/B testing evaluation workflows
  */
 
-import { RootSignals, RootSignalsError, ExecutionResult } from '../src/index.js';
+import { Scorable, ScorableError, ExecutionResult } from '../src/index.js';
 
 // Simulated application types
 interface ChatbotResponse {
@@ -31,12 +31,12 @@ interface EvaluationMetrics {
 }
 
 class ProductionEvaluationService {
-  private client: RootSignals;
+  private client: Scorable;
   private metrics: EvaluationMetrics;
 
   constructor(apiKey: string) {
     // Production-ready client configuration
-    this.client = new RootSignals({
+    this.client = new Scorable({
       apiKey,
       timeout: 30000,
       retry: {
@@ -324,7 +324,7 @@ class ProductionEvaluationService {
 
 async function main() {
   try {
-    const service = new ProductionEvaluationService(process.env.ROOTSIGNALS_API_KEY!);
+    const service = new ProductionEvaluationService(process.env.SCORABLE_API_KEY!);
 
     // Sample production data
     const sampleResponses: ChatbotResponse[] = [
@@ -391,8 +391,8 @@ async function main() {
 
     console.log('✅ Real-world integration example completed successfully!');
   } catch (error) {
-    if (error instanceof RootSignalsError) {
-      console.error(`❌ Root Signals API Error (${error.status}): ${error.detail}`);
+    if (error instanceof ScorableError) {
+      console.error(`❌ Scorable API Error (${error.status}): ${error.detail}`);
       console.error(`Error Code: ${error.code}`);
     } else {
       console.error('❌ Unexpected error:', error);

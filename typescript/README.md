@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img width="600" alt="Root Signals logo" src="https://app.rootsignals.ai/images/root-signals-color.svg" loading="lazy">
+  <img width="600" alt="Scorable logo" src="https://scorable.ai/images/root-signals-color.svg" loading="lazy">
 </h1>
 
 <p align="center" class="large-text">
@@ -7,14 +7,14 @@
 </p>
 
 <p align="center">
-    <a href="https://www.npmjs.com/package/@root-signals/typescript-sdk">
+    <a href="https://www.npmjs.com/package/@root-signals/scorable">
       <img alt="Supported Node.js versions" src="https://img.shields.io/badge/Node.js-18%20to%2022-yellow?style=for-the-badge&logo=node.js&logoColor=yellow">
     </a>
 </p>
 
 
 <p align="center">
-  <a href="https://app.rootsignals.ai/register">
+  <a href="https://scorable.ai/register">
     <img src="https://img.shields.io/badge/Get_Started-2E6AFB?style=for-the-badge&logo=rocket&logoColor=white&scale=2" />
   </a>
 
@@ -26,51 +26,51 @@
     <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white&scale=2" />
   </a>
 
-  <a href="https://docs.rootsignals.ai">
+  <a href="https://docs.scorable.ai">
     <img src="https://img.shields.io/badge/Documentation-E53935?style=for-the-badge&logo=readthedocs&logoColor=white&scale=2" />
   </a>
 
-  <a href="https://app.rootsignals.ai/demo-user">
+  <a href="https://scorable.ai/demo-user">
     <img src="https://img.shields.io/badge/Temporary_API_Key-15a20b?style=for-the-badge&logo=keycdn&logoColor=white&scale=2" />
   </a>
 </p>
 
-**Root Signals** streamlines the evaluation of your LLM and agentic pipelines. We provide a holistic approach to GenAI measurability & observability with **carefully-crafted ready-to-use evaluators** based on cutting-edge LLM research as well as a framework for systematically adding **your own custom evaluators**.
+**Scorable** streamlines the evaluation of your LLM and agentic pipelines. We provide a holistic approach to GenAI measurability & observability with **carefully-crafted ready-to-use evaluators** based on cutting-edge LLM research as well as a framework for systematically adding **your own custom evaluators**.
 
-With Root Signals you can develop your LLM application reliably, deploy them in confidence, and ensure optimal performance with continuous monitoring.
+With Scorable you can develop your LLM application reliably, deploy them in confidence, and ensure optimal performance with continuous monitoring.
 
 ## 📦 Install
 
 ```bash
-npm install @root-signals/typescript-sdk
+npm install @root-signals/scorable
 # or
-yarn add @root-signals/typescript-sdk
+yarn add @root-signals/scorable
 # or  
-pnpm add @root-signals/typescript-sdk
+pnpm add @root-signals/scorable
 ```
 
 ## ⚡ Quickstart
 
 ### 🔑 Get Your API Key
-[Sign up & create a key](https://app.rootsignals.ai/settings/api-keys) or [generate a temporary key](https://app.rootsignals.ai/demo-user)
+[Sign up & create a key](https://scorable.ai/settings/api-keys) or [generate a temporary key](https://scorable.ai/demo-user)
 
 **Setup Option 1: Environment Variable**
 ```bash
-export ROOTSIGNALS_API_KEY=your-Root-API-key
+export SCORABLE_API_KEY=your-scorable-api-key
 ```
 
 **Setup Option 2: `.env` File**
 ```bash
-echo ROOTSIGNALS_API_KEY=your-Root-API-key >> .env
+echo SCORABLE_API_KEY=your-scorable-api-key >> .env
 ```
 
 ### *Root* Evaluators
 ```typescript
-import { RootSignals } from '@root-signals/typescript-sdk';
+import { Scorable } from '@root-signals/scorable';
 
-// Connect to Root Signals API
-const client = new RootSignals({
-  apiKey: process.env.ROOTSIGNALS_API_KEY!
+// Connect to Scorable API
+const client = new Scorable({
+  apiKey: process.env.SCORABLE_API_KEY!
 });
 
 // Run any of our ready-made evaluators
@@ -86,14 +86,14 @@ const result = await client.evaluators.executeByName('Politeness', {
 //   }
 ```
 
-Check the full list of *Root* evaluators from the [Root evaluators documentation](https://docs.rootsignals.ai/quick-start/usage/evaluators#list-of-evaluators-maintained-by-root-signals). You can also [add your own custom evaluators](#custom-evaluators).
+Check the full list of *Root* evaluators from the [Root evaluators documentation](https://docs.scorable.ai/quick-start/usage/evaluators#list-of-evaluators-maintained-by-root-signals). You can also [add your own custom evaluators](#custom-evaluators).
 
 ## 📖 Documentation
 
 | Resource | Link |
 |----------|------|
-| 📘 Product Docs | [View Documentation](https://docs.rootsignals.ai) |
-| 📑 API Docs | [View Documentation](https://api.docs.rootsignals.ai/) |
+| 📘 Product Docs | [View Documentation](https://docs.scorable.ai) |
+| 📑 API Docs | [View Documentation](https://api.docs.scorable.ai/) |
 | 🐍 Python SDK | [View Documentation](https://github.com/root-signals/python-sdk) |
 | 🔌 MCP | [View Repo](https://github.com/root-signals/root-signals-mcp) |
 
@@ -103,11 +103,11 @@ Check the full list of *Root* evaluators from the [Root evaluators documentation
 ### Root Evaluator by Name
 
 ```typescript
-import { RootSignals } from '@root-signals/typescript-sdk';
+import { Scorable } from '@root-signals/scorable';
 
-const client = new RootSignals({ apiKey: process.env.ROOTSIGNALS_API_KEY! });
+const client = new Scorable({ apiKey: process.env.SCORABLE_API_KEY! });
 
-// Run a root evaluator by name using the executeByName method
+// Run a scorable evaluator by name using the executeByName method
 const result = await client.evaluators.executeByName(
   'Helpfulness',
   {
@@ -150,9 +150,9 @@ try {
 ### Custom Evaluators
 
 ```typescript
-import { RootSignals } from '@root-signals/typescript-sdk';
+import { Scorable } from '@root-signals/scorable';
 
-const client = new RootSignals({ apiKey: process.env.ROOTSIGNALS_API_KEY! });
+const client = new Scorable({ apiKey: process.env.SCORABLE_API_KEY! });
 
 const networkTroubleshootingEvaluator = await client.evaluators.create({
   name: "Network Troubleshooting",
@@ -183,10 +183,10 @@ console.log(response.justification);
 ### Simple Judge
 
 ```typescript
-import { RootSignals } from '@root-signals/typescript-sdk';
+import { Scorable } from '@root-signals/scorable';
 
-// Connect to the Root Signals API
-const client = new RootSignals({ apiKey: process.env.ROOTSIGNALS_API_KEY! });
+// Connect to the Scorable API
+const client = new Scorable({ apiKey: process.env.SCORABLE_API_KEY! });
 
 // Generate a judge by describing your application and the stage you want to evaluate.
 const judgeDefinition = await client.judges.generate({
@@ -217,10 +217,10 @@ console.log(results);
 ### Create Judge
 
 ```typescript
-import { RootSignals } from '@root-signals/typescript-sdk';
+import { Scorable } from '@root-signals/scorable';
 
-// Connect to the Root Signals API
-const client = new RootSignals({ apiKey: process.env.ROOTSIGNALS_API_KEY! });
+// Connect to the Scorable API
+const client = new Scorable({ apiKey: process.env.SCORABLE_API_KEY! });
 
 const evaluatorReferences = [
   { id: 'truthfulness-evaluator-id' },
@@ -252,10 +252,10 @@ console.log(results);
 ### Execution Logs
 
 ```typescript
-import { RootSignals } from '@root-signals/typescript-sdk';
+import { Scorable } from '@root-signals/scorable';
 
-// Connect to the Root Signals API
-const client = new RootSignals({ apiKey: process.env.ROOTSIGNALS_API_KEY! });
+// Connect to the Scorable API
+const client = new Scorable({ apiKey: process.env.SCORABLE_API_KEY! });
 
 const evaluator = await client.evaluators.create({
   name: "My evaluator",
@@ -281,7 +281,7 @@ console.log(iterator.results[0]);
 ### Client Configuration
 
 ```typescript
-const client = new RootSignals({
+const client = new Scorable({
   apiKey: 'your-api-key',
   timeout: 30000, // Request timeout in ms
   
@@ -307,14 +307,14 @@ const client = new RootSignals({
 
 ```bash
 # .env file
-ROOTSIGNALS_API_KEY=your-api-key
-ROOTSIGNALS_BASE_URL=https://api.app.rootsignals.ai
+SCORABLE_API_KEY=your-api-key
+SCORABLE_BASE_URL=https://api.scorable.ai
 ```
 
 ```typescript
-const client = new RootSignals({
-  apiKey: process.env.ROOTSIGNALS_API_KEY!,
-  baseUrl: process.env.ROOTSIGNALS_BASE_URL
+const client = new Scorable({
+  apiKey: process.env.SCORABLE_API_KEY!,
+  baseUrl: process.env.SCORABLE_BASE_URL
 });
 ```
 
@@ -323,22 +323,22 @@ const client = new RootSignals({
 The SDK provides structured error handling following RFC 9457:
 
 ```typescript
-import { RootSignalsError } from '@root-signals/typescript-sdk';
+import { ScorableError } from '@root-signals/scorable';
 
 try {
   const result = await client.evaluators.executeByName('Accuracy', payload);
 } catch (error) {
-  if (error instanceof RootSignalsError) {
+  if (error instanceof ScorableError) {
     console.error(`Status: ${error.status}`);
     console.error(`Code: ${error.code}`);
     console.error(`Detail: ${error.detail}`);
     
     // Check error type
-    if (RootSignalsError.isAuthenticationError(error)) {
+    if (ScorableError.isAuthenticationError(error)) {
       console.error('Authentication failed - check your API key');
-    } else if (RootSignalsError.isQuotaError(error)) {
+    } else if (ScorableError.isQuotaError(error)) {
       console.error('Quota exceeded - upgrade your plan');
-    } else if (RootSignalsError.isValidationError(error)) {
+    } else if (ScorableError.isValidationError(error)) {
       console.error('Invalid request data');
     }
   }
@@ -353,7 +353,7 @@ try {
 Built-in retry logic and rate limiting for robust API interactions:
 
 ```typescript
-const client = new RootSignals({
+const client = new Scorable({
   apiKey: 'your-key',
   retry: {
     maxRetries: 3,
@@ -385,7 +385,7 @@ const result3 = await client.withRetryAndRateLimit(async () => {
 
 ## 📚 API Resources
 
-The TypeScript SDK provides access to all Root Signals API resources:
+The TypeScript SDK provides access to all Scorable API resources:
 
 ### Core Evaluation
 - **`client.evaluators`** - Execute and manage LLM evaluators

@@ -9,7 +9,7 @@ describe('Authentication', () => {
       expect(headers).toEqual({
         Authorization: 'Api-Key test-api-key-123',
         'Content-Type': 'application/json',
-        'User-Agent': '@root-signals/typescript-sdk/0.1.0',
+        'User-Agent': '@root-signals/scorable/0.1.4',
       });
     });
 
@@ -19,7 +19,7 @@ describe('Authentication', () => {
 
       expect(headers['Authorization']).toBe('Api-Key ');
       expect(headers['Content-Type']).toBe('application/json');
-      expect(headers['User-Agent']).toBe('@root-signals/typescript-sdk/0.1.0');
+      expect(headers['User-Agent']).toBe('@root-signals/scorable/0.1.4');
     });
 
     it('should handle special characters in API key', () => {

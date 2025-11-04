@@ -1,20 +1,20 @@
 /**
  * Comprehensive Integration Tests
  *
- * These tests run against the actual Root Signals API and require a valid API key.
+ * These tests run against the actual Scorable API and require a valid API key.
  * They are automatically skipped in CI/CD environments where no API key is available.
  *
  * To run these tests:
- * 1. Set the ROOTSIGNALS_API_KEY environment variable
+ * 1. Set the SCORABLE_API_KEY environment variable
  * 2. Run: npm test -- tests/comprehensive.test.ts
  *
  * Note: These tests may create, modify, and delete resources in your account.
  */
 
-import { RootSignals } from '../src/index.js';
+import { Scorable } from '../src/index.js';
 
 // Get API key from environment variable
-const API_KEY = process.env.ROOTSIGNALS_API_KEY;
+const API_KEY = process.env.SCORABLE_API_KEY;
 
 // Fallback for development (only use if environment variable is explicitly set to this value)
 const DEVELOPMENT_KEY = 'B1---------------------------------------------c5';
@@ -29,20 +29,18 @@ const EFFECTIVE_API_KEY = API_KEY || (runComprehensiveTests ? DEVELOPMENT_KEY : 
 
 // Provide helpful feedback when tests are skipped
 if (!runComprehensiveTests) {
-  console.info('ℹ️  Comprehensive integration tests skipped: No valid ROOTSIGNALS_API_KEY found');
+  console.info('ℹ️  Comprehensive integration tests skipped: No valid SCORABLE_API_KEY found');
 }
 
-describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', () => {
-  let client: RootSignals;
+describe.skipIf(!runComprehensiveTests)('Scorable SDK Comprehensive Tests', () => {
+  let client: Scorable;
 
   beforeAll(() => {
     if (!EFFECTIVE_API_KEY) {
-      throw new Error(
-        'ROOTSIGNALS_API_KEY environment variable is required for comprehensive tests',
-      );
+      throw new Error('SCORABLE_API_KEY environment variable is required for comprehensive tests');
     }
 
-    client = new RootSignals({
+    client = new Scorable({
       apiKey: EFFECTIVE_API_KEY,
     });
   });
@@ -516,7 +514,7 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
         await client.evaluators.get('invalid-id-12345');
         assert.fail('Should have thrown an error');
       } catch (error: any) {
-        expect(error.name).toBe('RootSignalsError');
+        expect(error.name).toBe('ScorableError');
         expect(error).toBeInstanceOf(Error);
       }
     });
@@ -527,7 +525,7 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
         await client.judges.get('invalid-id-12345');
         assert.fail('Should have thrown an error');
       } catch (error: any) {
-        expect(error.name).toBe('RootSignalsError');
+        expect(error.name).toBe('ScorableError');
         expect(error).toBeInstanceOf(Error);
       }
     });
@@ -538,7 +536,7 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
         await client.objectives.get('invalid-id-12345');
         assert.fail('Should have thrown an error');
       } catch (error: any) {
-        expect(error.name).toBe('RootSignalsError');
+        expect(error.name).toBe('ScorableError');
         expect(error).toBeInstanceOf(Error);
       }
     });
@@ -549,7 +547,7 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
         await client.models.get('invalid-id-12345');
         assert.fail('Should have thrown an error');
       } catch (error: any) {
-        expect(error.name).toBe('RootSignalsError');
+        expect(error.name).toBe('ScorableError');
         expect(error).toBeInstanceOf(Error);
       }
     });
@@ -560,7 +558,7 @@ describe.skipIf(!runComprehensiveTests)('Root Signals SDK Comprehensive Tests', 
         await client.executionLogs.get('invalid-id-12345');
         assert.fail('Should have thrown an error');
       } catch (error: any) {
-        expect(error.name).toBe('RootSignalsError');
+        expect(error.name).toBe('ScorableError');
         expect(error).toBeInstanceOf(Error);
       }
     });

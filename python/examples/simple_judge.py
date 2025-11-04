@@ -1,7 +1,7 @@
-from root import RootSignals
+from scorable import Scorable
 
-# Connect to the Root Signals API
-client = RootSignals()
+# Connect to the Scorable API
+client = Scorable()
 
 # Generate a judge by describing your application and the stage you want to evaluate.
 judge_definition = client.judges.generate(

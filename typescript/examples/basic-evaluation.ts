@@ -1,17 +1,17 @@
 /**
  * Basic Evaluation Example
  *
- * This example demonstrates the fundamental usage of Root Signals evaluators:
+ * This example demonstrates the fundamental usage of Scorable evaluators:
  * - Connecting to the API
  * - Listing available evaluators
  * - Executing evaluations
  * - Handling results and errors
  */
 
-import { RootSignals } from '../src/index.js';
+import { Scorable } from '../src/index.js';
 
-// Connect to the Root Signals API
-const client = new RootSignals({ apiKey: process.env.ROOTSIGNALS_API_KEY! });
+// Connect to the Scorable API
+const client = new Scorable({ apiKey: process.env.SCORABLE_API_KEY! });
 
 // Example usage: Execute an evaluator by name
 const result = await client.evaluators.executeByName('Helpfulness', {

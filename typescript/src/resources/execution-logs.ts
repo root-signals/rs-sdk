@@ -1,5 +1,5 @@
 import type { paths, components } from '../generated/types.js';
-import { PaginatedResponse, ListParams, RootSignalsError, ApiError } from '../types/common.js';
+import { PaginatedResponse, ListParams, ScorableError, ApiError } from '../types/common.js';
 
 type Client = ReturnType<typeof import('openapi-fetch').default<paths>>;
 
@@ -35,7 +35,7 @@ export class ExecutionLogsResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'LIST_EXECUTION_LOGS_FAILED',
         error,
@@ -59,7 +59,7 @@ export class ExecutionLogsResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'GET_EXECUTION_LOG_FAILED',
         error,

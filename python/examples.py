@@ -64,9 +64,9 @@ def generate_pytest() -> None:
     print("""# Automatically generated pytest definition, please do not edit
 
 import pytest
-from root import RootSignals
+from scorable import Scorable
 """)
-    skip_line_match = re.compile(r"^(\s*#.*|from root import RootSignals|\s*)$").match
+    skip_line_match = re.compile(r"^(\s*#.*|from scorable import Scorable|\s*)$").match
     for example_path in EXAMPLE_DIR.glob("*.py"):
         print("")
         print(f"def test_{example_path.stem}():")

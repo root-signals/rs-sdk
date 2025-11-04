@@ -158,14 +158,14 @@ def print_warning(msg):
     console.print(f"[bold yellow]Warning:[/bold yellow] {msg}")
 
 
-API_KEY = os.getenv("ROOTSIGNALS_API_KEY")
-BASE_URL = os.getenv("ROOTSIGNALS_API_URL", "https://api.app.rootsignals.ai")
+API_KEY = os.getenv("SCORABLE_API_KEY")
+BASE_URL = os.getenv("SCORABLE_API_URL", "https://api.scorable.ai")
 
 session = requests.Session()
 
 
 def _config_dir() -> str:
-    return os.path.join(os.path.expanduser("~"), ".rootsignals")
+    return os.path.join(os.path.expanduser("~"), ".scorable")
 
 
 def _settings_path() -> str:
@@ -220,18 +220,18 @@ def _request(
     """A centralized function to handle all API requests with typed responses."""
     # Ensure the session is configured before the first request
     if not session.headers.get("Authorization"):
-        effective_api_key = API_KEY or os.getenv("ROOTSIGNALS_API_KEY")
+        effective_api_key = API_KEY or os.getenv("SCORABLE_API_KEY")
         if not effective_api_key:
             settings = _load_settings()
             if settings:
                 effective_api_key = settings.get("temporary_api_key")
         if not effective_api_key:
-            print_error("ROOTSIGNALS_API_KEY environment variable not set.")
+            print_error("SCORABLE_API_KEY environment variable not set.")
             shell = os.environ.get("SHELL", "")
             if "fish" in shell:
-                print_info("Run: set -x ROOTSIGNALS_API_KEY <your_key>")
+                print_info("Run: set -x SCORABLE_API_KEY <your_key>")
             else:
-                print_info("Run: export ROOTSIGNALS_API_KEY='<your_key>'")
+                print_info("Run: export SCORABLE_API_KEY='<your_key>'")
             if sys.stdin.isatty() and sys.stdout.isatty():
                 if click.confirm(
                     "No API key found. Create a temporary key now?", default=True
@@ -244,7 +244,7 @@ def _request(
                         demo_user_contents = resp.json()
                         temp_key = demo_user_contents.get("api_key")
                         if temp_key:
-                            os.environ["ROOTSIGNALS_API_KEY"] = temp_key
+                            os.environ["SCORABLE_API_KEY"] = temp_key
                             effective_api_key = temp_key
                             try:
                                 current = _load_settings()
@@ -253,18 +253,18 @@ def _request(
                                 current["temporary_api_key"] = temp_key
                                 _save_settings(current)
                                 print_success(
-                                    "Temporary API key saved to ~/.rootsignals/settings.json"
+                                    "Temporary API key saved to ~/.scorable/settings.json"
                                 )
                             except Exception:
                                 pass
                             shell = os.environ.get("SHELL", "")
                             if "fish" in shell:
                                 print_info(
-                                    "To persist in your shell: set -x ROOTSIGNALS_API_KEY <paste_key_here>"
+                                    "To persist in your shell: set -x SCORABLE_API_KEY <paste_key_here>"
                                 )
                             else:
                                 print_info(
-                                    "To persist in your shell: export ROOTSIGNALS_API_KEY='<paste_key_here>'"
+                                    "To persist in your shell: export SCORABLE_API_KEY='<paste_key_here>'"
                                 )
                         else:
                             print_error(
@@ -275,11 +275,11 @@ def _request(
                         print_error(f"Failed to create temporary API key: {e}")
                         sys.exit(1)
                 else:
-                    print_info("Aborted. Please set ROOTSIGNALS_API_KEY and try again.")
+                    print_info("Aborted. Please set SCORABLE_API_KEY and try again.")
                     sys.exit(1)
             else:
                 print_info(
-                    "Set ROOTSIGNALS_API_KEY and retry. Non-interactive session cannot prompt."
+                    "Set SCORABLE_API_KEY and retry. Non-interactive session cannot prompt."
                 )
                 sys.exit(1)
         session.headers.update(
@@ -287,7 +287,7 @@ def _request(
                 "Authorization": f"Api-Key {effective_api_key}",
                 "Content-Type": "application/json",
                 "Accept": "application/json",
-                "User-Agent": "root-signals-cli/1.0",
+                "User-Agent": "scorable-cli/1.0",
             }
         )
 
@@ -751,7 +751,7 @@ def _run_prompt_tests(output_file=None, config_path="prompt-tests.yaml"):
             print_error(f"Failed to write results to {output_file}: {e}")
 
     prompt_test_ids = [exp.id for exp in final_prompt_tests]
-    url = f"https://app.rootsignals.ai/prompt-testing/compare?ids={','.join(prompt_test_ids)}"
+    url = f"https://scorable.ai/prompt-testing/compare?ids={','.join(prompt_test_ids)}"
     print_info(f"\nView full results in the browser:\n{url}")
 
 
@@ -856,7 +856,7 @@ def _display_aggregated_results(experiments: list[PromptTest]):
 
 @click.group()
 def cli():
-    """A CLI tool to interact with the Root Signals API."""
+    """A CLI tool to interact with the Scorable API."""
     pass
 
 

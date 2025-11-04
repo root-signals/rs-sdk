@@ -1,5 +1,5 @@
 import type { paths, components } from '../generated/types.js';
-import { PaginatedResponse, ListParams, RootSignalsError, ApiError } from '../types/common.js';
+import { PaginatedResponse, ListParams, ScorableError, ApiError } from '../types/common.js';
 
 type Client = ReturnType<typeof import('openapi-fetch').default<paths>>;
 
@@ -41,7 +41,7 @@ export class JudgesResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'LIST_JUDGES_FAILED',
         error,
@@ -68,7 +68,7 @@ export class JudgesResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'CREATE_JUDGE_FAILED',
         error,
@@ -88,7 +88,7 @@ export class JudgesResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'GET_JUDGE_FAILED',
         error,
@@ -109,7 +109,7 @@ export class JudgesResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'UPDATE_JUDGE_FAILED',
         error,
@@ -129,7 +129,7 @@ export class JudgesResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'DELETE_JUDGE_FAILED',
         error,
@@ -148,7 +148,7 @@ export class JudgesResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'EXECUTE_JUDGE_FAILED',
         error,
@@ -169,7 +169,7 @@ export class JudgesResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'EXECUTE_JUDGE_BY_NAME_FAILED',
         error,
@@ -200,7 +200,7 @@ export class JudgesResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'GENERATE_JUDGE_FAILED',
         error,
@@ -224,7 +224,7 @@ export class JudgesResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'REFINE_JUDGE_FAILED',
         error as never,
@@ -244,7 +244,7 @@ export class JudgesResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'DUPLICATE_JUDGE_FAILED',
         error,

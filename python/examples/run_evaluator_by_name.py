@@ -1,8 +1,8 @@
-from root import RootSignals
+from scorable import Scorable
 
-client = RootSignals()
+client = Scorable()
 
-# Run a root evaluator by name using the run_by_name method
+# Run a scorable evaluator by name using the run_by_name method
 result = client.evaluators.run_by_name(
     name="Helpfulness",
     response="You can find the instructions from our Careers page.",

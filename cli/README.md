@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img width="600" alt="Root Signals logo" src="https://app.rootsignals.ai/images/root-signals-color.svg" loading="lazy">
+  <img width="600" alt="Scorable logo" src="https://scorable.ai/images/root-signals-color.svg" loading="lazy">
 </h1>
 
   <!-- This is commented so it is easier to sync with the docs/index.rst -->
@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://app.rootsignals.ai/register">
+  <a href="https://scorable.ai/register">
     <img src="https://img.shields.io/badge/Get_Started-2E6AFB?style=for-the-badge&logo=rocket&logoColor=white&scale=2" />
   </a>
 
@@ -25,54 +25,54 @@
     <img src="https://img.shields.io/badge/Documentation-E53935?style=for-the-badge&logo=readthedocs&logoColor=white&scale=2" />
   </a>
 
-  <a href="https://app.rootsignals.ai/demo-user">
+  <a href="https://scorable.ai/demo-user">
     <img src="https://img.shields.io/badge/Temporary_API_Key-15a20b?style=for-the-badge&logo=keycdn&logoColor=white&scale=2" />
   </a>
 </p>
 
-The `roots` CLI is a powerful command-line tool for interacting with the Root Signals API. It provides a convenient way to manage and execute your Judges directly from the terminal.
+The `scorable` CLI is a powerful command-line tool for interacting with the Scorable API. It provides a convenient way to manage and execute your Judges directly from the terminal.
 
 ## Installation
 
-You can install the `roots` CLI using the following command, which downloads and installs the script to `/usr/local/bin`:
+You can install the `scorable` CLI using the following command, which downloads and installs the script to `/usr/local/bin`:
 
 ```bash
-curl -sSL https://app.rootsignals.ai/cli/install.sh | sh
+curl -sSL https://scorable.ai/cli/install.sh | sh
 ```
 
 Alternatively, you can install and run the CLI using `uvx`:
 
 ```bash
-uvx root-signals-cli judge list
+uvx scorable-cli judge list
 ```
 
 ## Authentication
 
-Before using the CLI, you must set your Root Signals API key as an environment variable:
+Before using the CLI, you must set your Scorable API key as an environment variable:
 
 ```bash
-# Sign up for a free account at https://app.rootsignals.ai/register
-export ROOTSIGNALS_API_KEY="your-api-key"
+# Sign up for a free account at https://scorable.ai/register
+export SCORABLE_API_KEY="your-api-key"
 ```
 
 ### Temporary API keys
 
-If no API key is set, the CLI can create a temporary key interactively and save it to `~/.rootsignals/settings.json` as `temporary_api_key`. Permanent keys should be set via the `ROOTSIGNALS_API_KEY` environment variable, which takes precedence.
+If no API key is set, the CLI can create a temporary key interactively and save it to `~/.scorable/settings.json` as `temporary_api_key`. Permanent keys should be set via the `SCORABLE_API_KEY` environment variable, which takes precedence.
 
 ## Usage
 
-The CLI is organized into a main command, `roots`, with subcommands for different functionalities. The primary resource you'll interact with is the `judge`.
+The CLI is organized into a main command, `scorable`, with subcommands for different functionalities. The primary resource you'll interact with is the `judge`.
 
 ### Judge Management
 
-All Judge-related commands are available under the `roots judge` subcommand.
+All Judge-related commands are available under the `scorable judge` subcommand.
 
 #### `list`
 
 List all available Judges, with options for filtering and pagination.
 
 ```bash
-roots judge list
+scorable judge list
 ```
 
 **Options:**
@@ -91,7 +91,7 @@ roots judge list
 Retrieve a specific Judge by its ID.
 
 ```bash
-roots judge get <judge_id>
+scorable judge get <judge_id>
 ```
 
 #### `create`
@@ -99,7 +99,7 @@ roots judge get <judge_id>
 Create a new Judge.
 
 ```bash
-roots judge create --name "My New Judge" --intent "To evaluate the quality of LLM responses."
+scorable judge create --name "My New Judge" --intent "To evaluate the quality of LLM responses."
 ```
 
 **Options:**
@@ -114,7 +114,7 @@ roots judge create --name "My New Judge" --intent "To evaluate the quality of LL
 Update an existing Judge.
 
 ```bash
-roots judge update <judge_id> --name "My Updated Judge Name"
+scorable judge update <judge_id> --name "My Updated Judge Name"
 ```
 
 **Options:**
@@ -128,7 +128,7 @@ roots judge update <judge_id> --name "My Updated Judge Name"
 Delete a Judge by its ID. You will be prompted for confirmation.
 
 ```bash
-roots judge delete <judge_id>
+scorable judge delete <judge_id>
 ```
 
 #### `duplicate`
@@ -136,7 +136,7 @@ roots judge delete <judge_id>
 Duplicate an existing Judge.
 
 ```bash
-roots judge duplicate <judge_id>
+scorable judge duplicate <judge_id>
 ```
 
 ### Judge Execution
@@ -146,7 +146,7 @@ roots judge duplicate <judge_id>
 Execute a Judge with specific inputs.
 
 ```bash
-roots judge execute <judge_id> --request "What is the capital of France?" --response "Paris"
+scorable judge execute <judge_id> --request "What is the capital of France?" --response "Paris"
 ```
 
 **Options:**
@@ -163,11 +163,11 @@ roots judge execute <judge_id> --request "What is the capital of France?" --resp
 You can pipe input directly to the `--response` parameter:
 
 ```bash
-echo "Paris" | roots judge execute <judge_id> --request "What is the capital of France?"
+echo "Paris" | scorable judge execute <judge_id> --request "What is the capital of France?"
 ```
 
 ```bash
-cat response.txt | roots judge execute <judge_id>
+cat response.txt | scorable judge execute <judge_id>
 ```
 
 #### `execute-by-name`
@@ -175,7 +175,7 @@ cat response.txt | roots judge execute <judge_id>
 Execute a Judge by its name.
 
 ```bash
-roots judge execute-by-name "My New Judge" --request "What is the capital of France?" --response "Paris"
+scorable judge execute-by-name "My New Judge" --request "What is the capital of France?" --response "Paris"
 ```
 
 Input can also be piped in similar way as with `execute`.
@@ -185,8 +185,8 @@ Input can also be piped in similar way as with `execute`.
 Initialize a prompt testing experiment config and run it.
 
 ```bash
-roots prompt-test init
-roots prompt-test run
+scorable prompt-test init
+scorable prompt-test run
 ```
 
 ## Development

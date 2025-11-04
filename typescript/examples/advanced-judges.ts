@@ -1,19 +1,19 @@
 /**
  * Advanced Judges Example
  *
- * This example demonstrates advanced usage of Root Signals judges:
+ * This example demonstrates advanced usage of Scorable judges:
  * - Creating custom judges
  * - AI-generated judges
  * - Judge refinement and iteration
  * - Complex evaluation scenarios
  */
 
-import { RootSignals, RootSignalsError } from '../src/index.js';
+import { Scorable, ScorableError } from '../src/index.js';
 
 async function main() {
   try {
-    const client = new RootSignals({
-      apiKey: process.env.ROOTSIGNALS_API_KEY!,
+    const client = new Scorable({
+      apiKey: process.env.SCORABLE_API_KEY!,
       timeout: 60000, // Longer timeout for judge operations
     });
 
@@ -189,8 +189,8 @@ async function main() {
 
     console.log('✅ Advanced judges example completed successfully!');
   } catch (error) {
-    if (error instanceof RootSignalsError) {
-      console.error(`❌ Root Signals API Error (${error.status}): ${error.detail}`);
+    if (error instanceof ScorableError) {
+      console.error(`❌ Scorable API Error (${error.status}): ${error.detail}`);
       console.error(`Error Code: ${error.code}`);
     } else {
       console.error('❌ Unexpected error:', error);

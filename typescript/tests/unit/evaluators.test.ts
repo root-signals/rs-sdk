@@ -165,7 +165,7 @@ describe('EvaluatorsResource', () => {
   });
 
   describe('error handling', () => {
-    it('should throw RootSignalsError on API errors', async () => {
+    it('should throw ScorableError on API errors', async () => {
       mockClient.setMockError('GET', '/v1/evaluators/', {
         detail: 'Internal server error',
       });

@@ -6,7 +6,7 @@ import aiohttp
 import requests
 from pydantic import StrictStr
 
-from root.generated.openapi_client.api_client import ApiClient
+from scorable.generated.openapi_client.api_client import ApiClient
 
 from .generated.openapi_aclient import ApiClient as AApiClient
 from .generated.openapi_aclient.api.datasets_api import DatasetsApi as ADatasetsApi
@@ -28,7 +28,7 @@ class DataSets:
     Note:
 
       The construction of the API instance should be handled by
-      accesing an attribute of a :class:`root.client.RootSignals` instance.
+      accesing an attribute of a :class:`root.client.Scorable` instance.
     """
 
     def __init__(self, client_context: ClientContextCallable, base_url: str, api_key: str):

@@ -1,6 +1,6 @@
-from root import RootSignals
+from scorable import Scorable
 
-client = RootSignals()
+client = Scorable()
 
 network_troubleshooting_evaluator = client.evaluators.create(
     name="Network Troubleshooting",

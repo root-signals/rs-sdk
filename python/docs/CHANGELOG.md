@@ -1,3 +1,7 @@
+## 1.6.5
+
+- Rebrand to scorable
+
 ## 1.6.4
 
 ### Added
@@ -45,7 +49,7 @@
 
 ### Added
 
-- Added four new root evaluators
+- Added four new scorable evaluators
 
 
 ## 1.5.3

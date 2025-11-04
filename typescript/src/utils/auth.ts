@@ -4,7 +4,7 @@ export function createAuthHeaders(config: ClientConfig): Record<string, string> 
   return {
     Authorization: `Api-Key ${config.apiKey}`,
     'Content-Type': 'application/json',
-    'User-Agent': '@root-signals/typescript-sdk/0.1.0',
+    'User-Agent': '@root-signals/scorable/0.1.4',
   };
 }
 

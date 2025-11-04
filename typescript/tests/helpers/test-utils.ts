@@ -1,4 +1,4 @@
-import { RootSignals } from '../../src/index';
+import { Scorable } from '../../src/index';
 import { mockClient } from './mock-client';
 import { EvaluatorsResource } from '../../src/resources/evaluators.js';
 import { JudgesResource } from '../../src/resources/judges.js';
@@ -9,9 +9,9 @@ import { DatasetsResource } from '../../src/resources/datasets.js';
 
 // Test utilities for creating clients and mock data
 export class TestUtils {
-  // Create a mock Root Signals client
-  static createMockClient(): RootSignals {
-    const client = new RootSignals({
+  // Create a mock Scorable client
+  static createMockClient(): Scorable {
+    const client = new Scorable({
       apiKey: 'test-api-key-123',
     });
 
@@ -30,8 +30,8 @@ export class TestUtils {
   }
 
   // Create a real client for integration tests
-  static createRealClient(apiKey?: string): RootSignals {
-    return new RootSignals({
+  static createRealClient(apiKey?: string): Scorable {
+    return new Scorable({
       apiKey: apiKey || 'test-api-key',
     });
   }

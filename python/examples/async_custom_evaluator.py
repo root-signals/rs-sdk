@@ -1,6 +1,6 @@
-from root import RootSignals
+from scorable import Scorable
 
-aclient = RootSignals(run_async=True)
+aclient = Scorable(run_async=True)
 
 
 async def main():
