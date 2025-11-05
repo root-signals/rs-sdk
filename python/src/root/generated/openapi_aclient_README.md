@@ -34,10 +34,10 @@ import root.generated.openapi_aclient
 from root.generated.openapi_aclient.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to https://api.localhost:8000
+# Defining the host is optional and defaults to https://api.app.rootsignals.ai
 # See configuration.py for a list of all supported configuration parameters.
 configuration = root.generated.openapi_aclient.Configuration(
-    host = "https://api.localhost:8000"
+    host = "https://api.app.rootsignals.ai"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -69,7 +69,7 @@ async with root.generated.openapi_aclient.ApiClient(configuration) as api_client
 
 ## Documentation for API Endpoints
 
-All URIs are relative to *https://api.localhost:8000*
+All URIs are relative to *https://api.app.rootsignals.ai*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
@@ -163,12 +163,6 @@ Class | Method | HTTP request | Description
  - [EvaluatorCalibrationResult](root/generated/openapi_aclient/docs/EvaluatorCalibrationResult.md)
  - [EvaluatorDemonstrations](root/generated/openapi_aclient/docs/EvaluatorDemonstrations.md)
  - [EvaluatorDemonstrationsRequest](root/generated/openapi_aclient/docs/EvaluatorDemonstrationsRequest.md)
- - [EvaluatorExecutionFunctionParameterPropertyRequest](root/generated/openapi_aclient/docs/EvaluatorExecutionFunctionParameterPropertyRequest.md)
- - [EvaluatorExecutionFunctionParameterRequest](root/generated/openapi_aclient/docs/EvaluatorExecutionFunctionParameterRequest.md)
- - [EvaluatorExecutionFunctionParameterTypeEnum](root/generated/openapi_aclient/docs/EvaluatorExecutionFunctionParameterTypeEnum.md)
- - [EvaluatorExecutionFunctionRequest](root/generated/openapi_aclient/docs/EvaluatorExecutionFunctionRequest.md)
- - [EvaluatorExecutionFunctionsRequest](root/generated/openapi_aclient/docs/EvaluatorExecutionFunctionsRequest.md)
- - [EvaluatorExecutionFunctionsTypeEnum](root/generated/openapi_aclient/docs/EvaluatorExecutionFunctionsTypeEnum.md)
  - [EvaluatorExecutionRequest](root/generated/openapi_aclient/docs/EvaluatorExecutionRequest.md)
  - [EvaluatorExecutionResult](root/generated/openapi_aclient/docs/EvaluatorExecutionResult.md)
  - [EvaluatorInputsValue](root/generated/openapi_aclient/docs/EvaluatorInputsValue.md)

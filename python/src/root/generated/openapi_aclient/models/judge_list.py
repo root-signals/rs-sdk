@@ -38,7 +38,7 @@ class JudgeList(BaseModel):
     created_at: datetime
     status: StatusEnum
     inputs: Dict[str, EvaluatorInputsValue] = Field(
-        description="Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like functions, contexts, and expected output."
+        description="Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like contexts and expected output."
     )
     evaluators: List[NestedEvaluator]
     meta: Dict[str, Any] = Field(alias="_meta")

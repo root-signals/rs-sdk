@@ -61,7 +61,7 @@ class Evaluator(BaseModel):
     version_id: StrictStr
     meta: Optional[Any] = Field(alias="_meta")
     inputs: Dict[str, EvaluatorInputsValue] = Field(
-        description="Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like functions, contexts, and expected output."
+        description="Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like contexts and expected output."
     )
     __properties: ClassVar[List[str]] = [
         "change_note",

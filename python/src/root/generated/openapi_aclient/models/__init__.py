@@ -44,22 +44,6 @@ from root.generated.openapi_aclient.models.evaluator_calibration_output import E
 from root.generated.openapi_aclient.models.evaluator_calibration_result import EvaluatorCalibrationResult
 from root.generated.openapi_aclient.models.evaluator_demonstrations import EvaluatorDemonstrations
 from root.generated.openapi_aclient.models.evaluator_demonstrations_request import EvaluatorDemonstrationsRequest
-from root.generated.openapi_aclient.models.evaluator_execution_function_parameter_property_request import (
-    EvaluatorExecutionFunctionParameterPropertyRequest,
-)
-from root.generated.openapi_aclient.models.evaluator_execution_function_parameter_request import (
-    EvaluatorExecutionFunctionParameterRequest,
-)
-from root.generated.openapi_aclient.models.evaluator_execution_function_parameter_type_enum import (
-    EvaluatorExecutionFunctionParameterTypeEnum,
-)
-from root.generated.openapi_aclient.models.evaluator_execution_function_request import EvaluatorExecutionFunctionRequest
-from root.generated.openapi_aclient.models.evaluator_execution_functions_request import (
-    EvaluatorExecutionFunctionsRequest,
-)
-from root.generated.openapi_aclient.models.evaluator_execution_functions_type_enum import (
-    EvaluatorExecutionFunctionsTypeEnum,
-)
 from root.generated.openapi_aclient.models.evaluator_execution_request import EvaluatorExecutionRequest
 from root.generated.openapi_aclient.models.evaluator_execution_result import EvaluatorExecutionResult
 from root.generated.openapi_aclient.models.evaluator_inputs_value import EvaluatorInputsValue

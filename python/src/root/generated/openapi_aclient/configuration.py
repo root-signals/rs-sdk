@@ -100,7 +100,7 @@ class Configuration:
         ssl_ca_cert=None,
     ) -> None:
         """Constructor"""
-        self._base_path = "https://api.localhost:8000" if host is None else host
+        self._base_path = "https://api.app.rootsignals.ai" if host is None else host
         """Default Base url
         """
         self.server_index = 0 if server_index is None and host is None else server_index
@@ -416,7 +416,7 @@ class Configuration:
         """
         return [
             {
-                "url": "https://api.localhost:8000",
+                "url": "https://api.app.rootsignals.ai",
                 "description": "No description provided",
             }
         ]

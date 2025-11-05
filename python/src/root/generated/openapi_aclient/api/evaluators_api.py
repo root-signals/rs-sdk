@@ -1723,7 +1723,7 @@ class EvaluatorsApi:
     ) -> PaginatedEvaluatorListOutputList:
         """evaluators_list
 
-        List all evaluators. The response includes a 'requirements' field for each evaluator that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables.
+        List all evaluators. The response includes a 'requirements' field for each evaluator that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, expected_output, or reference variables.
 
         :param cursor: The pagination cursor value.
         :type cursor: str
@@ -1840,7 +1840,7 @@ class EvaluatorsApi:
     ) -> ApiResponse[PaginatedEvaluatorListOutputList]:
         """evaluators_list
 
-        List all evaluators. The response includes a 'requirements' field for each evaluator that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables.
+        List all evaluators. The response includes a 'requirements' field for each evaluator that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, expected_output, or reference variables.
 
         :param cursor: The pagination cursor value.
         :type cursor: str
@@ -1957,7 +1957,7 @@ class EvaluatorsApi:
     ) -> RESTResponseType:
         """evaluators_list
 
-        List all evaluators. The response includes a 'requirements' field for each evaluator that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables.
+        List all evaluators. The response includes a 'requirements' field for each evaluator that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, expected_output, or reference variables.
 
         :param cursor: The pagination cursor value.
         :type cursor: str
@@ -2393,7 +2393,7 @@ class EvaluatorsApi:
     ) -> Evaluator:
         """evaluators_retrieve
 
-        Get evaluator details. The response includes a 'requirements' field that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables.
+        Get evaluator details. The response includes a 'requirements' field that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, expected_output, or reference variables.
 
         :param id: (required)
         :type id: str
@@ -2464,7 +2464,7 @@ class EvaluatorsApi:
     ) -> ApiResponse[Evaluator]:
         """evaluators_retrieve
 
-        Get evaluator details. The response includes a 'requirements' field that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables.
+        Get evaluator details. The response includes a 'requirements' field that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, expected_output, or reference variables.
 
         :param id: (required)
         :type id: str
@@ -2535,7 +2535,7 @@ class EvaluatorsApi:
     ) -> RESTResponseType:
         """evaluators_retrieve
 
-        Get evaluator details. The response includes a 'requirements' field that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables.
+        Get evaluator details. The response includes a 'requirements' field that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, expected_output, or reference variables.
 
         :param id: (required)
         :type id: str

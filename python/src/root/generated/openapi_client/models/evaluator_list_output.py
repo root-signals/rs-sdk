@@ -46,7 +46,7 @@ class EvaluatorListOutput(BaseModel):
     updated_by: Optional[NestedUserDetails]
     version_id: StrictStr
     inputs: Dict[str, EvaluatorInputsValue] = Field(
-        description="Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like functions, contexts, and expected output."
+        description="Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like contexts and expected output."
     )
     __properties: ClassVar[List[str]] = [
         "_meta",

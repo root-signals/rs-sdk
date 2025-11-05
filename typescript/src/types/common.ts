@@ -2,8 +2,6 @@ import { RetryConfig } from '../utils/retry.js';
 import { RateLimitConfig } from '../utils/rate-limit.js';
 import { components } from '../generated/types.js';
 
-type Functions = components['schemas']['EvaluatorExecutionFunctionsRequest'][];
-
 export interface ClientConfig {
   apiKey: string;
   baseUrl?: string;
@@ -88,7 +86,6 @@ export interface ExecutionPayload {
   request?: string;
   response?: string;
   contexts?: string[];
-  functions?: Functions;
   expected_output?: string;
   reference?: string;
   variables?: Record<string, string>;
