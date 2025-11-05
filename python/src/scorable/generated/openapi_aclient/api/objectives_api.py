@@ -17,15 +17,15 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 from pydantic import Field, StrictBool, StrictFloat, StrictInt, StrictStr, validate_call
 from typing_extensions import Annotated
 
-from root.generated.openapi_aclient.api_client import ApiClient, RequestSerialized
-from root.generated.openapi_aclient.api_response import ApiResponse
-from root.generated.openapi_aclient.models.id import ID
-from root.generated.openapi_aclient.models.objective import Objective
-from root.generated.openapi_aclient.models.objective_request import ObjectiveRequest
-from root.generated.openapi_aclient.models.paginated_objective_list import PaginatedObjectiveList
-from root.generated.openapi_aclient.models.paginated_objective_list_list import PaginatedObjectiveListList
-from root.generated.openapi_aclient.models.patched_objective_request import PatchedObjectiveRequest
-from root.generated.openapi_aclient.rest import RESTResponseType
+from scorable.generated.openapi_aclient.api_client import ApiClient, RequestSerialized
+from scorable.generated.openapi_aclient.api_response import ApiResponse
+from scorable.generated.openapi_aclient.models.id import ID
+from scorable.generated.openapi_aclient.models.objective import Objective
+from scorable.generated.openapi_aclient.models.objective_request import ObjectiveRequest
+from scorable.generated.openapi_aclient.models.paginated_objective_list import PaginatedObjectiveList
+from scorable.generated.openapi_aclient.models.paginated_objective_list_list import PaginatedObjectiveListList
+from scorable.generated.openapi_aclient.models.patched_objective_request import PatchedObjectiveRequest
+from scorable.generated.openapi_aclient.rest import RESTResponseType
 
 
 class ObjectivesApi:

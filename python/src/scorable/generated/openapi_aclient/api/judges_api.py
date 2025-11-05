@@ -18,26 +18,26 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 from pydantic import Field, StrictBool, StrictFloat, StrictInt, StrictStr, validate_call
 from typing_extensions import Annotated
 
-from root.generated.openapi_aclient.api_client import ApiClient, RequestSerialized
-from root.generated.openapi_aclient.api_response import ApiResponse
-from root.generated.openapi_aclient.models.judge import Judge
-from root.generated.openapi_aclient.models.judge_batch_execution_detail import JudgeBatchExecutionDetail
-from root.generated.openapi_aclient.models.judge_batch_execution_request import JudgeBatchExecutionRequest
-from root.generated.openapi_aclient.models.judge_batch_execution_response import JudgeBatchExecutionResponse
-from root.generated.openapi_aclient.models.judge_execution_request import JudgeExecutionRequest
-from root.generated.openapi_aclient.models.judge_execution_response import JudgeExecutionResponse
-from root.generated.openapi_aclient.models.judge_generator_request import JudgeGeneratorRequest
-from root.generated.openapi_aclient.models.judge_generator_response import JudgeGeneratorResponse
-from root.generated.openapi_aclient.models.judge_invite_request import JudgeInviteRequest
-from root.generated.openapi_aclient.models.judge_rectifier_request_request import JudgeRectifierRequestRequest
-from root.generated.openapi_aclient.models.judge_rectifier_response import JudgeRectifierResponse
-from root.generated.openapi_aclient.models.judge_request import JudgeRequest
-from root.generated.openapi_aclient.models.paginated_judge_batch_execution_list_item_list import (
+from scorable.generated.openapi_aclient.api_client import ApiClient, RequestSerialized
+from scorable.generated.openapi_aclient.api_response import ApiResponse
+from scorable.generated.openapi_aclient.models.judge import Judge
+from scorable.generated.openapi_aclient.models.judge_batch_execution_detail import JudgeBatchExecutionDetail
+from scorable.generated.openapi_aclient.models.judge_batch_execution_request import JudgeBatchExecutionRequest
+from scorable.generated.openapi_aclient.models.judge_batch_execution_response import JudgeBatchExecutionResponse
+from scorable.generated.openapi_aclient.models.judge_execution_request import JudgeExecutionRequest
+from scorable.generated.openapi_aclient.models.judge_execution_response import JudgeExecutionResponse
+from scorable.generated.openapi_aclient.models.judge_generator_request import JudgeGeneratorRequest
+from scorable.generated.openapi_aclient.models.judge_generator_response import JudgeGeneratorResponse
+from scorable.generated.openapi_aclient.models.judge_invite_request import JudgeInviteRequest
+from scorable.generated.openapi_aclient.models.judge_rectifier_request_request import JudgeRectifierRequestRequest
+from scorable.generated.openapi_aclient.models.judge_rectifier_response import JudgeRectifierResponse
+from scorable.generated.openapi_aclient.models.judge_request import JudgeRequest
+from scorable.generated.openapi_aclient.models.paginated_judge_batch_execution_list_item_list import (
     PaginatedJudgeBatchExecutionListItemList,
 )
-from root.generated.openapi_aclient.models.paginated_judge_list_list import PaginatedJudgeListList
-from root.generated.openapi_aclient.models.patched_judge_request import PatchedJudgeRequest
-from root.generated.openapi_aclient.rest import RESTResponseType
+from scorable.generated.openapi_aclient.models.paginated_judge_list_list import PaginatedJudgeListList
+from scorable.generated.openapi_aclient.models.patched_judge_request import PatchedJudgeRequest
+from scorable.generated.openapi_aclient.rest import RESTResponseType
 
 
 class JudgesApi:

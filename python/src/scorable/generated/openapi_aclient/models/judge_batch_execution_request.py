@@ -21,7 +21,9 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing_extensions import Annotated, Self
 
-from root.generated.openapi_aclient.models.judge_batch_execution_input_request import JudgeBatchExecutionInputRequest
+from scorable.generated.openapi_aclient.models.judge_batch_execution_input_request import (
+    JudgeBatchExecutionInputRequest,
+)
 
 
 class JudgeBatchExecutionRequest(BaseModel):

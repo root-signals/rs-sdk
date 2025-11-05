@@ -21,10 +21,6 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing_extensions import Annotated, Self
 
-from root.generated.openapi_aclient.models.evaluator_execution_functions_request import (
-    EvaluatorExecutionFunctionsRequest,
-)
-
 
 class EvaluatorExecutionRequest(BaseModel):
     """
@@ -34,7 +30,6 @@ class EvaluatorExecutionRequest(BaseModel):
     request: Optional[StrictStr] = ""
     response: Optional[StrictStr] = ""
     contexts: Optional[List[Annotated[str, Field(min_length=1, strict=True)]]] = None
-    functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None
     expected_output: Optional[Annotated[str, Field(strict=True, max_length=3500000)]] = None
     tags: Optional[List[Annotated[str, Field(min_length=1, strict=True, max_length=1000)]]] = None
     evaluator_version_id: Optional[StrictStr] = None
@@ -45,7 +40,6 @@ class EvaluatorExecutionRequest(BaseModel):
         "request",
         "response",
         "contexts",
-        "functions",
         "expected_output",
         "tags",
         "evaluator_version_id",
@@ -89,13 +83,6 @@ class EvaluatorExecutionRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in functions (list)
-        _items = []
-        if self.functions:
-            for _item in self.functions:
-                if _item:
-                    _items.append(_item.to_dict())
-            _dict["functions"] = _items
         # set to None if expected_output (nullable) is None
         # and model_fields_set contains the field
         if self.expected_output is None and "expected_output" in self.model_fields_set:
@@ -122,9 +109,6 @@ class EvaluatorExecutionRequest(BaseModel):
                 "request": obj.get("request") if obj.get("request") is not None else "",
                 "response": obj.get("response") if obj.get("response") is not None else "",
                 "contexts": obj.get("contexts"),
-                "functions": [EvaluatorExecutionFunctionsRequest.from_dict(_item) for _item in obj["functions"]]
-                if obj.get("functions") is not None
-                else None,
                 "expected_output": obj.get("expected_output"),
                 "tags": obj.get("tags"),
                 "evaluator_version_id": obj.get("evaluator_version_id"),

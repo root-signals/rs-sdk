@@ -21,8 +21,8 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict, Field
 from typing_extensions import Annotated, Self
 
-from root.generated.openapi_client.models.evaluator_reference_request import EvaluatorReferenceRequest
-from root.generated.openapi_client.models.status_enum import StatusEnum
+from scorable.generated.openapi_client.models.evaluator_reference_request import EvaluatorReferenceRequest
+from scorable.generated.openapi_client.models.status_enum import StatusEnum
 
 
 class JudgeRequest(BaseModel):

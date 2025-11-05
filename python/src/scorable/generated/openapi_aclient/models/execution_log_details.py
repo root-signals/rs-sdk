@@ -22,15 +22,15 @@ from typing import Any, ClassVar, Dict, List, Optional, Set, Union
 from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
 from typing_extensions import Self
 
-from root.generated.openapi_aclient.models.execution_log_details_evaluation_context import (
+from scorable.generated.openapi_aclient.models.execution_log_details_evaluation_context import (
     ExecutionLogDetailsEvaluationContext,
 )
-from root.generated.openapi_aclient.models.execution_log_details_evaluator_latencies_inner import (
+from scorable.generated.openapi_aclient.models.execution_log_details_evaluator_latencies_inner import (
     ExecutionLogDetailsEvaluatorLatenciesInner,
 )
-from root.generated.openapi_aclient.models.model_params import ModelParams
-from root.generated.openapi_aclient.models.nested_user_details import NestedUserDetails
-from root.generated.openapi_aclient.models.skill_execution_validator_result import SkillExecutionValidatorResult
+from scorable.generated.openapi_aclient.models.model_params import ModelParams
+from scorable.generated.openapi_aclient.models.nested_user_details import NestedUserDetails
+from scorable.generated.openapi_aclient.models.skill_execution_validator_result import SkillExecutionValidatorResult
 
 
 class ExecutionLogDetails(BaseModel):

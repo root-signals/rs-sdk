@@ -22,8 +22,8 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
 from typing_extensions import Self
 
-from root.generated.openapi_aclient.models.judge_batch_execution_item_input import JudgeBatchExecutionItemInput
-from root.generated.openapi_aclient.models.judge_batch_execution_item_status_enum import (
+from scorable.generated.openapi_aclient.models.judge_batch_execution_item_input import JudgeBatchExecutionItemInput
+from scorable.generated.openapi_aclient.models.judge_batch_execution_item_status_enum import (
     JudgeBatchExecutionItemStatusEnum,
 )
 

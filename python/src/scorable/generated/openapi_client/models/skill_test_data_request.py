@@ -21,7 +21,9 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict, Field
 from typing_extensions import Annotated, Self
 
-from root.generated.openapi_client.models.skill_test_data_request_dataset_range import SkillTestDataRequestDatasetRange
+from scorable.generated.openapi_client.models.skill_test_data_request_dataset_range import (
+    SkillTestDataRequestDatasetRange,
+)
 
 
 class SkillTestDataRequest(BaseModel):

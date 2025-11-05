@@ -21,11 +21,11 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing_extensions import Annotated, Self
 
-from root.generated.openapi_client.models.evaluation_agent_evaluation_approach_enum import (
+from scorable.generated.openapi_client.models.evaluation_agent_evaluation_approach_enum import (
     EvaluationAgentEvaluationApproachEnum,
 )
-from root.generated.openapi_client.models.model_enum import ModelEnum
-from root.generated.openapi_client.models.status_enum import StatusEnum
+from scorable.generated.openapi_client.models.model_enum import ModelEnum
+from scorable.generated.openapi_client.models.status_enum import StatusEnum
 
 
 class EvaluationAgentRequest(BaseModel):

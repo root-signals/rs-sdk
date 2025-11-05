@@ -22,9 +22,9 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing_extensions import Annotated, Self
 
-from root.generated.openapi_client.models.nested_user_details import NestedUserDetails
-from root.generated.openapi_client.models.objective_validator import ObjectiveValidator
-from root.generated.openapi_client.models.status_enum import StatusEnum
+from scorable.generated.openapi_client.models.nested_user_details import NestedUserDetails
+from scorable.generated.openapi_client.models.objective_validator import ObjectiveValidator
+from scorable.generated.openapi_client.models.status_enum import StatusEnum
 
 
 class Objective(BaseModel):

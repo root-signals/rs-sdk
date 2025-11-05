@@ -20,7 +20,7 @@ from typing import Optional, Union
 import aiohttp
 import aiohttp_retry
 
-from root.generated.openapi_aclient.exceptions import ApiException, ApiValueError
+from scorable.generated.openapi_aclient.exceptions import ApiException, ApiValueError
 
 RESTResponseType = aiohttp.ClientResponse
 

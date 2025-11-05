@@ -21,7 +21,7 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict, StrictStr
 from typing_extensions import Self
 
-from root.generated.openapi_client.models.model_list import ModelList
+from scorable.generated.openapi_client.models.model_list import ModelList
 
 
 class PaginatedModelListList(BaseModel):

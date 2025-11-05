@@ -21,7 +21,7 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict, Field
 from typing_extensions import Annotated, Self
 
-from root.generated.openapi_aclient.models.result_preference_signifier_evaluation_approach_enum import (
+from scorable.generated.openapi_aclient.models.result_preference_signifier_evaluation_approach_enum import (
     ResultPreferenceSignifierEvaluationApproachEnum,
 )
 

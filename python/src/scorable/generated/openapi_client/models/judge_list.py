@@ -22,9 +22,9 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing_extensions import Self
 
-from root.generated.openapi_client.models.evaluator_inputs_value import EvaluatorInputsValue
-from root.generated.openapi_client.models.nested_evaluator import NestedEvaluator
-from root.generated.openapi_client.models.status_enum import StatusEnum
+from scorable.generated.openapi_client.models.evaluator_inputs_value import EvaluatorInputsValue
+from scorable.generated.openapi_client.models.nested_evaluator import NestedEvaluator
+from scorable.generated.openapi_client.models.status_enum import StatusEnum
 
 
 class JudgeList(BaseModel):
@@ -38,7 +38,7 @@ class JudgeList(BaseModel):
     created_at: datetime
     status: StatusEnum
     inputs: Dict[str, EvaluatorInputsValue] = Field(
-        description="Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like functions, contexts, and expected output."
+        description="Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like contexts and expected output."
     )
     evaluators: List[NestedEvaluator]
     meta: Dict[str, Any] = Field(alias="_meta")

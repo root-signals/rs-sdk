@@ -21,7 +21,7 @@ from typing import Any, ClassVar, Dict, List, Optional, Set, Union
 from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt
 from typing_extensions import Self
 
-from root.generated.openapi_client.models.reasoning_effort_enum import ReasoningEffortEnum
+from scorable.generated.openapi_client.models.reasoning_effort_enum import ReasoningEffortEnum
 
 
 class GenerationModelParamsRequest(BaseModel):

@@ -21,10 +21,12 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict, Field, StrictBool
 from typing_extensions import Annotated, Self
 
-from root.generated.openapi_client.models.input_variable_request import InputVariableRequest
-from root.generated.openapi_client.models.objective_request import ObjectiveRequest
-from root.generated.openapi_client.models.reference_variable_request import ReferenceVariableRequest
-from root.generated.openapi_client.models.skill_test_data_request_dataset_range import SkillTestDataRequestDatasetRange
+from scorable.generated.openapi_client.models.input_variable_request import InputVariableRequest
+from scorable.generated.openapi_client.models.objective_request import ObjectiveRequest
+from scorable.generated.openapi_client.models.reference_variable_request import ReferenceVariableRequest
+from scorable.generated.openapi_client.models.skill_test_data_request_dataset_range import (
+    SkillTestDataRequestDatasetRange,
+)
 
 
 class SkillTestInputRequest(BaseModel):

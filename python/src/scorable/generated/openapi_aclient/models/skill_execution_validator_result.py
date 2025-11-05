@@ -21,7 +21,7 @@ from typing import Any, ClassVar, Dict, List, Optional, Set, Union
 from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
 from typing_extensions import Self
 
-from root.generated.openapi_aclient.models.validation_result_status import ValidationResultStatus
+from scorable.generated.openapi_aclient.models.validation_result_status import ValidationResultStatus
 
 
 class SkillExecutionValidatorResult(BaseModel):

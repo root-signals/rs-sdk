@@ -17,15 +17,15 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 from pydantic import Field, StrictFloat, StrictInt, StrictStr, validate_call
 from typing_extensions import Annotated
 
-from root.generated.openapi_client.api_client import ApiClient, RequestSerialized
-from root.generated.openapi_client.api_response import ApiResponse
-from root.generated.openapi_client.models.model import Model
-from root.generated.openapi_client.models.model_request import ModelRequest
-from root.generated.openapi_client.models.model_test_request_request import ModelTestRequestRequest
-from root.generated.openapi_client.models.model_test_response import ModelTestResponse
-from root.generated.openapi_client.models.paginated_model_list_list import PaginatedModelListList
-from root.generated.openapi_client.models.patched_model_request import PatchedModelRequest
-from root.generated.openapi_client.rest import RESTResponseType
+from scorable.generated.openapi_client.api_client import ApiClient, RequestSerialized
+from scorable.generated.openapi_client.api_response import ApiResponse
+from scorable.generated.openapi_client.models.model import Model
+from scorable.generated.openapi_client.models.model_request import ModelRequest
+from scorable.generated.openapi_client.models.model_test_request_request import ModelTestRequestRequest
+from scorable.generated.openapi_client.models.model_test_response import ModelTestResponse
+from scorable.generated.openapi_client.models.paginated_model_list_list import PaginatedModelListList
+from scorable.generated.openapi_client.models.patched_model_request import PatchedModelRequest
+from scorable.generated.openapi_client.rest import RESTResponseType
 
 
 class ModelsApi:

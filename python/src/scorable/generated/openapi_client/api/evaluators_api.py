@@ -17,21 +17,23 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 from pydantic import Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator, validate_call
 from typing_extensions import Annotated
 
-from root.generated.openapi_client.api_client import ApiClient, RequestSerialized
-from root.generated.openapi_client.api_response import ApiResponse
-from root.generated.openapi_client.models.evaluator import Evaluator
-from root.generated.openapi_client.models.evaluator_calibration_output import EvaluatorCalibrationOutput
-from root.generated.openapi_client.models.evaluator_execution_request import EvaluatorExecutionRequest
-from root.generated.openapi_client.models.evaluator_execution_result import EvaluatorExecutionResult
-from root.generated.openapi_client.models.evaluator_request import EvaluatorRequest
-from root.generated.openapi_client.models.paginated_evaluator_list import PaginatedEvaluatorList
-from root.generated.openapi_client.models.paginated_evaluator_list_output_list import PaginatedEvaluatorListOutputList
-from root.generated.openapi_client.models.patched_evaluator_request import PatchedEvaluatorRequest
-from root.generated.openapi_client.models.skill_test_data_request import SkillTestDataRequest
-from root.generated.openapi_client.models.skill_test_input_request import SkillTestInputRequest
-from root.generated.openapi_client.models.status_change import StatusChange
-from root.generated.openapi_client.models.status_change_request import StatusChangeRequest
-from root.generated.openapi_client.rest import RESTResponseType
+from scorable.generated.openapi_client.api_client import ApiClient, RequestSerialized
+from scorable.generated.openapi_client.api_response import ApiResponse
+from scorable.generated.openapi_client.models.evaluator import Evaluator
+from scorable.generated.openapi_client.models.evaluator_calibration_output import EvaluatorCalibrationOutput
+from scorable.generated.openapi_client.models.evaluator_execution_request import EvaluatorExecutionRequest
+from scorable.generated.openapi_client.models.evaluator_execution_result import EvaluatorExecutionResult
+from scorable.generated.openapi_client.models.evaluator_request import EvaluatorRequest
+from scorable.generated.openapi_client.models.paginated_evaluator_list import PaginatedEvaluatorList
+from scorable.generated.openapi_client.models.paginated_evaluator_list_output_list import (
+    PaginatedEvaluatorListOutputList,
+)
+from scorable.generated.openapi_client.models.patched_evaluator_request import PatchedEvaluatorRequest
+from scorable.generated.openapi_client.models.skill_test_data_request import SkillTestDataRequest
+from scorable.generated.openapi_client.models.skill_test_input_request import SkillTestInputRequest
+from scorable.generated.openapi_client.models.status_change import StatusChange
+from scorable.generated.openapi_client.models.status_change_request import StatusChangeRequest
+from scorable.generated.openapi_client.rest import RESTResponseType
 
 
 class EvaluatorsApi:
@@ -1723,7 +1725,7 @@ class EvaluatorsApi:
     ) -> PaginatedEvaluatorListOutputList:
         """evaluators_list
 
-        List all evaluators. The response includes a 'requirements' field for each evaluator that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables.
+        List all evaluators. The response includes a 'requirements' field for each evaluator that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, expected_output, or reference variables.
 
         :param cursor: The pagination cursor value.
         :type cursor: str
@@ -1840,7 +1842,7 @@ class EvaluatorsApi:
     ) -> ApiResponse[PaginatedEvaluatorListOutputList]:
         """evaluators_list
 
-        List all evaluators. The response includes a 'requirements' field for each evaluator that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables.
+        List all evaluators. The response includes a 'requirements' field for each evaluator that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, expected_output, or reference variables.
 
         :param cursor: The pagination cursor value.
         :type cursor: str
@@ -1957,7 +1959,7 @@ class EvaluatorsApi:
     ) -> RESTResponseType:
         """evaluators_list
 
-        List all evaluators. The response includes a 'requirements' field for each evaluator that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables.
+        List all evaluators. The response includes a 'requirements' field for each evaluator that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, expected_output, or reference variables.
 
         :param cursor: The pagination cursor value.
         :type cursor: str
@@ -2393,7 +2395,7 @@ class EvaluatorsApi:
     ) -> Evaluator:
         """evaluators_retrieve
 
-        Get evaluator details. The response includes a 'requirements' field that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables.
+        Get evaluator details. The response includes a 'requirements' field that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, expected_output, or reference variables.
 
         :param id: (required)
         :type id: str
@@ -2464,7 +2466,7 @@ class EvaluatorsApi:
     ) -> ApiResponse[Evaluator]:
         """evaluators_retrieve
 
-        Get evaluator details. The response includes a 'requirements' field that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables.
+        Get evaluator details. The response includes a 'requirements' field that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, expected_output, or reference variables.
 
         :param id: (required)
         :type id: str
@@ -2535,7 +2537,7 @@ class EvaluatorsApi:
     ) -> RESTResponseType:
         """evaluators_retrieve
 
-        Get evaluator details. The response includes a 'requirements' field that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables.
+        Get evaluator details. The response includes a 'requirements' field that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, expected_output, or reference variables.
 
         :param id: (required)
         :type id: str

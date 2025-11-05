@@ -21,8 +21,10 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict, Field
 from typing_extensions import Annotated, Self
 
-from root.generated.openapi_client.models.kind_enum import KindEnum
-from root.generated.openapi_client.models.result_preference_signifier_request import ResultPreferenceSignifierRequest
+from scorable.generated.openapi_client.models.kind_enum import KindEnum
+from scorable.generated.openapi_client.models.result_preference_signifier_request import (
+    ResultPreferenceSignifierRequest,
+)
 
 
 class InputOutputPairInputRequest(BaseModel):
