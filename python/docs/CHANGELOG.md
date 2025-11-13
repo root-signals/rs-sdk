@@ -1,3 +1,7 @@
+## 1.6.6
+
+- Remove functions field from evaluator requests
+
 ## 1.6.5
 
 - Rebrand to scorable
