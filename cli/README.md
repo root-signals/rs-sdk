@@ -154,7 +154,6 @@ scorable judge execute <judge_id> --request "What is the capital of France?" --r
 *   `--request`: Request text.
 *   `--response`: Response text to evaluate.
 *   `--contexts`: JSON list of context strings. E.g., `'["ctx1"]'`
-*   `--functions`: JSON array for the "functions" field.
 *   `--expected-output`: Expected output text.
 *   `--tag`: Add one or more tags.
 

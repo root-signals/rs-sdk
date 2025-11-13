@@ -493,7 +493,6 @@ def _execute_judge(
     request,
     response,
     contexts_json,
-    functions_json,
     expected_output,
     tags,
 ):  # noqa: C901
@@ -522,13 +521,6 @@ def _execute_judge(
             print_error("Invalid JSON for --contexts. Skipping.")
             return
 
-    if functions_json:
-        try:
-            payload["functions"] = json.loads(functions_json)
-        except json.JSONDecodeError:
-            print_error("Invalid JSON for --functions. Skipping.")
-            return
-
     print_info(f"Attempting to execute judge {judge_id} with payload:")
     print_json(payload)
     result = _request("POST", f"judges/{judge_id}/execute", payload=payload)
@@ -542,7 +534,6 @@ def _execute_judge_by_name(
     request,
     response,
     contexts_json,
-    functions_json,
     expected_output,
     tags,
 ):  # noqa: C901
@@ -569,13 +560,6 @@ def _execute_judge_by_name(
             payload["contexts"] = json.loads(contexts_json)
         except json.JSONDecodeError:
             print_error("Invalid JSON for --contexts. Skipping.")
-            return
-
-    if functions_json:
-        try:
-            payload["functions"] = json.loads(functions_json)
-        except json.JSONDecodeError:
-            print_error("Invalid JSON for --functions. Skipping.")
             return
 
     print_info(f"Attempting to execute judge '{judge_name}' with payload:")
@@ -1035,11 +1019,6 @@ def delete_cmd(judge_id):
     "contexts_json",
     help="""JSON list of context strings. E.g., '["ctx1"]""",
 )
-@click.option(
-    "--functions",
-    "functions_json",
-    help="""JSON array for the "functions" field.""",
-)
 @click.option("--expected-output", help="Expected output text.")
 @click.option("--tag", "tags", multiple=True, help="Add one or more tags.")
 def execute_cmd(**kwargs):
@@ -1055,11 +1034,6 @@ def execute_cmd(**kwargs):
     "--contexts",
     "contexts_json",
     help="""JSON list of context strings. E.g., '["ctx1"]""",
-)
-@click.option(
-    "--functions",
-    "functions_json",
-    help="""JSON array for the "functions" field.""",
 )
 @click.option("--expected-output", help="Expected output text.")
 @click.option("--tag", "tags", multiple=True, help="Add one or more tags.")

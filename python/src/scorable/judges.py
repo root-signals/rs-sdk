@@ -29,9 +29,6 @@ from scorable.generated.openapi_client.models.status_enum import StatusEnum
 
 from .generated.openapi_aclient import ApiClient as AApiClient
 from .generated.openapi_aclient.api.judges_api import JudgesApi as AJudgesApi
-from .generated.openapi_aclient.models.evaluator_execution_functions_request import (
-    EvaluatorExecutionFunctionsRequest as AEvaluatorExecutionFunctionsRequest,
-)
 from .generated.openapi_aclient.models.evaluator_reference_request import (
     EvaluatorReferenceRequest as AEvaluatorReferenceRequest,
 )
@@ -51,9 +48,6 @@ from .generated.openapi_aclient.models.patched_judge_request import (
 )
 from .generated.openapi_client import ApiClient
 from .generated.openapi_client.api.judges_api import JudgesApi
-from .generated.openapi_client.models.evaluator_execution_functions_request import (
-    EvaluatorExecutionFunctionsRequest,
-)
 from .generated.openapi_client.models.evaluator_reference_request import EvaluatorReferenceRequest
 from .generated.openapi_client.models.judge import Judge as OpenApiJudge
 from .generated.openapi_client.models.judge_execution_request import JudgeExecutionRequest
@@ -90,7 +84,6 @@ class Judge(OpenApiJudge):
         response: str,
         request: Optional[str] = None,
         contexts: Optional[List[str]] = None,
-        functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
         expected_output: Optional[str] = None,
         tags: Optional[List[str]] = None,
         _request_timeout: Optional[int] = None,
@@ -103,7 +96,6 @@ class Judge(OpenApiJudge):
           response: LLM output to evaluate
           request: The prompt sent to the LLM. Optional.
           contexts: Optional documents passed to RAG evaluators
-          functions: Optional functions to execute
           expected_output: Optional expected output
           tags: Optional tags to add to the judge execution
           _request_timeout: Optional timeout for the request
@@ -113,7 +105,6 @@ class Judge(OpenApiJudge):
             request=request,
             response=response,
             contexts=contexts,
-            functions=functions,
             expected_output=expected_output,
             tags=tags,
         )
@@ -150,7 +141,6 @@ class AJudge(AOpenApiJudge):
         response: str,
         request: Optional[str] = None,
         contexts: Optional[List[str]] = None,
-        functions: Optional[List[AEvaluatorExecutionFunctionsRequest]] = None,
         expected_output: Optional[str] = None,
         tags: Optional[List[str]] = None,
         _request_timeout: Optional[int] = None,
@@ -163,7 +153,6 @@ class AJudge(AOpenApiJudge):
           response: LLM output to evaluate
           request: The prompt sent to the LLM. Optional.
           contexts: Optional documents passed to RAG evaluators
-          functions: Optional functions to execute
           expected_output: Optional expected output
           tags: Optional tags to add to the judge execution
           _request_timeout: Optional timeout for the request
@@ -171,7 +160,6 @@ class AJudge(AOpenApiJudge):
         api_instance = AJudgesApi(_client)
         execution_request = AJudgeExecutionRequest(
             contexts=contexts,
-            functions=functions,
             expected_output=expected_output,
             request=request,
             response=response,
@@ -526,7 +514,6 @@ class Judges:
         response: str,
         request: Optional[str] = None,
         contexts: Optional[List[str]] = None,
-        functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
         expected_output: Optional[str] = None,
         tags: Optional[List[str]] = None,
         _request_timeout: Optional[int] = None,
@@ -540,7 +527,6 @@ class Judges:
           response: LLM output to evaluate
           request: The prompt sent to the LLM. Optional.
           contexts: Optional documents passed to RAG evaluators
-          functions: Optional functions to execute
           expected_output: Optional expected output
           tags: Optional tags to add to the judge execution
           _request_timeout: Optional timeout for the request
@@ -550,7 +536,6 @@ class Judges:
             request=request,
             response=response,
             contexts=contexts,
-            functions=functions,
             expected_output=expected_output,
             tags=tags,
         )
@@ -568,7 +553,6 @@ class Judges:
         response: str,
         request: Optional[str] = None,
         contexts: Optional[List[str]] = None,
-        functions: Optional[List[AEvaluatorExecutionFunctionsRequest]] = None,
         expected_output: Optional[str] = None,
         tags: Optional[List[str]] = None,
         _request_timeout: Optional[int] = None,
@@ -582,7 +566,6 @@ class Judges:
           response: LLM output to evaluate
           request: The prompt sent to the LLM. Optional.
           contexts: Optional documents passed to RAG evaluators
-          functions: Optional functions to execute
           expected_output: Optional expected output
           tags: Optional tags to add to the judge execution
           _request_timeout: Optional timeout for the request
@@ -590,7 +573,6 @@ class Judges:
         api_instance = AJudgesApi(_client)
         execution_request = AJudgeExecutionRequest(
             contexts=contexts,
-            functions=functions,
             expected_output=expected_output,
             request=request,
             response=response,
@@ -610,7 +592,6 @@ class Judges:
         response: str,
         request: Optional[str] = None,
         contexts: Optional[List[str]] = None,
-        functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
         expected_output: Optional[str] = None,
         tags: Optional[List[str]] = None,
         _request_timeout: Optional[int] = None,
@@ -624,7 +605,6 @@ class Judges:
           response: LLM output to evaluate
           request: The prompt sent to the LLM. Optional.
           contexts: Optional documents passed to RAG evaluators
-          functions: Optional functions to execute
           expected_output: Optional expected output
           tags: Optional tags to add to the judge execution
           _request_timeout: Optional timeout for the request
@@ -634,7 +614,6 @@ class Judges:
             request=request,
             response=response,
             contexts=contexts,
-            functions=functions,
             expected_output=expected_output,
             tags=tags,
         )
@@ -652,7 +631,6 @@ class Judges:
         response: str,
         request: Optional[str] = None,
         contexts: Optional[List[str]] = None,
-        functions: Optional[List[AEvaluatorExecutionFunctionsRequest]] = None,
         expected_output: Optional[str] = None,
         tags: Optional[List[str]] = None,
         _request_timeout: Optional[int] = None,
@@ -666,7 +644,6 @@ class Judges:
           response: LLM output to evaluate
           request: The prompt sent to the LLM. Optional.
           contexts: Optional documents passed to RAG evaluators
-          functions: Optional functions to execute
           expected_output: Optional expected output
           tags: Optional tags to add to the judge execution
           _request_timeout: Optional timeout for the request
@@ -674,7 +651,6 @@ class Judges:
         api_instance = AJudgesApi(_client)
         execution_request = AJudgeExecutionRequest(
             contexts=contexts,
-            functions=functions,
             expected_output=expected_output,
             request=request,
             response=response,
