@@ -21,11 +21,11 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing_extensions import Annotated, Self
 
-from root.generated.openapi_aclient.models.evaluator_demonstrations_request import EvaluatorDemonstrationsRequest
-from root.generated.openapi_aclient.models.input_variable_request import InputVariableRequest
-from root.generated.openapi_aclient.models.model_params_request import ModelParamsRequest
-from root.generated.openapi_aclient.models.reference_variable_request import ReferenceVariableRequest
-from root.generated.openapi_aclient.models.status_enum import StatusEnum
+from scorable.generated.openapi_aclient.models.evaluator_demonstrations_request import EvaluatorDemonstrationsRequest
+from scorable.generated.openapi_aclient.models.input_variable_request import InputVariableRequest
+from scorable.generated.openapi_aclient.models.model_params_request import ModelParamsRequest
+from scorable.generated.openapi_aclient.models.reference_variable_request import ReferenceVariableRequest
+from scorable.generated.openapi_aclient.models.status_enum import StatusEnum
 
 
 class EvaluatorRequest(BaseModel):

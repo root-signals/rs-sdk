@@ -22,8 +22,8 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
 from typing_extensions import Self
 
-from root.generated.openapi_aclient.models.nested_judge import NestedJudge
-from root.generated.openapi_aclient.models.status776_enum import Status776Enum
+from scorable.generated.openapi_aclient.models.nested_judge import NestedJudge
+from scorable.generated.openapi_aclient.models.status776_enum import Status776Enum
 
 
 class JudgeBatchExecutionListItem(BaseModel):

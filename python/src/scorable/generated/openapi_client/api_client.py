@@ -23,12 +23,12 @@ from urllib.parse import quote
 
 from dateutil.parser import parse
 
-import root.generated.openapi_client.models
-from root.generated.openapi_client import rest
-from root.generated.openapi_client.api_response import ApiResponse
-from root.generated.openapi_client.api_response import T as ApiResponseT
-from root.generated.openapi_client.configuration import Configuration
-from root.generated.openapi_client.exceptions import (
+import scorable.generated.openapi_client.models
+from scorable.generated.openapi_client import rest
+from scorable.generated.openapi_client.api_response import ApiResponse
+from scorable.generated.openapi_client.api_response import T as ApiResponseT
+from scorable.generated.openapi_client.configuration import Configuration
+from scorable.generated.openapi_client.exceptions import (
     ApiException,
     ApiValueError,
     BadRequestException,
@@ -378,7 +378,7 @@ class ApiClient:
             if klass in self.NATIVE_TYPES_MAPPING:
                 klass = self.NATIVE_TYPES_MAPPING[klass]
             else:
-                klass = getattr(root.generated.openapi_client.models, klass)
+                klass = getattr(scorable.generated.openapi_client.models, klass)
 
         if klass in self.PRIMITIVE_TYPES:
             return self.__deserialize_primitive(data, klass)

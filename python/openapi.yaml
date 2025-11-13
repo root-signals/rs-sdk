@@ -1,8 +1,8 @@
 openapi: 3.0.3
 info:
-  title: Scorable API
+  title: Root Signals API
   version: 1.0.0 (latest)
-  description: Scorable JSON API provides a way to access Scorable using provisioned
+  description: Root Signals JSON API provides a way to access Root Signals using provisioned
     API token
 paths:
   /v1/beta/evaluation-agents/:
@@ -579,7 +579,7 @@ paths:
       description: List all evaluators. The response includes a 'requirements' field
         for each evaluator that specifies what parameters are required for execution.
         The requirements field indicates whether the evaluator requires request, response,
-        contexts, functions, expected_output, or reference variables.
+        contexts, expected_output, or reference variables.
       parameters:
       - name: cursor
         required: false
@@ -592,7 +592,7 @@ paths:
         schema:
           type: boolean
           default: false
-        description: Return only Scorable defined evaluators.
+        description: Return only Root Signals defined evaluators.
       - in: query
         name: name
         schema:
@@ -710,7 +710,7 @@ paths:
       description: Get evaluator details. The response includes a 'requirements' field
         that specifies what parameters are required for execution. The requirements
         field indicates whether the evaluator requires request, response, contexts,
-        functions, expected_output, or reference variables.
+        expected_output, or reference variables.
       parameters:
       - in: path
         name: id
@@ -2947,7 +2947,7 @@ components:
           type: object
           description: Schema defining the input parameters required for execution.
             The schema consists of variables defined in the prompt template (predicate)
-            and special variables like functions, contexts, and expected output.
+            and special variables like contexts and expected output.
           additionalProperties:
             type: object
             required:
@@ -2971,10 +2971,6 @@ components:
           example:
             response:
               type: string
-            functions:
-              type: array
-              items:
-                type: object
             contexts:
               type: array
               items:
@@ -3089,70 +3085,6 @@ components:
           nullable: true
       required:
       - score
-    EvaluatorExecutionFunctionParameterPropertyRequest:
-      type: object
-      properties:
-        type:
-          type: string
-          minLength: 1
-        description:
-          type: string
-          minLength: 1
-        items:
-          type: object
-          additionalProperties: {}
-      required:
-      - type
-    EvaluatorExecutionFunctionParameterRequest:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/EvaluatorExecutionFunctionParameterTypeEnum'
-        properties:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/EvaluatorExecutionFunctionParameterPropertyRequest'
-        required:
-          type: array
-          items:
-            type: string
-            minLength: 1
-      required:
-      - type
-    EvaluatorExecutionFunctionParameterTypeEnum:
-      enum:
-      - object
-      type: string
-      description: '* `object` - Object'
-    EvaluatorExecutionFunctionRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-        parameters:
-          $ref: '#/components/schemas/EvaluatorExecutionFunctionParameterRequest'
-        description:
-          type: string
-          minLength: 1
-      required:
-      - name
-      - parameters
-    EvaluatorExecutionFunctionsRequest:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/EvaluatorExecutionFunctionsTypeEnum'
-        function:
-          $ref: '#/components/schemas/EvaluatorExecutionFunctionRequest'
-      required:
-      - function
-      - type
-    EvaluatorExecutionFunctionsTypeEnum:
-      enum:
-      - function
-      type: string
-      description: '* `function` - Function'
     EvaluatorExecutionRequest:
       type: object
       properties:
@@ -3167,10 +3099,6 @@ components:
           items:
             type: string
             minLength: 1
-        functions:
-          type: array
-          items:
-            $ref: '#/components/schemas/EvaluatorExecutionFunctionsRequest'
         expected_output:
           type: string
           nullable: true
@@ -3271,7 +3199,7 @@ components:
           type: object
           description: Schema defining the input parameters required for execution.
             The schema consists of variables defined in the prompt template (predicate)
-            and special variables like functions, contexts, and expected output.
+            and special variables like contexts and expected output.
           additionalProperties:
             type: object
             required:
@@ -3295,10 +3223,6 @@ components:
           example:
             response:
               type: string
-            functions:
-              type: array
-              items:
-                type: object
             contexts:
               type: array
               items:
@@ -3798,7 +3722,7 @@ components:
           type: object
           description: Schema defining the input parameters required for execution.
             The schema consists of variables defined in the prompt template (predicate)
-            and special variables like functions, contexts, and expected output.
+            and special variables like contexts and expected output.
           additionalProperties:
             type: object
             required:
@@ -3822,10 +3746,6 @@ components:
           example:
             response:
               type: string
-            functions:
-              type: array
-              items:
-                type: object
             contexts:
               type: array
               items:
@@ -3933,10 +3853,6 @@ components:
           items:
             type: string
             minLength: 1
-        functions:
-          type: array
-          items:
-            $ref: '#/components/schemas/EvaluatorExecutionFunctionsRequest'
         expected_output:
           type: string
           nullable: true
@@ -3966,11 +3882,6 @@ components:
               type: array
               items:
                 type: string
-              nullable: true
-            functions:
-              type: array
-              items:
-                type: object
               nullable: true
             expected_output:
               type: string
@@ -4116,10 +4027,6 @@ components:
           items:
             type: string
             minLength: 1
-        functions:
-          type: array
-          items:
-            $ref: '#/components/schemas/EvaluatorExecutionFunctionsRequest'
         expected_output:
           type: string
           nullable: true
@@ -4254,7 +4161,7 @@ components:
           type: object
           description: Schema defining the input parameters required for execution.
             The schema consists of variables defined in the prompt template (predicate)
-            and special variables like functions, contexts, and expected output.
+            and special variables like contexts and expected output.
           additionalProperties:
             type: object
             required:
@@ -4278,10 +4185,6 @@ components:
           example:
             response:
               type: string
-            functions:
-              type: array
-              items:
-                type: object
             contexts:
               type: array
               items:
@@ -4322,10 +4225,6 @@ components:
           items:
             type: string
             minLength: 1
-        functions:
-          type: array
-          items:
-            $ref: '#/components/schemas/EvaluatorExecutionFunctionsRequest'
         expected_output:
           type: string
           nullable: true
@@ -4655,8 +4554,6 @@ components:
           type: boolean
         requires_contexts:
           type: boolean
-        requires_functions:
-          type: boolean
       required:
       - id
     NestedObjectiveEvaluatorRequest:
@@ -4669,8 +4566,6 @@ components:
         requires_expected_output:
           type: boolean
         requires_contexts:
-          type: boolean
-        requires_functions:
           type: boolean
     NestedObjectiveList:
       type: object
@@ -5531,4 +5426,4 @@ components:
       description: Token-based authentication with required prefix "Api-Key"
       x-default: Api-Key <your-api-key>
 servers:
-- url: https://api.scorable.ai
+- url: https://api.app.rootsignals.ai

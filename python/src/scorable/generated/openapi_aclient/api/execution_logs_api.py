@@ -18,11 +18,11 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 from pydantic import Field, StrictBool, StrictFloat, StrictInt, StrictStr, field_validator, validate_call
 from typing_extensions import Annotated
 
-from root.generated.openapi_aclient.api_client import ApiClient, RequestSerialized
-from root.generated.openapi_aclient.api_response import ApiResponse
-from root.generated.openapi_aclient.models.execution_log_details import ExecutionLogDetails
-from root.generated.openapi_aclient.models.paginated_execution_log_list_list import PaginatedExecutionLogListList
-from root.generated.openapi_aclient.rest import RESTResponseType
+from scorable.generated.openapi_aclient.api_client import ApiClient, RequestSerialized
+from scorable.generated.openapi_aclient.api_response import ApiResponse
+from scorable.generated.openapi_aclient.models.execution_log_details import ExecutionLogDetails
+from scorable.generated.openapi_aclient.models.paginated_execution_log_list_list import PaginatedExecutionLogListList
+from scorable.generated.openapi_aclient.rest import RESTResponseType
 
 
 class ExecutionLogsApi:

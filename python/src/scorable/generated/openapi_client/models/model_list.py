@@ -21,9 +21,9 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing_extensions import Annotated, Self
 
-from root.generated.openapi_client.models.model_list_visibility_enum import ModelListVisibilityEnum
-from root.generated.openapi_client.models.nested_user_details import NestedUserDetails
-from root.generated.openapi_client.models.provider import Provider
+from scorable.generated.openapi_client.models.model_list_visibility_enum import ModelListVisibilityEnum
+from scorable.generated.openapi_client.models.nested_user_details import NestedUserDetails
+from scorable.generated.openapi_client.models.provider import Provider
 
 
 class ModelList(BaseModel):

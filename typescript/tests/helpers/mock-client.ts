@@ -25,7 +25,6 @@ export class MockClient {
             name: 'Test Evaluator',
             requires_expected_output: false,
             requires_contexts: false,
-            requires_functions: false,
           },
         ],
         next: null,

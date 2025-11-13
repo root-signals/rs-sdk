@@ -21,8 +21,8 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
 from typing_extensions import Self
 
-from root.generated.openapi_client.models.data_set_type import DataSetType
-from root.generated.openapi_client.models.nested_user_details import NestedUserDetails
+from scorable.generated.openapi_client.models.data_set_type import DataSetType
+from scorable.generated.openapi_client.models.nested_user_details import NestedUserDetails
 
 
 class DataSetCreate(BaseModel):

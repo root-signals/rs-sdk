@@ -21,7 +21,7 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict, StrictStr
 from typing_extensions import Self
 
-from root.generated.openapi_aclient.models.evaluation_agent import EvaluationAgent
+from scorable.generated.openapi_aclient.models.evaluation_agent import EvaluationAgent
 
 
 class PaginatedEvaluationAgentList(BaseModel):

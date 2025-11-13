@@ -21,7 +21,7 @@ from typing import Any, ClassVar, Dict, List, Optional, Set, Union
 from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt
 from typing_extensions import Self
 
-from root.generated.openapi_aclient.models.nested_objective_evaluator import NestedObjectiveEvaluator
+from scorable.generated.openapi_aclient.models.nested_objective_evaluator import NestedObjectiveEvaluator
 
 
 class ObjectiveValidator(BaseModel):

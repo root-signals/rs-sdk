@@ -21,8 +21,8 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing_extensions import Annotated, Self
 
-from root.generated.openapi_client.models.generation_model_params_request import GenerationModelParamsRequest
-from root.generated.openapi_client.models.judge_generator_visibility_enum import JudgeGeneratorVisibilityEnum
+from scorable.generated.openapi_client.models.generation_model_params_request import GenerationModelParamsRequest
+from scorable.generated.openapi_client.models.judge_generator_visibility_enum import JudgeGeneratorVisibilityEnum
 
 
 class JudgeGeneratorRequest(BaseModel):

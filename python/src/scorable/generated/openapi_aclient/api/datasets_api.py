@@ -17,15 +17,15 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 from pydantic import Field, StrictBool, StrictFloat, StrictInt, StrictStr, validate_call
 from typing_extensions import Annotated
 
-from root.generated.openapi_aclient.api_client import ApiClient, RequestSerialized
-from root.generated.openapi_aclient.api_response import ApiResponse
-from root.generated.openapi_aclient.models.data_set_create import DataSetCreate
-from root.generated.openapi_aclient.models.data_set_create_request import DataSetCreateRequest
-from root.generated.openapi_aclient.models.data_set_list import DataSetList
-from root.generated.openapi_aclient.models.paginated_data_set_list_list import PaginatedDataSetListList
-from root.generated.openapi_aclient.models.status_change import StatusChange
-from root.generated.openapi_aclient.models.status_change_request import StatusChangeRequest
-from root.generated.openapi_aclient.rest import RESTResponseType
+from scorable.generated.openapi_aclient.api_client import ApiClient, RequestSerialized
+from scorable.generated.openapi_aclient.api_response import ApiResponse
+from scorable.generated.openapi_aclient.models.data_set_create import DataSetCreate
+from scorable.generated.openapi_aclient.models.data_set_create_request import DataSetCreateRequest
+from scorable.generated.openapi_aclient.models.data_set_list import DataSetList
+from scorable.generated.openapi_aclient.models.paginated_data_set_list_list import PaginatedDataSetListList
+from scorable.generated.openapi_aclient.models.status_change import StatusChange
+from scorable.generated.openapi_aclient.models.status_change_request import StatusChangeRequest
+from scorable.generated.openapi_aclient.rest import RESTResponseType
 
 
 class DatasetsApi:

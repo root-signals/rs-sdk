@@ -22,15 +22,15 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing_extensions import Annotated, Self
 
-from root.generated.openapi_client.models.evaluator_demonstrations import EvaluatorDemonstrations
-from root.generated.openapi_client.models.evaluator_inputs_value import EvaluatorInputsValue
-from root.generated.openapi_client.models.input_variable import InputVariable
-from root.generated.openapi_client.models.model_params import ModelParams
-from root.generated.openapi_client.models.nested_user_details import NestedUserDetails
-from root.generated.openapi_client.models.objective import Objective
-from root.generated.openapi_client.models.reference_variable import ReferenceVariable
-from root.generated.openapi_client.models.skill_type_enum import SkillTypeEnum
-from root.generated.openapi_client.models.status_enum import StatusEnum
+from scorable.generated.openapi_client.models.evaluator_demonstrations import EvaluatorDemonstrations
+from scorable.generated.openapi_client.models.evaluator_inputs_value import EvaluatorInputsValue
+from scorable.generated.openapi_client.models.input_variable import InputVariable
+from scorable.generated.openapi_client.models.model_params import ModelParams
+from scorable.generated.openapi_client.models.nested_user_details import NestedUserDetails
+from scorable.generated.openapi_client.models.objective import Objective
+from scorable.generated.openapi_client.models.reference_variable import ReferenceVariable
+from scorable.generated.openapi_client.models.skill_type_enum import SkillTypeEnum
+from scorable.generated.openapi_client.models.status_enum import StatusEnum
 
 
 class Evaluator(BaseModel):
@@ -61,7 +61,7 @@ class Evaluator(BaseModel):
     version_id: StrictStr
     meta: Optional[Any] = Field(alias="_meta")
     inputs: Dict[str, EvaluatorInputsValue] = Field(
-        description="Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like functions, contexts, and expected output."
+        description="Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like contexts and expected output."
     )
     __properties: ClassVar[List[str]] = [
         "change_note",

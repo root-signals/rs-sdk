@@ -21,7 +21,7 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict, StrictStr, field_validator
 from typing_extensions import Self
 
-from root.generated.openapi_client.models.evaluator_inputs_value_items import EvaluatorInputsValueItems
+from scorable.generated.openapi_client.models.evaluator_inputs_value_items import EvaluatorInputsValueItems
 
 
 class EvaluatorInputsValue(BaseModel):

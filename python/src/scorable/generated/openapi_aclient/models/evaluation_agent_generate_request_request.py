@@ -21,10 +21,10 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict
 from typing_extensions import Self
 
-from root.generated.openapi_aclient.models.evaluation_agent_generate_example_request import (
+from scorable.generated.openapi_aclient.models.evaluation_agent_generate_example_request import (
     EvaluationAgentGenerateExampleRequest,
 )
-from root.generated.openapi_aclient.models.evaluation_agent_generate_request_evaluation_approach_enum import (
+from scorable.generated.openapi_aclient.models.evaluation_agent_generate_request_evaluation_approach_enum import (
     EvaluationAgentGenerateRequestEvaluationApproachEnum,
 )
 

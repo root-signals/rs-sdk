@@ -8,7 +8,6 @@ export const mockResponses = {
           name: 'Precision of Scorers Description',
           requires_expected_output: false,
           requires_contexts: false,
-          requires_functions: false,
           created_at: '2024-01-01T00:00:00Z',
           updated_at: '2024-01-01T00:00:00Z',
         },
@@ -17,7 +16,6 @@ export const mockResponses = {
           name: 'Comprehensiveness of Scorers',
           requires_expected_output: true,
           requires_contexts: false,
-          requires_functions: false,
           created_at: '2024-01-01T00:00:00Z',
           updated_at: '2024-01-01T00:00:00Z',
         },
@@ -31,7 +29,6 @@ export const mockResponses = {
       name: 'Precision of Scorers Description',
       requires_expected_output: false,
       requires_contexts: false,
-      requires_functions: false,
       created_at: '2024-01-01T00:00:00Z',
       updated_at: '2024-01-01T00:00:00Z',
       objective: {

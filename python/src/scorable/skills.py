@@ -28,9 +28,6 @@ from .generated.openapi_aclient.models import (
     EvaluatorDemonstrationsRequest as AEvaluatorDemonstrationsRequest,
 )
 from .generated.openapi_aclient.models import (
-    EvaluatorExecutionFunctionsRequest as AEvaluatorExecutionFunctionsRequest,
-)
-from .generated.openapi_aclient.models import (
     EvaluatorExecutionRequest as AEvaluatorExecutionRequest,
 )
 from .generated.openapi_aclient.models import (
@@ -62,9 +59,6 @@ from .generated.openapi_client.api.objectives_api import ObjectivesApi as Object
 from .generated.openapi_client.models.evaluator_calibration_output import EvaluatorCalibrationOutput
 from .generated.openapi_client.models.evaluator_demonstrations_request import (
     EvaluatorDemonstrationsRequest,
-)
-from .generated.openapi_client.models.evaluator_execution_functions_request import (
-    EvaluatorExecutionFunctionsRequest,
 )
 from .generated.openapi_client.models.evaluator_execution_request import EvaluatorExecutionRequest
 from .generated.openapi_client.models.evaluator_execution_result import EvaluatorExecutionResult
@@ -243,7 +237,6 @@ class Evaluator(AOpenAPIEvaluator):
         response: Optional[str] = None,
         request: Optional[str] = None,
         contexts: Optional[List[str]] = None,
-        functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
         expected_output: Optional[str] = None,
         variables: Optional[dict[str, str]] = None,
         tags: Optional[List[str]] = None,
@@ -258,7 +251,6 @@ class Evaluator(AOpenAPIEvaluator):
           response: LLM output.
           request: The prompt sent to the LLM.
           contexts: Optional documents passed to RAG evaluators
-          functions: Optional function definitions to LLM tool call validation
           expected_output: Optional expected output for the evaluator.
           variables: Optional additional variable mappings for the evaluator. For example, if the evaluator
             predicate is "evaluate the output based on {subject}: {output}", then variables={"subject": "clarity"}.
@@ -275,7 +267,6 @@ class Evaluator(AOpenAPIEvaluator):
             request=request,
             response=response,
             contexts=contexts,
-            functions=functions,
             expected_output=expected_output,
             variables=variables,
             tags=tags,
@@ -312,7 +303,6 @@ class AEvaluator(AOpenAPIEvaluator):
         response: Optional[str] = None,
         request: Optional[str] = None,
         contexts: Optional[List[str]] = None,
-        functions: Optional[List[AEvaluatorExecutionFunctionsRequest]] = None,
         expected_output: Optional[str] = None,
         variables: Optional[dict[str, str]] = None,
         tags: Optional[List[str]] = None,
@@ -327,7 +317,6 @@ class AEvaluator(AOpenAPIEvaluator):
           response: LLM output.
           request: The prompt sent to the LLM.
           contexts: Optional documents passed to RAG evaluators
-          functions: Optional function definitions to LLM tool call validation
           expected_output: Optional expected output for the evaluator.
           variables: Optional additional variable mappings for the evaluator. For example, if the evaluator
             predicate is "evaluate the output based on {subject}: {output}", then variables={"subject": "clarity"}.
@@ -344,7 +333,6 @@ class AEvaluator(AOpenAPIEvaluator):
             request=request,
             response=response,
             contexts=contexts,
-            functions=functions,
             expected_output=expected_output,
             variables=variables,
             tags=tags,
@@ -473,7 +461,6 @@ class PresetEvaluatorRunner:
         response: Optional[str] = None,
         request: Optional[str] = None,
         contexts: Optional[List[str]] = None,
-        functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
         expected_output: Optional[str] = None,
         variables: Optional[dict[str, str]] = None,
         tags: Optional[List[str]] = None,
@@ -488,7 +475,6 @@ class PresetEvaluatorRunner:
             response: LLM output.
             request: The prompt sent to the LLM.
             contexts: Optional documents passed to RAG evaluators
-            functions: Optional function definitions to LLM tool call validation
             expected_output: Optional expected output for the evaluator.
             variables: Optional additional variable mappings for the evaluator. For example, if the evaluator
                 predicate is "evaluate the output based on {subject}: {output}", then variables={"subject": "clarity"}.
@@ -505,7 +491,6 @@ class PresetEvaluatorRunner:
             request=request,
             response=response,
             contexts=contexts,
-            functions=functions,
             expected_output=expected_output,
             variables=variables,
             tags=tags,
@@ -538,7 +523,6 @@ class APresetEvaluatorRunner:
         response: Optional[str] = None,
         request: Optional[str] = None,
         contexts: Optional[List[str]] = None,
-        functions: Optional[List[AEvaluatorExecutionFunctionsRequest]] = None,
         expected_output: Optional[str] = None,
         variables: Optional[dict[str, str]] = None,
         tags: Optional[List[str]] = None,
@@ -553,7 +537,6 @@ class APresetEvaluatorRunner:
             response: LLM output.
             request: The prompt sent to the LLM.
             contexts: Optional documents passed to RAG evaluators
-            functions: Optional function definitions to LLM tool call validation
             expected_output: Optional expected output for the evaluator.
             variables: Optional additional variable mappings for the evaluator. For example, if the evaluator
                 predicate is "evaluate the output based on {subject}: {output}", then variables={"subject": "clarity"}.
@@ -570,7 +553,6 @@ class APresetEvaluatorRunner:
             request=request,
             response=response,
             contexts=contexts,
-            functions=functions,
             expected_output=expected_output,
             variables=variables,
             tags=tags,
@@ -623,7 +605,6 @@ class Evaluators:
         request: Optional[str] = None,
         response: Optional[str] = None,
         contexts: Optional[List[str]] = None,
-        functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
         expected_output: Optional[str] = None,
         evaluator_version_id: Optional[str] = None,
         variables: Optional[dict[str, str]] = None,
@@ -639,7 +620,6 @@ class Evaluators:
             request: The prompt sent to the LLM.
             response: LLM output.
             contexts: Optional documents passed to RAG evaluators.
-            functions: Optional function definitions to LLM tool call validation.
             expected_output: Optional expected output for the evaluator.
             evaluator_version_id: Version ID of the evaluator to run. If omitted, the latest version is used.
             variables: Optional additional variable mappings for the evaluator. For example, if the evaluator
@@ -658,7 +638,6 @@ class Evaluators:
             request=request,
             response=response,
             contexts=contexts,
-            functions=functions,
             expected_output=expected_output,
             variables=variables,
             tags=tags,
@@ -677,7 +656,6 @@ class Evaluators:
         request: Optional[str] = None,
         response: Optional[str] = None,
         contexts: Optional[List[str]] = None,
-        functions: Optional[List[AEvaluatorExecutionFunctionsRequest]] = None,
         expected_output: Optional[str] = None,
         evaluator_version_id: Optional[str] = None,
         variables: Optional[dict[str, str]] = None,
@@ -693,7 +671,6 @@ class Evaluators:
             request: The prompt sent to the LLM.
             response: LLM output.
             contexts: Optional documents passed to RAG evaluators.
-            functions: Optional function definitions to LLM tool call validation.
             expected_output: Optional expected output for the evaluator.
             evaluator_version_id: Version ID of the evaluator to run. If omitted, the latest version is used.
             variables: Optional additional variable mappings for the evaluator. For example, if the evaluator
@@ -711,7 +688,6 @@ class Evaluators:
             request=request,
             response=response,
             contexts=contexts,
-            functions=functions,
             expected_output=expected_output,
             variables=variables,
             tags=tags,
@@ -1510,7 +1486,6 @@ class Evaluators:
         request: Optional[str] = None,
         response: Optional[str] = None,
         contexts: Optional[List[str]] = None,
-        functions: Optional[List[EvaluatorExecutionFunctionsRequest]] = None,
         expected_output: Optional[str] = None,
         evaluator_version_id: Optional[str] = None,
         variables: Optional[dict[str, str]] = None,
@@ -1526,7 +1501,6 @@ class Evaluators:
             request: The prompt sent to the LLM.
             response: LLM output.
             contexts: Optional documents passed to RAG evaluators.
-            functions: Optional function definitions to LLM tool call validation.
             expected_output: Optional expected output for the evaluator.
             evaluator_version_id: Version ID of the evaluator to run. If omitted, the latest version is used.
             variables: Optional additional variable mappings for the evaluator. For example, if the evaluator
@@ -1545,7 +1519,6 @@ class Evaluators:
             request=request,
             response=response,
             contexts=contexts,
-            functions=functions,
             expected_output=expected_output,
             variables=variables,
             tags=tags,
@@ -1582,7 +1555,6 @@ class Evaluators:
         request: Optional[str] = None,
         response: Optional[str] = None,
         contexts: Optional[List[str]] = None,
-        functions: Optional[List[AEvaluatorExecutionFunctionsRequest]] = None,
         expected_output: Optional[str] = None,
         evaluator_version_id: Optional[str] = None,
         variables: Optional[dict[str, str]] = None,
@@ -1598,7 +1570,6 @@ class Evaluators:
             request: The prompt sent to the LLM.
             response: LLM output.
             contexts: Optional documents passed to RAG evaluators.
-            functions: Optional function definitions to LLM tool call validation.
             expected_output: Optional expected output for the evaluator.
             evaluator_version_id: Version ID of the evaluator to run. If omitted, the latest version is used.
             variables: Optional additional variable mappings for the evaluator. For example, if the evaluator
@@ -1616,7 +1587,6 @@ class Evaluators:
             request=request,
             response=response,
             contexts=contexts,
-            functions=functions,
             expected_output=expected_output,
             variables=variables,
             tags=tags,
@@ -1638,11 +1608,6 @@ class Evaluators:
         "Harmlessness",
         "Confidentiality",
         "Persuasiveness",
-        "JSON_Empty_Values_Ratio",
-        "JSON_Property_Name_Accuracy",
-        "JSON_Property_Type_Accuracy",
-        "JSON_Property_Completeness",
-        "JSON_Content_Accuracy",
         "Context_Recall",
         "Answer_Correctness",
         "Answer_Semantic_Similarity",
@@ -1658,6 +1623,14 @@ class Evaluators:
         "Truthfulness",
         "Context_Precision",
         "Answer_Relevance",
+        "Compliance_Preview",
+        "Faithfulness_Swift",
+        "Truthfulness_Swift",
+        "Completeness",
+        "Reading_Ease",
+        "Answer_Willingness",
+        "Information_Density",
+        "Planning_Efficiency",
     ]
 
     class Eval(Enum):
@@ -1672,11 +1645,6 @@ class Evaluators:
         Harmlessness = "379fee0a-4fd1-4942-833b-7d78d78b334d"
         Confidentiality = "2eaa0a02-47a9-48f7-9b47-66ad257f93eb"
         Persuasiveness = "85bb6a74-f5dd-4130-8dcc-cffdf72327cc"
-        JSON_Empty_Values_Ratio = "03829088-1799-438e-ae30-1db60832e52d"
-        JSON_Property_Name_Accuracy = "740923aa-8ffd-49cc-a95d-14f831243b25"
-        JSON_Property_Type_Accuracy = "eabc6924-1fec-4e96-82ce-c03bf415c885"
-        JSON_Property_Completeness = "e5de37f7-d20c-420f-8072-f41dce96ecfc"
-        JSON_Content_Accuracy = "b6a9aeff-c888-46d7-9e9c-7cf8cb461762"
         Context_Recall = "8bb60975-5062-4367-9fc6-a920044cba56"
         Answer_Correctness = "d4487568-4243-4da8-9c76-adbaf762dbe0"
         Answer_Semantic_Similarity = "ff350bce-4b07-4af7-9640-803c9d3c2ff9"
@@ -1696,6 +1664,10 @@ class Evaluators:
         Faithfulness_Swift = "a3a5e97b-7fcb-441e-92f2-6e59aa473b89"
         Truthfulness_Swift = "c8c65e61-2dc8-4f29-865a-a5e59127d208"
         Completeness = "f0832c32-6beb-4383-a1ea-cdeb883d9044"
+        Reading_Ease = "119d9587-9b33-4d43-a6b6-ba116dfee31b"
+        Answer_Willingness = "c81034ae-9439-4c93-bab3-d159eaf072bf"
+        Information_Density = "789a3dd8-7794-4f01-b229-3a99088c82fc"
+        Planning_Efficiency = "ed3e16c2-2d4e-4ec2-b4af-b4b54a24009d"
 
     def __getattr__(self, name: Union[EvaluatorName, str]) -> Union["PresetEvaluatorRunner", "APresetEvaluatorRunner"]:
         if name in self.Eval.__members__:

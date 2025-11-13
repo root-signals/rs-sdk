@@ -21,7 +21,7 @@ from typing import Any, ClassVar, Dict, List, Optional, Set, Union
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt
 from typing_extensions import Self
 
-from root.generated.openapi_aclient.models.evaluator_calibration_result import EvaluatorCalibrationResult
+from scorable.generated.openapi_aclient.models.evaluator_calibration_result import EvaluatorCalibrationResult
 
 
 class EvaluatorCalibrationOutput(BaseModel):

@@ -74,7 +74,7 @@ class Configuration:
 
         You can programmatically set the cookie:
 
-    conf = root.generated.openapi_aclient.Configuration(
+    conf = scorable.generated.openapi_aclient.Configuration(
         api_key={'cookieAuth': 'abc123'}
         api_key_prefix={'cookieAuth': 'JSESSIONID'}
     )
@@ -100,7 +100,7 @@ class Configuration:
         ssl_ca_cert=None,
     ) -> None:
         """Constructor"""
-        self._base_path = "https://api.localhost:8000" if host is None else host
+        self._base_path = "https://api.app.rootsignals.ai" if host is None else host
         """Default Base url
         """
         self.server_index = 0 if server_index is None and host is None else server_index
@@ -140,7 +140,7 @@ class Configuration:
         self.logger = {}
         """Logging Settings
         """
-        self.logger["package_logger"] = logging.getLogger("root.generated.openapi_aclient")
+        self.logger["package_logger"] = logging.getLogger("scorable.generated.openapi_aclient")
         self.logger["urllib3_logger"] = logging.getLogger("urllib3")
         self.logger_format = "%(asctime)s %(levelname)s %(message)s"
         """Log format
@@ -416,7 +416,7 @@ class Configuration:
         """
         return [
             {
-                "url": "https://api.localhost:8000",
+                "url": "https://api.app.rootsignals.ai",
                 "description": "No description provided",
             }
         ]

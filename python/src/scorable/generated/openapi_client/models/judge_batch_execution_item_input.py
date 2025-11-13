@@ -30,9 +30,8 @@ class JudgeBatchExecutionItemInput(BaseModel):
     request: Optional[StrictStr] = None
     response: Optional[StrictStr] = None
     contexts: Optional[List[StrictStr]] = None
-    functions: Optional[List[Dict[str, Any]]] = None
     expected_output: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["request", "response", "contexts", "functions", "expected_output"]
+    __properties: ClassVar[List[str]] = ["request", "response", "contexts", "expected_output"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -76,11 +75,6 @@ class JudgeBatchExecutionItemInput(BaseModel):
         if self.contexts is None and "contexts" in self.model_fields_set:
             _dict["contexts"] = None
 
-        # set to None if functions (nullable) is None
-        # and model_fields_set contains the field
-        if self.functions is None and "functions" in self.model_fields_set:
-            _dict["functions"] = None
-
         # set to None if expected_output (nullable) is None
         # and model_fields_set contains the field
         if self.expected_output is None and "expected_output" in self.model_fields_set:
@@ -102,7 +96,6 @@ class JudgeBatchExecutionItemInput(BaseModel):
                 "request": obj.get("request"),
                 "response": obj.get("response"),
                 "contexts": obj.get("contexts"),
-                "functions": obj.get("functions"),
                 "expected_output": obj.get("expected_output"),
             }
         )

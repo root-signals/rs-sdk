@@ -21,8 +21,8 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing_extensions import Annotated, Self
 
-from root.generated.openapi_aclient.models.objective_validator_request import ObjectiveValidatorRequest
-from root.generated.openapi_aclient.models.status_enum import StatusEnum
+from scorable.generated.openapi_aclient.models.objective_validator_request import ObjectiveValidatorRequest
+from scorable.generated.openapi_aclient.models.status_enum import StatusEnum
 
 
 class ObjectiveRequest(BaseModel):

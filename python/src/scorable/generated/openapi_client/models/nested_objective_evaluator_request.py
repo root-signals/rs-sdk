@@ -30,8 +30,7 @@ class NestedObjectiveEvaluatorRequest(BaseModel):
     name: Optional[Annotated[str, Field(min_length=1, strict=True, max_length=1000)]] = None
     requires_expected_output: Optional[StrictBool] = None
     requires_contexts: Optional[StrictBool] = None
-    requires_functions: Optional[StrictBool] = None
-    __properties: ClassVar[List[str]] = ["name", "requires_expected_output", "requires_contexts", "requires_functions"]
+    __properties: ClassVar[List[str]] = ["name", "requires_expected_output", "requires_contexts"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -86,7 +85,6 @@ class NestedObjectiveEvaluatorRequest(BaseModel):
                 "name": obj.get("name"),
                 "requires_expected_output": obj.get("requires_expected_output"),
                 "requires_contexts": obj.get("requires_contexts"),
-                "requires_functions": obj.get("requires_functions"),
             }
         )
         return _obj

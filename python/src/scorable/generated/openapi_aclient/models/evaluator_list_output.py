@@ -22,10 +22,10 @@ from typing import Any, ClassVar, Dict, List, Optional, Set
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing_extensions import Self
 
-from root.generated.openapi_aclient.models.evaluator_inputs_value import EvaluatorInputsValue
-from root.generated.openapi_aclient.models.nested_objective_list import NestedObjectiveList
-from root.generated.openapi_aclient.models.nested_user_details import NestedUserDetails
-from root.generated.openapi_aclient.models.status_enum import StatusEnum
+from scorable.generated.openapi_aclient.models.evaluator_inputs_value import EvaluatorInputsValue
+from scorable.generated.openapi_aclient.models.nested_objective_list import NestedObjectiveList
+from scorable.generated.openapi_aclient.models.nested_user_details import NestedUserDetails
+from scorable.generated.openapi_aclient.models.status_enum import StatusEnum
 
 
 class EvaluatorListOutput(BaseModel):
@@ -46,7 +46,7 @@ class EvaluatorListOutput(BaseModel):
     updated_by: Optional[NestedUserDetails]
     version_id: StrictStr
     inputs: Dict[str, EvaluatorInputsValue] = Field(
-        description="Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like functions, contexts, and expected output."
+        description="Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like contexts and expected output."
     )
     __properties: ClassVar[List[str]] = [
         "_meta",
