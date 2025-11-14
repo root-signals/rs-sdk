@@ -3,9 +3,9 @@
 These examples walk through some features of the platform in more detail.  
 Full list of examples is available [here](https://github.com/root-signals/rs-python-sdk/tree/main/examples).
 
-## Root Signals evaluators
+## Scorable evaluators
 
-Root Signals provides [over 30 ready-made](https://docs.rootsignals.ai/quick-start/usage/evaluators#list-of-evaluators-maintained-by-root-signals) evaluators that can be used to validate any textual content.
+Scorable provides [over 30 ready-made](https://docs.scorable.ai/quick-start/usage/evaluators#list-of-evaluators-maintained-by-root-signals) evaluators that can be used to validate any textual content.
 
 
 ```{literalinclude} ../examples/preset_evaluator.py

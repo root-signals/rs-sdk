@@ -154,22 +154,22 @@ describe('RetryManager', () => {
       expect(onRetryMock).toHaveBeenCalledWith(expect.any(Error), 1, expect.any(Number));
     });
 
-    it('should handle RootSignalsError with status codes', async () => {
-      class MockRootSignalsError extends Error {
+    it('should handle ScorableError with status codes', async () => {
+      class MockScorableError extends Error {
         constructor(
           public status: number,
           message: string,
         ) {
           super(message);
           this.status = status;
-          this.name = 'RootSignalsError';
+          this.name = 'ScorableError';
         }
       }
 
       const mockFn = vi
         .fn()
-        .mockRejectedValueOnce(new MockRootSignalsError(500, 'Server Error'))
-        .mockRejectedValueOnce(new MockRootSignalsError(429, 'Rate Limited'))
+        .mockRejectedValueOnce(new MockScorableError(500, 'Server Error'))
+        .mockRejectedValueOnce(new MockScorableError(429, 'Rate Limited'))
         .mockResolvedValue('success');
 
       const result = await retryManager.execute(mockFn);
@@ -179,18 +179,18 @@ describe('RetryManager', () => {
     });
 
     it('should not retry on 4xx errors except 429', async () => {
-      class MockRootSignalsError extends Error {
+      class MockScorableError extends Error {
         constructor(
           public status: number,
           message: string,
         ) {
           super(message);
           this.status = status;
-          this.name = 'RootSignalsError';
+          this.name = 'ScorableError';
         }
       }
 
-      const mockFn = vi.fn().mockRejectedValue(new MockRootSignalsError(404, 'Not Found'));
+      const mockFn = vi.fn().mockRejectedValue(new MockScorableError(404, 'Not Found'));
 
       await expect(retryManager.execute(mockFn)).rejects.toThrow('Not Found');
       expect(mockFn).toHaveBeenCalledTimes(1);

@@ -179,7 +179,7 @@ describe('DatasetsResource', () => {
   });
 
   describe('error handling', () => {
-    it('should throw RootSignalsError on API errors', async () => {
+    it('should throw ScorableError on API errors', async () => {
       mockClient.setMockError('GET', '/v1/datasets/', {
         detail: 'Internal server error',
       });

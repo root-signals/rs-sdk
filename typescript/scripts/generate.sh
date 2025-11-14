@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# OpenAPI Generation Script for Root Signals TypeScript SDK
+# OpenAPI Generation Script for Scorable TypeScript SDK
 # Based on the frontend's openapi-typescript-generator.sh
 
 set -e
 
-url="https://api.app.rootsignals.ai/docs/download/"
+url="https://api.scorable.ai/docs/download/"
 
 if [ -n "$1" ]; then
     url="$1"

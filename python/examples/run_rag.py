@@ -1,7 +1,7 @@
-from root import RootSignals
+from scorable import Scorable
 
-# Connect to the Root Signals API
-client = RootSignals()
+# Connect to the Scorable API
+client = Scorable()
 
 request = "Is the number of pensioners working more than 100k in 2023?"
 response = "Yes, 150000 pensioners were working in 2024."

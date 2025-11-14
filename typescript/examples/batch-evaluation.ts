@@ -8,7 +8,7 @@
  * - Progress monitoring
  */
 
-import { RootSignals, RootSignalsError } from '../src/index.js';
+import { Scorable, ScorableError } from '../src/index.js';
 
 interface EvaluationItem {
   id: string;
@@ -20,8 +20,8 @@ interface EvaluationItem {
 async function main() {
   try {
     // Configure client with rate limiting and retry logic
-    const client = new RootSignals({
-      apiKey: process.env.ROOTSIGNALS_API_KEY!,
+    const client = new Scorable({
+      apiKey: process.env.SCORABLE_API_KEY!,
       rateLimit: {
         maxRequests: 10, // 10 requests per window
         windowMs: 60000, // 1 minute window
@@ -171,8 +171,8 @@ async function main() {
 
     console.log('✅ Batch evaluation example completed successfully!');
   } catch (error) {
-    if (error instanceof RootSignalsError) {
-      console.error(`❌ Root Signals API Error (${error.status}): ${error.detail}`);
+    if (error instanceof ScorableError) {
+      console.error(`❌ Scorable API Error (${error.status}): ${error.detail}`);
       console.error(`Error Code: ${error.code}`);
     } else {
       console.error('❌ Unexpected error:', error);

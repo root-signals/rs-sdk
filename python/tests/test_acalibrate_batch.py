@@ -4,10 +4,10 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from root.client import RootSignals
-from root.generated.openapi_aclient.models.evaluator_calibration_output import EvaluatorCalibrationOutput
-from root.generated.openapi_aclient.models.evaluator_calibration_result import EvaluatorCalibrationResult
-from root.skills import ACalibrateBatchParameters
+from scorable.client import Scorable
+from scorable.generated.openapi_aclient.models.evaluator_calibration_output import EvaluatorCalibrationOutput
+from scorable.generated.openapi_aclient.models.evaluator_calibration_result import EvaluatorCalibrationResult
+from scorable.skills import ACalibrateBatchParameters
 
 
 class AsynchronousMock(MagicMock):
@@ -17,7 +17,7 @@ class AsynchronousMock(MagicMock):
 
 @pytest.mark.asyncio
 @mock.patch(
-    "root.generated.openapi_aclient.api.evaluators_api.EvaluatorsApi.evaluators_calibrate_create",
+    "scorable.generated.openapi_aclient.api.evaluators_api.EvaluatorsApi.evaluators_calibrate_create",
     new_callable=AsynchronousMock,
 )
 async def test_acalibrate_evaluator_batch(mock_skills_calibrate_api: AsynchronousMock) -> None:
@@ -50,7 +50,7 @@ async def test_acalibrate_evaluator_batch(mock_skills_calibrate_api: Asynchronou
         ),
     ]
 
-    client = RootSignals(api_key="fake", run_async=True)
+    client = Scorable(api_key="fake", run_async=True)
 
     params = [
         ACalibrateBatchParameters(

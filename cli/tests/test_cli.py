@@ -24,7 +24,7 @@ def runner():
 
 @pytest.fixture
 def mock_api_key():
-    with patch.dict("os.environ", {"ROOTSIGNALS_API_KEY": "test-api-key"}):
+    with patch.dict("os.environ", {"SCORABLE_API_KEY": "test-api-key"}):
         yield
 
 
@@ -300,8 +300,6 @@ class TestJudgeExecute:
                     "Test response",
                     "--contexts",
                     '["context1", "context2"]',
-                    "--functions",
-                    '[{"name": "test_func"}]',
                     "--expected-output",
                     "Expected output",
                     "--tag",
@@ -335,22 +333,6 @@ class TestJudgeExecute:
         assert result.exit_code == 0
         assert "Invalid JSON for --contexts" in result.output
 
-    def test_execute_judge_invalid_functions_json(self, runner, mock_api_key):
-        result = runner.invoke(
-            cli,
-            [
-                "judge",
-                "execute",
-                "judge-123",
-                "--request",
-                "Test request",
-                "--functions",
-                "invalid-json",
-            ],
-        )
-        assert result.exit_code == 0
-        assert "Invalid JSON for --functions" in result.output
-
     def test_execute_judge_with_stdin_input(self, runner, mock_api_key):
         mock_response = {"result": "success", "score": 0.95}
         stdin_content = "Test response from stdin"
@@ -365,7 +347,7 @@ class TestJudgeExecute:
                 with patch("cli.sys.stdin.isatty", return_value=False):
                     from cli import _execute_judge
 
-                    _execute_judge("judge-123", None, None, None, None, None, None)
+                    _execute_judge("judge-123", None, None, None, None, None)
 
                     # Verify that _request was called with stdin content as response
                     mock_req.assert_called_once()
@@ -387,9 +369,7 @@ class TestJudgeExecute:
                 with patch("cli.sys.stdin.isatty", return_value=False):
                     from cli import _execute_judge
 
-                    _execute_judge(
-                        "judge-123", None, flag_response, None, None, None, None
-                    )
+                    _execute_judge("judge-123", None, flag_response, None, None, None)
 
                     # Verify that _request was called with flag content, not stdin
                     mock_req.assert_called_once()
@@ -427,9 +407,7 @@ class TestJudgeExecuteByName:
                 with patch("cli.sys.stdin.isatty", return_value=False):
                     from cli import _execute_judge_by_name
 
-                    _execute_judge_by_name(
-                        "Test Judge", None, None, None, None, None, None
-                    )
+                    _execute_judge_by_name("Test Judge", None, None, None, None, None)
 
                     # Verify that _request was called with stdin content as response
                     mock_req.assert_called_once()
@@ -452,7 +430,7 @@ class TestJudgeExecuteByName:
                     from cli import _execute_judge_by_name
 
                     _execute_judge_by_name(
-                        "Test Judge", None, flag_response, None, None, None, None
+                        "Test Judge", None, flag_response, None, None, None
                     )
 
                     # Verify that _request was called with flag content, not stdin
@@ -481,7 +459,7 @@ class TestApiRequest:
                 with patch("cli._settings_path", return_value=settings_path):
                     result = runner.invoke(cli, ["judge", "list"])
             assert result.exit_code == 1
-            assert "ROOTSIGNALS_API_KEY environment variable not set" in result.output
+            assert "SCORABLE_API_KEY environment variable not set" in result.output
 
     @patch("cli.session.request")
     @patch("cli.API_KEY", "test-key")
@@ -816,7 +794,7 @@ class TestSettingsTemporaryKey:
     def test_settings_temporary_api_key_used(self, runner, sample_judge_list):
         with patch.dict("os.environ", {}, clear=True):
             with tempfile.TemporaryDirectory() as td:
-                settings_dir = os.path.join(td, ".rootsignals")
+                settings_dir = os.path.join(td, ".scorable")
                 os.makedirs(settings_dir, exist_ok=True)
                 settings_path = os.path.join(settings_dir, "settings.json")
                 with open(settings_path, "w") as f:

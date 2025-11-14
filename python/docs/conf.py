@@ -6,9 +6,9 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = "root-signals Python SDK"
+project = "Scorable Python SDK"
 copyright = "2025, Root Signals Ltd"  # noqa: A001
-author = "Root Signals"
+author = "Scorable"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -36,7 +36,7 @@ html_extra_path = ["_extra"]
 
 autodoc_typehints = "both"  # default is 'signature' (not in description)
 
-autoapi_dirs = ["../src/root"]
+autoapi_dirs = ["../src/scorable"]
 autoapi_ignore = ["*/utils.py"]
 
 autoapi_options = [
@@ -53,7 +53,7 @@ autoapi_options = [
 
 autoapi_member_order = "groupwise"
 
-github_url = "https://github.com/root-signals/rs-python-sdk"
+github_url = "https://github.com/root-signals/rs-sdk"
 
 # Useful for debugging
 # autoapi_keep_files = True

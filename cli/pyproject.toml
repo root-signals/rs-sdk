@@ -1,9 +1,9 @@
 [project]
-name = "root-signals-cli"
-version = "0.1.4"
-description = "CLI for the Root Signals API"
+name = "scorable-cli"
+version = "0.1.5"
+description = "CLI for the Scorable API"
 authors = [
-    {name = "Root Signals", email = "support@rootsignals.ai"},
+    {name = "Scorable", email = "support@scorable.ai"},
 ]
 dependencies = [
     "click",
@@ -17,11 +17,11 @@ readme = "README.md"
 license = {text = "Apache-2.0"}
 
 [project.urls]
-Homepage = "https://rootsignals.ai/"
+Homepage = "https://scorable.ai/"
 Repository = "https://github.com/root-signals/rs-sdk"
 
 [project.scripts]
-root-signals-cli = "cli:cli"
+scorable-cli = "cli:cli"
 
 [project.optional-dependencies]
 dev = [

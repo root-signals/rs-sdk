@@ -1,8 +1,5 @@
 import { RetryConfig } from '../utils/retry.js';
 import { RateLimitConfig } from '../utils/rate-limit.js';
-import { components } from '../generated/types.js';
-
-type Functions = components['schemas']['EvaluatorExecutionFunctionsRequest'][];
 
 export interface ClientConfig {
   apiKey: string;
@@ -39,7 +36,7 @@ export interface ApiError {
   details: ErrorDetails;
 }
 
-export class RootSignalsError extends Error {
+export class ScorableError extends Error {
   public readonly type?: string | undefined;
   public readonly title?: string | undefined;
   public readonly detail?: string | undefined;
@@ -52,14 +49,14 @@ export class RootSignalsError extends Error {
     message?: string,
   ) {
     super(message ?? details?.detail ?? details?.title ?? `API Error ${status}: ${code}`);
-    this.name = 'RootSignalsError';
+    this.name = 'ScorableError';
     this.type = details?.type;
     this.title = details?.title;
     this.detail = details?.detail;
     this.instance = details?.instance;
   }
 
-  static isAuthenticationError(error: RootSignalsError): boolean {
+  static isAuthenticationError(error: ScorableError): boolean {
     return (
       error.status === 401 ||
       error.code === 'authentication_failed' ||
@@ -67,19 +64,19 @@ export class RootSignalsError extends Error {
     );
   }
 
-  static isQuotaError(error: RootSignalsError): boolean {
+  static isQuotaError(error: ScorableError): boolean {
     return error.status === 429 || error.code === 'throttled';
   }
 
-  static isValidationError(error: RootSignalsError): boolean {
+  static isValidationError(error: ScorableError): boolean {
     return error.status === 400 || error.code === 'invalid' || error.code === 'parse_error';
   }
 
-  static isNotFoundError(error: RootSignalsError): boolean {
+  static isNotFoundError(error: ScorableError): boolean {
     return error.status === 404 || error.code === 'not_found';
   }
 
-  static isServerError(error: RootSignalsError): boolean {
+  static isServerError(error: ScorableError): boolean {
     return error.status >= 500;
   }
 }
@@ -88,7 +85,6 @@ export interface ExecutionPayload {
   request?: string;
   response?: string;
   contexts?: string[];
-  functions?: Functions;
   expected_output?: string;
   reference?: string;
   variables?: Record<string, string>;

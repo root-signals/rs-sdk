@@ -46,9 +46,9 @@ jobs:
       - name: Ensure generated schema matches what we have
         run: |
           make generate-openapi-client
-          sudo chown -R `whoami` src/root/generated
+          sudo chown -R `whoami` src/scorable/generated
           make fix-openapi-client
-          git diff src/root/generated || \
+          git diff src/scorable/generated || \
             ( echo "Generated OpenAPI has changed. Please run 'make generate' and commit the changes." && exit 1 )
 
       - name: Run the lint+tests

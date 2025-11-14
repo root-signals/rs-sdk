@@ -1,5 +1,5 @@
 import type { paths, components } from '../generated/types.js';
-import { PaginatedResponse, ListParams, RootSignalsError, ApiError } from '../types/common.js';
+import { PaginatedResponse, ListParams, ScorableError, ApiError } from '../types/common.js';
 
 type Client = ReturnType<typeof import('openapi-fetch').default<paths>>;
 
@@ -41,7 +41,7 @@ export class ModelsResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'LIST_MODELS_FAILED',
         error,
@@ -65,7 +65,7 @@ export class ModelsResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'CREATE_MODEL_FAILED',
         error,
@@ -85,7 +85,7 @@ export class ModelsResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'GET_MODEL_FAILED',
         error,
@@ -106,7 +106,7 @@ export class ModelsResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'UPDATE_MODEL_FAILED',
         error,
@@ -126,7 +126,7 @@ export class ModelsResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'DELETE_MODEL_FAILED',
         error,
@@ -145,7 +145,7 @@ export class ModelsResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'PATCH_MODEL_FAILED',
         error,

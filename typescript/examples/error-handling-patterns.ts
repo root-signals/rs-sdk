@@ -8,7 +8,7 @@
  * - Circuit breaker patterns
  */
 
-import { RootSignals, RootSignalsError } from '../src/index.js';
+import { Scorable, ScorableError } from '../src/index.js';
 
 interface RetryOptions {
   maxRetries: number;
@@ -18,7 +18,7 @@ interface RetryOptions {
 }
 
 class RobustEvaluationClient {
-  private client: RootSignals;
+  private client: Scorable;
   private circuitBreaker: {
     isOpen: boolean;
     failureCount: number;
@@ -28,7 +28,7 @@ class RobustEvaluationClient {
   };
 
   constructor(apiKey: string) {
-    this.client = new RootSignals({
+    this.client = new Scorable({
       apiKey,
       timeout: 15000,
       retry: {
@@ -105,7 +105,7 @@ class RobustEvaluationClient {
         console.log(`❌ Attempt ${attempt + 1} failed: ${lastError.message}`);
 
         // Handle different error types
-        if (error instanceof RootSignalsError) {
+        if (error instanceof ScorableError) {
           const shouldRetry = this.shouldRetryError(error);
 
           if (!shouldRetry) {
@@ -278,7 +278,7 @@ class RobustEvaluationClient {
     return { successful, failed, results };
   }
 
-  private shouldRetryError(error: RootSignalsError): boolean {
+  private shouldRetryError(error: ScorableError): boolean {
     // Don't retry client errors (4xx) except rate limiting
     if (error.status >= 400 && error.status < 500) {
       return error.status === 429; // Rate limit - retry with backoff
@@ -361,7 +361,7 @@ async function main() {
   try {
     console.log('🚀 Starting error handling patterns example...\n');
 
-    const robustClient = new RobustEvaluationClient(process.env.ROOTSIGNALS_API_KEY!);
+    const robustClient = new RobustEvaluationClient(process.env.SCORABLE_API_KEY!);
 
     // Demonstrate error scenarios
     await robustClient.demonstrateErrorScenarios();

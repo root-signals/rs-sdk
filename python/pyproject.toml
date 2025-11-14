@@ -3,10 +3,10 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "root-signals"
-description = "The Python SDK for API of Root Signals"
+name = "scorable"
+description = "The Python SDK for API of Scorable"
 maintainers = [
-  {name = "Ari Heljakka", email="ari.heljakka@rootsignals.ai"}
+  {name = "Ari Heljakka", email="ari.heljakka@scorable.ai"}
 ]
 license = {file = "LICENSE"}
 readme = "README.md"
@@ -63,21 +63,21 @@ dev = [
 
 
 [project.urls]
-Homepage = "https://rootsignals.ai/"
-Repository = "https://github.com/root-signals/rs-python-sdk"
-CHANGELOG = "https://sdk.rootsignals.ai/en/latest/CHANGELOG.html"
+Homepage = "https://scorable.ai/"
+Repository = "https://github.com/root-signals/rs-sdk"
+CHANGELOG = "https://sdk.scorable.ai/en/latest/CHANGELOG.html"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/root"]
+packages = ["src/scorable"]
 
 [tool.hatch.version]
-path = "src/root/__about__.py"
+path = "src/scorable/__about__.py"
 
 [tool.mypy]
 # Default target
-files = "src/root/*.py"
+files = "src/scorable/*.py"
 
-exclude = ["tests", "src/root/generated"]
+exclude = ["tests", "src/scorable/generated"]
 # ^ This doesn't seem to quite work, as when it is following the ^^
 # imports it will give errors anyway. In Makefile we force it to
 # ignore errors from not-explicitly-specified files.
@@ -114,7 +114,7 @@ ignore = ["A002", "S101"]
 [tool.ruff.lint.per-file-ignores]
 
 # openapi generator doesn't produce particularly good output
-"src/root/generated/**/*.py" = ["B904", "C", "E", "F", "N", "S110"]
+"src/scorable/generated/**/*.py" = ["B904", "C", "E", "F", "N", "S110"]
 
 # T201 = print statement, we use it intentionally
 "examples/*.py" =  ["T201", "E501"]

@@ -6,7 +6,6 @@ export class TestDataFactory {
       name: 'Test Evaluator',
       requires_expected_output: false,
       requires_contexts: false,
-      requires_functions: false,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
       ...overrides,

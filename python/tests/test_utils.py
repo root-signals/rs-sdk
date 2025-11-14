@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import List, Optional
 
-from root.utils import iterate_cursor_list
+from scorable.utils import iterate_cursor_list
 
 
 def test_iterate_cursor_list():

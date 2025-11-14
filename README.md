@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img width="600" alt="Root Signals logo" src="https://app.rootsignals.ai/images/root-signals-color.svg" loading="lazy">
+  <img width="600" alt="Scorable logo" src="https://scorable.ai/images/root-signals-color.svg" loading="lazy">
 </h1>
 
 <p align="center" class="large-text">
@@ -9,7 +9,7 @@
 
 
 <p align="center">
-  <a href="https://app.rootsignals.ai/register">
+  <a href="https://scorable.ai/register">
     <img src="https://img.shields.io/badge/Get_Started-2E6AFB?style=for-the-badge&logo=rocket&logoColor=white&scale=2" />
   </a>
 
@@ -21,11 +21,11 @@
     <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white&scale=2" />
   </a>
 
-  <a href="https://docs.rootsignals.ai">
+  <a href="https://docs.scorable.ai">
     <img src="https://img.shields.io/badge/Documentation-E53935?style=for-the-badge&logo=readthedocs&logoColor=white&scale=2" />
   </a>
 
-  <a href="https://app.rootsignals.ai/demo-user">
+  <a href="https://scorable.ai/demo-user">
     <img src="https://img.shields.io/badge/Temporary_API_Key-15a20b?style=for-the-badge&logo=keycdn&logoColor=white&scale=2" />
   </a>
 </p>

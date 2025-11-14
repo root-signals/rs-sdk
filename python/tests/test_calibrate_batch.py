@@ -3,15 +3,17 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from root.client import RootSignals
-from root.generated.openapi_client.models.evaluator_calibration_output import EvaluatorCalibrationOutput
-from root.generated.openapi_client.models.evaluator_calibration_result import EvaluatorCalibrationResult
-from root.skills import CalibrateBatchParameters
+from scorable.client import Scorable
+from scorable.generated.openapi_client.models.evaluator_calibration_output import EvaluatorCalibrationOutput
+from scorable.generated.openapi_client.models.evaluator_calibration_result import EvaluatorCalibrationResult
+from scorable.skills import CalibrateBatchParameters
 
 
 @pytest.fixture
 def mock_skills_calibrate_api() -> Generator[MagicMock, None, None]:
-    with patch("root.generated.openapi_client.api.evaluators_api.EvaluatorsApi.evaluators_calibrate_create") as mock:
+    with patch(
+        "scorable.generated.openapi_client.api.evaluators_api.EvaluatorsApi.evaluators_calibrate_create"  # noqa: E501
+    ) as mock:
         yield mock
 
 
@@ -45,7 +47,7 @@ def test_calibrate_evaluator_batch(mock_skills_calibrate_api: MagicMock) -> None
         ),
     ]
 
-    client = RootSignals(api_key="fake")
+    client = Scorable(api_key="fake")
 
     params = [
         CalibrateBatchParameters(

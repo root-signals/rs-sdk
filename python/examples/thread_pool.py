@@ -1,9 +1,9 @@
 from concurrent.futures import ThreadPoolExecutor
 
-from root import RootSignals
+from scorable import Scorable
 
-# Connect to the Root Signals API
-client = RootSignals()
+# Connect to the Scorable API
+client = Scorable()
 
 
 def main():

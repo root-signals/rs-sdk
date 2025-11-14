@@ -186,7 +186,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** @description List all evaluators. The response includes a 'requirements' field for each evaluator that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables. */
+    /** @description List all evaluators. The response includes a 'requirements' field for each evaluator that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, expected_output, or reference variables. */
     get: operations['evaluators_list'];
     put?: never;
     /** @description Create a new evaluator. */
@@ -204,7 +204,7 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** @description Get evaluator details. The response includes a 'requirements' field that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, functions, expected_output, or reference variables. */
+    /** @description Get evaluator details. The response includes a 'requirements' field that specifies what parameters are required for execution. The requirements field indicates whether the evaluator requires request, response, contexts, expected_output, or reference variables. */
     get: operations['evaluators_retrieve'];
     /** @description Update an evaluator. */
     put: operations['evaluators_update'];
@@ -760,7 +760,7 @@ export interface components {
       /** Format: date-time */
       readonly created_at: string;
       status?: components['schemas']['StatusEnum'];
-      /**  meta */
+      /** meta */
       readonly _meta: unknown;
     };
     /**
@@ -919,19 +919,13 @@ export interface components {
       readonly updated_by: components['schemas']['NestedUserDetails'] | null;
       /** Format: uuid */
       readonly version_id: string;
-      /**  meta */
+      /** meta */
       readonly _meta: unknown;
       /**
-       * @description Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like functions, contexts, and expected output.
+       * @description Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like contexts and expected output.
        * @example {
        *       "response": {
        *         "type": "string"
-       *       },
-       *       "functions": {
-       *         "type": "array",
-       *         "items": {
-       *           "type": "object"
-       *         }
        *       },
        *       "contexts": {
        *         "type": "array",
@@ -996,46 +990,12 @@ export interface components {
       score: number;
       justification?: string | null;
     };
-    EvaluatorExecutionFunctionParameterPropertyRequest: {
-      type: string;
-      description?: string;
-      items?: {
-        [key: string]: unknown;
-      };
-    };
-    EvaluatorExecutionFunctionParameterRequest: {
-      type: components['schemas']['EvaluatorExecutionFunctionParameterTypeEnum'];
-      properties?: {
-        [key: string]: components['schemas']['EvaluatorExecutionFunctionParameterPropertyRequest'];
-      };
-      required?: string[];
-    };
-    /**
-     * @description * `object` - Object
-     * @enum {string}
-     */
-    EvaluatorExecutionFunctionParameterTypeEnum: 'object';
-    EvaluatorExecutionFunctionRequest: {
-      name: string;
-      parameters: components['schemas']['EvaluatorExecutionFunctionParameterRequest'];
-      description?: string;
-    };
-    EvaluatorExecutionFunctionsRequest: {
-      type: components['schemas']['EvaluatorExecutionFunctionsTypeEnum'];
-      function: components['schemas']['EvaluatorExecutionFunctionRequest'];
-    };
-    /**
-     * @description * `function` - Function
-     * @enum {string}
-     */
-    EvaluatorExecutionFunctionsTypeEnum: 'function';
     EvaluatorExecutionRequest: {
       /** @default  */
       request?: string;
       /** @default  */
       response?: string;
       contexts?: string[];
-      functions?: components['schemas']['EvaluatorExecutionFunctionsRequest'][];
       expected_output?: string | null;
       tags?: string[];
       evaluator_version_id?: string | null;
@@ -1057,7 +1017,7 @@ export interface components {
       justification: string | null;
     };
     EvaluatorListOutput: {
-      /**  meta */
+      /** meta */
       readonly _meta: unknown;
       /** Format: date-time */
       readonly created_at: string;
@@ -1074,16 +1034,10 @@ export interface components {
       readonly updated_by: components['schemas']['NestedUserDetails'] | null;
       readonly version_id: string;
       /**
-       * @description Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like functions, contexts, and expected output.
+       * @description Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like contexts and expected output.
        * @example {
        *       "response": {
        *         "type": "string"
-       *       },
-       *       "functions": {
-       *         "type": "array",
-       *         "items": {
-       *           "type": "object"
-       *         }
        *       },
        *       "contexts": {
        *         "type": "array",
@@ -1276,7 +1230,7 @@ export interface components {
      */
     JobStatus: 'pending' | 'running' | 'completed' | 'failed' | 'cancelled';
     Judge: {
-      /**  meta */
+      /** meta */
       readonly _meta: {
         [key: string]: unknown;
       };
@@ -1292,16 +1246,10 @@ export interface components {
       /** Format: uuid */
       readonly id: string;
       /**
-       * @description Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like functions, contexts, and expected output.
+       * @description Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like contexts and expected output.
        * @example {
        *       "response": {
        *         "type": "string"
-       *       },
-       *       "functions": {
-       *         "type": "array",
-       *         "items": {
-       *           "type": "object"
-       *         }
        *       },
        *       "contexts": {
        *         "type": "array",
@@ -1356,7 +1304,6 @@ export interface components {
       /** @default  */
       response: string;
       contexts?: string[];
-      functions?: components['schemas']['EvaluatorExecutionFunctionsRequest'][];
       expected_output?: string | null;
       evaluator_version_id?: string | null;
     };
@@ -1368,7 +1315,6 @@ export interface components {
         request?: string;
         response?: string;
         contexts?: string[] | null;
-        functions?: Record<string, never>[] | null;
         expected_output?: string | null;
       };
       /** @description List of evaluator results for this execution */
@@ -1424,7 +1370,6 @@ export interface components {
       /** @default  */
       response: string;
       contexts?: string[];
-      functions?: components['schemas']['EvaluatorExecutionFunctionsRequest'][];
       expected_output?: string | null;
       tags?: string[];
       /** Format: uuid */
@@ -1482,16 +1427,10 @@ export interface components {
       readonly created_at: string;
       readonly status: components['schemas']['StatusEnum'];
       /**
-       * @description Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like functions, contexts, and expected output.
+       * @description Schema defining the input parameters required for execution. The schema consists of variables defined in the prompt template (predicate) and special variables like contexts and expected output.
        * @example {
        *       "response": {
        *         "type": "string"
-       *       },
-       *       "functions": {
-       *         "type": "array",
-       *         "items": {
-       *           "type": "object"
-       *         }
        *       },
        *       "contexts": {
        *         "type": "array",
@@ -1515,7 +1454,7 @@ export interface components {
         };
       };
       readonly evaluators: components['schemas']['NestedEvaluator'][];
-      /**  meta */
+      /** meta */
       readonly _meta: {
         [key: string]: unknown;
       };
@@ -1526,7 +1465,6 @@ export interface components {
       /** @default  */
       response: string;
       contexts?: string[];
-      functions?: components['schemas']['EvaluatorExecutionFunctionsRequest'][];
       expected_output?: string | null;
       tags?: string[];
       /** Format: uuid */
@@ -1658,13 +1596,11 @@ export interface components {
       name?: string;
       requires_expected_output?: boolean;
       requires_contexts?: boolean;
-      requires_functions?: boolean;
     };
     NestedObjectiveEvaluatorRequest: {
       name?: string;
       requires_expected_output?: boolean;
       requires_contexts?: boolean;
-      requires_functions?: boolean;
     };
     NestedObjectiveList: {
       /** Format: uuid */
@@ -1709,7 +1645,7 @@ export interface components {
       readonly version_id: string;
       /** Format: uuid */
       test_dataset_id?: string | null;
-      /**  meta */
+      /** meta */
       readonly _meta: {
         [key: string]: unknown;
       };
@@ -1723,7 +1659,7 @@ export interface components {
       /** Format: date-time */
       readonly created_at: string;
       readonly validators: components['schemas']['ObjectiveValidator'][];
-      /**  meta */
+      /** meta */
       readonly _meta: {
         [key: string]: unknown;
       };
@@ -2561,13 +2497,17 @@ export interface operations {
         page_size?: number;
         /** @description Search for evaluators by name or description. */
         search?: string;
-        /** @description * `managed` - managed
-         *     * `native` - native */
+        /**
+         * @description * `managed` - managed
+         *     * `native` - native
+         */
         skill_type?: 'managed' | 'native';
-        /** @description * `unlisted` - unlisted
+        /**
+         * @description * `unlisted` - unlisted
          *     * `listed` - listed
          *     * `public` - public
-         *     * `public_unlisted` - public_unlisted */
+         *     * `public_unlisted` - public_unlisted
+         */
         status?: 'listed' | 'public' | 'public_unlisted' | 'unlisted';
       };
       header?: never;
@@ -2931,12 +2871,14 @@ export interface operations {
         /** @description Filter logs created before or at this datetime (inclusive) */
         date_to?: string;
         executed_item_id?: string;
-        /** @description * `skill` - skill
+        /**
+         * @description * `skill` - skill
          *     * `evaluator` - evaluator
          *     * `judge` - judge
          *     * `experiment` - experiment
          *     * `test` - test
-         *     * `proxy` - proxy */
+         *     * `proxy` - proxy
+         */
         execution_type?: 'evaluator' | 'experiment' | 'judge' | 'proxy' | 'skill' | 'test';
         /** @description Comma-separated list of additional fields to include in the response. Supports: llm_output, variables, evaluation_context */
         include?: string;

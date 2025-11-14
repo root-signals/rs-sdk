@@ -31,7 +31,7 @@ export const DEFAULT_RETRY_CONFIG: RetryConfig = {
     if (error.name === 'NetworkError' || error.name === 'TimeoutError') {
       return true;
     }
-    // Check for RootSignalsError with retryable status codes
+    // Check for ScorableError with retryable status codes
     if ('status' in error) {
       const status = (error as unknown as ApiError).status;
       return status >= 500 || status === 429; // Server errors or rate limiting

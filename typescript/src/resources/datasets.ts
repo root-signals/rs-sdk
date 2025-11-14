@@ -1,5 +1,5 @@
 import type { paths } from '../generated/types.ts';
-import { RootSignalsError, PaginatedResponse, ApiError } from '../types/common.js';
+import { ScorableError, PaginatedResponse, ApiError } from '../types/common.js';
 
 // Extract types from the generated schema
 type DatasetListResponse =
@@ -49,7 +49,7 @@ export class DatasetsResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'LIST_DATASETS_FAILED',
         error,
@@ -76,7 +76,7 @@ export class DatasetsResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'GET_DATASET_FAILED',
         error,
@@ -96,7 +96,7 @@ export class DatasetsResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'CREATE_DATASET_FAILED',
         error,
@@ -177,7 +177,7 @@ export class DatasetsResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'UPLOAD_DATASET_FAILED',
         error,
@@ -197,7 +197,7 @@ export class DatasetsResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'DELETE_DATASET_FAILED',
         error,
@@ -216,7 +216,7 @@ export class DatasetsResource {
     });
 
     if (error) {
-      throw new RootSignalsError(
+      throw new ScorableError(
         (error as ApiError)?.status ?? 500,
         'UPDATE_DATASET_STATUS_FAILED',
         error,
