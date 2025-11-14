@@ -1,0 +1,6 @@
+scorable.generated.openapi_client.api
+=====================================
+
+.. py:module:: scorable.generated.openapi_client.api
+
+

@@ -1,23 +1,23 @@
 # Quickstart
 
-**1.** Install Root Signals Python SDK [from PyPI](https://pypi.org/project/root-signals/):
+**1.** Install Scorable Python SDK [from PyPI](https://pypi.org/project/scorable/):
 
 ```bash
-pip install root-signals
+pip install scorable
 ```
 
-**2.** Create your API key from [Root Signals Application](https://app.rootsignals.ai/settings/api-keys) and add it as an environment variable:
+**2.** Create your API key from [Scorable Application](https://scorable.ai/settings/api-keys) and add it as an environment variable:
 
 ```bash
-export ROOTSIGNALS_API_KEY=SomethingReallySecret
+export SCORABLE_API_KEY=SomethingReallySecret
 ```
 
-**3.** Start evaluating with Root Signals Evaluators:
+**3.** Start evaluating with Scorable Evaluators:
 
 ```python
-from root import RootSignals
+from scorable import Scorable
 
-client = RootSignals()
+client = Scorable()
 client.evaluators.Politeness(
     response="You can find the instructions from our Careers page."
 )  # {score=0.7, justification='The response is st...', execution_log_id=...}

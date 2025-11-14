@@ -3,17 +3,17 @@
 # Installer for the Judge CLI
 #
 # This script downloads and installs the cli.py script as an executable
-# command named 'roots'.
+# command named 'scorable'.
 #
 # Usage:
-#   curl -sSL https:/app.rootsignals.ai/cli/install.sh | sh
+#   curl -sSL https:/scorable.ai/cli/install.sh | sh
 #
 
 set -e
 
 # --- Configuration ---
-SOURCE_URL="https://sdk.rootsignals.ai/cli/cli.py"
-INSTALL_NAME="roots"
+SOURCE_URL="https://sdk.scorable.ai/cli/cli.py"
+INSTALL_NAME="scorable"
 INSTALL_DIR="/usr/local/bin"
 INSTALL_PATH="$INSTALL_DIR/$INSTALL_NAME"
 
@@ -84,7 +84,7 @@ main() {
 
   echo
   echo "Judge CLI installed successfully!"
-  echo "You can now run it with the command: ROOTSIGNALS_API_KEY=<your-api-key> $INSTALL_NAME judge list"
+  echo "You can now run it with the command: SCORABLE_API_KEY=<your-api-key> $INSTALL_NAME judge list"
   echo
   echo "To uninstall, run: $SUDO rm $INSTALL_PATH"
 }

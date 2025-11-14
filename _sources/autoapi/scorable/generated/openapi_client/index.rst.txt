@@ -1,0 +1,16 @@
+scorable.generated.openapi_client
+=================================
+
+.. py:module:: scorable.generated.openapi_client
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/scorable/generated/openapi_client/api/index
+   /autoapi/scorable/generated/openapi_client/models/index
+
+

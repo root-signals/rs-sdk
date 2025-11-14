@@ -1,0 +1,34 @@
+scorable
+========
+
+.. py:module:: scorable
+
+.. autoapi-nested-parse::
+
+   Scorable SDK.
+
+   The use should start by creating a :class:`root.client.Scorable` instance.
+
+   Example::
+
+     from scorable import Scorable
+     client = Scorable()
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/scorable/client/index
+   /autoapi/scorable/datasets/index
+   /autoapi/scorable/execution_logs/index
+   /autoapi/scorable/generated/index
+   /autoapi/scorable/judges/index
+   /autoapi/scorable/models/index
+   /autoapi/scorable/objectives/index
+   /autoapi/scorable/skills/index
+
+
