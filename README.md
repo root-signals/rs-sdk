@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img width="600" alt="Scorable logo" src="https://scorable.ai/images/root-signals-color.svg" loading="lazy">
+  <img width="600" alt="Scorable logo" src="https://scorable.ai/images/scorable-color.svg" loading="lazy">
 </h1>
 
 <p align="center" class="large-text">
