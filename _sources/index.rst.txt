@@ -3,12 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the scorable `toctree` directive.
 
-.. image:: root_signals_black_logo.svg
-   :height: 200
+.. image:: scorable-light.svg
    :class: only-light
 
-.. image:: root_signals_white_logo.svg
-   :height: 200
+.. image:: scorable-dark.svg
    :class: only-dark
 
 .. raw:: html
