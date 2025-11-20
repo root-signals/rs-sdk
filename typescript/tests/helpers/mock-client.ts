@@ -128,6 +128,27 @@ export class MockClient {
     });
   }
 
+  /**
+   * Generic request handler used by the openapi-fetch client.
+   * Converts "METHOD /path" operations into the specific verb
+   * handlers above so TypeScript sees the required API surface.
+   */
+  request = vi.fn().mockImplementation((operation: string, options?: any) => {
+    const [method, ...rest] = operation.split(' ');
+    const normalizedMethod = (method ?? 'GET').toUpperCase();
+    const url = rest.join(' ');
+    const handler = (this as any)[normalizedMethod];
+
+    if (typeof handler === 'function') {
+      return handler(url, options);
+    }
+
+    return Promise.resolve({
+      data: undefined,
+      error: undefined,
+    });
+  });
+
   // Reset all mocks
   reset() {
     this.mockResponses.clear();

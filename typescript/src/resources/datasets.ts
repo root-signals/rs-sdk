@@ -144,7 +144,8 @@ export class DatasetsResource {
     } else if (file instanceof ArrayBuffer || file instanceof Uint8Array) {
       // Create a proper Blob for binary data
       if (typeof Blob !== 'undefined') {
-        const blob = new Blob([file]);
+        const data = new Uint8Array(file);
+        const blob = new Blob([data]);
         formData.append('file', blob, metadata.name ?? 'dataset.csv');
       } else {
         // Node.js environment - use Buffer
